@@ -164,7 +164,6 @@ export default function App() {
     }, [currentmysite, dispatch, localeuser])
 
     const MemoizedWrapper = React.useCallback((props) => {
-        console.log('APP Wrapper');
 
         if (parentclasses.body) {
 

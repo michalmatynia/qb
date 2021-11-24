@@ -57,7 +57,7 @@ function HeaderHolder() {
             </div>
         )
     } else if (!isloading) {
-        return (console.log('renderHeader'),
+        return (
             <div>
 
                 <Header

@@ -89,7 +89,6 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
   React.useEffect(() => {
     if (isLocalUser !== redux_localeuser){
 
-      console.log('get List');
       fetchListMenu().then(()=>{
         setIsLoading(false)
       })
@@ -100,7 +99,6 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
   const classes = useStyles();
 
   return (
-    console.log('render'),
     isCurrentDetailPage && !isLoading ? <div className={classes.collapse}>
       <List className={cx(classes.list, classes.mlAuto)}>
 

@@ -105,10 +105,7 @@ export default function ListLanguageMenu() {
     
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
 
-        // if (value._id !== redux_localeuser._id && isLocalStorage) {
-
         if (value._id !== redux_localeuser._id && isLocalStorage) {
-            console.log('run');
 
             let inQuery = { _id: { "$eq": value._id } }
             await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
@@ -138,7 +135,7 @@ export default function ListLanguageMenu() {
             // ==============
 
         }
-    }, [dispatch, isLocalStorage, isLocalUser, redux_current_detail_page, redux_localeuser])
+    }, [dispatch, isLocalStorage, redux_current_detail_page, redux_localeuser._id])
 
 
     return (

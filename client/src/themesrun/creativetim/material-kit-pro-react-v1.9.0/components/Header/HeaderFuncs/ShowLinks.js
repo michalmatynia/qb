@@ -9,7 +9,6 @@ import { Link, useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "../../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import ListLanguageMenu from "../../../../../../components/User/Admin/system/Languages/LanguageSelect/ListLgDropdown"
 
 import {
     plg_clearProps
@@ -139,7 +138,7 @@ export async function setCurrentPage({ dispatch, item, history, reduxprops, reac
             let inQuery = {
                 _id: { "$eq": item._id }
             }
-            let response = await plg_findOne_QueMod({ model: 'page', actionType: 'current_detail', inQuery, dispatch })
+           await plg_findOne_QueMod({ model: 'page', actionType: 'current_detail', inQuery, dispatch })
 
         }
     } else {
@@ -150,7 +149,7 @@ export async function setCurrentPage({ dispatch, item, history, reduxprops, reac
         let inQuery = {
             _id: { "$eq": item._id }
         }
-        let response = await plg_findOne_QueMod({ model: 'page', actionType: 'current_detail', inQuery, dispatch })
+       await plg_findOne_QueMod({ model: 'page', actionType: 'current_detail', inQuery, dispatch })
 
         history.push('/')
 

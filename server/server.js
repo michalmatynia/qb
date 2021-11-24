@@ -265,7 +265,6 @@ app.get('/api/getGooglecreds', auth, admin, asyncMiddleware(async (req, res) => 
 }))
 app.get('/api/getGeolocation', asyncMiddleware(async (req, res) => {
     // const clientIp = requestIp.getClientIp(req); 
-    // const clientIp = '89.64.109.27';
     const clientIp = '44.64.109.27';
 
     try {
