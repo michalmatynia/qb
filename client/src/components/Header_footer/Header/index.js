@@ -2,6 +2,11 @@ import React from 'react';
 import {
     useSelector,
 } from 'react-redux'
+import { useHistory, useLocation } from "react-router-dom";
+import {
+    useRouter,
+} from "../../../hoc/Funcs/hook_funcs";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* STATE */
 import { header_state } from "./Additional/state"
@@ -10,30 +15,71 @@ import { HeaderLinks } from "../../../themesrun/creativetim/material-kit-pro-rea
 import Header from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Header/Header.js";
 
 
-  function HeaderHolder() {
+function HeaderHolder() {
 
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
-    return (
-        <div>
 
-            <Header
-                absolute
-                links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
-                fixed
-                // color="dark"
+    const [isImages, setImages] = React.useState([]);
 
-                color="transparent"
-                // style={{ backgroundColor: 'darkgrey'}}
-                changeColorOnScroll={{
-                    height: 400,
-                    color: "dark",
+    const [isloading, setIsLoading] = React.useState(true);
+
+
+    React.useEffect(() => {
+
+        if(redux_currentmysite) {
+            setImages(redux_currentmysite.images)
+            setIsLoading(false)
+
+        }
+    }, [redux_currentmysite])
+
+
+    if (isloading) {
+        return (
+            <div
+                style={{
+                    //   backgroundImage: "url(" + image + ")",
+                    backgroundSize: "cover",
+                    backgroundColor: '#595959',
+                    backgroundPosition: " center",
+                    paddingTop: '25%',
+                    position: 'fixed',
+                    left: '0px',
+                    top: '0px',
+                    width: '100%',
+                    height: '100%',
+                    // zIndex: '9999',
+                    textAlign: 'center',
                 }}
-                images={redux_currentmysite ? redux_currentmysite.images : null}
-            />
+            > 
+                <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+            </div>
+        )
+    } else if (!isloading) {
+        return (console.log('renderHeader'),
+            <div>
+
+                <Header
+                    absolute
+                    links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
+                    fixed
+                    // color="dark"
+
+                    color="transparent"
+                    // style={{ backgroundColor: 'darkgrey'}}
+                    changeColorOnScroll={{
+                        height: 400,
+                        color: "dark",
+                    }}
+                    images={isImages}
+                />
 
 
-        </div>
-    );
+            </div>
+
+        )
+    }
 }
+
 export default HeaderHolder

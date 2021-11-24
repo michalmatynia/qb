@@ -1,4 +1,8 @@
 import React, { useCallback } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import {
+  useRouter,
+} from "../../../../../hoc/Funcs/hook_funcs";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // react components for routing our app without refresh
@@ -15,7 +19,8 @@ import ListLanguageMenu from "../../../../../components/User/Admin/system/Langua
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  plg_findMany
+  plg_findMany,
+  plg_clearProps
 } from '../../../../../components/utils/Plugs/cms_plugs';
 import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
@@ -28,8 +33,47 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
 
     // let currentlistpage = useSelector(state => state.page.current_list_page)
     let localeuser = useSelector(state => state.user.localeUser)
+    let reactrouter_history = useHistory()
+    let reactrouter_location = useLocation()
+    // let redux_module = useSelector(state => state[reactrouter.match.params.model])
+    let reactrouter = useRouter()
 
+    let redux_localeuser = useSelector(state => state.user.localeUser)
+    let redux_productdetail = useSelector(state => state.product.detail)
+    let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
+    const [isPrevLocation, setPrevLocation] = React.useState();
   const [isCurrentDetailPage, setCurrentDetailPage] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+      /* Cleanup */
+    React.useEffect(() => {
+
+        if (isLocalUser !== redux_localeuser) {
+
+            setIsLoading(true)
+            setPrevLocalUser(isLocalUser)
+            setLocalUser(redux_localeuser)
+            setCurrentDetailPage()
+
+        }
+
+    }, [isLocalUser, reactrouter_history, reactrouter_location, redux_localeuser, redux_productdetail])
+
+    // React.useEffect(() => {
+    //   if (isLocalUser === redux_localeuser) {
+  
+    //     return function cleanup() {
+  
+    //       console.log('cleanup');
+  
+    //       plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+  
+    //     };
+    //   }
+  
+    // }, [dispatch, isLocalUser, isPrevLocation, reactrouter_location.pathname, redux_localeuser]) 
 
   const fetchListMenu = useCallback(async () => {
     let inQuery = {
@@ -43,24 +87,28 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
   }, [dispatch, localeuser]);
 
   React.useEffect(() => {
-    if (!isCurrentDetailPage){
-      fetchListMenu();
+    if (isLocalUser !== redux_localeuser){
 
+      console.log('get List');
+      fetchListMenu().then(()=>{
+        setIsLoading(false)
+      })
     }
-  }, [fetchListMenu, isCurrentDetailPage]);
+  }, [fetchListMenu,  isLocalUser, redux_localeuser]);
 
   // const { dropdownHoverColor, stateuser, propuser } = props;
   const classes = useStyles();
 
   return (
-    isCurrentDetailPage ? <div className={classes.collapse}>
+    console.log('render'),
+    isCurrentDetailPage && !isLoading ? <div className={classes.collapse}>
       <List className={cx(classes.list, classes.mlAuto)}>
 
         <ShowLinks
           dynamiclinks={isCurrentDetailPage}
           staticlinks={mystate.user}
         />
-        {/* <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu/></ListItem> */}
+        <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu/></ListItem>
       </List>
     </div> : null
   );

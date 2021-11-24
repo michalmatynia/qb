@@ -27,19 +27,25 @@ export default function ListLanguageMenu() {
     let redux_current_detail_page = useSelector(state => state.page.current_detail_page)
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
 
     const establishStateParams = useCallback(async () => {
 
         let rawstate = await rawStateFunction({ redux_localeuser, dispatch })
-        setRawState(await rawstate)
+        setRawState(rawstate)
 
     }, [dispatch, redux_localeuser])
 
     React.useEffect(() => {
 
-        establishStateParams()
+        if (!isRawState) {
+            establishStateParams()
 
-    }, [establishStateParams])
+        }
+
+    }, [establishStateParams, isRawState])
 
     const runInStateFunctions = useCallback(async () => {
 
@@ -56,21 +62,53 @@ export default function ListLanguageMenu() {
 
     }, [dispatch, isRawState, redux_localeuser])
 
+    /* Cleanup */
     React.useEffect(() => {
 
-        if (isRawState) {
-            runInStateFunctions()
+        if (isLocalUser !== redux_localeuser) {
+
+            setIsLoading(true)
+            setRawState()
+            setPrevLocalUser(isLocalUser)
+            setLocalUser(redux_localeuser)
+
         }
 
-    }, [isRawState, runInStateFunctions])
-    const onChange = useCallback(async ({ event, value = null, cell = null }) => {
-        console.log('run');
-        if (value._id !== redux_localeuser._id && isLocalStorage) {
-            setRawState()
+    }, [isLocalUser, redux_localeuser])
+    
+    React.useEffect(() => {
+        if (isLocalUser === redux_localeuser) {
+    
+          return function cleanup() {
+    
+            console.log('cleanup');
+    
+            plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+    
+          };
+        }
+    
+      }, [dispatch, isLocalUser, redux_localeuser]) 
 
-            await plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
-            // Ten ponizej nie byl uzyty
-            // await plg_clearProps({ dispatch, model:'page', actionType: 'current_detail' })
+    React.useEffect(() => {
+
+        if (isRawState && isLoading) {
+            runInStateFunctions().then(()=>{
+                setLocalUser(redux_localeuser)
+                setIsLoading(false)
+
+            })
+        }
+
+    }, [isLoading, isRawState, redux_localeuser, runInStateFunctions])
+
+    
+    const onChange = useCallback(async ({ event, value = null, cell = null }) => {
+
+        // if (value._id !== redux_localeuser._id && isLocalStorage) {
+
+        if (value._id !== redux_localeuser._id && isLocalStorage) {
+            console.log('run');
 
             let inQuery = { _id: { "$eq": value._id } }
             await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
@@ -90,7 +128,7 @@ export default function ListLanguageMenu() {
 
                 }
 
-               await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
+                await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
 
             }
 
@@ -100,50 +138,11 @@ export default function ListLanguageMenu() {
             // ==============
 
         }
-    },[dispatch, isLocalStorage, redux_current_detail_page, redux_localeuser._id])
-    // const onChange =  async ({ event, value = null, cell = null }) => {
-    //     if (value._id !== redux_localeuser._id) {
-    //         setRawState()
+    }, [dispatch, isLocalStorage, isLocalUser, redux_current_detail_page, redux_localeuser])
 
-    //         await plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
-    //         // Ten ponizej nie byl uzyty
-    //         // await plg_clearProps({ dispatch, model:'page', actionType: 'current_detail' })
-
-    //         let inQuery = { _id: { "$eq": value._id } }
-    //         await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
-
-    //         // ==================
-
-    //         if (document.location.pathname === '/') {
-
-    //             inQuery = {
-    //                 country: { "$eq": value.referenceID.alpha2Code },
-    //                 language: { "$eq": value.referenceID.languages[0].iso639_1 }
-    //             }
-    //             if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
-    //                 Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
-    //             } else {
-    //                 Object.assign(inQuery, { isdefault: { "$eq": true } })
-
-    //             }
-
-    //            await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
-
-    //         }
-
-    //         /*             Clears the Cart on Language Change */
-    //         await dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
-
-    //         // ==============
-
-    //     }
-
-    // }
-
-    // ========
 
     return (
-        isLocalStorage ? <div
+        isLocalStorage && !isLoading ? <div
         // style={{
         //     position: 'fixed',
         //     // left: '0px',

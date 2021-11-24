@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     useLocation,
@@ -7,7 +7,7 @@ import cx from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import  parentstyleFunc  from "./theming/Funcs/parentstyleFunc";
+import parentstyleFunc from "./theming/Funcs/parentstyleFunc";
 
 import {
     plg_findOne_QueMod,
@@ -33,15 +33,15 @@ export default function App() {
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
-    
+
     const [isBodyTheme, setIsBodyTheme] = React.useState({});
 
-  const processStyle = useCallback(async (item) => {
-    return await parentstyleFunc(item)
-  }, [])
+    const processStyle = useCallback(async (item) => {
+        return await parentstyleFunc(item)
+    }, [])
 
-  const useDynoStyles = makeStyles(isBodyTheme ? isBodyTheme : null);
-  const parentclasses = useDynoStyles();
+    const useDynoStyles = makeStyles(isBodyTheme ? isBodyTheme : null);
+    const parentclasses = useDynoStyles();
 
 
 
@@ -64,8 +64,9 @@ export default function App() {
             if (mysite_result.payload.checked.length > 0) {
 
                 processStyle({ currentmysite: mysite_result.payload }).then((result) => {
+                    console.log('setBodytheme');
                     setIsBodyTheme(result)
-                  })
+                })
 
             }
             return mysite_result.payload
@@ -163,9 +164,9 @@ export default function App() {
     }, [currentmysite, dispatch, localeuser])
 
     const MemoizedWrapper = React.useCallback((props) => {
+        console.log('APP Wrapper');
 
-
-        if (isBodyTheme) {
+        if (parentclasses.body) {
 
             return <div
                 className={cx(parentclasses.body)}
@@ -177,7 +178,7 @@ export default function App() {
                 {props.children}
             </div>
         }
-    }, [isBodyTheme, parentclasses.body])
+    }, [parentclasses.body])
 
     if (
         currentmysite
@@ -196,11 +197,11 @@ export default function App() {
         currentmysite
         && localeuser
     ) {
-        return <MemoizedWrapper>
-            <HeaderHolder />
+        return <div>            
 
-            <Frontside />
-        </MemoizedWrapper>
+            <HeaderHolder /><MemoizedWrapper>
+                <Frontside />
+            </MemoizedWrapper></div>
     } else {
         return (
             <div

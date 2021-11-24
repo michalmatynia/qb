@@ -64,8 +64,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             }
         });
 
-        // list.push({ name: 'Language', link_to: '' })
-        console.log(list);
         return list
 
     }, [dynamiclinks, staticlinks, userdata])
