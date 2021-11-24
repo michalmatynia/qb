@@ -7,6 +7,7 @@ import { ShowLinks } from './HeaderFuncs/ShowLinks.js'
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import cx from "classnames";
 
 // import { Link } from "react-router-dom";
 /* import List_Language_Menu from "../../../../../components/User/Admin/system/Languages/LanguageSelect/list_language_menu"*/
@@ -38,25 +39,28 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
     }
     let result = await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
 
-    setCurrentDetailPage(await result.payload)
+    setCurrentDetailPage( result.payload)
   }, [dispatch, localeuser]);
 
   React.useEffect(() => {
-    fetchListMenu();
-  }, [fetchListMenu]);
+    if (!isCurrentDetailPage){
+      fetchListMenu();
+
+    }
+  }, [fetchListMenu, isCurrentDetailPage]);
 
   // const { dropdownHoverColor, stateuser, propuser } = props;
   const classes = useStyles();
 
   return (
     isCurrentDetailPage ? <div className={classes.collapse}>
-      <List className={classes.list + " " + classes.mlAuto}>
+      <List className={cx(classes.list, classes.mlAuto)}>
 
         <ShowLinks
           dynamiclinks={isCurrentDetailPage}
           staticlinks={mystate.user}
         />
-        <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu localeuser={localeuser} /></ListItem>
+        {/* <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu/></ListItem> */}
       </List>
     </div> : null
   );

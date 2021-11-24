@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from "../../../../../../hoc/Funcs/hook_funcs";
 import cx from "classnames";
@@ -10,6 +9,7 @@ import { Link, useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "../../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import ListLanguageMenu from "../../../../../../components/User/Admin/system/Languages/LanguageSelect/ListLgDropdown"
 
 import {
     plg_clearProps
@@ -30,12 +30,13 @@ const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
 export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
+
     let userdata = useSelector(state => state.user.userData)
-    // let reactrouter = useRouter()
-    if (staticlinks && dynamiclinks) {
+    const [isStaticList, setStaticList] = React.useState();
 
-        let list = [];
+    const composeStaticList = useCallback(async () => {
 
+        let list = []
         dynamiclinks.forEach((item) => {
 
             item = { ...item, dynamiclink: true }
@@ -43,7 +44,7 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
         });
         staticlinks.forEach((item) => {
-            if (userdata && !userdata.isAuth) {
+            if (!userdata.isAuth) {
                 if (item.public === true) {
                     list.push(item)
                 }
@@ -63,33 +64,51 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             }
         });
 
+        // list.push({ name: 'Language', link_to: '' })
+        console.log(list);
+        return list
 
-        if (list.length > 0) {
-            return list.map((item, i) => {
+    }, [dynamiclinks, staticlinks, userdata])
+    React.useEffect(() => {
 
-                if (item.name !== 'My Cart') {
-                    return <DefaultLink
-                        item={item}
-                        i={i}
-                        key={i}
-                    />
-                } else {
-                    return <CartLink
-                        item={item}
-                        i={i}
-                        key={i}
-
-                    />
-
-                }
-
+        if (!isStaticList && userdata) {
+            composeStaticList().then((list) => {
+                setStaticList(list)
             })
-        } else {
-            return null
+
         }
+
+    }, [composeStaticList, isStaticList, userdata])
+
+    if (isStaticList) {
+
+
+        return isStaticList.map((item, i) => {
+
+            if (item.name !== 'My Cart') {
+                return <DefaultLink
+                    item={item}
+                    i={i}
+                    key={i}
+                />
+            } else if (item.name === 'My Cart') {
+                return <CartLink
+                    item={item}
+                    i={i}
+                    key={i}
+
+                />
+
+            } else {
+                return null
+
+            }
+        })
     } else {
         return null
     }
+
+
 
 }
 export async function logoutHandler({ dispatch, history, reduxprops }) {
@@ -111,9 +130,9 @@ export async function logoutHandler({ dispatch, history, reduxprops }) {
     }
 
 }
-export async function setCurrentPage({ dispatch, item, history, reduxprops }) {
+export async function setCurrentPage({ dispatch, item, history, reduxprops, reactrouter }) {
 
-    if (location.pathname === '/') {
+    if (reactrouter.location.pathname === '/') {
 
         if (item._id !== reduxprops.page.current_detail_page._id) {
             // window.scrollTo(0, 0);
@@ -176,7 +195,7 @@ export function DefaultLink({ item }) {
                     [classes.navLinkActive]: activeRoute(currentdetailpage, item, reactrouter)
                 })}
                 color="transparent"
-                onClick={() => setCurrentPage({ dispatch, item, history, reduxprops })}
+                onClick={() => setCurrentPage({ dispatch, item, history, reduxprops, reactrouter })}
 
             >{item.name}
             </Button>
@@ -223,7 +242,7 @@ export function CartLink({ item, i }) {
     if (redux_cartuser) {
 
         sum_of_products = redux_cartuser.reduce((accum, currentValue) => {
-            return  accum + currentValue.quantity
+            return accum + currentValue.quantity
         }, 0)
     }
 

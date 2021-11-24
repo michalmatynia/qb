@@ -1,13 +1,10 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     useLocation,
 } from 'react-router-dom';
-import cx from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import  parentstyleFunc  from "./theming/Funcs/parentstyleFunc";
 
 import {
     plg_findOne_QueMod,
@@ -28,22 +25,14 @@ import HeaderHolder from './components/Header_footer/Header';
 
 export default function App() {
     const dispatch = useDispatch()
-    let location = useLocation()
-    // const isFirstRender = useRef(true);
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
-    
     const [isBodyTheme, setIsBodyTheme] = React.useState({});
 
-  const processStyle = useCallback(async (item) => {
-    return await parentstyleFunc(item)
-  }, [])
+    let location = useLocation()
 
-  const useDynoStyles = makeStyles(isBodyTheme ? isBodyTheme : null);
-  const parentclasses = useDynoStyles();
-
-
+    // const isFirstRender = useRef(true);
 
     /* Find Mysite */
     React.useEffect(() => {
@@ -63,9 +52,23 @@ export default function App() {
 
             if (mysite_result.payload.checked.length > 0) {
 
-                processStyle({ currentmysite: mysite_result.payload }).then((result) => {
-                    setIsBodyTheme(result)
-                  })
+                let theme_result = mysite_result.payload.checked[0].referenceID
+
+                let theme_object = {
+                    backgroundColor: `rgba(${theme_result.BodyBackgroundColor.r}, ${theme_result.BodyBackgroundColor.g}, ${theme_result.BodyBackgroundColor.b}, ${theme_result.BodyBackgroundColor.a})`,
+                    color: `rgba(${theme_result.BodyFontColor.r}, ${theme_result.BodyFontColor.g}, ${theme_result.BodyFontColor.b}, ${theme_result.BodyFontColor.a})`
+                }
+
+                if (theme_result.images.length > 0) {
+
+                    let image_background = {
+                        background: `url(${theme_result.images[0].secure_url}) center`
+                    }
+
+                    Object.assign(theme_object, image_background)
+                }
+
+                setIsBodyTheme(theme_object)
 
             }
             return mysite_result.payload
@@ -76,7 +79,7 @@ export default function App() {
             findMysite()
         }
 
-    }, [currentmysite, dispatch, processStyle]);
+    }, [currentmysite, dispatch]);
 
     React.useEffect(() => {
 
@@ -165,10 +168,10 @@ export default function App() {
     const MemoizedWrapper = React.useCallback((props) => {
 
 
-        if (isBodyTheme) {
+        if (Object.values(isBodyTheme).length > 0) {
 
             return <div
-                className={cx(parentclasses.body)}
+                style={isBodyTheme}
             >
                 {props.children}
             </div>
@@ -177,7 +180,7 @@ export default function App() {
                 {props.children}
             </div>
         }
-    }, [isBodyTheme, parentclasses.body])
+    }, [isBodyTheme])
 
     if (
         currentmysite

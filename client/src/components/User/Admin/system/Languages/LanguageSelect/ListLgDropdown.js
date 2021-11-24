@@ -63,9 +63,9 @@ export default function ListLanguageMenu() {
         }
 
     }, [isRawState, runInStateFunctions])
-
-    const onChange =  async ({ event, value = null, cell = null }) => {
-        if (value._id !== redux_localeuser._id) {
+    const onChange = useCallback(async ({ event, value = null, cell = null }) => {
+        console.log('run');
+        if (value._id !== redux_localeuser._id && isLocalStorage) {
             setRawState()
 
             await plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
@@ -100,8 +100,45 @@ export default function ListLanguageMenu() {
             // ==============
 
         }
+    },[dispatch, isLocalStorage, redux_current_detail_page, redux_localeuser._id])
+    // const onChange =  async ({ event, value = null, cell = null }) => {
+    //     if (value._id !== redux_localeuser._id) {
+    //         setRawState()
 
-    }
+    //         await plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+    //         // Ten ponizej nie byl uzyty
+    //         // await plg_clearProps({ dispatch, model:'page', actionType: 'current_detail' })
+
+    //         let inQuery = { _id: { "$eq": value._id } }
+    //         await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
+
+    //         // ==================
+
+    //         if (document.location.pathname === '/') {
+
+    //             inQuery = {
+    //                 country: { "$eq": value.referenceID.alpha2Code },
+    //                 language: { "$eq": value.referenceID.languages[0].iso639_1 }
+    //             }
+    //             if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
+    //                 Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
+    //             } else {
+    //                 Object.assign(inQuery, { isdefault: { "$eq": true } })
+
+    //             }
+
+    //            await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
+
+    //         }
+
+    //         /*             Clears the Cart on Language Change */
+    //         await dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+
+    //         // ==============
+
+    //     }
+
+    // }
 
     // ========
 
