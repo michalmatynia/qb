@@ -1,0 +1,43 @@
+{
+    "name": "mojaapka",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "node server/server.js",
+      "server": "nodemon server/server.js",
+      "client": "npm run start --prefix client",
+      "dev": "concurrently \"npm run server\" \"npm run client\"",
+      "prod": "concurrently \"npm run start\" \"npm run client\"",
+      "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    },
+    "engines": {
+      "node": "14.17.3",
+      "npm": "7.10.0"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "animate.css": "^4.1.1",
+      "async": "^3.2.1",
+      "axios": "^0.21.1",
+      "cloudinary": "^1.26.3",
+      "concurrently": "^6.2.1",
+      "cookie-parser": "^1.4.5",
+      "crypto-js": "^4.1.1",
+      "debug": "^4.3.2",
+      "dotenv": "^10.0.0",
+      "express": "^4.17.1",
+      "express-formidable": "^1.2.0",
+      "heroku": "^7.59.0",
+      "jsonwebtoken": "^8.5.1",
+      "moment": "^2.29.1",
+      "mongoose": "^6.0.2",
+      "multer": "^1.4.3",
+      "nodemailer": "^6.6.3",
+      "react-animate-on-scroll": "^2.1.5",
+      "strip-final-newline": "^3.0.0"
+    }
+  }
+  
