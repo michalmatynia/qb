@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useHistory } from "react-router-dom";
 import {
     useSelector,
@@ -45,7 +45,9 @@ export default function LoginPage({ list, toggleMessage }) {
 
     React.useEffect(() => {
 
-        if (isFormValid_v2({ formdata: fcstate  })) {
+        if (isFormValid_v2({ formdata: fcstate })) {
+
+            console.log('refresh state');
             setIsFormValid(true)
 
         } else {
@@ -72,89 +74,132 @@ export default function LoginPage({ list, toggleMessage }) {
                 }));
             }
         }
+        if (list) {
+            assignLabels()
 
-        assignLabels()
+        }
 
     }, [list])
 
-    async function updateFormValues({ event, cellkey }) {
+    // async function updateFormValues({ event, cellkey }) {
 
-        // VERSION 2
-        let validated = { isValid: false }
-        if (fcstate[cellkey].validation.parse) {
-            validated = validateForm({ redux_currentmysite, formcell: fcstate[cellkey], event })
+    //     // VERSION 2
+    //     let validated = { isValid: false }
+    //     if (fcstate[cellkey].validation.parse) {
+    //         validated = validateForm({ redux_currentmysite, formcell: fcstate[cellkey], event })
 
-            if (!validated.isValid) {
-                setFcState(prevState => ({
-                    ...prevState,
-                    [cellkey]: {
-                        ...prevState[cellkey],
-                        validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
-                        value: event.target.value,
-                        valid: false
-                    }
-                }));
+    //         if (!validated.isValid) {
+    //             setFcState(prevState => ({
+    //                 ...prevState,
+    //                 [cellkey]: {
+    //                     ...prevState[cellkey],
+    //                     validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
+    //                     value: event.target.value,
+    //                     valid: false
+    //                 }
+    //             }));
+
+    //         } else {
+    //             setFcState(prevState => ({
+    //                 ...prevState,
+    //                 [cellkey]: {
+    //                     ...prevState[cellkey],
+    //                     validation: { ...prevState[cellkey].validation, message: '' },
+    //                     value: event.target.value,
+    //                     valid: true
+    //                 }
+    //             }));
+    //         }
+
+    //     } else {
+    //         setFcState(prevState => ({
+    //             ...prevState,
+    //             [cellkey]: {
+    //                 ...prevState[cellkey],
+    //                 value: event.target.value,
+    //             }
+    //         }));
+    //     }
+
+    // }
+
+    const updateFormValues = useCallback(
+        async ({ event, cellkey }) => {
+            // VERSION 2
+            let validated = { isValid: false }
+            if (fcstate[cellkey].validation.parse) {
+                validated = validateForm({ redux_currentmysite, formcell: fcstate[cellkey], event })
+
+                if (!validated.isValid) {
+                    setFcState(prevState => ({
+                        ...prevState,
+                        [cellkey]: {
+                            ...prevState[cellkey],
+                            validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
+                            value: event.target.value,
+                            valid: false
+                        }
+                    }));
+
+                } else {
+                    setFcState(prevState => ({
+                        ...prevState,
+                        [cellkey]: {
+                            ...prevState[cellkey],
+                            validation: { ...prevState[cellkey].validation, message: '' },
+                            value: event.target.value,
+                            valid: true
+                        }
+                    }));
+                }
 
             } else {
                 setFcState(prevState => ({
                     ...prevState,
                     [cellkey]: {
                         ...prevState[cellkey],
-                        validation: { ...prevState[cellkey].validation, message: '' },
                         value: event.target.value,
-                        valid: true
                     }
                 }));
             }
+        }, [fcstate, redux_currentmysite]
+    )
+    const submitForm = useCallback(
+        async ({ event }) => {
+            let dataToSubmit = generateData({ formdata: fcstate });
+            // let formIsValid = isFormValid_v2({ formdata: fcstate.formdata });
 
-        } else {
-            setFcState(prevState => ({
-                ...prevState,
-                [cellkey]: {
-                    ...prevState[cellkey],
-                    value: event.target.value,
+            if (isFormValid) {
+                dataToSubmit = { ...dataToSubmit, model: 'user' }
+
+                let response = await dispatch(loginUser({ dataToSubmit, actionType: 'samestate' }))
+
+                if (response.payload.loginSuccess) {
+
+                    if (response.payload.user.role === 1 || response.payload.user.role === 0) {
+                        history.push('/admin/dashboard')
+
+                    } else if (response.payload.user.role === 2) {
+
+                        history.push('/contentmanager/dashboard')
+                    }
+
+                } else {
+
+                    /* Show message functionality */
+
+                    toggleMessage(true)
+                    // setTimeout(() => {
+                    //     toggleMessage(false)
+
+                    // }, 1000)
+
+
                 }
-            }));
-        }
-
-    }
-
-    async function submitForm(event) {
-
-        let dataToSubmit = generateData({ formdata: fcstate });
-        // let formIsValid = isFormValid_v2({ formdata: fcstate.formdata });
-
-        if (isFormValid) {
-            dataToSubmit = { ...dataToSubmit, model: 'user' }
-
-            let response = await dispatch(loginUser({ dataToSubmit, actionType: 'samestate' }))
-
-            if (response.payload.loginSuccess) {
-
-                if (response.payload.user.role === 1 || response.payload.user.role === 0) {
-                    history.push('/admin/dashboard')
-
-                } else if (response.payload.user.role === 2) {
-
-                    history.push('/contentmanager/dashboard')
-                }
-
-            } else {
-
-                /* Show message functionality */
-
-                toggleMessage(true)
-                setTimeout(() => {
-                    toggleMessage(false)
-
-                }, 1000)
-
 
             }
+        }, [dispatch, fcstate, history, isFormValid, toggleMessage])
 
-        }
-
-    }
 
     const classes = useStyles();
     return (
@@ -195,7 +240,7 @@ export default function LoginPage({ list, toggleMessage }) {
                         </div>
                     </CardHeader>
                     <p className={classes.description + " " + classes.textCenter}>
-                    {list.description}
+                        {list.description}
                     </p>
                     <CardBody signup>
                         <FormCustomInput
@@ -209,16 +254,16 @@ export default function LoginPage({ list, toggleMessage }) {
                     </CardBody>
                     <div className={classes.textCenter}>
                         <Button simple color="primary" size="lg" onClick={(event) => submitForm(event)}>
-                        {list.btn_login}
+                            {list.btn_login}
                         </Button>
 
                         <Button simple color="primary" size="lg" onClick={() => history.push('/register')}>
-                        {list.btn_register}
+                            {list.btn_register}
                         </Button>
                     </div>
                     <div className={classes.textLeft}>
                         <Button simple color="primary" size="sm" onClick={() => history.push('/reset_user')}>
-                        {list.btn_forgotpassword}
+                            {list.btn_forgotpassword}
                         </Button>
                     </div>
                 </Card>
