@@ -4,11 +4,6 @@ import classNames from "classnames";
 // core components
 import { useSelector, useDispatch } from 'react-redux'
 
-import {
-  // ShowMessages,
-  //  messageLoading 
-} from '../../../components/Store/StoreFuncs/storemsg_funcs'
-
 import ProductGroups from "./ProductGroups.js";
 import NavigationWithIcons from "./NavigationWithIcons";
 import SubchoiceMenu from "./SubchoiceMenu";

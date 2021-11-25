@@ -39,15 +39,13 @@ import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
 
-// import { ShowMessages } from '../../../../../../components/Store/StoreFuncs/storemsg_funcs'
 import { ShowMessages } from '../../../../../../components/Message/Generic/static_msg'
 
 
 const useStyles = makeStyles(styles);
 
-export default  function FCGridItem({ value, i, mystore }) {
+export default  function FCGridItem({ value, i, mystore, isLoading }) {
     let reactrouter_history = useHistory()
-    let localeuser = useSelector(state => state.user.localeUser)
   let currencyuser = useSelector(state => state.user.currencyUser)
   let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let redux_cart_user = useSelector(state => state.user.cartUser)
@@ -57,6 +55,15 @@ export default  function FCGridItem({ value, i, mystore }) {
     const [isOverTheme, setOverTheme] = React.useState();
     const classes = useStyles({overtheme: isOverTheme});
     // ================
+    React.useEffect(() => {
+
+        if (!isOverTheme && current_mysite) {
+          processOverTheme({currentmysite: current_mysite}).then((theme)=>{
+    
+            setOverTheme(theme)
+          })
+        }
+      },[current_mysite, isOverTheme])
 
     const gotoProductDetail = useCallback(
         ({ value }) => {
@@ -70,7 +77,10 @@ export default  function FCGridItem({ value, i, mystore }) {
         return <GridItem md={4} sm={4}>
             {showAddToCart ? <ShowMessages
             visible={showAddToCart}
-            mystore={mystore}
+            message={mystore.addedtocart_msg}
+            color='info'
+            place='bl'
+
           /> : null}
             <Card plain product >
                 <CardHeader noShadow image className={classes.cardHoverScale}>
@@ -148,7 +158,30 @@ export default  function FCGridItem({ value, i, mystore }) {
         </GridItem>
 
     }
-    return render()
+    if (isLoading) {
+        return (
+          <div
+            style={{
+              //   backgroundImage: "url(" + image + ")",
+              backgroundSize: "cover",
+              // backgroundColor: '#595959',
+              backgroundPosition: " center",
+              paddingTop: '25%',
+              position: 'fixed',
+              left: '0px',
+              top: '0px',
+              width: '100%',
+              height: '100%',
+              // zIndex: '9999',
+              textAlign: 'center',
+            }}
+          >
+            <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+          </div>
+        )
+      } else if (!isLoading) {
+        return render()
+      }
 
 
 }

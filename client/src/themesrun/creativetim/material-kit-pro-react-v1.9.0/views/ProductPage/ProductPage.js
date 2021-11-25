@@ -24,7 +24,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import cx from "classnames";
 // react component used to create nice image meadia player
 import { useHistory, useLocation } from "react-router-dom";
-import { ShowMessages } from '../../../../../components/Store/StoreFuncs/storemsg_funcs'
+import { ShowMessages } from '../../../../../components/Message/Generic/static_msg'
 
 import Carousel from './Additional/Carousel';
 
@@ -326,11 +326,14 @@ export default function ProductPage() {
 
   if (!isloading && redux_productdetail && redux_trnsdetailproduct && isLocalUser === redux_localeuser) {
     return (    <div className={classes.productPage}>
-
         {showAddToCart ? <ShowMessages
-          visible={showAddToCart}
-          mystore={isTranslationPanel}
-        /> : null}
+            visible={showAddToCart}
+            message={isTranslationPanel.addedtocart_msg}
+            color='info'
+            place='bl'
+
+          /> : null}
+
         <Parallax
           item={isTranslationPanel}
           filter={isTranslationPanel.image_filter === 'transparent' ? null : isTranslationPanel.image_filter }

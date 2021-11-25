@@ -23,9 +23,6 @@ const useStyles = makeStyles(styles);
 
 export default function EcommercePage({ list }) {
 
-  // const [showAddToCart, setShowAddToCart] = React.useState(false);
-
-
   let parallaximage = list.images.length > 0 ? list.images[0].secure_url : null
 
   // React.useEffect(() => {

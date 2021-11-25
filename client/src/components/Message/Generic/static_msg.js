@@ -4,7 +4,6 @@ import Snackbar from "../../../templates/creativetim/material-dashboard-pro-reac
 
 
 export function ShowMessages({ message = '', visible, color = 'primary', place = 'bl' }) {
-
     const [tr, setTR] = React.useState(false);
 
     React.useEffect(() => {
