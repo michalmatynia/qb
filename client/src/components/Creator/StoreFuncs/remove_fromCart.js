@@ -7,6 +7,6 @@ export async function remove_fromCart({ event, value = null, itemkey, dispatch =
 
   newCart.splice(itemkey, 1)
 
-  await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+   dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
 }

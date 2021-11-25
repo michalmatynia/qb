@@ -38,11 +38,10 @@ export async function layoutFuncs_findCurrency({ localeuser = null,  myprops = n
     if (matchCurrency.rates === undefined) {
         Object.assign(matchCurrency, { rates: { [engine.payload.syncdata.base]: 1 }, base: engine.payload.syncdata.base });
     }
-
     if(dispatch) {
-        await dispatch(act_injectProp({ dataToSubmit: matchCurrency, model: 'user', actionType: 'currency' }))
+         dispatch(act_injectProp({ dataToSubmit: matchCurrency, model: 'user', actionType: 'currency' }))
 
     } else {
-        await myprops.dispatch(act_injectProp({ dataToSubmit: matchCurrency, model: 'user', actionType: 'currency' }))
+         myprops.dispatch(act_injectProp({ dataToSubmit: matchCurrency, model: 'user', actionType: 'currency' }))
     }   
 }

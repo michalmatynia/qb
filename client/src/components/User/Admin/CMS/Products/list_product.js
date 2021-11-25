@@ -351,7 +351,7 @@ class ListProduct extends Component {
             }
 
 
-            await act_injectProp({ dataToSubmit: currentList, model: this.state.localStorage.model, actionType: 'list' })
+             act_injectProp({ dataToSubmit: currentList, model: this.state.localStorage.model, actionType: 'list' })
         }
     }
     // TABLE FUNCTIONS

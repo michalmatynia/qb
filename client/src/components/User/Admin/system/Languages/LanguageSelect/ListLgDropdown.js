@@ -130,7 +130,7 @@ export default function ListLanguageMenu() {
             }
 
             /*             Clears the Cart on Language Change */
-            await dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+             dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
 
             // ==============
 

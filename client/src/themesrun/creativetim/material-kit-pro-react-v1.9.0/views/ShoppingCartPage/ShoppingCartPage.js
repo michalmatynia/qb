@@ -112,7 +112,7 @@ export default function ShoppingCartPage({ list }) {
 
     newCart.splice(i, 1)
 
-    await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+     dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
   }
   async function changeQuantity({ value, direction, i }) {
@@ -124,7 +124,7 @@ export default function ShoppingCartPage({ list }) {
       newCart[i].quantity = newCart[i].quantity + direction
 
     }
-    await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+     dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
   }
   function loopCartItems() {

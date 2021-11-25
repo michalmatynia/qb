@@ -237,7 +237,7 @@ export default function EcommercePage({ list }) {
 
         // // ==========
         // setViewingList(result.recalculated_list)
-        // await dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
+        //  dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
 
 
       } else {

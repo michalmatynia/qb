@@ -29,7 +29,7 @@ import HeaderHolder from './components/Header_footer/Header';
 export default function App() {
     const dispatch = useDispatch()
     let location = useLocation()
-    // const isFirstRender = useRef(true);
+    // // const isFirstRender = useRef(true);
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
@@ -45,7 +45,7 @@ export default function App() {
 
 
 
-    /* Find Mysite */
+    // /* Find Mysite */
     React.useEffect(() => {
 
         async function findMysite() {
@@ -123,8 +123,8 @@ export default function App() {
                         result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
                         let lg_found = result.payload[0].agg_lg[0]
 
-                        await dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
-                        await dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
+                         dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
+                         dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
 
                     } else {
                         throw iplocator
@@ -172,9 +172,7 @@ export default function App() {
                 {props.children}
             </div>
         } else {
-            return <div>
-                {props.children}
-            </div>
+            return null
         }
     }, [parentclasses.body])
 
@@ -197,9 +195,11 @@ export default function App() {
     ) {
         return <div>
 
-            <HeaderHolder /><MemoizedWrapper>
-                <Frontside />
-            </MemoizedWrapper></div>
+            <HeaderHolder />
+            <MemoizedWrapper>
+            <Frontside />
+            </MemoizedWrapper>
+            </div>
     } else {
         return (
             <div
@@ -222,4 +222,9 @@ export default function App() {
             </div>
         )
     }
+
 }
+
+
+
+

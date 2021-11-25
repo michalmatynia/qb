@@ -172,7 +172,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
         // ==========
         setViewingList(result.recalculated_list)
-        await dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
+         dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
 
         // await plg_clearProps({ myprops: this.props, model: 'user', actionType: 'cart' })
 

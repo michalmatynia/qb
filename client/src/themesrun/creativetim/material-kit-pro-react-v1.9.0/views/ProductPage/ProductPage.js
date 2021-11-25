@@ -325,7 +325,7 @@ export default function ProductPage() {
 
 
   if (!isloading && redux_productdetail && redux_trnsdetailproduct && isLocalUser === redux_localeuser) {
-    return (    <div className={classes.productPage}>
+    return (    console.log('render'),<div className={classes.productPage}>
 
         {showAddToCart ? <ShowMessages
           visible={showAddToCart}

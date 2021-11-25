@@ -126,8 +126,8 @@ export default function App() {
                         result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
                         let lg_found = result.payload[0].agg_lg[0]
 
-                        await dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
-                        await dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
+                        dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
+                        dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
 
                     } else {
                         throw iplocator

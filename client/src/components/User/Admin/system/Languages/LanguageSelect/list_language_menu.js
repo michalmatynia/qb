@@ -282,7 +282,7 @@ class List_Language_Menu extends Component {
             }
 
             // Clears the Cart on Language Change
-            await this.props.dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+             this.props.dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
 
             // ==============
         }

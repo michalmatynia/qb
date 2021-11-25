@@ -185,7 +185,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
                 }
 
 
-                await dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+                 dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
                 toggleModal(false)
 
                 toggleMessage(true)
