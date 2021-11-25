@@ -37,6 +37,7 @@ import { contact_confirmation_email, contact_messagebody } from '../../utils/Ema
 import {
     plg_sendMail,
 } from '../../utils/Plugs/cms_plugs';
+import { ShowMessages } from '../../../components/Message/Generic/static_msg'
 
 import contactsStyle from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/sectionsSections/contactsStyle.js";
 
@@ -47,9 +48,9 @@ export default function ContactUsPage({ list, toggleMessage }) {
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
     const [fcstate, setFcState] = React.useState(contact_state);
-    // const [isShowMessage, setShowMessage] = React.useState(false);
     // const [checked, setChecked] = React.useState([]);
     const [isFormValid, setIsFormValid] = React.useState(false);
+    const [isShowMessage, setShowMessage] = React.useState(false);
 
     React.useEffect(() => {
 
@@ -184,11 +185,11 @@ export default function ContactUsPage({ list, toggleMessage }) {
 
             /* Show message functionality */
 
-                    toggleMessage(true)
-                    setTimeout(() => {
-                        toggleMessage(false)
+            setShowMessage(true)
+            setTimeout(() => {
+                setShowMessage(false)
 
-                    }, 1000)
+            }, 1000)
         }
 
 
@@ -197,7 +198,12 @@ export default function ContactUsPage({ list, toggleMessage }) {
     const classes = useStyles();
     return (
         <GridContainer>
-
+            {isShowMessage ? <ShowMessages
+                visible={isShowMessage}
+                message={list.messagesent_msg}
+                color='success'
+                place='bl'
+            /> : null}
             <GridItem xs={12} sm={5} md={5}>
                 <h2 className={classes.title}
                     style={{ color: '#FFF' }}

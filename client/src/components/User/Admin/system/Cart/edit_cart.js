@@ -44,7 +44,8 @@ class EditCart extends Component {
                     'title_guestchk',
                     'email_guestchk',
                     'address_guestchk',
-                    'phone_guestchk'
+                    'phone_guestchk',
+                    'ordersent_msg'
                 ]
             },
             form: {
@@ -934,6 +935,52 @@ class EditCart extends Component {
                         valid: true,
                         touched: false,
                     },
+                    ordersent_msg: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'name_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Text for Order Sent Checkout',
+                            helpertext: 'Enter text for Order Sent Checkout',
+                        },
+                        validation: {
+                            parse: true,
+                            type: ['required']
+                        },
+                        valid: false,
+                        touched: false,
+                    },
                     position: {
                         element: 'select',
                         category: 'ct_customselect',
@@ -1113,7 +1160,6 @@ class EditCart extends Component {
             },
         }
     }
-
     async componentDidUpdate(prevProps, prevState) {
 
         if ('localeUser' in this.props.user) {

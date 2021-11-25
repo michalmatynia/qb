@@ -231,7 +231,7 @@ export default function ShoppingCartPage({ list }) {
     <div className={classes.staticwrapper} >
       {isShowMessage ? <ShowMessages
         visible={isShowMessage}
-        message='Order Sent'
+        message={list.ordersent_msg}
         color='success'
         place='bl'
       /> : null}

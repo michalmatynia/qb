@@ -67,6 +67,10 @@ const Schema = mongoose.Schema({
         required: true,
         type: String,
     },
+    ordersent_msg: {
+        required: false,
+        type: String,
+    },
     position: {
         type: Number,
         maxlength: 1000
