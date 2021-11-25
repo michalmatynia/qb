@@ -8,7 +8,6 @@ import Parallax from "../../../../../templates/creativetim/material-kit-pro-reac
 
 // ============
 // sections for this page
-import { ShowMessages } from '../../../../../components/Store/StoreFuncs/storemsg_funcs'
 
 // import SectionLatestOffers from "./Sections/SectionLatestOffers.js";
 import SectionProducts from "./Sections/SectionProducts.js";
@@ -24,7 +23,7 @@ const useStyles = makeStyles(styles);
 
 export default function EcommercePage({ list }) {
 
-  const [showAddToCart, setShowAddToCart] = React.useState(false);
+  // const [showAddToCart, setShowAddToCart] = React.useState(false);
 
 
   let parallaximage = list.images.length > 0 ? list.images[0].secure_url : null
@@ -37,10 +36,7 @@ export default function EcommercePage({ list }) {
 
   return (
     <div className={classes.staticwrapper}>
-      {showAddToCart ? <ShowMessages
-        visible={showAddToCart}
-        mystore={list}
-      /> : null}
+
       <Parallax
         image={parallaximage}
         filter={list.image_filter === 'transparent' ? null : list.image_filter }
@@ -71,13 +67,6 @@ export default function EcommercePage({ list }) {
       <div className={classNames(classes.main, classes.mainRaised)}>
         <SectionProducts
           mystore={list}
-          toggleCartMsg={({ visible }) => {
-            setShowAddToCart(visible)
-            setTimeout(() => {
-              setShowAddToCart(!visible)
-
-            }, 1000)
-          }}
         />
       </div>
       </div>

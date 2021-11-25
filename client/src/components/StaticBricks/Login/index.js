@@ -43,10 +43,7 @@ export default function Login() {
                 setIsLoading(false)
             })
         }
-        // return function cleanup() {
-        //     plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
 
-        // };
 
     }, [currencyuser, dispatch, localeuser]);
 
