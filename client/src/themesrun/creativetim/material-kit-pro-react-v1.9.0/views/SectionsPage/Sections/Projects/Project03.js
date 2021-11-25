@@ -108,7 +108,7 @@ export function SectionProjectsProject03({ item, i }) {
 
   return (
     // we've set the className to cd-section so we can make smooth scroll to it
-    <WrapperOutputNext>{console.log('test')}
+    <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <GridContainer>

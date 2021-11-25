@@ -6,7 +6,7 @@ import {
   primaryCardHeader,
   roseCardHeader,
   blackColor,
-  hexToRgb,
+  hexToRgb
 } from "../../material-kit-pro-react.js";
 
 const cardHeaderStyle = {

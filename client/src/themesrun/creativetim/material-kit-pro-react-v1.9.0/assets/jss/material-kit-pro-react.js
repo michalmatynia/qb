@@ -43,17 +43,17 @@ const hexToRgb = (input) => {
 const drawerWidth = 260;
 
 const myprimaryColor = [
-  {r: 255, g: 255, b:255, a: 0}
+  { r: 255, g: 255, b: 255, a: 0 }
 ]
 const mysecondaryColor = [
-  {r: 255, g: 255, b:255, a: 0}
+  { r: 255, g: 255, b: 255, a: 0 }
 ]
 const primaryColor = [
 
   // Packaging
   // "#4eaac9",
   // "#4eaac9",
-  
+
   //Milkbar
   // "#53aae5",
   // "#95d3fc",
@@ -211,14 +211,15 @@ const boxShadow = {
     ", 0.2)",
 };
 const primaryBoxShadow = {
-  boxShadow:
-    "0 12px 20px -10px rgba(" +
-    hexToRgb(primaryColor[0]) +
-    ", 0.28), 0 4px 20px 0px rgba(" +
-    hexToRgb(blackColor) +
-    ", 0.12), 0 7px 8px -5px rgba(" +
-    hexToRgb(primaryColor[0]) +
-    ", 0.2)",
+  boxShadow: ({ overtheme }) =>
+    overtheme ?
+      "0 12px 20px -10px rgba(" + hexToRgb(overtheme.primaryColorHex[0]) + ", 0.28)"
+      + "0 4px 20px 0px rgba(" + hexToRgb(blackColor) + ", 0.12)"
+      + "0 7px 8px -5px rgba(" + hexToRgb(overtheme.primaryColorHex[0]) + ", 0.2)"
+      : "0 12px 20px -10px rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", 0.28)"
+      + "0 4px 20px 0px rgba(" + hexToRgb(blackColor) + ", 0.12)"
+      + "0 7px 8px -5px rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", 0.2)",
+
 };
 const infoBoxShadow = {
   boxShadow:
@@ -295,8 +296,8 @@ const infoCardHeader = {
 };
 const primaryCardHeader = {
   color: whiteColor,
-  background:
-    "linear-gradient(60deg, " + primaryColor[0] + ", " + primaryColor[1] + ")",
+  background: ({ overtheme }) => overtheme ? "linear-gradient(60deg, rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", " + overtheme.primaryColor[0].a + "), rgba(" + overtheme.primaryColor[1].r + ", " + overtheme.primaryColor[1].g + ", " + overtheme.primaryColor[1].b + ", " + overtheme.primaryColor[1].a + ") )"
+    : "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", " + myprimaryColor[0].a + ")",
   ...primaryBoxShadow,
 };
 const roseCardHeader = {

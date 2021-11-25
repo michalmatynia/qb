@@ -64,7 +64,6 @@ export default function App() {
             if (mysite_result.payload.checked.length > 0) {
 
                 processStyle({ currentmysite: mysite_result.payload }).then((result) => {
-                    console.log('setBodytheme');
                     setIsBodyTheme(result)
                 })
 
@@ -196,7 +195,7 @@ export default function App() {
         currentmysite
         && localeuser
     ) {
-        return <div>            
+        return <div>
 
             <HeaderHolder /><MemoizedWrapper>
                 <Frontside />

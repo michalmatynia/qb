@@ -1,11 +1,14 @@
 import React from "react";
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import cx from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
+import { useSelector } from 'react-redux'
+
+import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
 
 // core components
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/cardHeaderStyle.js";
@@ -13,6 +16,26 @@ import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-
 const useStyles = makeStyles(styles);
 
 export default function CardHeader(props) {
+
+  let currentmysite = useSelector(state => state.mysite.CurrentMysite)
+  const [isOverTheme, setOverTheme] = React.useState();
+
+  const classes = useStyles({overtheme: isOverTheme});
+
+
+  React.useEffect(() => {
+
+    if (!isOverTheme && currentmysite) {
+      processOverTheme({currentmysite}).then((theme)=>{
+
+        setOverTheme(theme)
+      })
+    }
+
+
+  },[currentmysite, isOverTheme])
+
+
   const {
     className,
     children,
@@ -24,8 +47,8 @@ export default function CardHeader(props) {
     noShadow,
     ...rest
   } = props;
-  const classes = useStyles();
-  const cardHeaderClasses = classNames({
+
+  const cardHeaderClasses = cx({
     [classes.cardHeader]: true,
     [classes[color + "CardHeader"]]: color,
     [classes.cardHeaderPlain]: plain,

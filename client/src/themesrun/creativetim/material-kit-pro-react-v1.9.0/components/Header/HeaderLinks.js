@@ -35,15 +35,11 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
     let localeuser = useSelector(state => state.user.localeUser)
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
-    // let redux_module = useSelector(state => state[reactrouter.match.params.model])
-    let reactrouter = useRouter()
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
     let redux_productdetail = useSelector(state => state.product.detail)
-    let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
     const [isLocalUser, setLocalUser] = React.useState();
     const [isPrevLocalUser, setPrevLocalUser] = React.useState();
-    const [isPrevLocation, setPrevLocation] = React.useState();
   const [isCurrentDetailPage, setCurrentDetailPage] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -61,19 +57,7 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
 
     }, [isLocalUser, reactrouter_history, reactrouter_location, redux_localeuser, redux_productdetail])
 
-    // React.useEffect(() => {
-    //   if (isLocalUser === redux_localeuser) {
-  
-    //     return function cleanup() {
-  
-    //       console.log('cleanup');
-  
-    //       plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
-  
-    //     };
-    //   }
-  
-    // }, [dispatch, isLocalUser, isPrevLocation, reactrouter_location.pathname, redux_localeuser]) 
+
 
   const fetchListMenu = useCallback(async () => {
     let inQuery = {

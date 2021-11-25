@@ -2,10 +2,6 @@ import React from 'react';
 import {
     useSelector,
 } from 'react-redux'
-import { useHistory, useLocation } from "react-router-dom";
-import {
-    useRouter,
-} from "../../../hoc/Funcs/hook_funcs";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* STATE */
