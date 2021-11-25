@@ -1,8 +1,4 @@
 import React, { useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-  useRouter,
-} from "../../../../../../hoc/Funcs/hook_funcs";
 // nodejs library that concatenates classes
 import cx from "classnames";
 
@@ -10,20 +6,13 @@ import cx from "classnames";
 import Slider from "nouislider";
 import FCGridItem from "./FCGridItem";
 
-import {
-  productFuncs_handleAddToCart
-} from "../../../../../../components/User/Admin/GenericFuncs/product_funcs_vh"
-
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 // @material-ui icons
 // import Favorite from "@material-ui/icons/Favorite";
 // import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import FCTaxonomyListOne from './FCTaxonomyListOne'
 // core components
 import AccordionFunc from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Accordion/AccordionFunc.js";
@@ -31,9 +20,7 @@ import AccordionFunc from "../../../../../../themesrun/creativetim/material-kit-
 import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
-import CardHeader from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardHeader.js";
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
-import CardFooter from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardFooter.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
 
@@ -42,7 +29,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   plg_findMany,
   // plg_findOne_QueMod,
-  // plg_clearProps
+  plg_clearProps
 } from '../../../../../../components/utils/Plugs/cms_plugs';
 
 import {
@@ -90,9 +77,24 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   const [typeTaxo, setTypeTaxo] = React.useState(null);
   const [checkedCategoryTaxo, setCheckedCategoryTaxo] = React.useState([]);
   const [checkedTypeTaxo, setCheckedTypeTaxo] = React.useState([]);
+  const [isLocalUser, setLocalUser] = React.useState();
 
   const classes = useStyles({ overtheme: isOverTheme });
 
+  /* Clean Up */
+  React.useEffect(() => {
+
+      return function cleanup() {
+
+        console.log('cleanup');
+
+        plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
+
+      };
+
+  }, [dispatch]) 
+
+    /* Get Theme */
   React.useEffect(() => {
 
     if (!isOverTheme && current_mysite) {
@@ -116,7 +118,6 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
       setCheckedCategoryTaxo([])
       setCheckedTypeTaxo([])
     }
-    // return function cleanup() { plg_clearProps({ dispatch, model: 'product', actionType: 'list' }) };
 
   }, [currencyuser, current_mysite, dispatch, localeuser])
 
@@ -189,7 +190,6 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
         setViewingList(result.recalculated_list)
         dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
 
-        // await plg_clearProps({ myprops: this.props, model: 'user', actionType: 'cart' })
 
       } else {
 
@@ -260,6 +260,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
     ) {
 
       setIsLoading(true)
+      setLocalUser(localeuser)
       loadProducts()
       setIsLoading(false)
 
@@ -370,7 +371,6 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
       });
     }
 
-    // return function cleanup() { plg_clearProps({ dispatch, model: 'product', actionType: 'list' }) };
   }, [current_mysite, localeuser, priceRange, product_list]);
 
 
