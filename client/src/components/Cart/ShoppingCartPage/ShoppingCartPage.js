@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import cx from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -17,20 +17,21 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import Parallax from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax.js";
-import GridContainer from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
-import GridItem from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
-import Table from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Table/Table.js";
-import Button from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import Card from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
-import CardBody from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
+import Parallax from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax.js";
+import GridContainer from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
+import GridItem from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
+import Table from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Table/Table.js";
+import Button from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import Card from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
+import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import {
   act_injectProp,
-} from '../../../../../redux/actions/generic/generic_actions';
-import CheckoutModal from "../../../../../components/Modals/Checkout/index"
-import { ShowMessages } from '../../../../../components/Message/Generic/static_msg'
+} from '../../../redux/actions/generic/generic_actions';
+import CheckoutModal from "../Checkout/index"
+import { ShowMessages } from '../../Message/Generic/static_msg'
+import processOverTheme from "../../../theming/Funcs/processOverTheme"
 
-import shoppingCartStyle from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
+import shoppingCartStyle from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
 
 const useStyles = makeStyles(shoppingCartStyle);
 
@@ -38,12 +39,28 @@ export default function ShoppingCartPage({ list }) {
 
   let cart_user = useSelector(state => state.user.cartUser)
   let currencyuser = useSelector(state => state.user.currencyUser)
+  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const dispatch = useDispatch()
 
   const [totalSum, setTotalSum] = useState(0);
   const [showCheckModal, setShowCheckModal] = useState(false);
   const [isShowMessage, setShowMessage] = useState(false);
+  const [isOverTheme, setOverTheme] = React.useState();
+  const classes = useStyles({overtheme: isOverTheme});
+
+  React.useEffect(() => {
+  
+    if (!isOverTheme && redux_currentmysite) {
+      processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
+
+        setOverTheme(theme)
+      })
+    }
+
+
+  },[redux_currentmysite, isOverTheme])
+
 
   React.useEffect(() => {
     async function calculateSum() {
@@ -226,7 +243,6 @@ export default function ShoppingCartPage({ list }) {
     return maintable
   }
 
-  const classes = useStyles();
   return (
     <div className={classes.staticwrapper} >
       {isShowMessage ? <ShowMessages
@@ -253,7 +269,7 @@ export default function ShoppingCartPage({ list }) {
             <GridItem
               md={8}
               sm={8}
-              className={classNames(
+              className={cx(
                 classes.mlAuto,
                 classes.mrAuto,
                 classes.textCenter
@@ -264,7 +280,7 @@ export default function ShoppingCartPage({ list }) {
           </GridContainer>
         </div>
       </Parallax>
-      <div className={classNames(classes.main, classes.mainRaised)} >
+      <div className={cx(classes.main, classes.mainRaised)} >
         <div className={classes.container}>
           <Card plain >
             <CardBody plain >

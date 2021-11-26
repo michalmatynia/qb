@@ -13,6 +13,7 @@ import {
 
 import buttonGroup from "../../material-kit-pro-react/buttonGroupStyle.js";
 import tooltips from "../../material-kit-pro-react/tooltipsStyle.js";
+import buttonStyle from "../../material-kit-pro-react/components/buttonStyle";
 
 const styles = {
   staticwrapper,
@@ -22,6 +23,7 @@ const styles = {
   mlAuto,
   cardTitle,
   ...buttonGroup,
+  ...buttonStyle,
   ...tooltips,
   container: {
     ...container,

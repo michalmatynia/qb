@@ -16,17 +16,18 @@ import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 import PaymentIcon from '@material-ui/icons/Payment';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 // core components
-import FormCustomInput from '../../../components/Form/Custom/Input/FormCustomInput';
-import Card from "../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
-import CardBody from "../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
-import Button from "../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import FormCustomInput from '../../Form/Custom/Input/FormCustomInput';
+import Card from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
+import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
+import Button from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 
-import { generateData, isFormValid_v2 } from '../../../components/utils/Form/formActions';
+import { generateData, isFormValid_v2 } from '../../utils/Form/formActions';
 import { purchase_email, confirmation_email } from '../../utils/Email/templates'
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
 import { validateForm } from "../../utils/Form/Funcs/validateForm"
 import Paypal from '../../utils/paypal'
+import processOverTheme from "../../../theming/Funcs/processOverTheme"
 
 import {
     act_injectProp,
@@ -41,7 +42,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { checkout_state } from "./Additional/state"
 
-import shoppingCartStyle from "../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
+import shoppingCartStyle from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
 const useStyles = makeStyles(shoppingCartStyle);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -70,11 +71,10 @@ function translateLabels({ state, list }) {
 
 export default function CheckoutModal({ list, showCheckModal, toggleModal, toggleMessage, totalSum, currencySymbol }) {
     const dispatch = useDispatch()
-    // let history = useHistory();
+    let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
-    const classes = useStyles();
-    // const [fcstate, setFcState] = useState(checkout_state);
-
+    const [isOverTheme, setOverTheme] = React.useState();
+  
     /* Lazy initializatoin */
     const [fcstate, setFcState] = useState(() => {
         const initialState = translateLabels({ state: checkout_state, list });
@@ -84,9 +84,19 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
     const [isFormValid, setIsFormValid] = React.useState(false);
 
     let redux_cartuser = useSelector(state => state.user.cartUser)
-    let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
+    const classes = useStyles({overtheme: isOverTheme});
 
-
+    React.useEffect(() => {
+    
+        if (!isOverTheme && redux_currentmysite) {
+          processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
+    
+            setOverTheme(theme)
+          })
+        }
+    
+    
+      },[redux_currentmysite, isOverTheme])
     React.useEffect(() => {
 
         if(isFormValid_v2({ formdata: fcstate })) {
@@ -201,7 +211,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
     const checkoutFunction = ({ selectedEnabled }) => {
         if (selectedEnabled === 'a') {
             return <Button simple color="primary" size="lg" onClick={(event) => submitForm({ event })}>
-                {list.complete_btn}
+                {list.complete_btn} KOLOR
             </Button>
         } else if (selectedEnabled === 'b') {
             return <Paypal

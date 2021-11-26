@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { storeFuncs_loadList } from '../../functions/HookFuncs/store_funcs';
 // import { InputToComponent } from "./HomeFuncs/home_funcs"
 // import EcommercePage from '../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/EcommercePage/EcommercePage'
-import ShoppingCartPage from '../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/ShoppingCartPage/ShoppingCartPage'
+import ShoppingCartPage from './ShoppingCartPage/ShoppingCartPage'
 
 // import {
 //     useLocation,

@@ -566,6 +566,7 @@ const buttonStyle = {
     },
     "&$primary": {
       "&,&:focus,&:hover,&:visited": {
+        background: "transparent",
         color: ({ overtheme }) => overtheme ? overtheme.primaryColorHex[0] : 
         "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
       },

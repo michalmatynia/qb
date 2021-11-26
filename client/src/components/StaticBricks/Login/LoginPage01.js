@@ -21,6 +21,7 @@ import Card from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/c
 import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import CardHeader from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardHeader.js";
 import { ShowMessages } from '../../../components/Message/Generic/static_msg'
+import processOverTheme from "../../../theming/Funcs/processOverTheme"
 
 /* ACTIONS */
 import { loginUser } from '../../../redux/actions/user_actions';
@@ -42,6 +43,20 @@ export default function LoginPage({ list}) {
     const [fcstate, setFcState] = useState(login_state);
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
+    const [isOverTheme, setOverTheme] = React.useState();
+    const classes = useStyles({overtheme: isOverTheme});
+  
+    React.useEffect(() => {
+  
+      if (!isOverTheme && redux_currentmysite) {
+        processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
+  
+          setOverTheme(theme)
+        })
+      }
+  
+  
+    },[redux_currentmysite, isOverTheme])
 
     React.useEffect(() => {
 
@@ -156,7 +171,6 @@ export default function LoginPage({ list}) {
         }, [dispatch, fcstate, history, isFormValid])
 
 
-    const classes = useStyles();
 
     return (
         <GridContainer justifyContent="center">

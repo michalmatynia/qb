@@ -84,7 +84,7 @@ export default function App() {
 
             let iplocator = await act_getGeoLocation()
 
-            /* let iplocator = {payload: ''} */
+            // let iplocator = {payload: ''}
             let inQuery
             await plg_create_oprMod({ model: 'visit', dispatch, actionType: 'samestate', inInsert: iplocator.payload })
             try {
