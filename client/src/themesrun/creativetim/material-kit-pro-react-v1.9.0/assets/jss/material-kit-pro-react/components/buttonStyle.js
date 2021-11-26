@@ -658,7 +658,8 @@ const buttonStyle = {
   },
   transparent: {
     "&,&:focus,&:hover": {
-      color: "inherit",
+      color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
+      "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
       background: "transparent",
       boxShadow: "none",
     },

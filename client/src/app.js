@@ -84,7 +84,7 @@ export default function App() {
 
             let iplocator = await act_getGeoLocation()
 
-/*             let iplocator = {payload: ''} */
+            /* let iplocator = {payload: ''} */
             let inQuery
             await plg_create_oprMod({ model: 'visit', dispatch, actionType: 'samestate', inInsert: iplocator.payload })
             try {
@@ -124,8 +124,8 @@ export default function App() {
                         result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
                         let lg_found = result.payload[0].agg_lg[0]
 
-                         dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
-                         dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
+                        dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
+                        dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
 
                     } else {
                         throw iplocator
@@ -198,9 +198,9 @@ export default function App() {
 
             <HeaderHolder />
             <MemoizedWrapper>
-            <Frontside />
+                <Frontside />
             </MemoizedWrapper>
-            </div>
+        </div>
     } else {
         return (
             <div

@@ -150,8 +150,6 @@ export default function LoginPage({ list}) {
                         setShowMessage(false)
 
                     }, 1000)
-
-
                 }
 
             }
@@ -217,16 +215,15 @@ export default function LoginPage({ list}) {
                         />
                     </CardBody>
                     <div className={classes.textCenter}>
-                        <Button simple color="primary" size="lg" onClick={(event) => submitForm(event)}>
+                        <Button simple color="transparent" size="lg" onClick={(event) => submitForm(event)}>
                             {list.btn_login}
                         </Button>
-
-                        <Button simple color="primary" size="lg" onClick={() => history.push('/register')}>
+                        <Button simple color="transparent" size="lg" onClick={() => history.push('/register')}>
                             {list.btn_register}
                         </Button>
                     </div>
                     <div className={classes.textLeft}>
-                        <Button simple color="primary" size="sm" onClick={() => history.push('/reset_user')}>
+                        <Button simple color="transparent" size="sm" onClick={() => history.push('/reset_user')}>
                             {list.btn_forgotpassword}
                         </Button>
                     </div>

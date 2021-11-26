@@ -80,7 +80,7 @@ export default function ShoppingCartPage({ list }) {
     col: {
       colspan: 3,
       text: (
-        <Button color="info" round onClick={() => setShowCheckModal(true)}>
+        <Button color="secondary" round onClick={() => setShowCheckModal(true)}>
           {list.complete_btn} <KeyboardArrowRight />
         </Button>
       )
@@ -153,7 +153,7 @@ export default function ShoppingCartPage({ list }) {
 
           <div className={classes.buttonGroup}>
           <Button
-              color="info"
+              color="secondary"
               size="sm"
               style={{
                 opacity: "0.9",
@@ -180,7 +180,7 @@ export default function ShoppingCartPage({ list }) {
             >{value.quantity}
             </div>
             <Button
-              color="info"
+              color="secondary"
               size="sm"
               // round
               style={{
