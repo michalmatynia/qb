@@ -7,6 +7,8 @@ import {
   infoColor,
   roseColor,
   grayColor,
+  myprimaryColor,
+  mysecondaryColor
 } from "../../material-kit-pro-react.js";
 
 const accordionStyle = (theme) => ({
@@ -34,12 +36,13 @@ const accordionStyle = (theme) => ({
   },
   primaryExpansionPanelSummary: {
     "&:hover": {
-      color: primaryColor[0],
-    },
+      color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
+      "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",    },
   },
   secondaryExpansionPanelSummary: {
     "&:hover": {
-      color: secondaryColor[0],
+      color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.secondaryColor[0].r + ", " + overtheme.secondaryColor[0].g + ", " + overtheme.secondaryColor[0].b + ", "+ overtheme.secondaryColor[0].a + ")": 
+      "rgba(" + mysecondaryColor[0].r + ", " + mysecondaryColor[0].g + ", " + mysecondaryColor[0].b + ", "+ mysecondaryColor[0].a + ")",
     },
   },
   warningExpansionPanelSummary: {
@@ -84,10 +87,12 @@ const accordionStyle = (theme) => ({
     },
   },
   primaryExpansionPanelSummaryExpaned: {
-    color: primaryColor[0],
+    color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
+    "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
   },
   secondaryExpansionPanelSummaryExpaned: {
-    color: secondaryColor[0],
+    color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.secondaryColor[0].r + ", " + overtheme.secondaryColor[0].g + ", " + overtheme.secondaryColor[0].b + ", "+ overtheme.secondaryColor[0].a + ")": 
+    "rgba(" + mysecondaryColor[0].r + ", " + mysecondaryColor[0].g + ", " + mysecondaryColor[0].b + ", "+ mysecondaryColor[0].a + ")",
   },
   warningExpansionPanelSummaryExpaned: {
     color: warningColor[0],

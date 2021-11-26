@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from 'react-redux'
+
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -8,18 +10,40 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 // @material-ui/icons
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
 
 import styles from "../../assets/jss/material-kit-pro-react/components/accordionStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function AccordionFunc(props) {
+  let currentmysite = useSelector(state => state.mysite.CurrentMysite)
+
   const [active, setActive] = React.useState(
     props.active.length === undefined ? [props.active] : props.active
   );
   const [single] = React.useState(
     props.active.length === undefined ? true : false
   );
+
+  const [isOverTheme, setOverTheme] = React.useState();
+
+  const classes = useStyles({overtheme: isOverTheme});
+
+
+  React.useEffect(() => {
+
+    if (!isOverTheme && currentmysite) {
+      processOverTheme({currentmysite}).then((theme)=>{
+
+        setOverTheme(theme)
+      })
+    }
+
+
+  },[currentmysite, isOverTheme])
+
+
   const handleChange = (panel) => () => {
     let newArray;
 
@@ -40,7 +64,7 @@ export default function AccordionFunc(props) {
     setActive(newArray);
   };
   const { collapses, activeColor } = props;
-  const classes = useStyles();
+
   return (
     <div className={classes.root}>
       {collapses.map((prop, key) => {

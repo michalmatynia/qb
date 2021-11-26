@@ -281,15 +281,21 @@ app.get('/api/getGeolocation', asyncMiddleware(async (req, res) => {
             headers: { 'Authorization': 'Basic ' + base64encodedData },
         })
 
-        let arin = await axios({
-            baseURL: 'https://rdap-bootstrap.arin.net/bootstrap/ip/' + clientIp,
-            method: "GET",
-        })
+        // ### Arin is disabled, cause it takes up page loading time, maybe do it later and don't link it with page load.
+        /*         let arin = await axios({
+                    baseURL: 'https://rdap-bootstrap.arin.net/bootstrap/ip/' + clientIp,
+                    method: "GET",
+                }) */
 
-        res.status(200).json({ data: response.data, ip: clientIp,  arin: arin.data, Success: true });
+        res.status(200).json({
+            data: response.data,
+            ip: clientIp,
+            /* arin: arin.data,  */
+            Success: true
+        });
 
     } catch (error) {
-        res.status(200).json({ data: error, ip: clientIp,  Success: false });
+        res.status(200).json({ data: error, ip: clientIp, Success: false });
     }
 
 }))

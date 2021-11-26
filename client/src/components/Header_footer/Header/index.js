@@ -23,7 +23,7 @@ function HeaderHolder() {
 
     React.useEffect(() => {
 
-        if(redux_currentmysite) {
+        if (redux_currentmysite) {
             setImages(redux_currentmysite.images)
             setIsLoading(false)
 
@@ -48,27 +48,27 @@ function HeaderHolder() {
                     // zIndex: '9999',
                     textAlign: 'center',
                 }}
-            > 
+            >
                 <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
             </div>
         )
     } else if (!isloading) {
         return (
             <div>
-
+     
                 <Header
-                    absolute
-                    links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
-                    fixed
-                    // color="dark"
+                absolute
+                links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
+                fixed
+                // color="dark"
 
-                    color="transparent"
-                    // style={{ backgroundColor: 'darkgrey'}}
-                    changeColorOnScroll={{
-                        height: 400,
-                        color: "dark",
-                    }}
-                    images={isImages}
+                color="transparent"
+                // style={{ backgroundColor: 'darkgrey'}}
+                changeColorOnScroll={{
+                height: 400,
+                color: "dark",
+            }}
+                images={isImages}
                 />
 
 

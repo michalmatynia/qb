@@ -15,6 +15,8 @@ import Drawer from "@material-ui/core/Drawer";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
+import Fade from 'react-reveal/Fade';
+
 // core components
 import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
@@ -91,7 +93,7 @@ export default function Header(props) {
       <Toolbar className={classes.container}>
         {
           images ?
-            <Link
+          <Fade duration={1000}><Link
               to="/"
               onClick={() => refreshHome({ dispatch, myprops: reduxprops })}
             >
@@ -100,7 +102,7 @@ export default function Header(props) {
                   height: `60px`,
                   width: `200px`,
                   background: logostring,
-                }}></div></Link>
+                }}></div></Link></Fade>
             : null
         }      
 

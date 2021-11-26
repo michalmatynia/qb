@@ -3,6 +3,7 @@ import {
     useSelector,
     useDispatch
 } from 'react-redux'
+import Fade from 'react-reveal/Fade';
 
 /* STATE */
 import { rawStateFunction } from "./Additional/func_state"
@@ -151,7 +152,7 @@ export default function ListLanguageMenu() {
         // }}
         >
             {
-                <FormCustomSelect
+                <Fade duration={1000}><FormCustomSelect
                     formcell={isLocalStorage.form.formdata.ticked}
                     formcellkey='ticked'
                     change={({ event, cell, value }) => onChange({
@@ -159,7 +160,7 @@ export default function ListLanguageMenu() {
                         cell,
                         value
                     })}
-                />
+                /></Fade>
             }
         </div> : null
 

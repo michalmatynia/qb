@@ -1,8 +1,6 @@
 import React, { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import {
-  useRouter,
-} from "../../../../../hoc/Funcs/hook_funcs";
+
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // react components for routing our app without refresh
@@ -16,6 +14,7 @@ import cx from "classnames";
 // import { Link } from "react-router-dom";
 /* import List_Language_Menu from "../../../../../components/User/Admin/system/Languages/LanguageSelect/list_language_menu"*/
 import ListLanguageMenu from "../../../../../components/User/Admin/system/Languages/LanguageSelect/ListLgDropdown"
+import Fade from 'react-reveal/Fade';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -83,7 +82,8 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
   const classes = useStyles();
 
   return (
-    isCurrentDetailPage && !isLoading ? <div className={classes.collapse}>
+    isCurrentDetailPage && !isLoading ? <Fade duration={1000}><div className={classes.collapse}>
+                 
       <List className={cx(classes.list, classes.mlAuto)}>
 
         <ShowLinks
@@ -92,7 +92,7 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
         />
         <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu/></ListItem>
       </List>
-    </div> : null
+    </div></Fade> : null
   );
 
 }
