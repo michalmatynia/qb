@@ -33,10 +33,10 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const [isOverTheme, setOverTheme] = React.useState();
-  const [isCartUser, setCartUser] = useState(0);
-  const [isPrevCartUser, setPrevCartUser] = useState(0);
 
   const [totalSum, setTotalSum] = useState();
+  const [totalQuantity, setTotalQuantity] = useState();
+
   const [isSummary, setSummary] = React.useState();
   const [isNoItems, setNoItems] = React.useState();
   const [isMainTable, setMainTable] = React.useState();
@@ -62,6 +62,18 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   }, [cart_user, cbTotalSum, totalSum])
 
   React.useEffect(() => {
+
+    if (cart_user) {
+      let sum_of_products = cart_user.reduce((accum, currentValue) => {
+        return accum + currentValue.quantity
+      }, 0)
+
+      setTotalQuantity(sum_of_products)
+    }
+
+  }, [cart_user])
+
+  React.useEffect(() => {
     async function calculateSum() {
 
       let sum_array = cart_user.map(item => {
@@ -74,8 +86,6 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
         return accum + currentValue
       }, 0)
 
-      console.log(cart_user);
-
       setTotalSum(Math.round((sum_reduce + Number.EPSILON) * 100) / 100)
 
     }
@@ -85,14 +95,9 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
       if (cart_user) {
 
-        console.log('on zero recalc');
         calculateSum()
 
       } else {
-        console.log('recalculate');
-        // console.log(totalSum);
-        // console.log(isNoItems);
-        // console.log(isSummary);
 
         setTotalSum(0)
       }
@@ -101,9 +106,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   }, [cart_user, isNoItems, isSummary, totalSum])
 
   React.useEffect(() => {
-    if (cart_user && !isSummary && ( totalSum || totalSum === 0)) {
-
-      console.log('render summary');
+    if (cart_user && !isSummary && (totalSum || totalSum === 0)) {
 
       let summary = {
         total_translate: list.total,
@@ -117,23 +120,20 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
         col: {
           colspan: 3,
           text: (
-            <Button color="secondary" round onClick={() => cbShowCheckModal(true)}>
+            totalQuantity > 0 ? <Button color="secondary" round onClick={() => cbShowCheckModal(true)}>
               {list.complete_btn} <KeyboardArrowRight />
-            </Button>
+            </Button> : null
           )
         }
       }
       setNoItems()
       setSummary(summary)
     }
-  }, [cart_user, cbShowCheckModal, currencyuser.rates, isSummary, list.complete_btn, list.total, totalSum])
+  }, [cart_user, cbShowCheckModal, currencyuser.rates, isSummary, list.complete_btn, list.total, totalQuantity, totalSum])
 
   React.useEffect(() => {
 
-
     if (!cart_user && !isNoItems && !isSummary && totalSum === 0) {
-
-
 
       let no_items = {
         total_translate: list.total,
@@ -146,8 +146,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
         ),
         col: {
           colspan: 3,
-          text: ('No items in Cart'
-          )
+          text: ('No items in Cart')
         }
       }
 
@@ -155,14 +154,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
     }
   }, [cart_user, currencyuser.rates, isNoItems, isSummary, list.total, totalSum])
 
-  const loopTaxonomies = useCallback(
-    (taxoarray, parent_id) => {
 
-      console.log('loop taxonomy');
-      return taxoarray.map((item, index) => {
-        return <div key={item._id + '-' + parent_id} id={item._id + '-' + parent_id} style={{ fontSize: '12px' }}>{item.name}<br /></div>
-      })
-    }, [])
 
   const removeCartItem = useCallback(
     async ({ i }) => {
@@ -174,7 +166,8 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
         /* Reset Total Counter */
 
-
+        setTotalSum()
+        setSummary()
         if (newCart.length === 0) {
 
           await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
@@ -183,8 +176,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
           await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
         }
-        setTotalSum()
-        setSummary()
+
       }
     }, [cart_user, dispatch])
 
@@ -214,7 +206,15 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
   const parseMaintTable = useCallback(
     async () => {
+
       return cart_user ? cart_user.map((value, i) => {
+
+         function loopTaxonomies(taxoarray, parent_id) {
+          return taxoarray.map((item, index) => {
+            return <div key={item._id + '-' + parent_id} id={item._id + '-' + parent_id} style={{ fontSize: '12px' }}>{item.name}<br /></div>
+          })
+        }
+
 
         return [
           <div className={classes.imgContainer} key={value.referenceID._id}>
@@ -227,8 +227,8 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
             <br />
             <small className={classes.tdNameSmall}>{value.referenceID.description}</small>
           </span>,
-          // loopTaxonomies(value.referenceID.category, value.referenceID._id),
-          // loopTaxonomies(value.referenceID.type, value.referenceID._id),
+          loopTaxonomies(value.referenceID.category, value.referenceID._id),
+          loopTaxonomies(value.referenceID.type, value.referenceID._id),
           <div style={{ fontSize: '12px' }}>{value.variantone}</div>,
           <div style={{ fontSize: '12px' }}>{value.varianttwo}</div>,
           <span key={value.referenceID._id}>
@@ -306,15 +306,9 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
   React.useEffect(() => {
 
-
-
     if (cart_user && cart_user.length > 0 && isSummary) {
-      console.log('render');
 
       parseMaintTable().then((maintable) => {
-
-
-        console.log(maintable)
 
         maintable.push(isSummary)
         setMainTable(maintable)

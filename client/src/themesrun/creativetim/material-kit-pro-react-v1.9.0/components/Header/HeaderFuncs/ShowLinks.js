@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback,useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from "../../../../../../hoc/Funcs/hook_funcs";
 import cx from "classnames";
@@ -232,17 +232,26 @@ export function CartLink({ item, i }) {
     const classes = useStyles();
     let currentdetailpage = useSelector(state => state.page.current_detail_page)
     let redux_cartuser = useSelector(state => state.user.cartUser)
+    const [totalQuantity, setTotalQuantity] = useState(0);
+
     let reactrouter = useRouter()
     let dispatch = useDispatch()
 
-    let sum_of_products = 0
-    if (redux_cartuser) {
 
-        sum_of_products = redux_cartuser.reduce((accum, currentValue) => {
+    React.useEffect(() => {
+
+        if (redux_cartuser) {
+          let sum_of_products = redux_cartuser.reduce((accum, currentValue) => {
             return accum + currentValue.quantity
-        }, 0)
-    }
+          }, 0)
+    
+          setTotalQuantity(sum_of_products)
+        } else {
+            setTotalQuantity(0)
 
+        }
+    
+      }, [redux_cartuser])
 
     return <ListItem className={classes.listItem} key={item.name} >
         <Link
@@ -270,7 +279,7 @@ export function CartLink({ item, i }) {
                     padding: `0px 7px 2px 7px`,
                     // fontSize: `8px`,
                 }}
-            >{sum_of_products}</div></Link></ListItem>
+            >{totalQuantity}</div></Link></ListItem>
 
 }
 
