@@ -10,6 +10,10 @@ import Button from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0
 import {
   act_injectProp,
 } from '../../../redux/actions/generic/generic_actions';
+import {
+  plg_clearProps
+} from '../../utils/Plugs/cms_plugs';
+
 import processOverTheme from "../../../theming/Funcs/processOverTheme"
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -50,12 +54,12 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
     }
   }, [redux_currentmysite, isOverTheme])
 
-  // React.useEffect(() => {
-  //   if(cart_user) {
-  //     cbTotalSum(totalSum)
+  React.useEffect(() => {
+    if(cart_user) {
+      cbTotalSum(totalSum)
 
-  //   }
-  // }, [cart_user, cbTotalSum, totalSum])
+    }
+  }, [cart_user, cbTotalSum, totalSum])
 
   React.useEffect(() => {
     async function calculateSum() {
@@ -75,7 +79,9 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
     }
 
     if (cart_user && !totalSum
-    ) { 
+    ) {
+
+      console.log('recalculate');
       calculateSum()
     }
   }, [cart_user, totalSum])
@@ -101,14 +107,17 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
           )
         }
       }
-
+      setNoItems()
       setSummary(summary)
     }
   }, [cart_user, cbShowCheckModal, currencyuser.rates, isSummary, list.complete_btn, list.total, totalSum])
 
   React.useEffect(() => {
 
-    if (!cart_user && !isMainTable && currencyuser.rates) {
+    console.log(cart_user);
+    console.log(isNoItems);
+
+    if (!cart_user && !isNoItems) {
 
 
       let no_items = {
@@ -129,7 +138,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
       setNoItems(no_items)
     }
-  }, [cart_user, currencyuser.rates, isMainTable, list.total, totalSum])
+  }, [cart_user, currencyuser.rates, isNoItems, list.total, totalSum])
 
   const loopTaxonomies = useCallback(
     (taxoarray, parent_id) => {
@@ -148,7 +157,19 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
         newCart.splice(i, 1)
 
-        dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+        /* Reset Total Counter */
+        setTotalSum()
+        setSummary()
+
+        if (newCart.length === 0 ) {
+
+          plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
+
+        } else {
+          dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+
+        }
+
       }
     }, [cart_user, dispatch])
 
@@ -156,21 +177,22 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
 
     ({ direction, i }) => {
-        let newCart = [...cart_user]
+      let newCart = [...cart_user]
 
-        if (newCart[i].quantity + direction <= 0) {
-          newCart[i].quantity = 0
-        } else {
-          newCart[i].quantity = newCart[i].quantity + direction
+      if (newCart[i].quantity + direction <= 0) {
+        newCart[i].quantity = 0
+      } else {
+        newCart[i].quantity = newCart[i].quantity + direction
 
-        }
-          /* Reset Total Counter */
-          setTotalSum()
-          
-        dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
-        
-      
-      
+      }
+      /* Reset Total Counter */
+      setTotalSum()
+      setSummary()
+
+      dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+
+
+
     }, [cart_user, dispatch])
 
   const parseMaintTable = useCallback(
@@ -263,7 +285,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
 
 
-    }, [cart_user])
+    }, [cart_user, changeQuantity, classes.actionButton, classes.buttonGroup, classes.firstButton, classes.img, classes.imgContainer, classes.lastButton, classes.tdNameAnchor, classes.tdNameSmall, classes.tdNumberSmall, classes.tooltip, currencyuser.rates, removeCartItem])
 
   React.useEffect(() => {
 
