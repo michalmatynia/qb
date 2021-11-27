@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 // nodejs library that concatenates classes
 import cx from "classnames";
@@ -17,7 +17,7 @@ import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9
 import CheckoutModal from "../Checkout/index"
 import { ShowMessages } from '../../Message/Generic/static_msg'
 import processOverTheme from "../../../theming/Funcs/processOverTheme"
-import LoopCartItems from "./LoopCartItems"
+import loopCartItems from "./LoopCartItems"
 
 import shoppingCartStyle from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
 
@@ -25,7 +25,6 @@ const useStyles = makeStyles(shoppingCartStyle);
 
 export default function ShoppingCartPage({ list }) {
 
-  let cart_user = useSelector(state => state.user.cartUser)
   let currencyuser = useSelector(state => state.user.currencyUser)
   let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
@@ -33,20 +32,40 @@ export default function ShoppingCartPage({ list }) {
   const [showCheckModal, setShowCheckModal] = useState(false);
   const [isShowMessage, setShowMessage] = useState(false);
   const [isOverTheme, setOverTheme] = React.useState();
-  const classes = useStyles({overtheme: isOverTheme});
+  const classes = useStyles({ overtheme: isOverTheme });
 
   React.useEffect(() => {
-  
-    if (!isOverTheme && redux_currentmysite) {
-      processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
 
+    if (!isOverTheme && redux_currentmysite) {
+      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
         setOverTheme(theme)
       })
     }
 
 
-  },[redux_currentmysite, isOverTheme])
+  }, [redux_currentmysite, isOverTheme])
+  React.useEffect(() => {
 
+    if (!isOverTheme && redux_currentmysite) {
+      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
+        setOverTheme(theme)
+      })
+    }
+  }, [redux_currentmysite, isOverTheme])
+
+
+  const cbTotalSum = useCallback(
+    async (integer) => {
+      setTotalSum(integer)
+
+    }, [])
+
+  const cbShowCheckModal = useCallback(
+    async (boolean) => {
+
+      setShowCheckModal(boolean)
+
+    }, [])
 
 
   return (
@@ -105,12 +124,12 @@ export default function ShoppingCartPage({ list }) {
                   ""
                 ]}
                 tableData={
-                  <LoopCartItems 
-                  list={list}
-                  cbTotalSum={(totalSum)=>{
-                    setTotalSum(totalSum)
-                  }}
-                  />
+                  loopCartItems({
+                    list,
+                    cbTotalSum,
+                    cbShowCheckModal
+                  })
+
                 }
                 tableShopping
                 customHeadCellClasses={[

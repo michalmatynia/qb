@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from 'react-redux'
@@ -19,7 +19,7 @@ import shoppingCartStyle from "../../../themesrun/creativetim/material-kit-pro-r
 
 const useStyles = makeStyles(shoppingCartStyle);
 
-export default function LoopCartItems({list, cbTotalSum}) {
+export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
   const dispatch = useDispatch()
 
@@ -29,8 +29,13 @@ export default function LoopCartItems({list, cbTotalSum}) {
   let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const [isOverTheme, setOverTheme] = React.useState();
-  const [totalSum, setTotalSum] = useState(0);
-  const [showCheckModal, setShowCheckModal] = useState(false);
+  const [isCartUser, setCartUser] = useState(0);
+  const [isPrevCartUser, setPrevCartUser] = useState(0);
+
+  const [totalSum, setTotalSum] = useState();
+  const [isSummary, setSummary] = React.useState();
+  const [isNoItems, setNoItems] = React.useState();
+  const [isMainTable, setMainTable] = React.useState();
 
   const classes = useStyles({ overtheme: isOverTheme });
 
@@ -43,13 +48,14 @@ export default function LoopCartItems({list, cbTotalSum}) {
         setOverTheme(theme)
       })
     }
-
-
   }, [redux_currentmysite, isOverTheme])
 
-  React.useEffect(() => {
-    cbTotalSum(totalSum)
-  },[cbTotalSum, totalSum])
+  // React.useEffect(() => {
+  //   if(cart_user) {
+  //     cbTotalSum(totalSum)
+
+  //   }
+  // }, [cart_user, cbTotalSum, totalSum])
 
   React.useEffect(() => {
     async function calculateSum() {
@@ -68,167 +74,220 @@ export default function LoopCartItems({list, cbTotalSum}) {
 
     }
 
-    if (cart_user !== undefined
-    ) {
-
+    if (cart_user && !totalSum
+    ) { 
       calculateSum()
     }
-  }, [cart_user])
+  }, [cart_user, totalSum])
 
-  let summary = {
-    total_translate: list.total,
-    purchase: true,
-    colspan: "3",
-    amount: (
-      <span>
-        <small>{Object.keys(currencyuser.rates)}</small> {totalSum}
-      </span>
-    ),
-    col: {
-      colspan: 3,
-      text: (
-        <Button color="secondary" round onClick={() => setShowCheckModal(true)}>
-          {list.complete_btn} <KeyboardArrowRight />
-        </Button>
-      )
+  React.useEffect(() => {
+    if (cart_user && !isSummary && totalSum) {
+
+      let summary = {
+        total_translate: list.total,
+        purchase: true,
+        colspan: "3",
+        amount: (
+          <span>
+            <small>{Object.keys(currencyuser.rates)}</small> {totalSum}
+          </span>
+        ),
+        col: {
+          colspan: 3,
+          text: (
+            <Button color="secondary" round onClick={() => cbShowCheckModal(true)}>
+              {list.complete_btn} <KeyboardArrowRight />
+            </Button>
+          )
+        }
+      }
+
+      setSummary(summary)
     }
-  }
+  }, [cart_user, cbShowCheckModal, currencyuser.rates, isSummary, list.complete_btn, list.total, totalSum])
 
-  let no_items = {
-    total_translate: list.total,
-    purchase: true,
-    colspan: "3",
-    amount: (
-      <span>
-        <small>{Object.keys(currencyuser.rates)}</small> {totalSum}
-      </span>
-    ),
-    col: {
-      colspan: 3,
-      text: ('No items in Cart'
-      )
+  React.useEffect(() => {
+
+    if (!cart_user && !isMainTable && currencyuser.rates) {
+
+
+      let no_items = {
+        total_translate: list.total,
+        purchase: true,
+        colspan: "3",
+        amount: (
+          <span>
+            <small>{Object.keys(currencyuser.rates)}</small> {totalSum}
+          </span>
+        ),
+        col: {
+          colspan: 3,
+          text: ('No items in Cart'
+          )
+        }
+      }
+
+      setNoItems(no_items)
     }
-  }
-  function loopTaxonomies(taxoarray, parent_id) {
-    return taxoarray.map((item, index) => {
-      return <div key={item._id + '-' + parent_id} id={item._id + '-' + parent_id} style={{ fontSize: '12px' }}>{item.name}<br /></div>
-    })
-  }
-  async function removeCartItem({ value, i }) {
-    let newCart = [...cart_user]
+  }, [cart_user, currencyuser.rates, isMainTable, list.total, totalSum])
 
-    newCart.splice(i, 1)
+  const loopTaxonomies = useCallback(
+    (taxoarray, parent_id) => {
 
-    dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+      console.log('loop taxonomy');
+      return taxoarray.map((item, index) => {
+        return <div key={item._id + '-' + parent_id} id={item._id + '-' + parent_id} style={{ fontSize: '12px' }}>{item.name}<br /></div>
+      })
+    }, [])
 
-  }
-  async function changeQuantity({ value, direction, i }) {
-    let newCart = [...cart_user]
+  const removeCartItem = useCallback(
+    ({ i }) => {
 
-    if (newCart[i].quantity + direction <= 0) {
-      newCart[i].quantity = 0
-    } else {
-      newCart[i].quantity = newCart[i].quantity + direction
+      if (cart_user) {
+        let newCart = [...cart_user]
 
-    }
-    dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+        newCart.splice(i, 1)
 
-  }
+        dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+      }
+    }, [cart_user, dispatch])
+
+  const changeQuantity = useCallback(
 
 
-  let maintable = cart_user ? cart_user.map((value, i) => {
+    ({ direction, i }) => {
+        let newCart = [...cart_user]
 
-    return [
-      <div className={classes.imgContainer} key={value.referenceID._id}>
-        <img src={value.referenceID.images.length > 0 ? value.referenceID.images[0].secure_url : '/images/image_not_availble.png'} alt=".." className={classes.img} />
-      </div>,
-      <span key={value.referenceID._id}>
-        <a href="#product" className={classes.tdNameAnchor}>
-          {value.referenceID.name}
-        </a>
-        <br />
-        <small className={classes.tdNameSmall}>{value.referenceID.description}</small>
-      </span>,
-      loopTaxonomies(value.referenceID.category, value.referenceID._id),
-      loopTaxonomies(value.referenceID.type, value.referenceID._id),
-      <div style={{ fontSize: '12px' }}>{value.variantone}</div>,
-      <div style={{ fontSize: '12px' }}>{value.varianttwo}</div>,
-      <span key={value.referenceID._id}>
-        <small className={classes.tdNumberSmall}>{Object.keys(currencyuser.rates)}</small>  {Math.round((value.referenceID.price + Number.EPSILON) * 100) / 100}
-      </span>,
-      <span key={value.referenceID._id}>
+        if (newCart[i].quantity + direction <= 0) {
+          newCart[i].quantity = 0
+        } else {
+          newCart[i].quantity = newCart[i].quantity + direction
 
-        <div className={classes.buttonGroup}>
-          <Button
-            color="secondary"
-            size="sm"
-            style={{
-              opacity: "0.9",
-              paddingLeft: "5px",
-              paddingRight: "5px",
-            }}
-            className={classes.lastButton}
-            onClick={() => changeQuantity({ value, direction: 1, i })}
+        }
+          /* Reset Total Counter */
+          setTotalSum()
+          
+        dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+        
+      
+      
+    }, [cart_user, dispatch])
+
+  const parseMaintTable = useCallback(
+    async () => {
+      return cart_user ? cart_user.map((value, i) => {
+
+        return [
+          <div className={classes.imgContainer} key={value.referenceID._id}>
+            <img src={value.referenceID.images.length > 0 ? value.referenceID.images[0].secure_url : '/images/image_not_availble.png'} alt=".." className={classes.img} />
+          </div>,
+          <span key={value.referenceID._id}>
+            <a href="#product" className={classes.tdNameAnchor}>
+              {value.referenceID.name}
+            </a>
+            <br />
+            <small className={classes.tdNameSmall}>{value.referenceID.description}</small>
+          </span>,
+          // loopTaxonomies(value.referenceID.category, value.referenceID._id),
+          // loopTaxonomies(value.referenceID.type, value.referenceID._id),
+          <div style={{ fontSize: '12px' }}>{value.variantone}</div>,
+          <div style={{ fontSize: '12px' }}>{value.varianttwo}</div>,
+          <span key={value.referenceID._id}>
+            <small className={classes.tdNumberSmall}>{Object.keys(currencyuser.rates)}</small>  {Math.round((value.referenceID.price + Number.EPSILON) * 100) / 100}
+          </span>,
+          <span key={value.referenceID._id}>
+
+            <div className={classes.buttonGroup}>
+              <Button
+                color="secondary"
+                size="sm"
+                style={{
+                  opacity: "0.9",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+                className={classes.lastButton}
+                onClick={() => changeQuantity({ value, direction: 1, i })}
+              >
+                <ArrowDropUpIcon />
+              </Button>
+              <div
+                color="info"
+                size="sm"
+                // round
+                style={{
+                  marginLeft: "10px",
+                  marginRight: "10px",
+                  position: "relative",
+                  display: "inline-block",
+                  verticalAlign: "middle"
+
+                }}
+              >{value.quantity}
+              </div>
+              <Button
+                color="secondary"
+                size="sm"
+                // round
+                style={{
+                  opacity: "0.9",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+                variant="text"
+                className={classes.firstButton}
+                onClick={() => changeQuantity({ value, direction: -1, i })}
+              >
+                <ArrowDropDownIcon />
+              </Button>
+            </div>
+          </span>,
+          <span key={value.referenceID._id}>
+            <small className={classes.tdNumberSmall}>{Object.keys(currencyuser.rates)}</small> {Math.round((value.referenceID.price * value.quantity + Number.EPSILON) * 100) / 100}
+          </span>,
+          <Tooltip
+            key={value.referenceID._id}
+            id={value.referenceID._id}
+            title="Remove item"
+            placement="left"
+            classes={{ tooltip: classes.tooltip }}
           >
-            <ArrowDropUpIcon />
-          </Button>
-          <div
-            color="info"
-            size="sm"
-            // round
-            style={{
-              marginLeft: "10px",
-              marginRight: "10px",
-              position: "relative",
-              display: "inline-block",
-              verticalAlign: "middle"
-
-            }}
-          >{value.quantity}
-          </div>
-          <Button
-            color="secondary"
-            size="sm"
-            // round
-            style={{
-              opacity: "0.9",
-              paddingLeft: "5px",
-              paddingRight: "5px",
-            }}
-            variant="text"
-            className={classes.firstButton}
-            onClick={() => changeQuantity({ value, direction: -1, i })}
-          >
-            <ArrowDropDownIcon />
-          </Button>
-        </div>
-      </span>,
-      <span key={value.referenceID._id}>
-        <small className={classes.tdNumberSmall}>{Object.keys(currencyuser.rates)}</small> {Math.round((value.referenceID.price * value.quantity + Number.EPSILON) * 100) / 100}
-      </span>,
-      <Tooltip
-        key={value.referenceID._id}
-        id={value.referenceID._id}
-        title="Remove item"
-        placement="left"
-        classes={{ tooltip: classes.tooltip }}
-      >
-        <Button link className={classes.actionButton}
-          onClick={() => { removeCartItem({ value, i }) }}
-        >
-          <Close />
-        </Button>
-      </Tooltip>
-    ]
-  }) : []
+            <Button link className={classes.actionButton}
+              onClick={() => { removeCartItem({ value, i }) }}
+            >
+              <Close />
+            </Button>
+          </Tooltip>
+        ]
+      }) : []
 
 
-  if (totalSum > 0) {
 
-    maintable.push(summary)
-  } else {
-    maintable.push(no_items)
-  }
+    }, [cart_user])
 
-  return maintable
+  React.useEffect(() => {
+
+
+
+    if (cart_user && cart_user.length > 0 && isSummary) {
+      console.log('render');
+
+      parseMaintTable().then((maintable) => {
+
+
+        console.log(maintable)
+
+        maintable.push(isSummary)
+        setMainTable(maintable)
+
+      })
+    } else if (!cart_user && isNoItems) {
+
+      setMainTable([isNoItems])
+
+    }
+
+  }, [cart_user, isNoItems, isSummary, parseMaintTable])
+
+  return isMainTable ? isMainTable : []
 }
