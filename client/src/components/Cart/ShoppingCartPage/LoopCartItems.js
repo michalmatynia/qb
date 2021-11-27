@@ -74,17 +74,26 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
         return accum + currentValue
       }, 0)
 
+      console.log(cart_user);
+
       setTotalSum(Math.round((sum_reduce + Number.EPSILON) * 100) / 100)
 
     }
 
-    if (cart_user && !totalSum
+    if (!totalSum && !isSummary && !isNoItems
     ) {
 
-      console.log('recalculate');
-      calculateSum()
+      if(cart_user) {
+        calculateSum()
+
+      } else {
+        console.log('recalculate');
+
+        setTotalSum(0)
+      }
+
     }
-  }, [cart_user, totalSum])
+  }, [cart_user, isNoItems, isSummary, totalSum])
 
   React.useEffect(() => {
     if (cart_user && !isSummary && totalSum) {
@@ -114,10 +123,9 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
   React.useEffect(() => {
 
-    console.log(cart_user);
-    console.log(isNoItems);
 
-    if (!cart_user && !isNoItems) {
+    if (!cart_user && !isNoItems && !isSummary && totalSum === 0) {
+
 
 
       let no_items = {
@@ -138,7 +146,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
       setNoItems(no_items)
     }
-  }, [cart_user, currencyuser.rates, isNoItems, list.total, totalSum])
+  }, [cart_user, currencyuser.rates, isNoItems, isSummary, list.total, totalSum])
 
   const loopTaxonomies = useCallback(
     (taxoarray, parent_id) => {
@@ -150,7 +158,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
     }, [])
 
   const removeCartItem = useCallback(
-    ({ i }) => {
+    async ({ i }) => {
 
       if (cart_user) {
         let newCart = [...cart_user]
@@ -158,18 +166,18 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
         newCart.splice(i, 1)
 
         /* Reset Total Counter */
-        setTotalSum()
-        setSummary()
+  
 
         if (newCart.length === 0 ) {
 
-          plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
+          await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
 
         } else {
-          dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
+          await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
         }
-
+        setTotalSum()
+        setSummary()
       }
     }, [cart_user, dispatch])
 
