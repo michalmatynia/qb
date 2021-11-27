@@ -14,6 +14,7 @@ const useStyles = makeStyles(styles);
 
 export default function Parallax(props) {
   
+
   const [isFileType, setIsFileType] = React.useState();
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState();
 

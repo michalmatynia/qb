@@ -180,7 +180,8 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
         /* Reset Total Counter */
 
-  
+        setTotalSum()
+        setSummary()
         if (newCart.length === 0) {
 
           await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
@@ -189,8 +190,7 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
           await dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
 
         }
-        setTotalSum()
-        setSummary()
+
       }
     }, [cart_user, dispatch])
 

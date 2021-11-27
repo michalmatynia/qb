@@ -2,9 +2,10 @@ import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // core components
-import GridContainer from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
-import GridItem from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
-import Parallax from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax";
+import GridContainer from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
+import GridItem from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
+// import Parallax from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax";
+import Parallax from "../../../material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Parallax/ParallaxTransform";
 
 // ============
 // sections for this page
@@ -23,8 +24,6 @@ const useStyles = makeStyles(styles);
 
 export default function EcommercePage({ list }) {
 
-  let parallaximage = list.images.length > 0 ? list.images[0].secure_url : null
-
   // React.useEffect(() => {
   //   window.scrollTo(0, 0);
   //   document.body.scrollTop = 0;
@@ -35,7 +34,7 @@ export default function EcommercePage({ list }) {
     <div className={classes.staticwrapper}>
 
       <Parallax
-        image={parallaximage}
+        item={list}
         filter={list.image_filter === 'transparent' ? null : list.image_filter }
         small
       >

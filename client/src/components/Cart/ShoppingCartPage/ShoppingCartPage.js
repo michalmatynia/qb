@@ -7,7 +7,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { useSelector } from 'react-redux'
 
-import Parallax from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax.js";
+import Parallax from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Parallax/ParallaxTransform";
+
 import GridContainer from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Table from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Table/Table.js";
@@ -85,7 +86,7 @@ export default function ShoppingCartPage({ list }) {
         currencySymbol={Object.keys(currencyuser.rates)[0]}
       />
       <Parallax
-        filter={list.image_filter}
+        filter={list.image_filter === 'transparent' ? null : list.image_filter }
         small
         item={list}
       >
