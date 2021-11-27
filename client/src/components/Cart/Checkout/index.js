@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import { useDispatch, useSelector } from 'react-redux'
-
-// nodejs library that concatenates classes
-// import classNames from "classnames";
+import cx from "classnames";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -68,6 +66,13 @@ function translateLabels({ state, list }) {
 
     return newState
 }
+async function transactionError(data) {
+    console.log('Paypal error')
+}
+
+async function transactionCanceled() {
+    console.log('Transaction cancelled')
+}
 
 export default function CheckoutModal({ list, showCheckModal, toggleModal, toggleMessage, totalSum, currencySymbol }) {
     const dispatch = useDispatch()
@@ -109,121 +114,115 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
 
     },[fcstate])
 
-    async function updateFormValues({ event, cellkey }) {
+    const updateFormValues = useCallback(
+        async ({ event, cellkey }) => {
+          // VERSION 2
+          let validated = { isValid: false }
+          if (fcstate[cellkey].validation.parse) {
+              validated = validateForm({ formcell: fcstate[cellkey], event })
+  
+              if (!validated.isValid) {
+                  setFcState(prevState => ({
+                      ...prevState,
+                      [cellkey]: {
+                          ...prevState[cellkey],
+                          validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
+                          value: event.target.value,
+                          valid: false
+                      }
+                  }));
+  
+              } else {
+                  setFcState(prevState => ({
+                      ...prevState,
+                      [cellkey]: {
+                          ...prevState[cellkey],
+                          validation: { ...prevState[cellkey].validation, message: '' },
+                          value: event.target.value,
+                          valid: true
+                      }
+                  }));
+              }
+  
+          } else {
+              setFcState(prevState => ({
+                  ...prevState,
+                  [cellkey]: {
+                      ...prevState[cellkey],
+                      value: event.target.value,
+                  }
+              }));
+          }
+        },[fcstate])
+   
 
-        // VERSION 2
-        let validated = { isValid: false }
-        if (fcstate[cellkey].validation.parse) {
-            validated = validateForm({ formcell: fcstate[cellkey], event })
+    const submitForm = useCallback(
+        async ({ event = null, data = null }) => {
+            let dataToSubmit = generateData({ formdata: fcstate });
 
-            if (!validated.isValid) {
-                setFcState(prevState => ({
-                    ...prevState,
-                    [cellkey]: {
-                        ...prevState[cellkey],
-                        validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
-                        value: event.target.value,
-                        valid: false
-                    }
-                }));
-
-            } else {
-                setFcState(prevState => ({
-                    ...prevState,
-                    [cellkey]: {
-                        ...prevState[cellkey],
-                        validation: { ...prevState[cellkey].validation, message: '' },
-                        value: event.target.value,
-                        valid: true
-                    }
-                }));
-            }
-
-        } else {
-            setFcState(prevState => ({
-                ...prevState,
-                [cellkey]: {
-                    ...prevState[cellkey],
-                    value: event.target.value,
+            if (isFormValid && redux_cartuser.length > 0) {
+    
+                let html
+                if (selectedEnabled === 'a') {
+                    html = await purchase_email({ redux_cartuser, totalSum, currencySymbol })
+    
+                } else if (selectedEnabled === 'b') {
+                    html = await confirmation_email({ redux_cartuser, totalSum, currencySymbol })
+    
                 }
-            }));
-        }
+                let to = dataToSubmit.email
+                let from = redux_currentmysite.email
+    
+                let subject = `Thank you for purchase`
+    
+                let response = await plg_sendMail({ to, html, from, subject })
 
-    }
-    async function transactionError(data) {
-        console.log('Paypal error')
-    }
-
-    async function transactionCanceled() {
-        console.log('Transaction cancelled')
-    }
-
-    async function submitForm({ event = null, data = null }) {
-
-        let dataToSubmit = generateData({ formdata: fcstate });
-
-        if (isFormValid && redux_cartuser.length > 0) {
-
-            let html
+                // Reset the address field
+    
+                if (response.payload) {
+    
+                    for (let cellkey of Object.keys(fcstate)) {
+    
+                        setFcState(prevState => ({
+                            ...prevState,
+                            [cellkey]: {
+                                ...prevState[cellkey],
+                                value: '',
+                            }
+                        }));
+                    }
+    
+    
+                    await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
+                    toggleModal(false)
+    
+                    toggleMessage(true)
+                    setTimeout(() => {
+                        toggleMessage(false)
+    
+                    }, 1000)
+                }
+    
+            }
+        },[currencySymbol, dispatch, fcstate, isFormValid, redux_cartuser, redux_currentmysite.email, selectedEnabled, toggleMessage, toggleModal, totalSum])
+   
+    const checkoutFunction = useCallback(
+         ({ selectedEnabled }) => {
             if (selectedEnabled === 'a') {
-                html = await purchase_email({ redux_cartuser, totalSum, currencySymbol })
-
+                return <Button simple color="primary" size="lg" onClick={(event) => submitForm({ event })}>
+                    {list.complete_btn}
+                </Button>
             } else if (selectedEnabled === 'b') {
-                html = await confirmation_email({ redux_cartuser, totalSum, currencySymbol })
-
+                return <Paypal
+                    toPay={totalSum}
+                    currencySymbol={currencySymbol}
+                    transactionError={(data) => transactionError(data)}
+                    transactionCanceled={(data) => transactionCanceled(data)}
+                    onSuccess={(data) =>  submitForm({ data })}
+                />
             }
-            let to = dataToSubmit.email
-            let from = redux_currentmysite.email
+        },[currencySymbol, list.complete_btn, submitForm, totalSum])
 
-            let subject = `Thank you for purchase`
-
-            let response = await plg_sendMail({ to, html, from, subject })
-
-            // Reset the address field
-
-            if (response.payload) {
-
-                for (let cellkey of Object.keys(fcstate)) {
-
-                    setFcState(prevState => ({
-                        ...prevState,
-                        [cellkey]: {
-                            ...prevState[cellkey],
-                            value: '',
-                        }
-                    }));
-                }
-
-
-                await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
-                toggleModal(false)
-
-                toggleMessage(true)
-                setTimeout(() => {
-                    toggleMessage(false)
-
-                }, 1000)
-            }
-
-        }
-
-    }
-    const checkoutFunction = ({ selectedEnabled }) => {
-        if (selectedEnabled === 'a') {
-            return <Button simple color="primary" size="lg" onClick={(event) => submitForm({ event })}>
-                {list.complete_btn}
-            </Button>
-        } else if (selectedEnabled === 'b') {
-            return <Paypal
-                toPay={totalSum}
-                currencySymbol={currencySymbol}
-                transactionError={(data) => transactionError(data)}
-                transactionCanceled={(data) => transactionCanceled(data)}
-                onSuccess={(data) => submitForm({ data })}
-            />
-        }
-
-    }
 
     return (
         <Dialog
@@ -245,7 +244,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
                 <DialogTitle
                     id={list.title_guestchk}
                     disableTypography
-                    className={classes.textCenter + " " + classes.cardLoginHeader
+                    className={cx(classes.textCenter, classes.cardLoginHeader)
                     }
                 >
                     <Button
@@ -358,7 +357,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
                 </DialogContent>
                 <DialogActions
                     className={
-                        classes.modalFooter + " " + classes.justifyContentCenter
+                        cx(classes.modalFooter, classes.justifyContentCenter)
                     }
                 >{isFormValid ? checkoutFunction({ selectedEnabled }) : null}
                 </DialogActions>
