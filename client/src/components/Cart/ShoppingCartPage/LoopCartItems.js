@@ -199,7 +199,6 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
     async ({ direction, i }) => {
 
-      console.log(cart_user);
       let newCart = [...cart_user]
 
       if (newCart[i].quantity + direction <= 0) {

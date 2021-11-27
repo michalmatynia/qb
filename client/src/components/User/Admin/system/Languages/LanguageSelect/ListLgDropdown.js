@@ -24,6 +24,8 @@ import { compoFuncs_Refresh_vh3 } from '../../../../../User/Admin/GenericFuncs/c
 export default function ListLanguageMenu() {
 
     const dispatch = useDispatch()
+    let redux_cartuser = useSelector(state => state.user.cartUser)
+
     let redux_localeuser = useSelector(state => state.user.localeUser)
     let redux_current_detail_page = useSelector(state => state.page.current_detail_page)
     const [isRawState, setRawState] = React.useState();
@@ -130,13 +132,13 @@ export default function ListLanguageMenu() {
 
             }
 
-            /*             Clears the Cart on Language Change */
-             dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+            if(redux_cartuser) {
+                plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
 
-            // ==============
+            }
 
         }
-    }, [dispatch, isLocalStorage, redux_current_detail_page, redux_localeuser._id])
+    }, [dispatch, isLocalStorage, redux_cartuser, redux_current_detail_page, redux_localeuser._id])
 
 
     return (

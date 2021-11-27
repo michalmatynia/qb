@@ -30,7 +30,7 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
 
   const dispatch = useDispatch()
 
-    // let currentlistpage = useSelector(state => state.page.current_list_page)
+    let redux_currentlistpage = useSelector(state => state.page.current_list_page)
     let localeuser = useSelector(state => state.user.localeUser)
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
@@ -39,7 +39,8 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
     let redux_productdetail = useSelector(state => state.product.detail)
     const [isLocalUser, setLocalUser] = React.useState();
     const [isPrevLocalUser, setPrevLocalUser] = React.useState();
-  const [isCurrentDetailPage, setCurrentDetailPage] = React.useState();
+  const [isCurrentListPage, setCurrentListPage] = React.useState();
+
   const [isLoading, setIsLoading] = React.useState(true);
 
       /* Cleanup */
@@ -50,7 +51,7 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
             setIsLoading(true)
             setPrevLocalUser(isLocalUser)
             setLocalUser(redux_localeuser)
-            setCurrentDetailPage()
+            setCurrentListPage()
 
         }
 
@@ -59,6 +60,9 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
 
 
   const fetchListMenu = useCallback(async () => {
+
+
+ 
     let inQuery = {
       visible: { "$eq": true },
       country: { "$eq": localeuser.referenceID.alpha2Code },
@@ -66,28 +70,29 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
     }
     let result = await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
 
-    setCurrentDetailPage( result.payload)
-  }, [dispatch, localeuser]);
+    setCurrentListPage( result.payload)
+  }, [dispatch, localeuser.referenceID.alpha2Code, localeuser.referenceID.languages]);
 
   React.useEffect(() => {
-    if (isLocalUser !== redux_localeuser){
+    if (isLocalUser !== redux_localeuser || !redux_currentlistpage){
+      setIsLoading(true)
 
       fetchListMenu().then(()=>{
         setIsLoading(false)
       })
     }
-  }, [fetchListMenu,  isLocalUser, redux_localeuser]);
+  }, [fetchListMenu, isLocalUser, redux_currentlistpage, redux_localeuser]);
 
   // const { dropdownHoverColor, stateuser, propuser } = props;
   const classes = useStyles();
 
   return (
-    isCurrentDetailPage && !isLoading ? <Fade duration={1000}><div className={classes.collapse}>
+    isCurrentListPage && !isLoading ? <Fade duration={1000}><div className={classes.collapse}>
                  
       <List className={cx(classes.list, classes.mlAuto)}>
 
         <ShowLinks
-          dynamiclinks={isCurrentDetailPage}
+          dynamiclinks={isCurrentListPage}
           staticlinks={mystate.user}
         />
         <ListItem className={classes.listItem} key='language_dropdown'><ListLanguageMenu/></ListItem>
