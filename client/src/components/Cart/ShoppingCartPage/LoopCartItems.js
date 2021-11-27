@@ -57,9 +57,21 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   React.useEffect(() => {
     if (cart_user) {
       cbTotalSum(totalSum)
-
     }
   }, [cart_user, cbTotalSum, totalSum])
+
+  /* Clear when no Cart User */
+
+  React.useEffect(() => {
+
+    if(!cart_user) {
+      setTotalSum()
+      setNoItems()
+      setSummary()
+    }
+  
+  },[cart_user])
+  
 
   React.useEffect(() => {
 
@@ -104,6 +116,8 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
 
     }
   }, [cart_user, isNoItems, isSummary, totalSum])
+
+
 
   React.useEffect(() => {
     if (cart_user && !isSummary && (totalSum || totalSum === 0)) {

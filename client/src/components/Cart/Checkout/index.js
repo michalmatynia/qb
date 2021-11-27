@@ -28,10 +28,10 @@ import Close from "@material-ui/icons/Close";
 import { validateForm } from "../../utils/Form/Funcs/validateForm"
 import Paypal from '../../utils/paypal'
 import processOverTheme from "../../../theming/Funcs/processOverTheme"
-
 import {
-    act_injectProp,
-} from '../../../redux/actions/generic/generic_actions';
+    plg_clearProps
+  } from '../../utils/Plugs/cms_plugs';
+
 import {
     plg_sendMail,
 } from '../../utils/Plugs/cms_plugs';
@@ -195,7 +195,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
                 }
 
 
-                 dispatch(act_injectProp({ dataToSubmit: [], model: 'user', actionType: 'cart' }))
+                await plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
                 toggleModal(false)
 
                 toggleMessage(true)
