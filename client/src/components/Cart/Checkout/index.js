@@ -211,7 +211,7 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
     const checkoutFunction = ({ selectedEnabled }) => {
         if (selectedEnabled === 'a') {
             return <Button simple color="primary" size="lg" onClick={(event) => submitForm({ event })}>
-                {list.complete_btn} KOLOR
+                {list.complete_btn}
             </Button>
         } else if (selectedEnabled === 'b') {
             return <Paypal
