@@ -20,7 +20,7 @@ export default function Home() {
 
 
     let currentdetailpage = useSelector(state => state.page.current_detail_page)
-    // let currentlistpage = useSelector(state => state.page.current_list_page)
+    let currentlistpage = useSelector(state => state.page.current_list_page)
 
     let current_mysite = useSelector(state => state.mysite.CurrentMysite)
     const [isWall, setIsWall] = useState();
@@ -42,14 +42,15 @@ export default function Home() {
 
     React.useEffect(() => {
         if (
-            currentdetailpage === undefined
+            !currentdetailpage
+            && currentlistpage
             && localeuser !== undefined
             && currencyuser
         ) {
             setDefaultHomePage()
         }
 
-    }, [currencyuser, currentdetailpage, localeuser, setDefaultHomePage])
+    }, [currencyuser, currentdetailpage, currentlistpage, localeuser, setDefaultHomePage])
 
     const loadPage = useCallback(async () => {
 
@@ -67,12 +68,14 @@ export default function Home() {
 
         if (
             currentdetailpage !== undefined
+            && currentlistpage
             && localeuser
             && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+            && !isWall
         ) {
 
             loadPage().then((allbricks) => {
-console.log('load Page');
+                console.log('load Page');
                 let wall = allbricks.map((a) => a.referenceID)
 
                 setIsWall(wall)
@@ -81,7 +84,7 @@ console.log('load Page');
 
         }
 
-    }, [currencyuser, currentdetailpage, loadPage, localeuser]);
+    }, [currencyuser, currentdetailpage, currentlistpage, isWall, loadPage, localeuser]);
 
     if (isWall) {
         return (

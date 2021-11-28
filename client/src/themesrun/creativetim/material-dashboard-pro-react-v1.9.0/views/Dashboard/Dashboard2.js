@@ -67,7 +67,7 @@ const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
   const [isListVisit, setListVisit] = React.useState();
-  const [isListParsed, setListParsed] = React.useState([]);
+  const [isListParsed, setListParsed] = React.useState();
   const [isCheckedLayers, setCheckedLayers] = React.useState([]);
   const [isCurrentLayers, setCurrentLayers] = React.useState([]);
 
@@ -130,9 +130,9 @@ export default function Dashboard() {
     return time;
   }, [])
 
-  React.useEffect(() => {
+   React.useEffect(() => {
 
-    if (isListVisit === undefined) {
+    if (isListVisit === undefined && !isListParsed) {
       grabMostVisitsFrom()
 
       grabVisits().then(async (response) => {
@@ -142,7 +142,7 @@ export default function Dashboard() {
           let total_visits = await grabTotals(each)
 
           // show_list_array.push([await parsedDate(each.createdAt), each.data.country.names.en, each.data.city.names.en, total_visits.payload.toString(),  each.ip])
-          show_list_array.push([await parsedDate(each.createdAt), each.data.country ? each.data.country.names.en : null, each.data.city ? each.data.city.names.en : null, total_visits.payload.toString(), each.ip])
+          // show_list_array.push([await parsedDate(each.createdAt), each.data.country ? each.data.country.names.en : null, each.data.city ? each.data.city.names.en : null, total_visits.payload.toString(), each.ip])
 
         }
 
@@ -153,7 +153,7 @@ export default function Dashboard() {
     }
 
 
-  }, [dispatch, grabMostVisitsFrom, grabTotals, grabVisits, isListVisit, parsedDate])
+  }, [grabMostVisitsFrom, grabVisits, isListParsed, isListVisit]) 
 
   const classes = useStyles();
 
