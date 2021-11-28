@@ -29,7 +29,7 @@ const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
 export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
-
+console.log('inside showlinks');
     let userdata = useSelector(state => state.user.userData)
     const [isStaticList, setStaticList] = React.useState();
 
@@ -42,6 +42,9 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             list.push(item)
 
         });
+
+        if(userdata) {
+
         staticlinks.forEach((item) => {
             if (!userdata.isAuth) {
                 if (item.public === true) {
@@ -62,13 +65,18 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
                 }
             }
         });
+    }
+
+        console.log(list);
 
         return list
 
     }, [dynamiclinks, staticlinks, userdata])
     React.useEffect(() => {
 
-        if (!isStaticList && userdata) {
+        if (!isStaticList 
+/*             && userdata
+ */            ) {
             composeStaticList().then((list) => {
                 setStaticList(list)
             })

@@ -89,14 +89,7 @@ export default function App() {
 
     // },[isLocalUser, localeuser])
 
-    // React.useEffect(() => {
 
-
-    //     if (currentmysite !== undefined && localeuser !== undefined) {
-
-    //         layoutFuncs_findCurrency({ localeuser, currentmysite, dispatch })
-    //     }
-    // }, [currentmysite, dispatch, localeuser])
 
     const MemoizedWrapper = React.useCallback((props) => {
 
@@ -130,9 +123,9 @@ export default function App() {
         return <div>{console.log('LEVEL 1 App')}
 
             <HeaderHolder />
-            {/* <MemoizedWrapper>
+            <MemoizedWrapper>
                 <Frontside />
-            </MemoizedWrapper> */}
+            </MemoizedWrapper>
         </div>
     } else {
         return (

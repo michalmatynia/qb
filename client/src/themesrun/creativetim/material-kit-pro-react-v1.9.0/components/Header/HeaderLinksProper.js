@@ -56,17 +56,18 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
       country: { "$eq": redux_localeuser.referenceID.alpha2Code },
       language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
     }
-    let result = await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
+    return await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
 
-    setCurrentListPage( result.payload)
   }, [dispatch, redux_localeuser]);
 
   React.useEffect(() => {
     if (redux_localeuser && !isCurrentListPage ){
       setIsLoading(true)
 
-      fetchListMenu().then(()=>{
+      fetchListMenu().then((result)=>{
         console.log('normal links render')
+
+        setCurrentListPage( result.payload)
         setLocalUser(redux_localeuser)
         setIsLoading(false)
       })

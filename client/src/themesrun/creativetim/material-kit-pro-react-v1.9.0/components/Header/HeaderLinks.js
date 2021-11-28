@@ -32,8 +32,6 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
       <Fade duration={1000}><HeaderLinksProper
       mystate={mystate}
       /></Fade>
-
-
         <ListItem className={classes.listItem} key='language_dropdown'><Fade duration={1000}><ListLanguageMenu/></Fade></ListItem>
       </List>
     </div> 

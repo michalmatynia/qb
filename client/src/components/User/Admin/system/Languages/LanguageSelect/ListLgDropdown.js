@@ -32,7 +32,6 @@ export default function ListLanguageMenu() {
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
     let redux_current_detail_page = useSelector(state => state.page.current_detail_page)
-    // let redux_current_list_page = useSelector(state => state.page.current_list_page)
 
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
@@ -179,6 +178,18 @@ export default function ListLanguageMenu() {
             findLanguage(redux_currentmysite)
         }
     }, [redux_currentmysite, dispatch, redux_localeuser, isRawState])
+
+        React.useEffect(() => {
+
+
+        if (redux_currentmysite !== undefined && redux_localeuser !== undefined) {
+
+            console.log('find currency');
+
+            layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
+        }
+    }, [dispatch, redux_currentmysite, redux_localeuser])
+
 
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
 

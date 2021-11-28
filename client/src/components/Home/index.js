@@ -37,13 +37,14 @@ export default function Home() {
             model: 'page', dispatch, actionType: 'current_detail', inQuery
         })
 
-    }, [dispatch, localeuser.referenceID.alpha2Code, localeuser.referenceID.languages])
+    }, [dispatch, localeuser])
 
 
     React.useEffect(() => {
         if (
             currentdetailpage === undefined
-            && currencyuser !== undefined
+            && localeuser !== undefined
+            && currencyuser
         ) {
             setDefaultHomePage()
         }
@@ -66,6 +67,7 @@ export default function Home() {
 
         if (
             currentdetailpage !== undefined
+            && localeuser
             && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
         ) {
 
@@ -79,7 +81,7 @@ export default function Home() {
 
         }
 
-    }, [currencyuser, currentdetailpage, loadPage, localeuser.referenceID.currencies]);
+    }, [currencyuser, currentdetailpage, loadPage, localeuser]);
 
     if (isWall) {
         return (
