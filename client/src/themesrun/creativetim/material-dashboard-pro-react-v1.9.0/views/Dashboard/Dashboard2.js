@@ -141,8 +141,7 @@ export default function Dashboard() {
 
           let total_visits = await grabTotals(each)
 
-          // show_list_array.push([await parsedDate(each.createdAt), each.data.country.names.en, each.data.city.names.en, total_visits.payload.toString(),  each.ip])
-          // show_list_array.push([await parsedDate(each.createdAt), each.data.country ? each.data.country.names.en : null, each.data.city ? each.data.city.names.en : null, total_visits.payload.toString(), each.ip])
+          show_list_array.push([await parsedDate(each.createdAt), each.data.country ? each.data.country.names.en : null, each.data.city ? each.data.city.names.en : null, total_visits.payload.toString(), each.ip])
 
         }
 
@@ -153,7 +152,7 @@ export default function Dashboard() {
     }
 
 
-  }, [grabMostVisitsFrom, grabVisits, isListParsed, isListVisit]) 
+  }, [grabMostVisitsFrom, grabTotals, grabVisits, isListParsed, isListVisit, parsedDate]) 
 
   const classes = useStyles();
 
