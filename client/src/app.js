@@ -32,8 +32,7 @@ export default function App() {
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
-    const [isLocalUser, setLocalUser] = React.useState();
-    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
+
 
     const [isBodyTheme, setIsBodyTheme] = React.useState({});
 
@@ -156,15 +155,6 @@ export default function App() {
         }
     }, [currentmysite, dispatch, localeuser])
 
-    // React.useEffect(() => {
-
-    //     if (localeuser !== isLocalUser) {
-    //         setPrevLocalUser(isLocalUser)
-    //         setLocalUser(localeuser)
-
-    //     }
-
-    // },[isLocalUser, localeuser])
 
     React.useEffect(() => {
 
