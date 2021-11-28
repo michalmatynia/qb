@@ -30,11 +30,9 @@ export default function App() {
     const dispatch = useDispatch()
     let location = useLocation()
 
-    let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
-
-    const [isBodyTheme, setIsBodyTheme] = React.useState({});
+    const [isBodyTheme, setIsBodyTheme] = React.useState();
 
     const processStyle = useCallback(async (item) => {
         return await parentstyleFunc(item)
@@ -42,8 +40,6 @@ export default function App() {
 
     const useDynoStyles = makeStyles(isBodyTheme ? isBodyTheme : null);
     const parentclasses = useDynoStyles();
-
-
 
     // /* Find Mysite */
     React.useEffect(() => {
@@ -67,8 +63,11 @@ export default function App() {
                     setIsBodyTheme(result)
                 })
 
+            } else {
+                setIsBodyTheme({})
+
             }
-            return mysite_result.payload
+            // return mysite_result.payload
         }
 
         if (currentmysite === undefined) {
@@ -78,92 +77,26 @@ export default function App() {
 
     }, [currentmysite, dispatch, processStyle]);
 
-    React.useEffect(() => {
+  
 
-        async function findLanguage(cm) {
+    // React.useEffect(() => {
 
-            let iplocator = await act_getGeoLocation()
+    //     if (localeuser !== isLocalUser) {
+    //         setPrevLocalUser(isLocalUser)
+    //         setLocalUser(localeuser)
 
-            // let iplocator = {payload: ''}
-            let inQuery
-            await plg_create_oprMod({ model: 'visit', dispatch, actionType: 'samestate', inInsert: iplocator.payload })
-            try {
-                if (iplocator.payload.Success) {
+    //     }
 
-                    let inPipeline = [
-                        {
-                            $match: {
-                                alpha2Code: { "$eq": iplocator.payload.data.country.iso_code }
-                            }
-                        },
-                        {
-                            $lookup:
-                            {
-                                from: "languages",
-                                as: "agg_lg",
-                                let: { wspolny_id: "$_id" },
-                                pipeline: [{
-                                    $match: {
-                                        $expr: { $eq: ["$$wspolny_id", "$referenceID"] },
-                                    }
-                                },
-                                ]
-                            }
-                        },
-                        {
-                            $set: {
-                                agg_nation: "$$ROOT"
-                            }
-                        }
+    // },[isLocalUser, localeuser])
 
-                    ]
-
-                    let result = await plg_aggregate({ model: 'nation', dispatch, actionType: 'samestate', inPipeline })
-
-                    if (result.payload[0].agg_lg[0]) {
-                        result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
-                        let lg_found = result.payload[0].agg_lg[0]
-
-                        dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
-                        dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
-
-                    } else {
-                        throw iplocator
-                    }
-
-                } else {
-                    throw iplocator
-                }
-
-            } catch (iplocator) {
-
-                inQuery = {
-                    _id: { "$eq": cm.default_language._id }
-                }
-                let result = await plg_findOne_QueMod({ model: 'language', dispatch, actionType: 'locale', inQuery, populate: [{ path: 'referenceID' }] })
-
-                return result.payload
-            }
-
-        }
-
-        if (currentmysite !== undefined && localeuser === undefined) {
-
-            console.log('find lg');
-
-            findLanguage(currentmysite)
-        }
-    }, [currentmysite, dispatch, localeuser])
+    // React.useEffect(() => {
 
 
-    React.useEffect(() => {
+    //     if (currentmysite !== undefined && localeuser !== undefined) {
 
-
-        if (currentmysite !== undefined && localeuser !== undefined) {
-
-            layoutFuncs_findCurrency({ localeuser, currentmysite, dispatch })
-        }
-    }, [currentmysite, dispatch, localeuser])
+    //         layoutFuncs_findCurrency({ localeuser, currentmysite, dispatch })
+    //     }
+    // }, [currentmysite, dispatch, localeuser])
 
     const MemoizedWrapper = React.useCallback((props) => {
 
@@ -181,7 +114,6 @@ export default function App() {
 
     if (
         currentmysite
-        && localeuser
         && (
             location.pathname.includes('/admin')
             || location.pathname.includes('/client')
@@ -193,15 +125,14 @@ export default function App() {
             <Panel />
         </div>
     } else if (
-        currentmysite
-        && localeuser
+        currentmysite && isBodyTheme
     ) {
         return <div>{console.log('LEVEL 1 App')}
 
             <HeaderHolder />
-            <MemoizedWrapper>
+            {/* <MemoizedWrapper>
                 <Frontside />
-            </MemoizedWrapper>
+            </MemoizedWrapper> */}
         </div>
     } else {
         return (

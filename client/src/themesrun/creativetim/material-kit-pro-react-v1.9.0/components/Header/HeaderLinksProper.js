@@ -20,7 +20,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
   const dispatch = useDispatch()
 
     let redux_currentlistpage = useSelector(state => state.page.current_list_page)
-    let localeuser = useSelector(state => state.user.localeUser)
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
 
@@ -35,7 +34,9 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
       /* Cleanup */
     React.useEffect(() => {
 
-        if (isLocalUser !== redux_localeuser) {
+        if (isLocalUser !== redux_localeuser && isLocalUser) {
+
+            console.log('HeaderLinks LG Change');
 
             setIsLoading(true)
             setPrevLocalUser(isLocalUser)
@@ -52,27 +53,29 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
     let inQuery = {
       visible: { "$eq": true },
-      country: { "$eq": localeuser.referenceID.alpha2Code },
-      language: { "$eq": localeuser.referenceID.languages[0].iso639_1 }
+      country: { "$eq": redux_localeuser.referenceID.alpha2Code },
+      language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
     }
     let result = await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
 
     setCurrentListPage( result.payload)
-  }, [dispatch, localeuser]);
+  }, [dispatch, redux_localeuser]);
 
   React.useEffect(() => {
-    if (localeuser && (isLocalUser !== redux_localeuser || !redux_currentlistpage)){
+    if (redux_localeuser && !isCurrentListPage ){
       setIsLoading(true)
 
       fetchListMenu().then(()=>{
+        console.log('normal links render')
+        setLocalUser(redux_localeuser)
         setIsLoading(false)
       })
     }
-  }, [fetchListMenu, isLocalUser, localeuser, redux_currentlistpage, redux_localeuser]);
+  }, [fetchListMenu, isCurrentListPage, redux_localeuser]);
 
   const classes = useStyles();
 
-  return ( 
+  return (
     isCurrentListPage && !isLoading ? 
         <ShowLinks 
           dynamiclinks={isCurrentListPage}
