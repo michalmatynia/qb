@@ -13,10 +13,6 @@ import {
     plg_clearProps,
 } from '../../../../../utils/Plugs/cms_plugs';
 
-import {
-    act_injectProp,
-} from '../../../../../../redux/actions/generic/generic_actions';
-
 import FormCustomSelect from '../../../../../utils/Form/Funcs/FormCustomSelect';
 
 import { compoFuncs_Refresh_vh3 } from '../../../../../User/Admin/GenericFuncs/compo_funcs_vh'
@@ -28,6 +24,8 @@ export default function ListLanguageMenu() {
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
     let redux_current_detail_page = useSelector(state => state.page.current_detail_page)
+    let redux_current_list_page = useSelector(state => state.page.current_list_page)
+
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
     const [isLocalUser, setLocalUser] = React.useState();
@@ -43,14 +41,17 @@ export default function ListLanguageMenu() {
 
     React.useEffect(() => {
 
-        if (!isRawState) {
+        if (!isRawState && redux_localeuser) {
+
             establishStateParams()
 
         }
 
-    }, [establishStateParams, isRawState])
+    }, [establishStateParams, isRawState, redux_localeuser])
 
     const runInStateFunctions = useCallback(async () => {
+
+        console.log('runInstateFunctions');
 
         let didmount_result = await compoFuncs_Refresh_vh3({
             model: isRawState.localStorage.model,
@@ -78,24 +79,10 @@ export default function ListLanguageMenu() {
         }
 
     }, [isLocalUser, redux_localeuser])
-    
-    React.useEffect(() => {
-        if (isLocalUser === redux_localeuser) {
-    
-          return function cleanup() {
-    
-            console.log('cleanup');
-    
-            plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
-    
-          };
-        }
-    
-      }, [dispatch, isLocalUser, redux_localeuser]) 
 
     React.useEffect(() => {
 
-        if (isRawState && isLoading) {
+        if (isRawState && isLoading && redux_localeuser) {
             runInStateFunctions().then(()=>{
                 setLocalUser(redux_localeuser)
                 setIsLoading(false)
@@ -115,7 +102,7 @@ export default function ListLanguageMenu() {
 
             // ==================
 
-            if (document.location.pathname === '/') {
+            if (document.location.pathname === '/' && redux_current_detail_page) {
 
                 inQuery = {
                     country: { "$eq": value.referenceID.alpha2Code },
@@ -138,11 +125,11 @@ export default function ListLanguageMenu() {
             }
 
         }
-    }, [dispatch, isLocalStorage, redux_cartuser, redux_current_detail_page, redux_localeuser._id])
+    }, [dispatch, isLocalStorage, redux_cartuser, redux_current_detail_page, redux_localeuser])
 
 
     return (
-        isLocalStorage && !isLoading ? <div
+        isLocalStorage && !isLoading  ? <div
         // style={{
         //     position: 'fixed',
         //     // left: '0px',
@@ -154,7 +141,7 @@ export default function ListLanguageMenu() {
         // }}
         >
             {
-                <Fade duration={1000}><FormCustomSelect
+                <FormCustomSelect
                     formcell={isLocalStorage.form.formdata.ticked}
                     formcellkey='ticked'
                     change={({ event, cell, value }) => onChange({
@@ -162,7 +149,7 @@ export default function ListLanguageMenu() {
                         cell,
                         value
                     })}
-                /></Fade>
+                />
             }
         </div> : null
 

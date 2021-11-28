@@ -29,10 +29,11 @@ import HeaderHolder from './components/Header_footer/Header';
 export default function App() {
     const dispatch = useDispatch()
     let location = useLocation()
-    // // const isFirstRender = useRef(true);
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
 
     const [isBodyTheme, setIsBodyTheme] = React.useState({});
 
@@ -149,10 +150,22 @@ export default function App() {
 
         if (currentmysite !== undefined && localeuser === undefined) {
 
-            findLanguage(currentmysite)
+            findLanguage(currentmysite).then((item)=>{
+                setLocalUser(item)
+            })
 
         }
     }, [currentmysite, dispatch, localeuser])
+
+    React.useEffect(() => {
+
+        if (localeuser !== isLocalUser) {
+            setPrevLocalUser(isLocalUser)
+            setLocalUser(localeuser)
+
+        }
+
+    },[isLocalUser, localeuser])
 
     React.useEffect(() => {
 
@@ -179,7 +192,7 @@ export default function App() {
 
     if (
         currentmysite
-        && localeuser
+        && localeuser && localeuser === isLocalUser
         && (
             location.pathname.includes('/admin')
             || location.pathname.includes('/client')
@@ -192,9 +205,9 @@ export default function App() {
         </div>
     } else if (
         currentmysite
-        && localeuser
+        && localeuser && localeuser === isLocalUser
     ) {
-        return <div>
+        return <div>{console.log('LEVEL 1 App')}
 
             <HeaderHolder />
             <MemoizedWrapper>

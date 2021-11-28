@@ -16,19 +16,26 @@ function HeaderHolder() {
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
 
-    const [isImages, setImages] = React.useState([]);
+    const [isImages, setImages] = React.useState();
 
     const [isloading, setIsLoading] = React.useState(true);
 
 
     React.useEffect(() => {
 
-        if (redux_currentmysite) {
+        if (redux_currentmysite && !isImages) {
+            if (redux_currentmysite.images.length > 0) {
+                setImages(redux_currentmysite.images)
+
+            } else {
+                setImages([])
+
+            }
             setImages(redux_currentmysite.images)
             setIsLoading(false)
 
         }
-    }, [redux_currentmysite])
+    }, [isImages, redux_currentmysite])
 
 
     if (isloading) {
@@ -52,10 +59,10 @@ function HeaderHolder() {
                 <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
             </div>
         )
-    } else if (!isloading) {
+    } else if (!isloading && isImages) {
         return (
             <div>
-     
+     {console.log('header main render')}
                 <Header
                 absolute
                 links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
@@ -70,8 +77,6 @@ function HeaderHolder() {
             }}
                 images={isImages}
                 />
-
-
             </div>
 
         )
