@@ -49,7 +49,7 @@ export default function Home() {
             setDefaultHomePage()
         }
 
-    }, [currencyuser, currentdetailpage, setDefaultHomePage])
+    }, [currencyuser, currentdetailpage, localeuser, setDefaultHomePage])
 
     const loadPage = useCallback(async () => {
 
@@ -72,7 +72,7 @@ export default function Home() {
         ) {
 
             loadPage().then((allbricks) => {
-
+console.log('load Page');
                 let wall = allbricks.map((a) => a.referenceID)
 
                 setIsWall(wall)

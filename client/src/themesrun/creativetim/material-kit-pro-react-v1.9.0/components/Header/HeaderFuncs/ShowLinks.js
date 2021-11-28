@@ -29,7 +29,6 @@ const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
 export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
-console.log('inside showlinks');
     let userdata = useSelector(state => state.user.userData)
     const [isStaticList, setStaticList] = React.useState();
 
@@ -67,16 +66,14 @@ console.log('inside showlinks');
         });
     }
 
-        console.log(list);
-
         return list
 
     }, [dynamiclinks, staticlinks, userdata])
     React.useEffect(() => {
 
         if (!isStaticList 
-/*             && userdata
- */            ) {
+           && userdata
+     ) {
             composeStaticList().then((list) => {
                 setStaticList(list)
             })
@@ -87,6 +84,7 @@ console.log('inside showlinks');
 
     if (isStaticList) {
 
+        console.log('inside isStaticList');
 
         return isStaticList.map((item, i) => {
 
@@ -223,7 +221,10 @@ export function DefaultLink({ item }) {
         return <ListItem className={classes.listItem} key={item.name}>
             <Link
                 to={item.link_to}
-                onClick={() => plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })}
+                onClick={() => {
+                    plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })
+                    plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+                }}
                 className={cx(classes.navLink, {
                     [classes.navLinkActive]: activeRoute(currentdetailpage, item, reactrouter)
                 })}>

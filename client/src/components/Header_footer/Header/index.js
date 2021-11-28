@@ -62,20 +62,20 @@ function HeaderHolder() {
     } else if (!isloading && isImages) {
         return (
             <div>
-     {console.log('header main render')}
+                {console.log('header main render')}
                 <Header
-                absolute
-                links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
-                fixed
-                // color="dark"
+                    absolute
+                    links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
+                    fixed
+                    // color="dark"
 
-                color="transparent"
-                // style={{ backgroundColor: 'darkgrey'}}
-                changeColorOnScroll={{
-                height: 400,
-                color: "dark",
-            }}
-                images={isImages}
+                    color="transparent"
+                    // style={{ backgroundColor: 'darkgrey'}}
+                    changeColorOnScroll={{
+                        height: 400,
+                        color: "dark",
+                    }}
+                    images={isImages}
                 />
             </div>
 

@@ -36,8 +36,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
         if (isLocalUser !== redux_localeuser && isLocalUser) {
 
-            console.log('HeaderLinks LG Change');
-
             setIsLoading(true)
             setPrevLocalUser(isLocalUser)
             setLocalUser(redux_localeuser)
@@ -65,8 +63,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
       setIsLoading(true)
 
       fetchListMenu().then((result)=>{
-        console.log('normal links render')
-
         setCurrentListPage( result.payload)
         setLocalUser(redux_localeuser)
         setIsLoading(false)

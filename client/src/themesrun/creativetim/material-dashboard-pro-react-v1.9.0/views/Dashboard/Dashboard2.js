@@ -6,7 +6,8 @@ import {
 import {
   plg_findMany,
   plg_countDocuments,
-  plg_aggregate
+  plg_aggregate,
+  plg_clearProps
 
 } from '../../../../../components/utils/Plugs/cms_plugs'
 
@@ -152,7 +153,7 @@ export default function Dashboard() {
     }
 
 
-  }, [grabMostVisitsFrom, grabTotals, grabVisits, isListVisit, parsedDate])
+  }, [dispatch, grabMostVisitsFrom, grabTotals, grabVisits, isListVisit, parsedDate])
 
   const classes = useStyles();
 

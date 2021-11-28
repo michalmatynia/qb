@@ -35,8 +35,6 @@ export default function ListLanguageMenu() {
 
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
-    const [isLocalUser, setLocalUser] = React.useState();
-    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
 
     const establishStateParams = useCallback(async () => {
@@ -49,7 +47,6 @@ export default function ListLanguageMenu() {
     React.useEffect(() => {
 
         if (!isRawState && redux_localeuser) {
-            console.log('Get State Params');
 
             establishStateParams()
 
@@ -58,8 +55,6 @@ export default function ListLanguageMenu() {
     }, [establishStateParams, isRawState, redux_localeuser])
 
     const runInStateFunctions = useCallback(async () => {
-
-        console.log('runInstateFunctions');
 
         let didmount_result = await compoFuncs_Refresh_vh3({
             model: isRawState.localStorage.model,
@@ -78,7 +73,6 @@ export default function ListLanguageMenu() {
 
         if (isRawState && isLoading && redux_localeuser) {
             runInStateFunctions().then(()=>{
-                // setLocalUser(redux_localeuser)
                 setIsLoading(false)
 
             })
@@ -87,20 +81,6 @@ export default function ListLanguageMenu() {
     }, [isLoading, isRawState, redux_localeuser, runInStateFunctions])
 
     /* Cleanup */
-    // React.useEffect(() => {
-
-    //     if (isLocalUser && isLocalUser !== redux_localeuser) {
-
-    //         setIsLoading(true)
-    //         setRawState()
-    //         setPrevLocalUser(isLocalUser)
-    //         setLocalUser(redux_localeuser)
-
-    //     }
-
-    // }, [isLocalUser, redux_localeuser])
-
-
 
     React.useEffect(() => {
 
@@ -173,7 +153,6 @@ export default function ListLanguageMenu() {
 
         if (redux_currentmysite !== undefined && redux_localeuser === undefined ) {
 
-            console.log('find lg');
             setIsLoading(true)
             findLanguage(redux_currentmysite)
         }
@@ -183,8 +162,6 @@ export default function ListLanguageMenu() {
 
 
         if (redux_currentmysite !== undefined && redux_localeuser !== undefined) {
-
-            console.log('find currency');
 
             layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
         }
@@ -238,7 +215,6 @@ export default function ListLanguageMenu() {
         //     textAlign: 'center',
         // }}
         >
-            {console.log('render lg pod'),
                 <FormCustomSelect
                     formcell={isLocalStorage.form.formdata.ticked}
                     formcellkey='ticked'
@@ -248,7 +224,6 @@ export default function ListLanguageMenu() {
                         value
                     })}
                 />
-            }
         </div> : null
 
     )
