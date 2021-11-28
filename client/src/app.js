@@ -150,22 +150,21 @@ export default function App() {
 
         if (currentmysite !== undefined && localeuser === undefined) {
 
-            findLanguage(currentmysite).then((item)=>{
-                setLocalUser(item)
-            })
+            console.log('find lg');
 
+            findLanguage(currentmysite)
         }
     }, [currentmysite, dispatch, localeuser])
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        if (localeuser !== isLocalUser) {
-            setPrevLocalUser(isLocalUser)
-            setLocalUser(localeuser)
+    //     if (localeuser !== isLocalUser) {
+    //         setPrevLocalUser(isLocalUser)
+    //         setLocalUser(localeuser)
 
-        }
+    //     }
 
-    },[isLocalUser, localeuser])
+    // },[isLocalUser, localeuser])
 
     React.useEffect(() => {
 
@@ -192,7 +191,7 @@ export default function App() {
 
     if (
         currentmysite
-        && localeuser && localeuser === isLocalUser
+        && localeuser
         && (
             location.pathname.includes('/admin')
             || location.pathname.includes('/client')
@@ -205,7 +204,7 @@ export default function App() {
         </div>
     } else if (
         currentmysite
-        && localeuser && localeuser === isLocalUser
+        && localeuser
     ) {
         return <div>{console.log('LEVEL 1 App')}
 
