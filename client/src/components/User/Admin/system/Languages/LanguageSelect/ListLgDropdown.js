@@ -173,30 +173,30 @@ export default function ListLanguageMenu() {
         if (value._id !== redux_localeuser._id && isLocalStorage) {
 
             console.log('Change localeuser in lgdropdown');
+
             let inQuery = { _id: { "$eq": value._id } }
             await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
-            // plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
 
             // ==================
 
-            if (document.location.pathname === '/' && redux_current_detail_page) {
+            // if (document.location.pathname === '/' && redux_current_detail_page) {
 
-                console.log('IN');
+            //     console.log('IN');
 
-                inQuery = {
-                    country: { "$eq": value.referenceID.alpha2Code },
-                    language: { "$eq": value.referenceID.languages[0].iso639_1 }
-                }
-                if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
-                    Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
-                } else {
-                    Object.assign(inQuery, { isdefault: { "$eq": true } })
+            //     inQuery = {
+            //         country: { "$eq": value.referenceID.alpha2Code },
+            //         language: { "$eq": value.referenceID.languages[0].iso639_1 }
+            //     }
+            //     if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
+            //         Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
+            //     } else {
+            //         Object.assign(inQuery, { isdefault: { "$eq": true } })
 
-                }
+            //     }
 
-                await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
+            //     await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
 
-            }
+            // }
 
             if(redux_cartuser) {
                 plg_clearProps({ dispatch, model: 'user', actionType: 'cart' })
@@ -204,7 +204,7 @@ export default function ListLanguageMenu() {
             }
 
         }
-    }, [dispatch, isLocalStorage, redux_cartuser, redux_current_detail_page, redux_localeuser])
+    }, [dispatch, isLocalStorage, redux_cartuser, redux_localeuser])
 
 
     return  ( isLocalStorage && !isLoading && redux_localeuser && isRawState ? <div
