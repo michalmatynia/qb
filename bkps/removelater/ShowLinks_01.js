@@ -73,9 +73,8 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             console.log('Dynamic Link CHNAGE ShowLinks');
 
             setIsLoading(true)
-            setComposedMenu()
-
             setCurrentDetailPage(redux_currentdetailpage)
+
             setStaticList()
 
         }
@@ -98,7 +97,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             console.log('dynamic To Static Link CHNAGE ShowLinks');
 
             setIsLoading(true)
-            setComposedMenu()
             setStaticList()
             setCurrentDetailPage()
 
@@ -166,7 +164,9 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
                 setStaticList(list)
                 setLocalUser(redux_localeuser)
                 setIsLocation(document.location.pathname)
+console.log('tt');
                 setCurrentDetailPage(redux_currentdetailpage)
+
                 setIsLoading(false)
 
             })
@@ -175,66 +175,54 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
     }, [composeStaticList, isStaticList, redux_localeuser, userdata, redux_currentdetailpage])
 
-    React.useEffect(() => {
+    if (isStaticList
+        && userdata
+        && !isLoading
+        && isLocalUser === redux_localeuser
+        && isCurrentDetailPage === redux_currentdetailpage
+        && isLocation === document.location.pathname
 
-            
+    ) {
 
-        async function runComposeMenu() {
-            return isStaticList.map((item, i) => {
+        console.log('inside isStaticList');
+        console.log(isCurrentDetailPage);
+        console.log(redux_currentdetailpage);
+        console.log(isLocation);
+        console.log(document.location.pathname);
 
-                if (item.name !== 'My Cart') {
-                    return <DefaultLink
-                        item={item}
-                        i={i}
-                        key={i}
-                    />
-                } else if (item.name === 'My Cart') {
-                    return <CartLink
-                        item={item}
-                        i={i}
-                        key={i}
+        let composed_array = isStaticList.map((item, i) => {
 
-                    />
+            if (item.name !== 'My Cart') {
+                return <DefaultLink
+                    item={item}
+                    i={i}
+                    key={i}
+                />
+            } else if (item.name === 'My Cart') {
+                return <CartLink
+                    item={item}
+                    i={i}
+                    key={i}
 
-                } else {
-                    return null
+                />
 
-                }
-            })
+            } else {
+                return null
 
-        } 
-
-
-        if (!isComposedMenu) {
-
-            if (isStaticList
-                && userdata
-                && !isLoading
-                // && isLocalUser === redux_localeuser
-                // && isCurrentDetailPage === redux_currentdetailpage
-                // && isLocation === document.location.pathname
-    
-            ) {
-    
-                console.log('run Compose Menu');
-                // console.log(isCurrentDetailPage);
-                // console.log(redux_currentdetailpage);
-                // console.log(isLocation);
-                // console.log(document.location.pathname);
-
-                runComposeMenu().then((menu)=>{
-                    setComposedMenu(menu)
-                })
-    
             }
 
-  
-        }
 
-    },[isComposedMenu, isCurrentDetailPage, isLoading, isLocalUser, isLocation, isStaticList, redux_currentdetailpage, redux_localeuser, userdata])
+        })
+
+        composed_array
+    } else {
 
 
-    return isComposedMenu && !isLoading ? isComposedMenu : null
+        return null
+    }
+
+
+
 }
 
 

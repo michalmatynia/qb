@@ -20,7 +20,7 @@ export default function Home() {
     let currencyuser = useSelector(state => state.user.currencyUser)
 
 
-    let currentdetailpage = useSelector(state => state.page.current_detail_page)
+    let redux_currentdetailpage = useSelector(state => state.page.current_detail_page)
     let currentlistpage = useSelector(state => state.page.current_list_page)
 
     let current_mysite = useSelector(state => state.mysite.CurrentMysite)
@@ -48,7 +48,7 @@ export default function Home() {
     React.useEffect(() => {
         if (
             !isCurrentDetailPage
-            && !currentdetailpage
+            && !redux_currentdetailpage
             && !isLocalUser
             && currentlistpage
             && redux_localeuser
@@ -68,57 +68,85 @@ export default function Home() {
             })
         }
 
-    }, [currentdetailpage, currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, redux_localeuser, setDefaultHomePage])
+    }, [redux_currentdetailpage, currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, redux_localeuser, setDefaultHomePage])
   
 
 
+
+
+
+
+
+
+
+
+
+
     // /* Re Render on Link Change */
-    // const setNewPage = useCallback(async () => {
-    //     let inQuery = {}
+    const setNewPage = useCallback(async () => {
+        let inQuery = {}
 
-    //     if (currentdetailpage.lgbinder !== '') {
-    //         Object.assign(inQuery, { lgbinder: { "$eq": currentdetailpage.lgbinder } })
-    //         //     inQuery = {
-    //         //         country: { "$eq": value.referenceID.alpha2Code },
-    //         //         language: { "$eq": value.referenceID.languages[0].iso639_1 }
-    //         //     }
-    //         //     if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
-    //         //         Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
-    //         //     } else {
-    //         //         Object.assign(inQuery, { isdefault: { "$eq": true } })
+        if (redux_currentdetailpage.lgbinder !== '') {
+            Object.assign(inQuery, { lgbinder: { "$eq": redux_currentdetailpage.lgbinder } })
+            //     inQuery = {
+            //         country: { "$eq": value.referenceID.alpha2Code },
+            //         language: { "$eq": value.referenceID.languages[0].iso639_1 }
+            //     }
+            //     if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
+            //         Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
+            //     } else {
+            //         Object.assign(inQuery, { isdefault: { "$eq": true } })
 
-    //         //     }
+            //     }
 
-    //     } else {
-    //         Object.assign(inQuery, { _id: { "$eq": currentdetailpage._id } })
+        } else {
+            Object.assign(inQuery, { _id: { "$eq": redux_currentdetailpage._id } })
 
-    //     }
-    //     Object.assign(inQuery, {
-    //         lgbinder: { "$eq": currentdetailpage.lgbinder },
-    //         country: { "$eq": redux_localeuser.referenceID.alpha2Code },
-    //         language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
-    //     });
+        }
+        Object.assign(inQuery, {
+            lgbinder: { "$eq": redux_currentdetailpage.lgbinder },
+            country: { "$eq": redux_localeuser.referenceID.alpha2Code },
+            language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
+        });
 
-    //     return await plg_findOne_QueMod({
-    //         model: 'page', dispatch, actionType: 'current_detail', inQuery
-    //     })
+        return await plg_findOne_QueMod({
+            model: 'page', dispatch, actionType: 'current_detail', inQuery
+        })
 
-    // }, [dispatch, redux_localeuser])
+    }, [dispatch, redux_currentdetailpage, redux_localeuser ])
 
     React.useEffect(() => {
+
+
         if (
-            isCurrentDetailPage !== currentdetailpage
-            && isLocalUser
+            // && redux_currentdetailpage
+            // && isLocalUser
+            // && redux_localeuser
+            // && isWall
+
+            !isCurrentDetailPage
+            && redux_currentdetailpage
+            && !isLocalUser
             && currentlistpage
             && redux_localeuser
-            && isWall
+            && isLoading
+            && !isWall
+            && document.location.pathname === '/'
+
 
         ) {
-            setIsLoading(true)
-            setIsWall()
-            setCurrentDetailPage(currentdetailpage)
+
+
+
+            console.log('set New Wall Page');
+            setNewPage().then(()=>{
+                setIsLoading(true)
+                setIsWall()
+                setCurrentDetailPage(redux_currentdetailpage)
+            })
+
         }
-    },[currentdetailpage, currentlistpage, isCurrentDetailPage, isLocalUser, isWall, redux_localeuser])
+    },[currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, redux_currentdetailpage, redux_localeuser, setNewPage])
 
 
 
@@ -178,30 +206,39 @@ export default function Home() {
 
 
     /* Lg Change */
-    React.useEffect(() => {
-        // console.log(isLocalUser);
-        // console.log(redux_localeuser);
+    // React.useEffect(() => {
+    //     // console.log(isLocalUser);
+    //     // console.log(redux_localeuser);
 
-        if (
-            isLocalUser !== redux_localeuser
-            && isLocalUser
-            && currentdetailpage
-            && !isLoading
-        ) {
+    //     if (
+    //         isLocalUser !== redux_localeuser
+    //         && isLocalUser
+    //         && currentdetailpage
+    //         && !isLoading
+    //     ) {
 
-            console.log('LG CHNAGE Load wall');
+    //         console.log('LG CHNAGE Load wall');
 
-            setIsLoading(true)
-            plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })
-            // setPrevLocalUser(isLocalUser)
-            setLocalUser()
-            setIsWall()
-            setCurrentDetailPage()
+    //         setIsLoading(true)
+    //         plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })
+    //         // setPrevLocalUser(isLocalUser)
+    //         setLocalUser()
+    //         setIsWall()
+    //         setCurrentDetailPage()
 
 
-        }
+    //     }
 
-    }, [currentdetailpage, dispatch, isLoading, isLocalUser, redux_localeuser])
+    // }, [currentdetailpage, dispatch, isLoading, isLocalUser, redux_localeuser])
+
+
+
+
+
+
+
+
+
 
     const loadPage = useCallback(async () => {
 
@@ -213,15 +250,6 @@ export default function Home() {
             redux_localeuser
         })
     }, [currencyuser, current_mysite, dispatch, isCurrentDetailPage, redux_localeuser]);
-
-
-
-
-
-
-
-
-
 
 
     React.useEffect(() => {
