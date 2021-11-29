@@ -5,10 +5,11 @@ import { useHistory, useLocation } from "react-router-dom";
 import { ShowLinks } from './HeaderFuncs/ShowLinks.js'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import Fade from 'react-reveal/Fade';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  plg_findMany,
+    plg_findMany,
 } from '../../../../../components/utils/Plugs/cms_plugs';
 import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
@@ -17,7 +18,7 @@ const useStyles = makeStyles(styles);
 
 export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
-  const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     let redux_currentlistpage = useSelector(state => state.page.current_list_page)
     let reactrouter_history = useHistory()
@@ -27,14 +28,16 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
     let redux_productdetail = useSelector(state => state.product.detail)
     const [isLocalUser, setLocalUser] = React.useState();
     const [isPrevLocalUser, setPrevLocalUser] = React.useState();
-  const [isCurrentListPage, setCurrentListPage] = React.useState();
+    const [isCurrentListPage, setCurrentListPage] = React.useState();
 
-  const [isLoading, setIsLoading] = React.useState(true);
+    const [isLoading, setIsLoading] = React.useState(true);
 
-      /* Cleanup */
+    /* Cleanup */
     React.useEffect(() => {
 
         if (isLocalUser !== redux_localeuser && isLocalUser) {
+
+            console.log('LG CHNAGE Header Links Proper');
 
             setIsLoading(true)
             setPrevLocalUser(isLocalUser)
@@ -47,38 +50,40 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
 
 
-  const fetchListMenu = useCallback(async () => {
+    const fetchListMenu = useCallback(async () => {
 
-    let inQuery = {
-      visible: { "$eq": true },
-      country: { "$eq": redux_localeuser.referenceID.alpha2Code },
-      language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
-    }
-    return await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
+        let inQuery = {
+            visible: { "$eq": true },
+            country: { "$eq": redux_localeuser.referenceID.alpha2Code },
+            language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
+        }
+        return await plg_findMany({ model: 'page', dispatch, actionType: 'current_list', inQuery })
 
-  }, [dispatch, redux_localeuser]);
+    }, [dispatch, redux_localeuser]);
 
-  React.useEffect(() => {
-    if (redux_localeuser && !isCurrentListPage ){
-      setIsLoading(true)
+    React.useEffect(() => {
+        if (redux_localeuser && !isCurrentListPage) {
 
-      fetchListMenu().then((result)=>{
-        setCurrentListPage( result.payload)
-        setLocalUser(redux_localeuser)
-        setIsLoading(false)
-      })
-    }
-  }, [fetchListMenu, isCurrentListPage, redux_localeuser]);
+            console.log('Create Current List');
+            setIsLoading(true)
 
-  const classes = useStyles();
+            fetchListMenu().then((result) => {
+                setCurrentListPage(result.payload)
+                setLocalUser(redux_localeuser)
+                setIsLoading(false)
+            })
+        }
+    }, [fetchListMenu, isCurrentListPage, redux_localeuser]);
 
-  return (
-    isCurrentListPage && !isLoading ? 
-        <ShowLinks 
-          dynamiclinks={isCurrentListPage}
-          staticlinks={mystate.user}
-        /> : null
-  );
+    const classes = useStyles();
+
+    return (
+        isCurrentListPage && !isLoading ?
+        <Fade duration={1000}><ShowLinks
+                dynamiclinks={isCurrentListPage}
+                staticlinks={mystate.user}
+            /></Fade> : null
+    );
 
 }
 

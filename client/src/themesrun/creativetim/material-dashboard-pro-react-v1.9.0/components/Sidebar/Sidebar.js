@@ -535,7 +535,7 @@ class Sidebar extends React.Component {
       <div className={logoClasses}>
         <Link
           to="/"
-          onClick={() => refreshHome({  myprops: this.props })}
+          onClick={() => refreshHome({ myprops: this.props })}
         >
           <div
             style={{

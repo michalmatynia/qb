@@ -16,6 +16,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 import Fade from 'react-reveal/Fade';
+import Button from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 
 // core components
 import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
@@ -34,7 +35,6 @@ export default function Header(props) {
   const classes = useStyles();
 
   let dispatch = useDispatch()
-  let reduxprops = useSelector(state => state)
 
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -95,7 +95,7 @@ export default function Header(props) {
           images ?
           <Fade duration={1000}><Link
               to="/"
-              onClick={() => refreshHome({ dispatch, myprops: reduxprops })}
+              onClick={() => refreshHome({ dispatch})}
             >
               <div
                 style={{

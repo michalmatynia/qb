@@ -8,13 +8,13 @@ import ListItem from "@material-ui/core/ListItem";
 import { Link, useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "../../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 
 import {
     plg_clearProps
 } from '../../../../../../components/utils/Plugs/cms_plugs';
 
-import styles from "../../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
+import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
 // @material-ui/icons
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
@@ -29,10 +29,13 @@ const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
 export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
+    console.log(dynamiclinks);
+
     let userdata = useSelector(state => state.user.userData)
     const [isStaticList, setStaticList] = React.useState();
 
     const composeStaticList = useCallback(async () => {
+        if(userdata) {
 
         let list = []
         dynamiclinks.forEach((item) => {
@@ -42,7 +45,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
         });
 
-        if(userdata) {
 
         staticlinks.forEach((item) => {
             if (!userdata.isAuth) {
@@ -64,9 +66,11 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
                 }
             }
         });
-    }
 
         return list
+
+    }
+
 
     }, [dynamiclinks, staticlinks, userdata])
     React.useEffect(() => {
@@ -82,7 +86,7 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
     }, [composeStaticList, isStaticList, userdata])
 
-    if (isStaticList) {
+    if (isStaticList && userdata) {
 
         console.log('inside isStaticList');
 

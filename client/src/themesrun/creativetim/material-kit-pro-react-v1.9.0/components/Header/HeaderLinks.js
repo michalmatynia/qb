@@ -22,6 +22,7 @@ const useStyles = makeStyles(styles);
 
 export function HeaderLinks({ mystate, dropdownHoverColor }) {
 
+  console.log('HeaderLinks');
   // const { dropdownHoverColor, stateuser, propuser } = props;
   const classes = useStyles();
 
@@ -29,9 +30,9 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
     <div className={classes.collapse}>
                  
       <List className={cx(classes.list, classes.mlAuto)}>
-      <Fade duration={1000}><HeaderLinksProper
+      <HeaderLinksProper
       mystate={mystate}
-      /></Fade>
+      />
         <ListItem className={classes.listItem} key='language_dropdown'><Fade duration={1000}><ListLanguageMenu/></Fade></ListItem>
       </List>
     </div> 
