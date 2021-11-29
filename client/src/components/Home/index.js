@@ -43,26 +43,25 @@ export default function Home() {
         })
 
     }, [dispatch, redux_localeuser])
-
+    /* Grab Default  */
 
     React.useEffect(() => {
         if (
             !isCurrentDetailPage
-            && !isLocalUser
             && !currentdetailpage
+            && !isLocalUser
             && currentlistpage
             && redux_localeuser
             && isLoading
             && !isWall
-
+            && document.location.pathname === '/'
 
         ) {
 
-            console.log('Set Current Detail Page');
+            console.log('Grab Default Page - current detail');
             setDefaultHomePage().then((item) => {
 
                 setLocalUser(redux_localeuser)
-                // console.log('brejk');
                 setCurrentDetailPage(item.payload)
 
 
@@ -70,6 +69,113 @@ export default function Home() {
         }
 
     }, [currentdetailpage, currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, redux_localeuser, setDefaultHomePage])
+  
+
+
+    // /* Re Render on Link Change */
+    // const setNewPage = useCallback(async () => {
+    //     let inQuery = {}
+
+    //     if (currentdetailpage.lgbinder !== '') {
+    //         Object.assign(inQuery, { lgbinder: { "$eq": currentdetailpage.lgbinder } })
+    //         //     inQuery = {
+    //         //         country: { "$eq": value.referenceID.alpha2Code },
+    //         //         language: { "$eq": value.referenceID.languages[0].iso639_1 }
+    //         //     }
+    //         //     if (redux_current_detail_page !== '' && redux_current_detail_page.lgbinder !== '') {
+    //         //         Object.assign(inQuery, { lgbinder: { "$eq": redux_current_detail_page.lgbinder } })
+    //         //     } else {
+    //         //         Object.assign(inQuery, { isdefault: { "$eq": true } })
+
+    //         //     }
+
+    //     } else {
+    //         Object.assign(inQuery, { _id: { "$eq": currentdetailpage._id } })
+
+    //     }
+    //     Object.assign(inQuery, {
+    //         lgbinder: { "$eq": currentdetailpage.lgbinder },
+    //         country: { "$eq": redux_localeuser.referenceID.alpha2Code },
+    //         language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
+    //     });
+
+    //     return await plg_findOne_QueMod({
+    //         model: 'page', dispatch, actionType: 'current_detail', inQuery
+    //     })
+
+    // }, [dispatch, redux_localeuser])
+
+    React.useEffect(() => {
+        if (
+            isCurrentDetailPage !== currentdetailpage
+            && isLocalUser
+            && currentlistpage
+            && redux_localeuser
+            && isWall
+
+        ) {
+            setIsLoading(true)
+            setIsWall()
+            setCurrentDetailPage(currentdetailpage)
+        }
+    },[currentdetailpage, currentlistpage, isCurrentDetailPage, isLocalUser, isWall, redux_localeuser])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // /* Grab Default  */
+
+    // React.useEffect(() => {
+    //     if (
+    //         !isCurrentDetailPage
+    //         && !isLocalUser
+    //         && !currentdetailpage
+    //         && currentlistpage
+    //         && redux_localeuser
+    //         && isLoading
+    //         && !isWall
+
+
+    //     ) {
+
+    //         console.log('Set Current Detail Page');
+    //         setDefaultHomePage().then((item) => {
+
+    //             setLocalUser(redux_localeuser)
+    //             // console.log('brejk');
+    //             setCurrentDetailPage(item.payload)
+
+
+    //         })
+    //     }
+
+    // }, [currentdetailpage, currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, redux_localeuser, setDefaultHomePage])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /* Lg Change */
     React.useEffect(() => {
@@ -91,7 +197,7 @@ export default function Home() {
             setLocalUser()
             setIsWall()
             setCurrentDetailPage()
-            
+
 
         }
 
@@ -101,12 +207,21 @@ export default function Home() {
 
         return await loadList_v3({
             dispatch,
-            currentdetailpage,
+            mydetailpage: isCurrentDetailPage,
             current_mysite,
             currencyuser,
             redux_localeuser
         })
-    }, [currencyuser, current_mysite, currentdetailpage, dispatch, redux_localeuser]);
+    }, [currencyuser, current_mysite, dispatch, isCurrentDetailPage, redux_localeuser]);
+
+
+
+
+
+
+
+
+
 
 
     React.useEffect(() => {
@@ -134,6 +249,20 @@ export default function Home() {
         }
 
     }, [currencyuser, currentlistpage, isCurrentDetailPage, isLoading, isLocalUser, isWall, loadPage, redux_localeuser]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     if (isWall && !isLoading) {
         return (

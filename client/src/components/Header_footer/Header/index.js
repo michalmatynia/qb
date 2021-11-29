@@ -5,15 +5,12 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* STATE */
-
 import { HeaderLinks } from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Header/HeaderLinks.js";
 import Header from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Header/Header.js";
-
 
 function HeaderHolder() {
 
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
-
 
     const [isImages, setImages] = React.useState();
 
@@ -61,7 +58,6 @@ function HeaderHolder() {
     } else if (!isloading && isImages) {
         return (
             <div>
-                {console.log('header main render')}
                 <Header
                     absolute
                     links={<HeaderLinks dropdownHoverColor="info"  />}

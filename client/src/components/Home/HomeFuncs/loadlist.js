@@ -92,23 +92,23 @@ async function processBricks({ bricks, dispatch, currencyuser, current_mysite, l
 
     return sectionNew
 }
-export async function loadList_v3({ currentdetailpage = null, dispatch, localeuser = null, current_mysite = null, currencyuser = null }) {
+export async function loadList_v3({ mydetailpage = null, dispatch, localeuser = null, current_mysite = null, currencyuser = null }) {
 
-    if (currentdetailpage.checked.length > 0) {
+    if (mydetailpage.checked.length > 0) {
 
         let inQuery = {}
         let newChecked = []
         let brickNewChecked = []
         let populatedSections = []
 
-        let get_models = currentdetailpage['checked'].map(a => a.model)
+        let get_models = mydetailpage['checked'].map(a => a.model)
         /* remove duplicates */
         let subpage_models = [...new Set(get_models)]; // ES6 method
 
 
         for (let each_subpage_model of subpage_models) {
 
-            let extract_model_ids = currentdetailpage['checked'].reduce((accum, currentValue) => {
+            let extract_model_ids = mydetailpage['checked'].reduce((accum, currentValue) => {
                 return each_subpage_model === currentValue.model ? [...accum, currentValue.referenceID] : accum
             }, [])
 
@@ -147,17 +147,17 @@ export async function loadList_v3({ currentdetailpage = null, dispatch, localeus
 
             for (let subsection of eachsection) {
 
-                let foundIndexToPopulate = currentdetailpage['checked'].findIndex((item) => { return item.referenceID === subsection._id })
+                let foundIndexToPopulate = mydetailpage['checked'].findIndex((item) => { return item.referenceID === subsection._id })
 
 
                 if (foundIndexToPopulate !== -1) {
 
                     newChecked.push(
                         {
-                            model: currentdetailpage['checked'][foundIndexToPopulate].model,
-                            position: currentdetailpage['checked'][foundIndexToPopulate].position,
+                            model: mydetailpage['checked'][foundIndexToPopulate].model,
+                            position: mydetailpage['checked'][foundIndexToPopulate].position,
                             referenceID: subsection,
-                            visible: currentdetailpage['checked'][foundIndexToPopulate].visible
+                            visible: mydetailpage['checked'][foundIndexToPopulate].visible
                         }
                     )
                 }
