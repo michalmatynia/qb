@@ -176,19 +176,6 @@ export default function Home() {
     }, [currencyuser, isCurrentDetailPage, isLoading, isLocalUser, isWall, loadPage, redux_localeuser]);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     if (isWall && !isLoading) {
         return (
             <SectionsPage

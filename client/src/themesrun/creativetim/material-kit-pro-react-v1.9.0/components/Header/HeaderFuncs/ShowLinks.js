@@ -43,22 +43,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
     let redux_currentdetailpage = useSelector(state => state.page.current_detail_page)
 
-    /* Lg Change */
-    // React.useEffect(() => {
-
-    //     if (isLocalUser !== redux_localeuser && isLocalUser) {
-
-    //         console.log('LG CHNAGE ShowLinks');
-
-    //         setIsLoading(true)
-    //         setPrevLocalUser(isLocalUser)
-    //         setLocalUser(redux_localeuser)
-    //         setStaticList()
-
-    //     }
-
-    // }, [isLocalUser, redux_localeuser])
-
     /* Link Change */
     React.useEffect(() => {
 
@@ -90,8 +74,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             document.location.pathname !== isLocation
             && document.location.pathname !== '/'
             && !redux_currentdetailpage
-            // && 
-            // && isCurrentDetailPage !== redux_currentdetailpage
             && !isLoading
         ) {
 

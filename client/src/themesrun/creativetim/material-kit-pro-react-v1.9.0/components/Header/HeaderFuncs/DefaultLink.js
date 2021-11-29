@@ -17,7 +17,6 @@ import {
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
 // @material-ui/icons
-import ShoppingCart from "@material-ui/icons/ShoppingCart";
 // core components
 import { plg_logoutUser } from '../../../../../../components/utils/Plugs/user_plugs';
 
@@ -106,23 +105,25 @@ export async function logoutHandler({ dispatch, history, reduxprops }) {
 
     if (response.payload !== '') {
 
-        // let inQuery = {}
-        // Object.assign(inQuery, {
-        //     isdefault: { "$eq": true },
-        //     country: { "$eq": reduxprops.user.localeUser.referenceID.alpha2Code },
-        //     language: { "$eq": reduxprops.user.localeUser.referenceID.languages[0].iso639_1 }
-        // });
+        let inQuery = {}
+        Object.assign(inQuery, {
+            isdefault: { "$eq": true },
+            country: { "$eq": reduxprops.user.localeUser.referenceID.alpha2Code },
+            language: { "$eq": reduxprops.user.localeUser.referenceID.languages[0].iso639_1 }
+        });
 
-        // await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
-        plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+        await plg_findOne_QueMod({ model: 'page', dispatch, actionType: 'current_detail', inQuery })
+
+
+        // plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
+        // plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })
+
         history.push('/')
     }
 
 }
 
 export async function setCurrentPage({ dispatch, item, history, reduxprops, reactrouter }) {
-
-    console.log(item);
 
     if (reactrouter.location.pathname === '/') {
 
