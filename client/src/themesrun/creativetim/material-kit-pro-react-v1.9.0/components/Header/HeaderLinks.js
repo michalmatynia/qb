@@ -20,7 +20,7 @@ import styles from "../../../../../templates/creativetim/material-kit-pro-react-
 const useStyles = makeStyles(styles);
 // Component Functions
 
-export function HeaderLinks({ mystate, dropdownHoverColor }) {
+export function HeaderLinks({ dropdownHoverColor }) {
 
   console.log('HeaderLinks');
   // const { dropdownHoverColor, stateuser, propuser } = props;
@@ -31,7 +31,6 @@ export function HeaderLinks({ mystate, dropdownHoverColor }) {
                  
       <List className={cx(classes.list, classes.mlAuto)}>
       <HeaderLinksProper
-      mystate={mystate}
       />
         <ListItem className={classes.listItem} key='language_dropdown'><Fade duration={1000}><ListLanguageMenu/></Fade></ListItem>
       </List>

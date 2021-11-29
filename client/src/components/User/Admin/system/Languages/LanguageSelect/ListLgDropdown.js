@@ -172,6 +172,7 @@ export default function ListLanguageMenu() {
 
         if (value._id !== redux_localeuser._id && isLocalStorage) {
 
+            console.log('Change localeuser in lgdropdown');
             let inQuery = { _id: { "$eq": value._id } }
             await plg_findOne_QueMod({ model: isLocalStorage.model, dispatch, actionType: 'locale', inQuery, populate: isLocalStorage.qhelpers.populate })
             // plg_clearProps({ dispatch, model: 'page', actionType: 'current_list' })
@@ -179,6 +180,8 @@ export default function ListLanguageMenu() {
             // ==================
 
             if (document.location.pathname === '/' && redux_current_detail_page) {
+
+                console.log('IN');
 
                 inQuery = {
                     country: { "$eq": value.referenceID.alpha2Code },

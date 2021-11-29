@@ -5,7 +5,6 @@ import {
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* STATE */
-import { header_state } from "./Additional/state"
 
 import { HeaderLinks } from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Header/HeaderLinks.js";
 import Header from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Header/Header.js";
@@ -65,7 +64,7 @@ function HeaderHolder() {
                 {console.log('header main render')}
                 <Header
                     absolute
-                    links={<HeaderLinks dropdownHoverColor="info" mystate={header_state} />}
+                    links={<HeaderLinks dropdownHoverColor="info"  />}
                     fixed
                     // color="dark"
 

@@ -6,6 +6,7 @@ import { ShowLinks } from './HeaderFuncs/ShowLinks.js'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Fade from 'react-reveal/Fade';
+import { header_state } from "../../../../../components/Header_footer/Header/Additional/state"
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -20,19 +21,20 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
     const dispatch = useDispatch()
 
-    let redux_currentlistpage = useSelector(state => state.page.current_list_page)
+    // let redux_currentlistpage = useSelector(state => state.page.current_list_page)
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
-    let redux_productdetail = useSelector(state => state.product.detail)
+    const [isHeaderState, setHeaderState] = React.useState(header_state);
+
     const [isLocalUser, setLocalUser] = React.useState();
     const [isPrevLocalUser, setPrevLocalUser] = React.useState();
     const [isCurrentListPage, setCurrentListPage] = React.useState();
 
     const [isLoading, setIsLoading] = React.useState(true);
 
-    /* Cleanup */
+    /* Lg Change */
     React.useEffect(() => {
 
         if (isLocalUser !== redux_localeuser && isLocalUser) {
@@ -46,7 +48,7 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
         }
 
-    }, [isLocalUser, reactrouter_history, reactrouter_location, redux_localeuser, redux_productdetail])
+    }, [isLocalUser, reactrouter_history, reactrouter_location, redux_localeuser])
 
 
 
@@ -78,10 +80,10 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
     const classes = useStyles();
 
     return (
-        isCurrentListPage && !isLoading ?
+        isCurrentListPage && !isLoading && isHeaderState ?
         <Fade duration={1000}><ShowLinks
                 dynamiclinks={isCurrentListPage}
-                staticlinks={mystate.user}
+                staticlinks={isHeaderState.user}
             /></Fade> : null
     );
 

@@ -29,11 +29,29 @@ const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
 export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
-    console.log(dynamiclinks);
-
+    let redux_localeuser = useSelector(state => state.user.localeUser)
     let userdata = useSelector(state => state.user.userData)
     const [isStaticList, setStaticList] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
 
+      /* Lg Change */
+      React.useEffect(() => {
+
+        if (isLocalUser !== redux_localeuser && isLocalUser) {
+
+            console.log('LG CHNAGE ShowLinks');
+
+            setIsLoading(true)
+            setPrevLocalUser(isLocalUser)
+            setLocalUser(redux_localeuser)
+            setStaticList()
+
+        }
+
+    }, [isLocalUser, redux_localeuser])
+    
     const composeStaticList = useCallback(async () => {
         if(userdata) {
 
@@ -80,13 +98,16 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
      ) {
             composeStaticList().then((list) => {
                 setStaticList(list)
+                setLocalUser(redux_localeuser)
+                setIsLoading(false)
+
             })
 
         }
 
-    }, [composeStaticList, isStaticList, userdata])
+    }, [composeStaticList, isStaticList, redux_localeuser, userdata])
 
-    if (isStaticList && userdata) {
+    if (isStaticList && userdata && !isLoading && redux_localeuser === isLocalUser) {
 
         console.log('inside isStaticList');
 
