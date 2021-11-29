@@ -12,12 +12,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     plg_findMany,
 } from '../../../../../components/utils/Plugs/cms_plugs';
-import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerLinksStyle.js";
 
-const useStyles = makeStyles(styles);
 // Component Functions
 
-export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
+export default function HeaderLinksProper() {
 
     const dispatch = useDispatch()
 
@@ -29,7 +27,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
     const [isHeaderState, setHeaderState] = React.useState(header_state);
 
     const [isLocalUser, setLocalUser] = React.useState();
-    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
     const [isCurrentListPage, setCurrentListPage] = React.useState();
 
     const [isLoading, setIsLoading] = React.useState(true);
@@ -39,18 +36,14 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
 
         if (isLocalUser !== redux_localeuser && isLocalUser) {
 
-            console.log('LG CHNAGE Header Links Proper');
 
             setIsLoading(true)
-            setPrevLocalUser(isLocalUser)
             setLocalUser(redux_localeuser)
             setCurrentListPage()
 
         }
 
     }, [isLocalUser, reactrouter_history, reactrouter_location, redux_localeuser])
-
-
 
     const fetchListMenu = useCallback(async () => {
 
@@ -66,7 +59,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
     React.useEffect(() => {
         if (redux_localeuser && !isCurrentListPage) {
 
-            console.log('Create Current List');
             setIsLoading(true)
 
             fetchListMenu().then((result) => {
@@ -77,7 +69,6 @@ export default function HeaderLinksProper({ mystate, dropdownHoverColor }) {
         }
     }, [fetchListMenu, isCurrentListPage, redux_localeuser]);
 
-    const classes = useStyles();
 
     return (
         isCurrentListPage && !isLoading && isHeaderState ?

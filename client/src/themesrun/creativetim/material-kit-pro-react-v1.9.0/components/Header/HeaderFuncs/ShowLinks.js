@@ -20,10 +20,6 @@ import styles from "../../../../../../themesrun/creativetim/material-kit-pro-rea
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
 
 // core components
-import { plg_logoutUser } from '../../../../../../components/utils/Plugs/user_plugs';
-
-import { plg_findOne_QueMod } from '../../../../../../components/utils/Plugs/cms_plugs';
-
 
 const useStyles = makeStyles(styles);
 // This VERSION IS CORRECT
@@ -34,27 +30,22 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
     const [isStaticList, setStaticList] = React.useState();
     const [isLoading, setIsLoading] = React.useState(true);
     const [isLocalUser, setLocalUser] = React.useState();
-    const [isPrevLocalUser, setPrevLocalUser] = React.useState();
     const [isLocation, setIsLocation] = React.useState();
-    const [isPrevLocation, setPrevLocation] = React.useState();
     const [isComposedMenu, setComposedMenu] = React.useState();
 
     const [isCurrentDetailPage, setCurrentDetailPage] = React.useState();
 
     let redux_currentdetailpage = useSelector(state => state.page.current_detail_page)
 
-    /* Link Change */
+    /* Dynamic Link Change */
     React.useEffect(() => {
 
         if (
             document.location.pathname === '/'
-            // && !redux_currentdetailpage
-            // && 
             && isCurrentDetailPage !== redux_currentdetailpage
             && !isLoading
         ) {
 
-            console.log('Dynamic Link CHNAGE ShowLinks');
 
             setIsLoading(true)
             setComposedMenu()
@@ -77,21 +68,14 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             && !isLoading
         ) {
 
-            console.log('dynamic To Static Link CHNAGE ShowLinks');
-
             setIsLoading(true)
             setComposedMenu()
             setStaticList()
             setCurrentDetailPage()
 
-
         }
 
     }, [redux_currentdetailpage, isCurrentDetailPage, isLoading, isLocation])
-
-
-
-
 
     const composeStaticList = useCallback(async () => {
         if (userdata) {
@@ -103,7 +87,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
                 list.push(item)
 
             });
-
 
             staticlinks.forEach((item) => {
                 if (!userdata.isAuth) {
@@ -159,8 +142,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
     React.useEffect(() => {
 
-            
-
         async function runComposeMenu() {
             return isStaticList.map((item, i) => {
 
@@ -186,31 +167,20 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
         } 
 
-
         if (!isComposedMenu) {
 
             if (isStaticList
                 && userdata
                 && !isLoading
-                // && isLocalUser === redux_localeuser
-                // && isCurrentDetailPage === redux_currentdetailpage
-                // && isLocation === document.location.pathname
     
             ) {
     
-                console.log('run Compose Menu');
-                // console.log(isCurrentDetailPage);
-                // console.log(redux_currentdetailpage);
-                // console.log(isLocation);
-                // console.log(document.location.pathname);
-
                 runComposeMenu().then((menu)=>{
                     setComposedMenu(menu)
                 })
     
             }
 
-  
         }
 
     },[isComposedMenu, isCurrentDetailPage, isLoading, isLocalUser, isLocation, isStaticList, redux_currentdetailpage, redux_localeuser, userdata])
@@ -218,9 +188,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
 
     return isComposedMenu && !isLoading ? isComposedMenu : null
 }
-
-
-
 
 
 export function CartLink({ item, i }) {

@@ -1,13 +1,11 @@
 import React, { useCallback } from 'react';
 import {
-  useSelector,
   useDispatch
 } from 'react-redux'
 import {
   plg_findMany,
   plg_countDocuments,
-  plg_aggregate,
-  plg_clearProps
+  plg_aggregate
 
 } from '../../../../../components/utils/Plugs/cms_plugs'
 

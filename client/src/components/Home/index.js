@@ -76,10 +76,6 @@ export default function Home() {
             && document.location.pathname === '/'
         ) {
 
-            // console.log('INSIDE');
-            // console.log(isCurrentDetailPage);
-            // console.log(isLoading);
-
             if (
                 !isCurrentDetailPage && !redux_currentdetailpage && !isWall && !isLocalUser && isLoading) {
 
@@ -116,10 +112,6 @@ export default function Home() {
                     && redux_currentdetailpage
                     && !isLocalUser
                 )
-                
-                // && isWall
-                // && (!isLocalUser )
-                // && !isLoading
             ) {
                 console.log('Grab Current Page - current detail');
                 setIsLoading(true)
@@ -139,8 +131,6 @@ export default function Home() {
 
     const loadPage = useCallback(async () => {
 
-        console.log('runload');
-
         return await loadList_v3({
             dispatch,
             mydetailpage: isCurrentDetailPage,
@@ -155,6 +145,7 @@ export default function Home() {
 
         if (
             isCurrentDetailPage
+            && currencyuser
             && redux_localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
             && !isWall
             && isLoading
@@ -162,15 +153,12 @@ export default function Home() {
         ) {
 
             loadPage().then((allbricks) => {
-                console.log('load Page');
                 let wall = allbricks.map((a) => a.referenceID)
 
                 setIsWall(wall)
-
                 setIsLoading(false)
 
             })
-
         }
 
     }, [currencyuser, isCurrentDetailPage, isLoading, isLocalUser, isWall, loadPage, redux_localeuser]);

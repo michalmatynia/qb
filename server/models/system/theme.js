@@ -160,7 +160,43 @@ const Schema = mongoose.Schema({
             type: Number,
         }
     },
+    HeaderBackgroundColorScrollOn: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
+    },
     HeaderFontColor: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
+    },
+    HeaderFontColorHover: {
         a: {
             required: false,
             type: Number,

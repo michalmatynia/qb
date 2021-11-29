@@ -6,7 +6,6 @@ export default async function processOverTheme({ currentmysite = null }) {
 
     }
 
-   
     /* Primary Color */
 
     let primary_color_array = [

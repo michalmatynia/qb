@@ -64,7 +64,7 @@ function HeaderHolder() {
                     fixed
                     // color="dark"
 
-                    color="transparent"
+                    color="customcolor"
                     // style={{ backgroundColor: 'darkgrey'}}
                     changeColorOnScroll={{
                         height: 400,

@@ -11,16 +11,7 @@ import parentstyleFunc from "./theming/Funcs/parentstyleFunc";
 
 import {
     plg_findOne_QueMod,
-    plg_create_oprMod,
-    plg_aggregate
 } from './components/utils/Plugs/cms_plugs';
-import {
-    act_getGeoLocation,
-    act_injectProp
-} from '../../client/src/redux/actions/generic/generic_actions'
-import {
-    layoutFuncs_findCurrency
-} from './hoc/Funcs/layout_funcs';
 
 import Panel from './components/Panel/panel'
 import Frontside from './components/Frontside/frontside'
@@ -77,19 +68,6 @@ export default function App() {
 
     }, [currentmysite, dispatch, processStyle]);
 
-  
-
-    // React.useEffect(() => {
-
-    //     if (localeuser !== isLocalUser) {
-    //         setPrevLocalUser(isLocalUser)
-    //         setLocalUser(localeuser)
-
-    //     }
-
-    // },[isLocalUser, localeuser])
-
-
 
     const MemoizedWrapper = React.useCallback((props) => {
 
@@ -120,8 +98,7 @@ export default function App() {
     } else if (
         currentmysite && isBodyTheme
     ) {
-        return <div>{console.log('LEVEL 1 App')}
-
+        return <div>
             <HeaderHolder />
             <MemoizedWrapper>
                 <Frontside />

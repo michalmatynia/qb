@@ -22,7 +22,6 @@ const useStyles = makeStyles(styles);
 
 export function HeaderLinks({ dropdownHoverColor }) {
 
-  console.log('HeaderLinks');
   // const { dropdownHoverColor, stateuser, propuser } = props;
   const classes = useStyles();
 

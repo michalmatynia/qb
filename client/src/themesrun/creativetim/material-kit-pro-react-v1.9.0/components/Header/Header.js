@@ -16,10 +16,12 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 import Fade from 'react-reveal/Fade';
+import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
+
 import Button from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 
 // core components
-import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
+import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -28,11 +30,30 @@ import {
 
 const useStyles = makeStyles(styles);
 
-export default function Header(props) {
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
 
+export default function Header(props) {
+  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
+
+  const [isOverTheme, setOverTheme] = React.useState();
+
+  React.useEffect(() => {
+
+    if (!isOverTheme && redux_currentmysite) {
+      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
+
+        setOverTheme(theme)
+      })
+    }
+  }, [redux_currentmysite, isOverTheme])
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const classes = useStyles();
+  const classes = useStyles({ overtheme: isOverTheme });
+
+  console.log(hasWhiteSpace(classes.primary));
+  console.log(hasWhiteSpace(classes.customcolor));
 
   let dispatch = useDispatch()
 
@@ -53,17 +74,28 @@ export default function Header(props) {
     const { color, changeColorOnScroll } = props;
 
     const windowsScrollTop = window.pageYOffset;
+
+
+    let class_var
+    if(hasWhiteSpace(classes[color])) {
+      class_var = classes[color].split(" ");
+
+    } else {
+          // filter: 'blur(3px)',
+          class_var = classes[color]
+    }
+
     if (windowsScrollTop > changeColorOnScroll.height) {
       document.body
         .getElementsByTagName("header")[0]
-        .classList.remove(classes[color]);
+        .classList.remove(class_var);
       document.body
         .getElementsByTagName("header")[0]
         .classList.add(classes[changeColorOnScroll.color]);
     } else {
       document.body
         .getElementsByTagName("header")[0]
-        .classList.add(classes[color]);
+        .classList.add(class_var);
       document.body
         .getElementsByTagName("header")[0]
         .classList.remove(classes[changeColorOnScroll.color]);
@@ -159,6 +191,7 @@ Header.propTypes = {
     "white",
     "rose",
     "dark",
+    "customcolor"
   ]),
   links: PropTypes.node,
   logo: PropTypes.string,
@@ -182,6 +215,7 @@ Header.propTypes = {
       "white",
       "rose",
       "dark",
+      "customcolor"
     ]).isRequired,
   }),
 };

@@ -457,6 +457,46 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                         valid: true,
                         touched: false,
                     },
+                    HeaderBackgroundColorScrollOn: {
+                        element: 'colorpicker',
+                        category: '',
+                        value: '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 1 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+
+                        },
+                        inputprops: {
+                            name: "header_backgroundcolor_scrollon",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Header Background Color Scroll On',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
                     HeaderFontColor: {
                         element: 'colorpicker',
                         category: '',
@@ -490,6 +530,46 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                         },
                         config: {
                             label: 'Header Font Color',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    HeaderFontColorHover: {
+                        element: 'colorpicker',
+                        category: '',
+                        value:  '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 1 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+
+                        },
+                        inputprops: {
+                            name: "header_fontcolor_hover",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Header Font Color Hover',
                         },
                         validation: {
                             parse: false,
