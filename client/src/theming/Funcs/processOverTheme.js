@@ -48,7 +48,6 @@ export default async function processOverTheme({ currentmysite = null }) {
 
         }
     }
-    console.log(overtheme);
     return overtheme
 
 }

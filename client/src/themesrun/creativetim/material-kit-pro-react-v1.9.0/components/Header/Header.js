@@ -77,6 +77,7 @@ export default function Header(props) {
 
 
     let class_var
+    
     if(hasWhiteSpace(classes[color])) {
       class_var = classes[color].split(" ");
 

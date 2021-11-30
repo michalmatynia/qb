@@ -65,10 +65,11 @@ function HeaderHolder() {
                     // color="dark"
 
                     color="customcolor"
-                    // style={{ backgroundColor: 'darkgrey'}}
                     changeColorOnScroll={{
                         height: 400,
+                        // color: "customcolorscrollon",
                         color: "dark",
+
                     }}
                     images={isImages}
                 />
