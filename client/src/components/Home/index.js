@@ -71,15 +71,13 @@ export default function Home() {
     /* Grab Default  */
 
     React.useEffect(() => {
+
         if (
             redux_localeuser
             && document.location.pathname === '/'
         ) {
-
             if (
                 !isCurrentDetailPage && !redux_currentdetailpage && !isWall && !isLocalUser && isLoading) {
-
-                console.log('Grab Default Page - current detail');
 
                 setLocalUser(redux_localeuser)
 

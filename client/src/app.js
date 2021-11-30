@@ -48,6 +48,8 @@ export default function App() {
                 }]
             })
 
+            console.log(mysite_result);
+
             if (mysite_result.payload.checked.length > 0) {
 
                 processStyle({ currentmysite: mysite_result.payload }).then((result) => {
@@ -79,7 +81,8 @@ export default function App() {
                 {props.children}
             </div>
         } else {
-            return null
+            return props.children
+
         }
     }, [parentclasses.body])
 

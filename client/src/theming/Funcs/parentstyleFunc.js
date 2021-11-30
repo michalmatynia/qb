@@ -3,7 +3,7 @@ export default async function processOverTheme({ currentmysite = null }) {
         body: {}
     }
    
-    if (currentmysite.checked.length > 0) {
+    if (currentmysite.checked.length > 0 ) {
         Object.assign(parentstyle.body, { backgroundColor: `rgba(${currentmysite.checked[0].referenceID.BodyBackgroundColor.r}, ${currentmysite.checked[0].referenceID.BodyBackgroundColor.g}, ${currentmysite.checked[0].referenceID.BodyBackgroundColor.b}, ${currentmysite.checked[0].referenceID.BodyBackgroundColor.a})`, })
         Object.assign(parentstyle.body, { color: `rgba(${currentmysite.checked[0].referenceID.BodyFontColor.r}, ${currentmysite.checked[0].referenceID.BodyFontColor.g}, ${currentmysite.checked[0].referenceID.BodyFontColor.b}, ${currentmysite.checked[0].referenceID.BodyFontColor.a})`})
 
@@ -13,7 +13,6 @@ export default async function processOverTheme({ currentmysite = null }) {
         }
 
     }
-
     return parentstyle
 
 }

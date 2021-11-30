@@ -105,27 +105,18 @@ const headerStyle = (theme) => ({
   },
   customcolor: {
     // // CSS property overtheme.primaryColorHex[0]
-    color: whiteColor,
-    backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
+    color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderFontColor.r + ", " + overtheme.HeaderFontColor.g + ", " + overtheme.HeaderFontColor.b + ", "+ overtheme.HeaderFontColor.a + ")": 
+    "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
+
+    backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderBackgroundColor.r + ", " + overtheme.HeaderBackgroundColor.g + ", " + overtheme.HeaderBackgroundColor.b + ", "+ overtheme.HeaderBackgroundColor.a + ")": 
     "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
     boxShadow: ({ overtheme }) =>
     overtheme ? 
-    "0 4px 20px 0px rgba(" + hexToRgb(overtheme.primaryColorHex[0])  + ", 0.14)" 
-    + "0 7px 12px -5px rgba(" + hexToRgb(overtheme.primaryColorHex[0])  + ", 0.46)" 
+    "0 4px 20px 0px rgba(" + overtheme.HeaderBackgroundColor.r + ", " + overtheme.HeaderBackgroundColor.g + ", " + overtheme.HeaderBackgroundColor.b + ", 0.14)" 
+    + "0 7px 12px -5px rgba(" + overtheme.HeaderBackgroundColor.r + ", " + overtheme.HeaderBackgroundColor.g + ", " + overtheme.HeaderBackgroundColor.b + ", 0.46)" 
     : "0 4px 20px 0px rgba(" + hexToRgb(blackColor)  + ", 0.14)" 
-    + "0 7px 12px -5px rgba(" + hexToRgb(blackColor)  + ", 0.46)"
-    // "&:hover,&:focus": {
-    //   backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
-    //   "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
-    //   boxShadow: ({ overtheme }) =>
-    //   overtheme ? "0 14px 26px -12px rgba(" + hexToRgb(overtheme.primaryColorHex[0])  + ", 0.42)" 
-    //   + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.12)" 
-    //   + "0 8px 10px -5px rgba(" + hexToRgb(overtheme.primaryColorHex[0])  + ", 0.2)" 
-    //   : "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.42)" 
-    //   + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.12)"
-    //   + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.2)",
+    + "0 7px 12px -5px rgba(" + hexToRgb(blackColor)  + ", 0.46)",
 
-    // },
 
   },
   primary: {

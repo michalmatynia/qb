@@ -108,7 +108,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
                     }
                 }
             });
-
             return list
 
         }
