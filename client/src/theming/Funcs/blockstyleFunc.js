@@ -250,8 +250,10 @@ export async function parseBlockstyle({ item = null }) {
         if (item.blockstyle[0].referenceID.image_all_sub_webkit_animation) {
             Object.assign(blockstyle.image_all_sub_style, { WebkitAnimation: item.blockstyle[0].referenceID.image_all_sub_webkit_animation })
         }
+        console.log(blockstyle);
 
         return blockstyle
+
 
     } else {
         return null

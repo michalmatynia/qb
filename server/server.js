@@ -17,7 +17,7 @@ const requestIp = require('request-ip');
 require('dotenv').config();
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI7, { useUnifiedTopology: true, useNewUrlParser: true });
 
 app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(express.json({ limit: '2000kb' })); //Used to parse JSON bodies
@@ -264,8 +264,8 @@ app.get('/api/getGooglecreds', auth, admin, asyncMiddleware(async (req, res) => 
 
 }))
 app.get('/api/getGeolocation', asyncMiddleware(async (req, res) => {
-    // const clientIp = requestIp.getClientIp(req); 
-    const clientIp = '44.64.109.27';
+    const clientIp = requestIp.getClientIp(req); 
+    // const clientIp = '44.64.109.27';
 
     try {
 

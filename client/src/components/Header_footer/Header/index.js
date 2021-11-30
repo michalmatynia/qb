@@ -64,7 +64,7 @@ function HeaderHolder() {
                     fixed
                     // color="dark"
 
-                    color="customcolor"
+                    color={redux_currentmysite.checked.length > 0 ? "customcolor" : "dark"}
                     changeColorOnScroll={{
                         height: 400,
                         color: "dark",
