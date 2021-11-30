@@ -117,17 +117,18 @@ const headerStyle = (theme) => ({
     + "0 7px 12px -5px rgba(" + hexToRgb(blackColor)  + ", 0.46)",
   },
   customcolorscrollon : { 
-    color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderFontColor.r + ", " + overtheme.HeaderFontColor.g + ", " + overtheme.HeaderFontColor.b + ", "+ overtheme.HeaderFontColor.a + ")": 
-    "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
+    backgroundColor: 'red'
+    // color: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderFontColor.r + ", " + overtheme.HeaderFontColor.g + ", " + overtheme.HeaderFontColor.b + ", "+ overtheme.HeaderFontColor.a + ")": 
+    // "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
 
-    backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", "+ overtheme.HeaderBackgroundColorScrollOn.a + ")": 
-    "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
-    boxShadow: ({ overtheme }) =>
-    overtheme ? 
-    "0 4px 20px 0px rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", 0.14)" 
-    + "0 7px 12px -5px rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", 0.46)" 
-    : "0 4px 20px 0px rgba(" + hexToRgb(blackColor)  + ", 0.14)" 
-    + "0 7px 12px -5px rgba(" + hexToRgb(blackColor)  + ", 0.46)",
+    // backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", "+ overtheme.HeaderBackgroundColorScrollOn.a + ")": 
+    // "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
+    // boxShadow: ({ overtheme }) =>
+    // overtheme ? 
+    // "0 4px 20px 0px rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", 0.14)" 
+    // + "0 7px 12px -5px rgba(" + overtheme.HeaderBackgroundColorScrollOn.r + ", " + overtheme.HeaderBackgroundColorScrollOn.g + ", " + overtheme.HeaderBackgroundColorScrollOn.b + ", 0.46)" 
+    // : "0 4px 20px 0px rgba(" + hexToRgb(blackColor)  + ", 0.14)" 
+    // + "0 7px 12px -5px rgba(" + hexToRgb(blackColor)  + ", 0.46)",
   },
   primary: {
     backgroundColor: primaryColor[0],

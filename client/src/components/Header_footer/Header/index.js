@@ -67,8 +67,8 @@ function HeaderHolder() {
                     color="customcolor"
                     changeColorOnScroll={{
                         height: 400,
-                        // color: "customcolorscrollon",
-                        color: "dark",
+                        color: "customcolorscrollon",
+                        // color: "dark",
 
                     }}
                     images={isImages}

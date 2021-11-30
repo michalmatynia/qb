@@ -77,7 +77,8 @@ export default function Header(props) {
 
 
     let class_var
-    
+    let change_color_on_scroll_var
+
     if(hasWhiteSpace(classes[color])) {
       class_var = classes[color].split(" ");
 
@@ -86,20 +87,29 @@ export default function Header(props) {
           class_var = classes[color]
     }
 
+    if(hasWhiteSpace(classes[changeColorOnScroll.color])) {
+      change_color_on_scroll_var = classes[changeColorOnScroll.color].split(" ");
+
+    } else {
+      change_color_on_scroll_var = classes[changeColorOnScroll.color]
+    }
+
+    console.log(change_color_on_scroll_var);
+
     if (windowsScrollTop > changeColorOnScroll.height) {
       document.body
         .getElementsByTagName("header")[0]
         .classList.remove(class_var);
       document.body
         .getElementsByTagName("header")[0]
-        .classList.add(classes[changeColorOnScroll.color]);
+        .classList.add(change_color_on_scroll_var);
     } else {
       document.body
         .getElementsByTagName("header")[0]
         .classList.add(class_var);
       document.body
         .getElementsByTagName("header")[0]
-        .classList.remove(classes[changeColorOnScroll.color]);
+        .classList.remove(change_color_on_scroll_var);
     }
   };
 
@@ -216,7 +226,8 @@ Header.propTypes = {
       "white",
       "rose",
       "dark",
-      "customcolor"
+      "customcolor",
+      "customcolorscrollon"
     ]).isRequired,
   }),
 };
