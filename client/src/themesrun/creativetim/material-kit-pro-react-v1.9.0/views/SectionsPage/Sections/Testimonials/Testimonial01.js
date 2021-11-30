@@ -82,16 +82,30 @@ export function SectionTestimonialsTestimonial01({ item, i }) {
     const WrapperOutputNext = useCallback(
         (props) => {
 
-            if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
+            try {
 
-                return <ProcessAsWrapperBG
+                if (item.blockstyle.length > 0 && !item.css_wrap_card) {
+        
+                  if (item.blockstyle[0].referenceID.images.length > 0) {
+                    return <ProcessAsWrapperBG
                     props={props}
                     list={item.blockstyle[0].referenceID}
-                    parentClassName={classes.testimonials + " " + classes.wrapperasbg} //                 ,
+                    parentClassName={classes.testimonials + " " + classes.wrapperasbg} 
                 />
-            } else {
-                return <div className={classes.testimonials + " " + classes.wrapperasbg}>{props.children}</div>
-            }
+        
+                  } else {
+                    throw item.blockstyle
+                  }
+                } else {
+                  throw item.blockstyle
+                }
+              } catch (err) {
+                
+                return <div className={cx(classes.testimonials, classes.wrapperasbg)}>{props.children}</div>
+
+        
+              }
+
 
         }, [classes.testimonials, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 

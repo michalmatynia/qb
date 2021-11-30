@@ -113,19 +113,27 @@ export function SectionContent01({ item, i }) {
 
   const WrapperOutputNext = useCallback(
     (props) => {
+      try {
+    
+        if (item.blockstyle.length > 0 && !item.css_wrap_card) {
 
-      if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
+          if (item.blockstyle[0].referenceID.images.length > 0) {
+            return <ProcessAsWrapperBG
+            props={props}
+            list={item.blockstyle[0].referenceID}
+            parentClassName={cx(classes.section, classes.wrapperasbg)}
+  
+          />
 
-        return <ProcessAsWrapperBG
-          props={props}
-          list={item.blockstyle[0].referenceID}
-          parentClassName={cx(classes.section, classes.wrapperasbg)}
-
-        />
-      } else {
+          } else {
+            throw item.blockstyle
+          }
+        } else {
+          throw item.blockstyle
+        }
+      } catch (err) {
         return <div className={cx(classes.section, classes.wrapperasbg)}>{props.children}</div>
       }
-
 
     }, [classes.section, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 

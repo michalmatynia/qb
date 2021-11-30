@@ -28,21 +28,10 @@ import FCGridItem from './FCGridItem'
 import FuncRevealWrapper from '../../../../../../../hoc/Funcs/Reveal/FuncRevealWrapper'
 
 import {
-    reveal_array_exo,
     reveal_array_name,
-    reveal_array_description,
-    reveal_array_title,
-    reveal_array_btn_launch,
-    reveal_array_image_all,
-    reveal_array_image_one,
-    reveal_array_image_two,
-    reveal_array_image_three,
-    reveal_array_image_four,
-    reveal_array_image_five,
     reveal_array_name_sub,
     reveal_array_description_sub,
-    reveal_array_title_sub,
-    reveal_array_image_all_sub
+
   } from '../../../../../../../components/utils/Form/Fixed_categories/reveal_arrays'
 
 import featuresStyle from "../../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/sectionsSections/featuresStyle.js";
@@ -91,24 +80,39 @@ export function SectionFeaturesFeature05({ item, i }) {
     /* Render component specific element */
     const WrapperOutputNext = useCallback(
         (props) => {
-            // return props.children
+            try {
 
-            if (item.blockstyle.length > 0 && item.blockstyle[0] && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
+                if (item.blockstyle.length > 0 && !item.css_wrap_card) {
 
-                return <ProcessAsWrapperBG
-                    props={props}
-                    list={item.blockstyle[0].referenceID}
-                    parentClassName={cx(
-                        classes.features5,
-                        classes.wrapperasbg
-                    )}
-                />
-            } else {
+                    if (item.blockstyle[0].referenceID.images.length > 0 ) {
+                        return <ProcessAsWrapperBG
+                        props={props}
+                        list={item.blockstyle[0].referenceID}
+                        parentClassName={cx(
+                            classes.features5,
+                            classes.wrapperasbg
+                        )}
+                    />
+                    } else {
+                        throw item.blockstyle
+
+                    }
+     
+
+                } else {
+
+                    throw item.blockstyle
+                }
+
+
+            } catch(err) {
                 return <div className={cx(
                     classes.features5,
                     classes.wrapperasbg
                 )}>{props.children}</div>
+
             }
+
 
         }, [classes.features5, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 

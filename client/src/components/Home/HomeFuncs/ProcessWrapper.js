@@ -10,8 +10,8 @@ import Card from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/c
 import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import ProcessAsWrapperBG from '../../../functions/HookFuncs/ProcessAsWrapperBG.js'
 import FuncRevealWrapper from '../../../hoc/Funcs/Reveal/FuncRevealWrapper'
-import { 
-    reveal_array_exo, 
+import {
+    reveal_array_exo,
 } from '../../../components/utils/Form/Fixed_categories/reveal_arrays'
 
 import { parseBlockstyle } from "../../../theming/Funcs/blockstyleFunc";
@@ -49,18 +49,31 @@ export default function Wrapper({ props }) {
         if (props.item.css_wrap_card) {
 
             // IF THERE IS IMAGE
+            try {
 
-            if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
-                return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
-                    props={props}
-                    list={props.item.blockstyle[0].referenceID}
-/* parentClassName={classes.card1} */ ><CardBody>{props.children}</CardBody></ProcessAsWrapperBG></Card>
-            } else {
-                // IF THERE ARE NO IMAGE
+                if (props.item.blockstyle.length > 0) {
 
+                    if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
+                        return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
+                            props={props}
+                            list={props.item.blockstyle[0].referenceID}
+        /* parentClassName={classes.card1} */ ><CardBody>{props.children}</CardBody></ProcessAsWrapperBG></Card>
+                    } else {
+                        // IF THERE ARE NO IMAGE
+
+                        throw props.item.blockstyle
+                    }
+
+                } else {
+                    throw props.item.blockstyle
+                }
+
+                // throw
+            } catch (err) {
                 return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><CardBody>{props.children}</CardBody></Card>
-            }
 
+
+            }
 
         } else {
 

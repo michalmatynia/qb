@@ -79,17 +79,30 @@ export function SectionTeamsTeam05({ item, i }) {
     const WrapperOutputNext = useCallback(
         (props) => {
 
-            if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
 
-                return <ProcessAsWrapperBG
+            try {
+
+                if (item.blockstyle.length > 0 && !item.css_wrap_card) {
+        
+                  if (item.blockstyle[0].referenceID.images.length > 0) {
+                    return <ProcessAsWrapperBG
                     props={props}
                     list={item.blockstyle[0].referenceID}
-                    parentClassName={classes.team + " " + classes.wrapperasbg} //                 ,
-
+                    parentClassName={cx(classes.team, classes.wrapperasbg)} 
                 />
-            } else {
-                return <div className={classes.team + " " + classes.wrapperasbg}>{props.children}</div>
-            }
+        
+                  } else {
+                    throw item.blockstyle
+                  }
+                } else {
+                  throw item.blockstyle
+                }
+              } catch (err) {
+                
+                return <div className={cx(classes.team, classes.wrapperasbg)}>{props.children}</div>
+
+        
+              }
 
         }, [classes.team, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 

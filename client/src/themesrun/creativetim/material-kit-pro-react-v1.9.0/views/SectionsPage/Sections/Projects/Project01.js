@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { useSelector } from 'react-redux'
 import cx from "classnames";
 
 // @material-ui/core components
@@ -8,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import GridContainer from "../../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
-import {parseBlockstyle} from "../../../../../../../theming/Funcs/blockstyleFunc";
+import { parseBlockstyle } from "../../../../../../../theming/Funcs/blockstyleFunc";
 
 import MyMenu from './Additional/MyMenu'
 // import FCGridItem from './Additional/Project01FCGridItemReverse'
@@ -47,18 +46,17 @@ export function SectionProjectsProject01({ item, i }) {
 
   const processStyle = useCallback(async (item) => {
     return await parseBlockstyle(item)
-}, [])
+  }, [])
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
 
-    processStyle({item}).then((result)=>{
+    processStyle({ item }).then((result) => {
       setBrickStyle(result)
     })
   }, [item, processStyle])
 
   const classes = useStyles();
 
-  // console.log(isBrickStyle);
   const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
   const dynoclasses = useDynoStyles();
 
@@ -92,8 +90,8 @@ export function SectionProjectsProject01({ item, i }) {
             i={i}
             key={value.referenceID._id}
             parentClass={classes.cardRotate}
-            title={value.referenceID.title ? <h6 className={cx(classes.cardCategoryWhite, dynoclasses.title_sub_style)}><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_title_sub}>{value.referenceID.title}</FuncRevealWrapper></h6> 
-            : <LoopCategory value={value} parentClass={cx(classes.cardCategoryWhite, dynoclasses.title_sub_style)} />}
+            title={value.referenceID.title ? <h6 className={cx(classes.cardCategoryWhite, dynoclasses.title_sub_style)}><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_title_sub}>{value.referenceID.title}</FuncRevealWrapper></h6>
+              : <LoopCategory value={value} parentClass={cx(classes.cardCategoryWhite, dynoclasses.title_sub_style)} />}
             name={<a href="#pablo" onClick={e => e.preventDefault()}><h3 className={cx(classes.cardTitle, dynoclasses.name_sub_style)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name_sub}>{value.referenceID.name}</FuncRevealWrapper></h3></a>}
             description={<p className={cx(classes.cardDescriptionWhite, dynoclasses.description_sub_style)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_description_sub}>{value.referenceID.description}</FuncRevealWrapper></p>}
             toggleModal={({ cb_toggle, value }) => {
@@ -214,64 +212,73 @@ export function SectionProjectsProject01({ item, i }) {
   const WrapperOutputNext = useCallback(
     (props) => {
 
-      if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
+      try {
 
-        return <ProcessAsWrapperBG
-          props={props}
-          list={item.blockstyle[0].referenceID}
-          parentClassName={classes.projects + " " + classes.wrapperasbg}
-        />
-      } else {
-        return <div className={classes.projects + " " + classes.wrapperasbg}>{props.children}</div>
+        if (item.blockstyle.length > 0 && !item.css_wrap_card) {
+
+          if (item.blockstyle[0].referenceID.images.length > 0) {
+            return <ProcessAsWrapperBG
+              props={props}
+              list={item.blockstyle[0].referenceID}
+              parentClassName={cx(classes.projects, classes.wrapperasbg)}
+            />
+
+          } else {
+            throw item.blockstyle
+          }
+        } else {
+          throw item.blockstyle
+        }
+      } catch (err) {
+        return <div className={cx(classes.projects, classes.wrapperasbg)}>{props.children}</div>
       }
-
     }, [classes.projects, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 
 
   return (
 
     <WrapperOutputNext>
-      <div className={dynoclasses.dynamiccontainer }>
+      <div className={dynoclasses.dynamiccontainer}>
 
-      <div className={classes.container} style={{marginBottom: '80px'}}>
-        <ImagePreviewModal
-          isModalValue={isModalValue}
-          isShowFullScreen={isShowFullScreen}
-          toggleModal={(cb_toggle) => {
-            setShowFullScreen(cb_toggle)
-            setIsModalValue(cb_toggle)
-          }}
-        />
-        <GridContainer>
-          <GridItem
-            xs={12}
-            sm={12}
-            md={12}
-            className={cx(
-              classes.mlAuto,
-              classes.mrAuto,
-              classes.textCenter
-            )}
-          ><div className={dynoclasses.name_outerdiv} style={{ marginTop: "80px" }}>
-            <h2 className={cx(dynoclasses.name_style, classes.title) } ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h2>
-            </div>
-            <MyMenu
-              isCategoryArray={isCategoryArray}
-              cbActionOnClick={({ value }) => {
-                setIsFilter(value)
-              }}
-              isFilter={isFilter}
-              item={item}
-            />
-            {/*           <div className={classes.tabSpace} /> */}
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
+        <div className={classes.container} style={{ marginBottom: '80px' }}>
+          <ImagePreviewModal
+            isModalValue={isModalValue}
+            isShowFullScreen={isShowFullScreen}
+            toggleModal={(cb_toggle) => {
+              setShowFullScreen(cb_toggle)
+              setIsModalValue(cb_toggle)
+            }}
+          />
+          <GridContainer>
+            <GridItem
+              xs={12}
+              sm={12}
+              md={12}
+              className={cx(
+                classes.mlAuto,
+                classes.mrAuto,
+                classes.textCenter
+              )}
+            ><div className={dynoclasses.name_outerdiv} style={{ marginTop: "80px" }}>
+                <h2 className={cx(dynoclasses.name_style, classes.title)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h2>
+              </div>
+              <MyMenu
+                isCategoryArray={isCategoryArray}
+                cbActionOnClick={({ value }) => {
+                  setIsFilter(value)
+                }}
+                isFilter={isFilter}
+                item={item}
+              />
+              {/*           <div className={classes.tabSpace} /> */}
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
 
-          {loopChecked({ isSlides, item })}
+            {loopChecked({ isSlides, item })}
 
-        </GridContainer>
-      </div></div>
+          </GridContainer>
+        </div></div>
     </WrapperOutputNext>);
 
 }

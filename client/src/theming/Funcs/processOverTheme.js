@@ -6,7 +6,6 @@ export default async function processOverTheme({ currentmysite = null }) {
         appbarparams: {}
 
     }
-console.log(currentmysite);
     /* Primary Color */
     if (currentmysite.checked.length > 0 ) {
         let primary_color_array = [

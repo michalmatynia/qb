@@ -74,23 +74,33 @@ export function SectionComponents01({ item, i }) {
 
       }) : null
 
-    }, [classes.cardImage, classes.componentsMacbook, classes.iconsImage, classes.repostImage, classes.shoppingCart, classes.twitterImage, dynoclasses.image_all_style, dynoclasses.image_five_style, dynoclasses.image_four_style, dynoclasses.image_one_style, dynoclasses.image_three_style, dynoclasses.image_two_style])
+    }, [classes.cardImage, classes.componentsMacbook, classes.iconsImage, classes.repostImage, classes.shoppingCart, classes.twitterImage, dynoclasses.image_five_style, dynoclasses.image_four_style, dynoclasses.image_one_style, dynoclasses.image_three_style, dynoclasses.image_two_style])
 
 
   const WrapperOutputNext = useCallback(
     (props) => {
 
-      if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
 
-        return <ProcessAsWrapperBG
-          props={props}
-          list={item.blockstyle[0].referenceID}
-          parentClassName={classes.wrapperasbg}
-        />
-      } else {
+      try {
+    
+        if (item.blockstyle.length > 0 && !item.css_wrap_card) {
+
+          if (item.blockstyle[0].referenceID.images.length > 0) {
+            return <ProcessAsWrapperBG
+            props={props}
+            list={item.blockstyle[0].referenceID}
+            parentClassName={classes.wrapperasbg}
+          />
+
+          } else {
+            throw item.blockstyle
+          }
+        } else {
+          throw item.blockstyle
+        }
+      } catch (err) {
         return <div className={classes.wrapperasbg}
-        >{props.children}</div>
-      }
+        >{props.children}</div>      }
 
     }, [classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 

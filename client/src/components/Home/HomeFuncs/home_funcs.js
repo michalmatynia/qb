@@ -32,8 +32,7 @@ export function LoopItems({ item }) {
         <div>
             <WrapperOutputNext
                 item={item}
-            >
-                <InputToComponent
+            ><InputToComponent
                     item={item} />
             </WrapperOutputNext>
         </div>

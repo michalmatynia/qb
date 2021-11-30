@@ -86,16 +86,26 @@ export function SectionFeaturesFeature03({ item, i }) {
   const WrapperOutputNext = useCallback(
     (props) => {
 
-      if (item.blockstyle.length > 0 && item.blockstyle[0].referenceID.images.length > 0 && !item.css_wrap_card) {
+      try {
 
-        return <ProcessAsWrapperBG
-          props={props}
-          list={item.blockstyle[0].referenceID}
-          parentClassName={classes.features3 + " " + classes.wrapperasbg} //                 ,
+        if (item.blockstyle.length > 0 && !item.css_wrap_card) {
 
-        />
-      } else {
-        return <div className={classes.features3 + " " + classes.wrapperasbg}>{props.children}</div>
+          if (item.blockstyle[0].referenceID.images.length > 0) {
+            return <ProcessAsWrapperBG
+            props={props}
+            list={item.blockstyle[0].referenceID}
+            parentClassName={cx(classes.features3, classes.wrapperasbg)} 
+  
+          />
+
+          } else {
+            throw item.blockstyle
+          }
+        } else {
+          throw item.blockstyle
+        }
+      } catch (err) {
+        return <div className={cx(classes.features3,classes.wrapperasbg)}>{props.children}</div>
       }
 
     }, [classes.features3, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
