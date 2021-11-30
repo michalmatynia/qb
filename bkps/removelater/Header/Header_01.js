@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import cx from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -16,9 +16,10 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 import Fade from 'react-reveal/Fade';
+import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
 
 // core components
-import styles from "../../../../../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
+import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -27,14 +28,32 @@ import {
 
 const useStyles = makeStyles(styles);
 
-export default function Header(props) {
+function hasWhiteSpace(s) {
+  return s.indexOf(' ') >= 0;
+}
 
+export default function Header(props) {
+  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
+
+  const [isOverTheme, setOverTheme] = React.useState();
+  const [isLogostring, setIsLogostring] = React.useState();
+
+  React.useEffect(() => {
+
+    if (!isOverTheme && redux_currentmysite) {
+      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
+
+        setOverTheme(theme)
+      })
+    }
+  }, [redux_currentmysite, isOverTheme])
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const classes = useStyles();
-
+  const classes = useStyles({ overtheme: isOverTheme });
+  // const useDynoStyles = makeStyles(isOverTheme ? isOverTheme : null);
+  // const dynoclasses = useDynoStyles();
+  
   let dispatch = useDispatch()
-  let reduxprops = useSelector(state => state)
 
   React.useEffect(() => {
     if (props.changeColorOnScroll) {
@@ -53,17 +72,30 @@ export default function Header(props) {
     const { color, changeColorOnScroll } = props;
 
     const windowsScrollTop = window.pageYOffset;
+
+
+    let class_var
+
+    if(hasWhiteSpace(classes[color])) {
+
+      class_var = classes[color].split(" ");
+
+    } else {
+          // filter: 'blur(3px)',
+          class_var = classes[color]
+    }
+
     if (windowsScrollTop > changeColorOnScroll.height) {
       document.body
         .getElementsByTagName("header")[0]
-        .classList.remove(classes[color]);
+        .classList.remove(class_var);
       document.body
         .getElementsByTagName("header")[0]
         .classList.add(classes[changeColorOnScroll.color]);
     } else {
       document.body
         .getElementsByTagName("header")[0]
-        .classList.add(classes[color]);
+        .classList.add(class_var);
       document.body
         .getElementsByTagName("header")[0]
         .classList.remove(classes[changeColorOnScroll.color]);
@@ -72,17 +104,22 @@ export default function Header(props) {
 
   const { color, links, fixed, absolute, images } = props;
 
-  let logostring
-  if (images) {
+
+React.useEffect(() => {
+
+  if (!isLogostring && images) {
+
+
+    let logostring
+
     logostring = images.length > 0 ? `url(${images[0].secure_url}) no-repeat` : null
 
-  } else {
-    logostring = null
+    setIsLogostring(logostring)
+
   }
+},[images, isLogostring])
 
-  // let backgroundstring = logo ? `url(${logo[0].secure_url}) no-repeat` : null
-
-  const appBarClasses = classNames({
+  const appBarClasses = cx({
     [classes.appBar]: true,
     [classes[color]]: color,
     [classes.absolute]: absolute,
@@ -95,13 +132,13 @@ export default function Header(props) {
           images ?
           <Fade duration={1000}><Link
               to="/"
-              onClick={() => refreshHome({ dispatch, myprops: reduxprops })}
+              onClick={() => refreshHome({ dispatch})}
             >
               <div
                 style={{
                   height: `60px`,
                   width: `200px`,
-                  background: logostring,
+                  background: isLogostring,
                 }}></div></Link></Fade>
             : null
         }      
@@ -159,6 +196,7 @@ Header.propTypes = {
     "white",
     "rose",
     "dark",
+    "customcolor"
   ]),
   links: PropTypes.node,
   logo: PropTypes.string,
@@ -182,6 +220,7 @@ Header.propTypes = {
       "white",
       "rose",
       "dark",
+      "customcolor",
     ]).isRequired,
   }),
 };
