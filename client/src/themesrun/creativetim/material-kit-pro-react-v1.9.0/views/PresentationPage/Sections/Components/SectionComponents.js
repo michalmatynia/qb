@@ -79,8 +79,6 @@ export function SectionComponents01({ item, i }) {
 
   const WrapperOutputNext = useCallback(
     (props) => {
-
-
       try {
     
         if (item.blockstyle.length > 0 && !item.css_wrap_card) {

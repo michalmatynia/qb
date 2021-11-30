@@ -49,7 +49,6 @@ export default function Header(props) {
   }, [redux_currentmysite, isOverTheme])
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  console.log(isOverTheme);
   const classes = useStyles({ overtheme: isOverTheme });
   // const useDynoStyles = makeStyles(isOverTheme ? isOverTheme : null);
   // const dynoclasses = useDynoStyles();

@@ -101,11 +101,9 @@ export default function App() {
     ) {
         return <div>
             <HeaderHolder />
-            <Frontside />
-
-            {/* <MemoizedWrapper>
+            <MemoizedWrapper>
                 <Frontside />
-            </MemoizedWrapper> */}
+            </MemoizedWrapper>
         </div>
     } else {
         return (
