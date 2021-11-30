@@ -8,8 +8,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
     plg_findOne_QueMod,
-    plg_aggregate,
-    plg_clearProps
 } from '../../components/utils/Plugs/cms_plugs';
 
 export default function Home() {
@@ -111,7 +109,6 @@ export default function Home() {
                     && !isLocalUser
                 )
             ) {
-                console.log('Grab Current Page - current detail');
                 setIsLoading(true)
                 setIsWall()
                 setCurrentDetailPage(redux_currentdetailpage)

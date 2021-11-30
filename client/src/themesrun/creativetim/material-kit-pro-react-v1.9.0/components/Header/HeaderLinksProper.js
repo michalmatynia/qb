@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router-dom";
 // react components for routing our app without refresh
 import { ShowLinks } from './HeaderFuncs/ShowLinks.js'
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
 import Fade from 'react-reveal/Fade';
 import { header_state } from "../../../../../components/Header_footer/Header/Additional/state"
 

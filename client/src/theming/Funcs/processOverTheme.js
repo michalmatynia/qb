@@ -3,6 +3,7 @@ export default async function processOverTheme({ currentmysite = null }) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
     let overtheme = {
+        appbarparams: {}
 
     }
 
@@ -45,8 +46,20 @@ export default async function processOverTheme({ currentmysite = null }) {
             Object.assign(overtheme, { HeaderBackgroundColorScrollOn: currentmysite.checked[0].referenceID.HeaderBackgroundColorScrollOn })
             Object.assign(overtheme, { HeaderFontColor: currentmysite.checked[0].referenceID.HeaderFontColor })
             Object.assign(overtheme, { HeaderFontColorHover: currentmysite.checked[0].referenceID.HeaderFontColorHover })
-
         }
+
+        // if (currentmysite.checked[0].referenceID) {
+        //     if (true) {
+
+        //     Object.assign(overtheme.appbarparams, { 
+        //         boxShadow: "0 4px 20px 0px rgba(" + currentmysite.checked[0].referenceID.HeaderBackgroundColor.r + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.g + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.b + ", 0.14)"
+        //         + "0 7px 12px -5px rgba(" + currentmysite.checked[0].referenceID.HeaderBackgroundColor.r + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.g + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.b + ", 0.46)"
+            
+        //      })
+        // }
+
+
+
     }
     return overtheme
 

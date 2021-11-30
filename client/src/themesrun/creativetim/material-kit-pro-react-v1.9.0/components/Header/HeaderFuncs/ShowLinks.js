@@ -5,10 +5,9 @@ import cx from "classnames";
 
 // nodejs library to set properties for components
 import ListItem from "@material-ui/core/ListItem";
-import { Link, useHistory } from "react-router-dom";
+import { Link} from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import { DefaultLink } from "./DefaultLink"
 import {
     plg_clearProps
@@ -123,8 +122,6 @@ export function ShowLinks({ staticlinks = null, dynamiclinks = null }) {
             && ((redux_currentdetailpage && document.location.pathname === '/') || (!redux_currentdetailpage && document.location.pathname !== '/'))
 
         ) {
-
-            console.log('Create Static List');
 
             composeStaticList().then((list) => {
                 setStaticList(list)

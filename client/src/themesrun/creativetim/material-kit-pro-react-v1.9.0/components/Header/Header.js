@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // nodejs library that concatenates classes
-import classNames from "classnames";
+import cx from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -17,8 +17,6 @@ import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 import Fade from 'react-reveal/Fade';
 import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
-
-import Button from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 
 // core components
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
@@ -38,6 +36,7 @@ export default function Header(props) {
   let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const [isOverTheme, setOverTheme] = React.useState();
+  const [isLogostring, setIsLogostring] = React.useState();
 
   React.useEffect(() => {
 
@@ -51,10 +50,9 @@ export default function Header(props) {
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const classes = useStyles({ overtheme: isOverTheme });
-
-  console.log(hasWhiteSpace(classes.primary));
-  console.log(hasWhiteSpace(classes.customcolor));
-
+  // const useDynoStyles = makeStyles(isOverTheme ? isOverTheme : null);
+  // const dynoclasses = useDynoStyles();
+  
   let dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -77,7 +75,6 @@ export default function Header(props) {
 
 
     let class_var
-    let change_color_on_scroll_var
 
     if(hasWhiteSpace(classes[color])) {
       class_var = classes[color].split(" ");
@@ -87,45 +84,41 @@ export default function Header(props) {
           class_var = classes[color]
     }
 
-    if(hasWhiteSpace(classes[changeColorOnScroll.color])) {
-      change_color_on_scroll_var = classes[changeColorOnScroll.color].split(" ");
-
-    } else {
-      change_color_on_scroll_var = classes[changeColorOnScroll.color]
-    }
-
-    console.log(change_color_on_scroll_var);
-
     if (windowsScrollTop > changeColorOnScroll.height) {
       document.body
         .getElementsByTagName("header")[0]
         .classList.remove(class_var);
       document.body
         .getElementsByTagName("header")[0]
-        .classList.add(change_color_on_scroll_var);
+        .classList.add(classes[changeColorOnScroll.color]);
     } else {
       document.body
         .getElementsByTagName("header")[0]
         .classList.add(class_var);
       document.body
         .getElementsByTagName("header")[0]
-        .classList.remove(change_color_on_scroll_var);
+        .classList.remove(classes[changeColorOnScroll.color]);
     }
   };
 
   const { color, links, fixed, absolute, images } = props;
 
-  let logostring
-  if (images) {
+
+React.useEffect(() => {
+
+  if (!isLogostring && images) {
+
+
+    let logostring
+
     logostring = images.length > 0 ? `url(${images[0].secure_url}) no-repeat` : null
 
-  } else {
-    logostring = null
+    setIsLogostring(logostring)
+
   }
+},[images, isLogostring])
 
-  // let backgroundstring = logo ? `url(${logo[0].secure_url}) no-repeat` : null
-
-  const appBarClasses = classNames({
+  const appBarClasses = cx({
     [classes.appBar]: true,
     [classes[color]]: color,
     [classes.absolute]: absolute,
@@ -144,7 +137,7 @@ export default function Header(props) {
                 style={{
                   height: `60px`,
                   width: `200px`,
-                  background: logostring,
+                  background: isLogostring,
                 }}></div></Link></Fade>
             : null
         }      
@@ -227,7 +220,6 @@ Header.propTypes = {
       "rose",
       "dark",
       "customcolor",
-      "customcolorscrollon"
     ]).isRequired,
   }),
 };
