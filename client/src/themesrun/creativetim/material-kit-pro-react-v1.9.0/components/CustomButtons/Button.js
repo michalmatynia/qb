@@ -19,7 +19,7 @@ const RegularButton = React.forwardRef((props, ref) => {
   let currentmysite = useSelector(state => state.mysite.CurrentMysite)
   const [isOverTheme, setOverTheme] = React.useState();
 
-  const classes = useStyles({overtheme: isOverTheme});
+  const classes = useStyles({overtheme: isOverTheme && isOverTheme !== {} ? isOverTheme : null});
 
 
   React.useEffect(() => {
@@ -28,7 +28,10 @@ const RegularButton = React.forwardRef((props, ref) => {
       processOverTheme({currentmysite}).then((theme)=>{
 
         setOverTheme(theme)
-      })
+      }) 
+    } else {
+      setOverTheme({})
+
     }
 
 
@@ -47,6 +50,7 @@ const RegularButton = React.forwardRef((props, ref) => {
     justIcon,
     className,
     muiClasses,
+    classCustomback,
     ...rest
   } = props;
 
@@ -62,7 +66,9 @@ const RegularButton = React.forwardRef((props, ref) => {
     [classes.block]: block,
     [classes.link]: link,
     [classes.justIcon]: justIcon,
-    [className]: className
+    [classes.justIcon]: justIcon,
+    [className]: className,
+    [classCustomback]: classCustomback
   });
 
   return isOverTheme ? (

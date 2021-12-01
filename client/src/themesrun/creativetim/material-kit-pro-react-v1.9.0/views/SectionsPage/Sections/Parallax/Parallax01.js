@@ -46,7 +46,7 @@ export function SectionParallax01({ item, i }) {
 
   const classes = useStyles();
 
-  const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
+  const useDynoStyles = makeStyles(isBrickStyle && isBrickStyle !== {} ? isBrickStyle : null);
   const dynoclasses = useDynoStyles();
 
   const loopChecked = useCallback(
@@ -59,7 +59,8 @@ export function SectionParallax01({ item, i }) {
         key={item._id}
         name={<div className={dynoclasses.name_outerdiv}><h1 className={cx(classes.title, dynoclasses.name_style)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h1></div>}
 
-        btn_launch={<div className={dynoclasses.btn_launch_outerdiv}><Button
+        btn_launch={<div><Button
+          classCustomback={dynoclasses.btn_launch_outerdiv}
           color="primary"
           size="lg"
           href={item.btn_launch_link ? item.btn_launch_link : '/'} target="_blank" ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_btn_launch}>{item.btn_launch}</FuncRevealWrapper></Button></div>}
@@ -71,7 +72,7 @@ export function SectionParallax01({ item, i }) {
 
   return (
 
-    <div className={dynoclasses.dynamiccontainer}>
+    isBrickStyle ? <div className={dynoclasses.dynamiccontainer}>
       <Parallax
         item={item}
         filter={item.blockstyle.length === 0 || item.blockstyle[0].referenceID.image_filter === 'transparent' ? null : item.blockstyle[0].referenceID.image_filter}
@@ -94,6 +95,6 @@ export function SectionParallax01({ item, i }) {
           </GridContainer>
         </div>
       </Parallax>
-    </div>
+    </div> : null
   );
 }

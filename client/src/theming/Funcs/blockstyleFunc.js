@@ -172,7 +172,10 @@ export async function parseBlockstyle({ item = null }) {
                     Object.assign(blockstyle.btn_launch_outerdiv, { padding: item.blockstyle[0].referenceID.btn_launch_outerdiv_padding })
                 }
                 if (item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a > 0) {
-                    Object.assign(blockstyle.btn_launch_outerdiv, { backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.r}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.g}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.b}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a})` })
+                    Object.assign(blockstyle.btn_launch_outerdiv, { 
+                        backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.r}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.g}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.b}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a})`
+                    
+                    })
                 }
                 if (item.blockstyle[0].referenceID.btn_launch_h_textalign !== 'disabled') {
                     Object.assign(blockstyle.btn_launch_outerdiv, { textAlign: item.blockstyle[0].referenceID.btn_launch_h_textalign })

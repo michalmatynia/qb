@@ -106,8 +106,8 @@ const buttonStyle = {
   },
   primary: {
     // CSS property overtheme.primaryColorHex[0]
-    // backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
-    // "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
+    backgroundColor: ({ overtheme }) => overtheme ? "rgba(" + overtheme.primaryColor[0].r + ", " + overtheme.primaryColor[0].g + ", " + overtheme.primaryColor[0].b + ", "+ overtheme.primaryColor[0].a + ")": 
+    "rgba(" + myprimaryColor[0].r + ", " + myprimaryColor[0].g + ", " + myprimaryColor[0].b + ", "+ myprimaryColor[0].a + ")",
     boxShadow: ({ overtheme }) =>
     overtheme ? 
     "0 2px 2px 0 rgba(" + hexToRgb(overtheme.primaryColorHex[0])  + ", 0.14)" 
