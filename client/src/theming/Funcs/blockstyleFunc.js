@@ -173,7 +173,21 @@ export async function parseBlockstyle({ item = null }) {
                 }
                 if (item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a > 0) {
                     Object.assign(blockstyle.btn_launch_outerdiv, { 
-                        backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.r}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.g}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.b}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a})`
+                        backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.r}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.g}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.b}, ${item.blockstyle[0].referenceID.btn_launch_outerdiv_backgroundColor.a})`,
+                        "&:hover,&:focus": {
+                            // boxShadow: ({ overtheme }) =>
+                            // overtheme ? 
+                            // "0 14px 6px -12px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.42)" 
+                            // + "0 4px 23px 0 rgba(" + hexToRgb(blackColor)  + ", 0.12)" 
+                            // + "0 8px 10px -5px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.2)" 
+                            // : "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.42)" 
+                            // + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.12)"
+                            // + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.2)",
+                            // color: "rgba(" + hexToRgb(blackColor) + ",.87)",
+                            color: "red",
+
+                            // backgroundColor: grayColor[19],
+                          },
                     
                     })
                 }
