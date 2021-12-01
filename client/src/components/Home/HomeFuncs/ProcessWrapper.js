@@ -33,9 +33,15 @@ export default function Wrapper({ props }) {
 
     React.useEffect(() => {
 
-        processStyle({ item: props.item }).then((result) => {
-            setBrickStyle(result)
-        })
+        if (props.item.blockstyle.length > 0) {
+            processStyle({ item: props.item }).then((result) => {
+                setBrickStyle(result)
+            })
+        } else {
+            setBrickStyle({})
+
+        }
+
     }, [processStyle, props.item])
 
     const classes = useStyles();
@@ -45,7 +51,7 @@ export default function Wrapper({ props }) {
     const dynoclasses = useDynoStyles();
 
     const CardWrapper = useCallback(({ props }) => {
-
+        // props.item.blockstyle.length > 0 && isBrickStyle
         if (props.item.css_wrap_card) {
 
             // IF THERE IS IMAGE
@@ -53,17 +59,17 @@ export default function Wrapper({ props }) {
 
                 if (props.item.blockstyle.length > 0) {
 
-                    if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
-                        return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
-                            props={props}
-                            list={props.item.blockstyle[0].referenceID}
+                        if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
+                            return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
+                                props={props}
+                                list={props.item.blockstyle[0].referenceID}
         /* parentClassName={classes.card1} */ ><CardBody>{props.children}</CardBody></ProcessAsWrapperBG></Card>
-                    } else {
-                        // IF THERE ARE NO IMAGE
+                        } else {
+                            // IF THERE ARE NO IMAGE
 
-                        throw props.item.blockstyle
-                    }
-
+                            throw props.item.blockstyle
+                        }
+              
                 } else {
                     throw props.item.blockstyle
                 }
@@ -81,16 +87,17 @@ export default function Wrapper({ props }) {
 
         }
 
-    }, [dynoclasses.blockwrapper, classes.card1])
+    }, [classes.card1, dynoclasses.blockwrapper])
 
 
     // eslint-disable-next-line no-useless-concat
-    return <FuncRevealWrapper key={props.item._id} item={props.item} revealarray={reveal_array_exo}><div className={"cd-section" + " " + cx(
+    return isBrickStyle ? <FuncRevealWrapper key={props.item._id} item={props.item} revealarray={reveal_array_exo}><div className={"cd-section" + " " + cx(
 
         { [classes.container]: props.item.css_wrap_container },
         { [classes.main]: props.item.css_wrap_mainraised },
         { [classes.mainRaised]: props.item.css_wrap_mainraised },
         dynoclasses.cardwrapper
-    )} id={props.item._id}><CardWrapper props={props} /></div></FuncRevealWrapper>
+    )} id={props.item._id}><CardWrapper props={props} /></div></FuncRevealWrapper> : null
+
 
 }

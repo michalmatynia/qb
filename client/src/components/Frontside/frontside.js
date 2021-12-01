@@ -26,8 +26,8 @@ import Contact from '../../components/StaticBricks/Contact/index';
 
 // Leave Sections, this is for an overlay functionality
 export default function Frontside() {
-    // const classes = useStyles();
-    return <div>
+console.log('frontside render');
+return <div>
         <Switch>
             <Route exact path='/user/cart'><AuthFC Page={CartPage} reload={null} /></Route>
             <Route exact path='/store'><AuthFC Page={StorePage} reload={null} /></Route>

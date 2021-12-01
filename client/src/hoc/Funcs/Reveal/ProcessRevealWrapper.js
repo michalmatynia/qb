@@ -103,8 +103,11 @@ export default function RevealWrapper({ props }) {
             setRevealParams(revealparams)
         }
 
-        grabRevealParams()
-    }, [props.item.blockstyle, props.revealarray])
+        if(!isRevealParams) {
+            grabRevealParams()
+
+        }
+    }, [isRevealParams, props.item.blockstyle, props.revealarray])
 
     const RevealWrapper = useCallback(() => {
 
@@ -229,6 +232,6 @@ export default function RevealWrapper({ props }) {
     }, [isRevealParams, props])
 
     // eslint-disable-next-line no-useless-concat
-    return <RevealWrapper>{props.children}</RevealWrapper>
+    return isRevealParams ? <RevealWrapper>{props.children}</RevealWrapper> : null
 
 }

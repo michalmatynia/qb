@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 // @material-ui/core components
 // import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -122,35 +122,53 @@ export default function SectionsPage({ list }) {
     animateScroll();
   };
 
-  function loopBrickRows() {
 
-    let maintable = []
-    let brickrow = []
-    let i = 0
+  const loopList = useCallback(
+     () => {
 
-    for (let [itemkey, item] of Object.entries(list)) {
-      i++
+      return list.map((item, i) => {
+        return <LoopItems
+          item={item}
+          // list={list}
+          // i={i}
+          key={item._id}
+        />
+      }) 
+    }, [list])
 
-      brickrow.push(<LoopItems
-        item={item}
-        itemkey={itemkey}
-        list={list}
-        i={i}
-        key={item._id}
-      />)
 
-      maintable.push(brickrow)
-      brickrow = []
-    }
+  // const loopBrickRows = useCallback(
+  //   () => {
 
-    return maintable
-  }
+  //     let maintable = []
+  //     let brickrow = []
+  //     let i = 0
+
+  //     for (let [itemkey, item] of Object.entries(list)) {
+  //       i++
+
+  //       brickrow.push(<LoopItems
+  //         item={item}
+  //         itemkey={itemkey}
+  //         list={list}
+  //         i={i}
+  //         key={item._id}
+  //       />)
+
+  //       maintable.push(brickrow)
+  //       brickrow = []
+  //     }
+
+  //     return maintable
+
+  //   }, [list])
+
 
   // const classes = useStyles();
   return (
     // <div className={classNames(classes.main)}>
-    <div>
-      {loopBrickRows()}
+    <div>{console.log('Sectionspage')}
+      {loopList()}
       <nav id="cd-vertical-nav">
         <ul >
           {list ? generateVerticalMenu({ list }) : null}
