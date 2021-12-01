@@ -4635,7 +4635,167 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                         valid: true,
                         touched: false,
                     },
+                    // =============== BTN Launch INNER BUTTON
+                    btn_launch_innerbtn_backgroundColor: {
+                        element: 'colorpicker',
+                        category: '',
+                        value: '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 0 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
 
+                        },
+                        inputprops: {
+                            name: "btn_launch_innerbtn_backgroundColor",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Btn Launch Inner Button Background Color',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    btn_launch_innerbtn_FontColor: {
+                        element: 'colorpicker',
+                        category: '',
+                        value: '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 0 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+
+                        },
+                        inputprops: {
+                            name: "btn_launch_innerbtn_FontColor",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Btn Launch Inner Button Font Color',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    btn_launch_innerbtn_backgroundColor_hover: {
+                        element: 'colorpicker',
+                        category: '',
+                        value: '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 0 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+
+                        },
+                        inputprops: {
+                            name: "btn_launch_innerbtn_backgroundColor_hover",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Btn Launch Inner Button Background Color Hover',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    btn_launch_innerbtn_FontColor_hover: {
+                        element: 'colorpicker',
+                        category: '',
+                        value: '',
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    resetvalue: { r: 255, g: 255, b: 255, a: 0 }
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 4,
+                                xm: 4,
+                                md: 2,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+
+                        },
+                        inputprops: {
+                            name: "btn_launch_innerbtn_FontColor_hover",
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Btn Launch Inner Button Font Color Hover',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
                     // =============== BTN Launch H
                     btn_launch_h_fontfamily: {
                         element: 'select',

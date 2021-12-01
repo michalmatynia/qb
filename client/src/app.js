@@ -24,6 +24,7 @@ export default function App() {
     let currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
     const [isBodyTheme, setIsBodyTheme] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
     const processStyle = useCallback(async (item) => {
         return await parentstyleFunc(item)
@@ -50,20 +51,19 @@ export default function App() {
 
             if (mysite_result.payload.checked.length > 0) {
 
-                processStyle({ currentmysite: mysite_result.payload }).then((result) => {
-                    setIsBodyTheme(result)
-                })
+                return processStyle({ currentmysite: mysite_result.payload })
 
             } else {
-                setIsBodyTheme({})
-
+                return null
             }
-            // return mysite_result.payload
         }
 
         if (currentmysite === undefined) {
 
-            findMysite()
+            findMysite().then((result)=>{
+                setIsBodyTheme(result)
+                setIsLoading(false)
+            })
         }
 
     }, [currentmysite, dispatch, processStyle]);
@@ -90,14 +90,14 @@ export default function App() {
             location.pathname.includes('/admin')
             || location.pathname.includes('/client')
             || location.pathname.includes('/contentmanager')
-        )
+        ) && !isLoading
 
     ) {
         return <div>
             <Panel />
         </div>
     } else if (
-        currentmysite && isBodyTheme
+        currentmysite && !isLoading
     ) {
         return <div>
             <HeaderHolder />

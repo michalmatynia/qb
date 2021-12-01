@@ -109,6 +109,7 @@ const [isMainTable, setIsMainTable] = React.useState();
     scrollGo(document.documentElement, targetScroll.offsetTop, 1250);
   };
   const scrollGo = (element, to, duration) => {
+
     var start = element.scrollTop,
       change = to - start,
       currentTime = 0,

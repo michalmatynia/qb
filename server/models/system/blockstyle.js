@@ -531,7 +531,79 @@ const Schema = mongoose.Schema({
             required: false,
             type: Number,
         }
+    },
+    btn_launch_innerbtn_backgroundColor: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
+    },
+    btn_launch_innerbtn_FontColor: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
     }, 
+    btn_launch_innerbtn_FontColor_hover: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
+    },
+    btn_launch_innerbtn_backgroundColor_hover: {
+        a: {
+            required: false,
+            type: Number,
+        },
+        b: {
+            required: false,
+            type: Number,
+        },
+        g: {
+            required: false,
+            type: Number,
+        },
+        r: {
+            required: false,
+            type: Number,
+        }
+    },
     btn_launch_h_fontsize: {
         required: false,
         type: String,
