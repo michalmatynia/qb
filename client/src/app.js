@@ -70,19 +70,18 @@ export default function App() {
 
 
     const MemoizedWrapper = React.useCallback((props) => {
-        return props.children
 
-        // if (parentclasses.body) {
+        if (parentclasses.body) {
 
-        //     return <div
-        //         className={cx(parentclasses.body)}
-        //     >
-        //         {props.children}
-        //     </div>
-        // } else {
-        //     return props.children
+            return <div
+                className={cx(parentclasses.body)}
+            >
+                {props.children}
+            </div>
+        } else {
+            return props.children
 
-        // }
+        }
     }, [parentclasses.body])
 
     if (

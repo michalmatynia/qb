@@ -1,6 +1,8 @@
 const css_fontfamily = [
     "disabled", 
-    "Bebas Neue", 
+    "Bebas Neue",
+    "Roboto",
+    "Futura",
     "Arial, sans-serif",
     "Helvetica, sans-serif",
     "Verdana, sans-serif",

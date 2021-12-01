@@ -62,9 +62,9 @@ function HeaderHolder() {
                     absolute
                     links={<HeaderLinks dropdownHoverColor="info"  />}
                     fixed
-                    // color="transparent"
+                    color="dark"
 
-                    color={redux_currentmysite.checked.length > 0 ? "customcolor" : "transparent"}
+                    // color={redux_currentmysite.checked.length > 0 ? "customcolor" : "dark"}
                     changeColorOnScroll={{
                         height: 400,
                         color: "dark",
