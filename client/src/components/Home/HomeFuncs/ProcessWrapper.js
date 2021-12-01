@@ -26,6 +26,7 @@ const useStyles = makeStyles(landingPageStyle);
 export default function Wrapper({ props }) {
 
     const [isBrickStyle, setBrickStyle] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
     const processStyle = useCallback(async (item) => {
         return await parseBlockstyle(item)
@@ -36,9 +37,10 @@ export default function Wrapper({ props }) {
         if (props.item.blockstyle.length > 0) {
             processStyle({ item: props.item }).then((result) => {
                 setBrickStyle(result)
+                setIsLoading(false)
             })
         } else {
-            setBrickStyle({})
+            setIsLoading(false)
 
         }
 
@@ -51,7 +53,6 @@ export default function Wrapper({ props }) {
     const dynoclasses = useDynoStyles();
 
     const CardWrapper = useCallback(({ props }) => {
-        // props.item.blockstyle.length > 0 && isBrickStyle
         if (props.item.css_wrap_card) {
 
             // IF THERE IS IMAGE
@@ -91,7 +92,7 @@ export default function Wrapper({ props }) {
 
 
     // eslint-disable-next-line no-useless-concat
-    return isBrickStyle ? <FuncRevealWrapper key={props.item._id} item={props.item} revealarray={reveal_array_exo}><div className={"cd-section" + " " + cx(
+    return !isLoading ? <FuncRevealWrapper key={props.item._id} item={props.item} revealarray={reveal_array_exo}><div className={"cd-section" + " " + cx(
 
         { [classes.container]: props.item.css_wrap_container },
         { [classes.main]: props.item.css_wrap_mainraised },

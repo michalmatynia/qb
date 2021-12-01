@@ -25,6 +25,7 @@ const useStyles = makeStyles(projectsStyle);
 
 export function SectionParallax01({ item, i }) {
   const [isBrickStyle, setBrickStyle] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const processStyle = useCallback(async (item) => {
     return await parseBlockstyle(item)
@@ -32,13 +33,14 @@ export function SectionParallax01({ item, i }) {
 
   React.useEffect(() => {
     if (item.blockstyle.length > 0) {
-
       processStyle({ item }).then((result) => {
 
         setBrickStyle(result)
+        setIsLoading(false)
+
       })
     } else {
-      setBrickStyle({})
+      setIsLoading(false)
 
     }
 
@@ -72,7 +74,7 @@ export function SectionParallax01({ item, i }) {
 
   return (
 
-    isBrickStyle ? <div className={dynoclasses.dynamiccontainer}>
+    !isLoading ? <div className={dynoclasses.dynamiccontainer}>
       <Parallax
         item={item}
         filter={item.blockstyle.length === 0 || item.blockstyle[0].referenceID.image_filter === 'transparent' ? null : item.blockstyle[0].referenceID.image_filter}

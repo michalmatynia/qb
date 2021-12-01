@@ -126,18 +126,45 @@ const [isMainTable, setIsMainTable] = React.useState();
   };
 
 
+  // const loopList = useCallback(
+  //    () => {
+
+  //     return list.map((item, i) => {
+  //       return <LoopItems
+  //         item={item}
+  //         // list={list}
+  //         // i={i}
+  //         key={item._id}
+  //       />
+  //     }) 
+  //   }, [list])
+
+
   const loopList = useCallback(
-     async () => {
+    async () => {
 
-      return list.map((item, i) => {
-        return <LoopItems
+      let maintable = []
+      let brickrow = []
+      let i = 0
+
+      for (let [itemkey, item] of Object.entries(list)) {
+        i++
+
+        brickrow.push(<LoopItems
           item={item}
+          itemkey={itemkey}
+          list={list}
+          i={i}
           key={item._id}
-        />
-      }) 
+        />)
+
+        maintable.push(brickrow)
+        brickrow = []
+      }
+      
+      return maintable
+
     }, [list])
-
-
 
     React.useEffect(() => {
     
