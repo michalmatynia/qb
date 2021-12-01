@@ -50,6 +50,7 @@ const RegularButton = React.forwardRef((props, ref) => {
     ...rest
   } = props;
 
+
   const btnClasses = cx({
     [classes.button]: true,
     [classes[size]]: size,

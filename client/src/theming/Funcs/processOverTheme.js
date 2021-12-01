@@ -7,7 +7,7 @@ export default async function processOverTheme({ currentmysite = null }) {
 
     }
     /* Primary Color */
-    if (currentmysite.checked.length > 0 ) {
+    if (currentmysite.checked.length > 0) {
         let primary_color_array = [
             currentmysite.checked[0].referenceID.primary_color_one,
             currentmysite.checked[0].referenceID.primary_color_two,
@@ -46,14 +46,14 @@ export default async function processOverTheme({ currentmysite = null }) {
             Object.assign(overtheme, { HeaderFontColor: currentmysite.checked[0].referenceID.HeaderFontColor })
             Object.assign(overtheme, { HeaderFontColorHover: currentmysite.checked[0].referenceID.HeaderFontColorHover })
         }
-
+        /*Solution na drugi typ CSS Classy */
         // if (currentmysite.checked[0].referenceID) {
         //     if (true) {
 
         //     Object.assign(overtheme.appbarparams, { 
         //         boxShadow: "0 4px 20px 0px rgba(" + currentmysite.checked[0].referenceID.HeaderBackgroundColor.r + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.g + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.b + ", 0.14)"
         //         + "0 7px 12px -5px rgba(" + currentmysite.checked[0].referenceID.HeaderBackgroundColor.r + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.g + ", " + currentmysite.checked[0].referenceID.HeaderBackgroundColor.b + ", 0.46)"
-            
+
         //      })
         // }
 
