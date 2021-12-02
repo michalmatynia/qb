@@ -24,16 +24,23 @@ export function SectionHeadersHeader03({ item, i }) {
 
 
 const [isBrickStyle, setBrickStyle] = React.useState();
+const [isLoading, setIsLoading] = React.useState(true);
 
 const processStyle = useCallback(async (item) => {
-    return await parseBlockstyle(item)
+  return await parseBlockstyle(item)
 }, [])
 
 React.useEffect(() => {
-
+  if (item.blockstyle.length > 0) {
     processStyle({ item }).then((result) => {
-        setBrickStyle(result)
+
+      setBrickStyle(result)
+      setIsLoading(false)
     })
+  } else {
+    setIsLoading(false)
+  }
+
 }, [item, processStyle])
 
 const classes = useStyles();
@@ -68,10 +75,10 @@ const loopChecked = useCallback(
   };
   return (
 
-    <Carousel {...settings} >
+    !isLoading ? <Carousel {...settings} >
 
       {loopChecked({ item })}
 
-    </Carousel>
+    </Carousel> : null
   );
 }
