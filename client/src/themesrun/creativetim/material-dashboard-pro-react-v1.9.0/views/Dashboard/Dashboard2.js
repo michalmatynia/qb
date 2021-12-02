@@ -84,9 +84,10 @@ export default function Dashboard() {
       }
     }, {$sort: {"mycount": -1}}, {$limit: 2} ]
     let agg = await plg_aggregate({ model: 'visit', dispatch, actionType: 'samestate', inPipeline })
+
     if (agg.payload.length > 0 && agg.payload[0]._id) {
-      setCheckedLayers( agg.payload[0]._id.toLowerCase() )
-      setCurrentLayers(agg.payload[1]._id.toLowerCase())
+      setCheckedLayers(agg.payload[0]._id ? agg.payload[0]._id.toLowerCase() : [])
+      setCurrentLayers(agg.payload[1]._id ? agg.payload[1]._id.toLowerCase() : [])
     }
 
   }, [dispatch])

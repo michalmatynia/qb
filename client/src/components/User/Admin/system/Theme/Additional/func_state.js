@@ -1,3 +1,4 @@
+import { css_fontfamily } from '../../../../../utils/Form/Fixed_categories/css_fontfamily'
 
 export default async function rawStateFunction({ redux_current_mysite, dispatch, model }) {
     
@@ -573,6 +574,69 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                         },
                         validation: {
                             parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    body_fontfamily: {
+                        element: 'select',
+                        category: 'ct_customselect',
+                        value: '',
+                        fillfields: {
+                            options: {
+                                fromconfig: {
+                                    onPopulateAction: {
+                                        preFind: {
+                                            affectValue: {
+                                                actionA: async ({ cell, getlist, fields }) => {
+                                                    return css_fontfamily
+                                                },
+                                            },
+                                        }
+                                    }
+                                },
+                                toconfig: {
+                                    setpath: 'config.options',
+                                    valuetype: 'array',
+                                },
+                            },
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: css_fontfamily[0],
+
+                                },
+                            },
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        inputprops: {
+                            name: 'body_fontfamily_select',
+                            type: 'text',
+                            id: 'body_fontfamily_fontfamily',
+                        },
+
+                        config: {
+                            label: 'CSS FontFamily Body',
+                            options: [],
+                            autoComplete: true,
+                        },
+                        validation: {
+                            required: false
                         },
                         valid: true,
                         touched: false,

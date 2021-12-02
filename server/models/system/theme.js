@@ -222,6 +222,10 @@ const Schema = mongoose.Schema({
         required: false,
         type: String,
     },
+    body_fontfamily:{
+        required: false,
+        type: String,
+    },
     BodyBackgroundColor: {
         a: {
             required: false,

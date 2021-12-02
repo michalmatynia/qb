@@ -59,7 +59,7 @@ export function SectionParallax01({ item, i }) {
         item={item}
         i={i}
         key={item._id}
-        name={<div className={dynoclasses.name_outerdiv}><h1 className={cx(classes.title, dynoclasses.name_style)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h1></div>}
+        name={<div className={dynoclasses.name_outerdiv} style={{fontFamily: 'Bebas Neue'}} ><h1 className={cx( dynoclasses.name_style)}  ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h1></div>}
 
         btn_launch={<div className={dynoclasses.btn_launch_outerdiv}><Button
           // classCustomback={dynoclasses.btn_launch_outerdiv}
@@ -81,7 +81,7 @@ export function SectionParallax01({ item, i }) {
         filter={item.blockstyle.length === 0 || item.blockstyle[0].referenceID.image_filter === 'transparent' ? null : item.blockstyle[0].referenceID.image_filter}
       // small
       >
-        <div className={classes.container}>
+        <div className={classes.container} >
           <GridContainer>
             <GridItem
               xs={12}
