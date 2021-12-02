@@ -29,8 +29,7 @@ export function HeaderLinks({ dropdownHoverColor }) {
     <div className={classes.collapse}>
                  
       <List className={cx(classes.list, classes.mlAuto)}>
-      <HeaderLinksProper
-      />
+      <HeaderLinksProper />
         <ListItem className={classes.listItem} key='language_dropdown'><Fade duration={1000}><ListLanguageMenu/></Fade></ListItem>
       </List>
     </div> 

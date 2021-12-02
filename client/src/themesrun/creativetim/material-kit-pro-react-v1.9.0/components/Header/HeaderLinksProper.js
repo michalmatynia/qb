@@ -35,7 +35,6 @@ export default function HeaderLinksProper() {
 
         if (isLocalUser !== redux_localeuser && isLocalUser) {
 
-
             setIsLoading(true)
             setLocalUser(redux_localeuser)
             setCurrentListPage()

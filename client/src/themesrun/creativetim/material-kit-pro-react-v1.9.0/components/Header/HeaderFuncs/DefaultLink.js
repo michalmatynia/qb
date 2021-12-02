@@ -54,6 +54,8 @@ export function DefaultLink({ item }) {
             </Link>
         </ListItem>
     } else if ('dynamiclink' in item) {
+
+        console.log(item);
         return <ListItem className={classes.listItem} key={item.name} >
             <Button
                 className={cx(classes.navLink, {

@@ -49,8 +49,6 @@ import { remove_fromDatabase, remove_fromFormTable } from '../../EventFuncs/remo
 import { search_inDatabase } from '../../EventFuncs/search_funcs'
 import { routing_gotoEdit } from '../../EventFuncs/routing_funcs'
 import { pre_processCheckedIDs } from '../../EventFuncs/CommonFuncs/pre_funcs'
-import { attachtoFuncs_overModel_Add } from '../../../../User/Admin/GenericFuncs/attachto_funcs'
-import AutocompleteMenu from '../../GenericCompos/autocomplete_menu'
 
 import { grabFormdataShowPreview_v1 } from '../../../../utils/Form/formActions.js'
 
@@ -1477,7 +1475,6 @@ class AddTrnsDetailProduct extends Component {
         return (
             <div>
                 <div>{<ShowMessages />}</div>
-                {this.props ? grabFormdataShowPreview_v1({ mystate: this.state }) : null}
                 {this.props ? <FormElement
                     formdata={this.state.localStorage.form.formdata}
                     model={this.state.localStorage.model}

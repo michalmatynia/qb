@@ -183,19 +183,20 @@ export async function parseBlockstyle({ item = null }) {
                 if (item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor) {
                     Object.assign(blockstyle.btn_launch_innerbtn, { 
                         backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor.r}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor.g}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor.b}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor.a})`,
+                        color: `rgba(${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor.r}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor.g}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor.b}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor.a})`,
                         "&:hover,&:focus": {
-                            // boxShadow: ({ overtheme }) =>
-                            // overtheme ? 
-                            // "0 14px 6px -12px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.42)" 
-                            // + "0 4px 23px 0 rgba(" + hexToRgb(blackColor)  + ", 0.12)" 
-                            // + "0 8px 10px -5px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.2)" 
-                            // : "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.42)" 
-                            // + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.12)"
-                            // + "0 4px 23px 0px rgba(" + hexToRgb(blackColor)  + ", 0.2)",
-                            // color: "rgba(" + hexToRgb(blackColor) + ",.87)",
-                            color: "red",
+                            boxShadow:
+                            "0 14px 6px -12px rgba(" + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.r + "," + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.g + ", " + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.b + ", 0.42)"
 
-                            // backgroundColor: grayColor[19],
+                            // "0 14px 6px -12px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.42)" 
+                            + "0 4px 23px 0 rgba(0, 0, 0, 0.12)" 
+                            + "0 8px 10px -5px rgba(" + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.r + "," + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.g + ", " + item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.b + ", 0.2)",
+
+                            // + "0 8px 10px -5px rgba(" + hexToRgb(overtheme.secondaryColorHex[0])  + ", 0.2)",
+
+
+                            backgroundColor: `rgba(${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.r}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.g}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.b}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_backgroundColor_hover.a})`,
+                            color: `rgba(${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor_hover.r}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor_hover.g}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor_hover.b}, ${item.blockstyle[0].referenceID.btn_launch_innerbtn_FontColor_hover.a})`,
                           },
                     
                     })

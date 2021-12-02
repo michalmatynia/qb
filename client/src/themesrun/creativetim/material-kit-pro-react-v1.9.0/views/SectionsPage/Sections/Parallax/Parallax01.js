@@ -48,7 +48,7 @@ export function SectionParallax01({ item, i }) {
 
   const classes = useStyles();
 
-  const useDynoStyles = makeStyles(isBrickStyle && isBrickStyle !== {} ? isBrickStyle : null);
+  const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
   const dynoclasses = useDynoStyles();
 
   const loopChecked = useCallback(
@@ -62,7 +62,8 @@ export function SectionParallax01({ item, i }) {
         name={<div className={dynoclasses.name_outerdiv}><h1 className={cx(classes.title, dynoclasses.name_style)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h1></div>}
 
         btn_launch={<div className={dynoclasses.btn_launch_outerdiv}><Button
-          classCustomback={dynoclasses.btn_launch_outerdiv}
+          // classCustomback={dynoclasses.btn_launch_outerdiv}
+          item={item}
           color="primary"
           size="lg"
           href={item.btn_launch_link ? item.btn_launch_link : '/'} target="_blank" ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_btn_launch}>{item.btn_launch}</FuncRevealWrapper></Button></div>}
