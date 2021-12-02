@@ -113,9 +113,6 @@ export default function Home() {
                 setIsWall()
                 setCurrentDetailPage(redux_currentdetailpage)
                 setLocalUser(redux_localeuser)
-
-
-
             }
 
         }

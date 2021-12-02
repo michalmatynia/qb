@@ -119,9 +119,9 @@ export function SectionProjectsProject01({ item, i }) {
   //   },[])
 
   // ==================
+  React.useEffect(() => {
 
-  const refineList = useCallback(
-    async () => {
+    async function refineList() {
 
       let newViewingList = []
 
@@ -159,23 +159,20 @@ export function SectionProjectsProject01({ item, i }) {
       newViewingList = newViewingList.slice(0, isLimit)
 
       return newViewingList
-
-    }, [isFilter._id, item.checked])
-  React.useEffect(() => {
+    }
 
     if (item.checked.length > 0) {
 
       if (isFilter === 'all') {
 
         let newViewingList = item.checked.slice(0, isLimit)
-          setSlides(newViewingList)
-        setIsLoading(false)
+
+        setSlides(newViewingList)
+
 
       } else {
         refineList().then((newViewingList) => {
-
           setSlides(newViewingList)
-          setIsLoading(false)
 
         })
       }
@@ -184,10 +181,13 @@ export function SectionProjectsProject01({ item, i }) {
     }
 
 
-  }, [isFilter, item.checked, refineList])
+  }, [isFilter, isLimit, isSortBy, isSortOrder, item.checked])
 
-  const extractTaxonomy = useCallback(
-    async () => {
+  React.useEffect(() => {
+
+    async function extractTaxonomy() {
+
+      // extract taxonomies from product array
       let category_taxo_array = []
       for (let eachslide of item.checked) {
 
@@ -212,12 +212,8 @@ export function SectionProjectsProject01({ item, i }) {
       });
 
       return category_taxo_array
-    }, [item.checked])
 
-
-  // extract taxonomies from product array
-
-  React.useEffect(() => {
+    }
 
     if (item.checked && item.checked.length > 0) {
 
@@ -227,7 +223,7 @@ export function SectionProjectsProject01({ item, i }) {
       })
     }
 
-  }, [extractTaxonomy, item.checked])
+  }, [item.checked])
 
 
   const WrapperOutputNext = useCallback(
@@ -258,18 +254,18 @@ export function SectionProjectsProject01({ item, i }) {
 
   return (
 
-    !isLoading && isCategoryArray.length > 0 ? <WrapperOutputNext>
+    !isLoading && isCategoryArray ? <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <div className={classes.container} style={{ marginBottom: '80px' }}>{console.log('render')}
-          <ImagePreviewModal
+          {/* <ImagePreviewModal
             isModalValue={isModalValue}
             isShowFullScreen={isShowFullScreen}
             toggleModal={(cb_toggle) => {
               setShowFullScreen(cb_toggle)
               setIsModalValue(cb_toggle)
             }}
-          />
+          /> */}
           <GridContainer>
             <GridItem
               xs={12}
@@ -281,14 +277,16 @@ export function SectionProjectsProject01({ item, i }) {
                 classes.textCenter
               )}
             >
-              <div className={dynoclasses.name_outerdiv} style={{ marginTop: "80px" }}>
+              {/* <div className={dynoclasses.name_outerdiv} style={{ marginTop: "80px" }}>
                 <h2 className={cx(dynoclasses.name_style, classes.title)} ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_name}>{item.name}</FuncRevealWrapper></h2>
-              </div>
+              </div> */}
               <MyMenu
                 isCategoryArray={isCategoryArray}
                 cbActionOnClick={({ value }) => {
                   setIsLoading(true)
                   setIsFilter(value)
+                  setIsLoading(false)
+
                 }}
                 isFilter={isFilter}
                 item={item}
@@ -298,7 +296,7 @@ export function SectionProjectsProject01({ item, i }) {
           </GridContainer>
           <GridContainer>
 
-            {loopChecked({ isSlides, item })}
+            {/* {loopChecked({ isSlides, item })} */}
 
           </GridContainer>
         </div></div>

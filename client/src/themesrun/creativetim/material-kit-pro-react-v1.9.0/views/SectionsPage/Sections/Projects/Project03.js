@@ -39,16 +39,25 @@ export function SectionProjectsProject03({ item, i }) {
   let reduxprops = useSelector(state => state)
 
   const [isBrickStyle, setBrickStyle] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const processStyle = useCallback(async (item) => {
     return await parseBlockstyle(item)
   }, [])
 
   React.useEffect(() => {
+    if (item.blockstyle.length > 0) {
+      processStyle({ item }).then((result) => {
 
-    processStyle({ item }).then((result) => {
-      setBrickStyle(result)
-    })
+        setBrickStyle(result)
+        setIsLoading(false)
+
+      })
+    } else {
+      setIsLoading(false)
+
+    }
+
   }, [item, processStyle])
 
   const classes = useStyles();
@@ -120,7 +129,7 @@ export function SectionProjectsProject03({ item, i }) {
 
   return (
     // we've set the className to cd-section so we can make smooth scroll to it
-    <WrapperOutputNext>
+    !isLoading ? <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <GridContainer>
@@ -153,7 +162,7 @@ export function SectionProjectsProject03({ item, i }) {
         <GridContainer >
           {loopChecked({ item })}
         </GridContainer></div>
-    </WrapperOutputNext>
+    </WrapperOutputNext> : null
   );
 
 }

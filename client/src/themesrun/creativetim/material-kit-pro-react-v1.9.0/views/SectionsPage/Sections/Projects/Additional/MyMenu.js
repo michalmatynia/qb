@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,8 +11,8 @@ import GridItem from "../../../../../components/Grid/GridItem.js";
 import Button from "../../../../../components/CustomButtons/Button.js";
 import FuncRevealWrapper from '../../../../../../../../hoc/Funcs/Reveal/FuncRevealWrapper'
 import {
-  reveal_array_title,
-  reveal_array_btn_launch
+    reveal_array_title,
+    reveal_array_btn_launch
 } from '../../../../../../../../components/utils/Form/Fixed_categories/reveal_arrays'
 import buttonMenuStyle from "../../../../../../../michalm/assets/jss/views/Button/buttonMenuStyle.js";
 
@@ -24,12 +24,11 @@ export default function MyMenu({ item, isCategoryArray, cbActionOnClick, isFilte
     const classes = useStyles();
     const [myvalue, setMyValue] = React.useState(isFilter);
     const [myButtons, setMyButtons] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    React.useEffect(() => {
-              function loopCategories({ loop_array, cbActionOnClick }) {
 
-            // isCategoryArray.splice(0, 0, {name: item.btn_launch});
-
+    const loopCategories = useCallback(
+        async ({ loop_array, cbActionOnClick }) => {
             return loop_array.map((value, index) => {
 
                 return <Button
@@ -37,25 +36,34 @@ export default function MyMenu({ item, isCategoryArray, cbActionOnClick, isFilte
                     color='primary'
                     key={index}
                     onClick={() => {
-                        setMyValue(value)
-                        cbActionOnClick({ value })
+                        if (myvalue !== value) {
+                            setIsLoading(true)
+
+                            setMyValue(value)
+                            cbActionOnClick({ value })
+                        }
+
                     }
                     }
 
                 ><FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_title}>{value.name}</FuncRevealWrapper>
                 </Button>
             })
+        }, [item, myvalue])
+    React.useEffect(() => {
+
+        if (isLoading && isCategoryArray.length > 0) {
+
+            loopCategories({ loop_array: isCategoryArray, cbActionOnClick }).then((result) => {
+                setMyButtons(result)
+                setIsLoading(false)
+            })
 
         }
-
-        if (isCategoryArray.length > 0) {
-
-            setMyButtons(loopCategories({loop_array: isCategoryArray, cbActionOnClick}))
-        }
-    },[cbActionOnClick, isCategoryArray, item, myvalue])
+    }, [cbActionOnClick, isCategoryArray, isLoading, loopCategories])
 
     return (
-        <div className={classes.section}
+        !isLoading ? <div className={classes.section}
             style={{
                 marginTop: "0",
                 paddingTop: "0",
@@ -70,8 +78,14 @@ export default function MyMenu({ item, isCategoryArray, cbActionOnClick, isFilte
                         color='primary'
                         key={'all'}
                         onClick={() => {
-                            setMyValue('all')
-                            cbActionOnClick({ value: 'all' })
+                            if (myvalue !== 'all') {
+
+                                setIsLoading(true)
+                                setMyValue('all')
+                                cbActionOnClick({ value: 'all' })
+                            }
+
+
                         }
                         }
 
@@ -80,6 +94,6 @@ export default function MyMenu({ item, isCategoryArray, cbActionOnClick, isFilte
                     {myButtons}
                 </GridItem>
             </GridContainer>
-        </div >
+        </div > : null
     );
 }

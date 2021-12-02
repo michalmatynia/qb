@@ -134,7 +134,6 @@ function InputToComponent({  item, i }) {
 
     } else if (item.htmltype === 'MM_SectionParallax_01') {
 
-        console.log(item);
         return <SectionParallax01
             item={item}
             i={i}

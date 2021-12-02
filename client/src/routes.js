@@ -65,8 +65,6 @@ import ListBlockstyle from './components/User/Admin/system/Blockstyle/list_block
 import AddProduct from './components/User/Admin/CMS/Products/add_product';
 import EditProduct from './components/User/Admin/CMS/Products/edit_product';
 import ListProduct from './components/User/Admin/CMS/Products/list_product';
-import ProductPage from './themesrun/creativetim/material-kit-pro-react-v1.9.0/views/ProductPage/ProductPage';
-
 
 import AddTrnsDetailProduct from './components/User/Admin/system/Trnsdetailproduct/add_trnsdetailproduct';
 import EditTrnsDetailProduct from './components/User/Admin/system/Trnsdetailproduct/edit_trnsdetailproduct';

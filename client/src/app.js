@@ -100,9 +100,8 @@ export default function App() {
         currentmysite && !isLoading
     ) {
         return <div>
-            <MemoizedWrapper>
             <HeaderHolder />
-            
+            <MemoizedWrapper>
                 <Frontside />
             </MemoizedWrapper>
         </div>
