@@ -4,6 +4,7 @@ import cx from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
+import Fade from 'react-reveal/Fade';
 
 import GridContainer from "../../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
@@ -92,7 +93,7 @@ export function SectionProjectsProject01({ item, i }) {
         let dynamic_lg = isOdd(i) && array_wide.includes(i) ? 12 : 4
 
         return <GridItem xs={12} sm={dynamic_sm} md={dynamic_md} lg={dynamic_lg} key={value.referenceID._id}>
-          <FCGridItem
+          <Fade><FCGridItem
             item={item}
             value={value}
             i={i}
@@ -106,7 +107,7 @@ export function SectionProjectsProject01({ item, i }) {
               setShowFullScreen(cb_toggle)
               setIsModalValue(value)
             }}
-          />
+          /></Fade>
         </GridItem>
       })
 
