@@ -42,7 +42,7 @@ import {
 import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, togglefunction, sumofchecked }) {
+export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleEcomPanel, sumofchecked }) {
     const dispatch = useDispatch()
 
 
@@ -120,7 +120,9 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, togglef
             // setLocalUser(localeuser)
     
             setPriceRange([floor_price_min, round_price_max])
-    
+            toggleEcomPanel({categoryTaxo, typeTaxo, priceRange : [floor_price_min, round_price_max]})
+            setIsLoading(false)
+
           })
     }
     
@@ -184,6 +186,7 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, togglef
     React.useEffect(() => {
 
         if(!categoryTaxo && !typeTaxo) {
+            setIsLoading(true)
 
         establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
 
@@ -256,10 +259,9 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, togglef
                                                 console.log('runcheck');
                                                 setIsLoading(true)
                                                 setCheckedCategoryTaxo(cb_NewChecked)
-                                                toggleCategoryTaxo({cb_NewChecked})
-                                                setIsLoading(false)
+                                                toggleEcomPanel({categoryTaxo: cb_NewChecked, typeTaxo, priceRange})
 
-                                                // setViewingList()
+                                                setIsLoading(false)
 
                                             }
 

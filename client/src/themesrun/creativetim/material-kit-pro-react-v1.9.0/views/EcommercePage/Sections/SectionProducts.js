@@ -187,7 +187,7 @@ export default function SectionProducts() {
 
 
 
-  const refineProductList = useCallback(async ({checkedCategoryTaxo = null , checkedTypeTaxo = null}) => {
+  const refineProductList = useCallback(async ({categoryTaxo, typeTaxo, priceRange}) => {
 
     let newViewingList = []
 
@@ -200,29 +200,30 @@ export default function SectionProducts() {
         let cat_bool = true
         let type_bool = true
 
-        if (checkedCategoryTaxo.length > 0) {
-          // cat_bool = false
+        if (categoryTaxo.length > 0) {
+
           let cv_extracted_ids = currentValue.category.map(item => item._id)
 
-          for (let eachCatValue of checkedCategoryTaxo) {
+          for (let eachCatValue of categoryTaxo) {
 
             if (!cv_extracted_ids.includes(eachCatValue._id)) {
               cat_bool = false
+              break
             }
           }
         }
 
-        if (checkedTypeTaxo.length > 0) {
-          // cat_bool = false
-          let cv_extracted_ids = currentValue.type.map(item => item._id)
+        // if (typeTaxo.length > 0) {
+        //   // cat_bool = false
+        //   let cv_extracted_ids = currentValue.type.map(item => item._id)
 
-          for (let eachTypeValue of checkedTypeTaxo) {
+        //   for (let eachTypeValue of typeTaxo) {
 
-            if (!cv_extracted_ids.includes(eachTypeValue._id)) {
-              type_bool = false
-            }
-          }
-        }
+        //     if (!cv_extracted_ids.includes(eachTypeValue._id)) {
+        //       type_bool = false
+        //     }
+        //   }
+        // }
 
         if (cat_bool && type_bool) {
           accum = [...accum, currentValue]
@@ -250,28 +251,27 @@ export default function SectionProducts() {
       });
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
-
+    
+    console.log(newViewingList);
     return newViewingList
 
-  },[myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, priceRange, product_list])
+  },[myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
 
-  
-  // React.useEffect(() => {
+  React.useEffect(() => {
 
-  //   // RUN FUNCTION
-  //   // if (priceRange && product_list) {
-  //   //     console.log('refineproducts');
+    if (isLoading && !viewingList) {
+        console.log('refineproducts');
 
-  //   //     refineProducts().then((newViewingList) => {
-  //   //       setViewingList(newViewingList)
-  //   //       setIsLoading(false)
+        refineProductList({categoryTaxo, typeTaxo, priceRange}).then((newViewingList) => {
+          setViewingList(newViewingList)
+          setIsLoading(false)
 
-  //   //     })
-  //   //   }
+        })
+      }
 
 
     
-  // }, [isLoading, priceRange, product_list, refineProducts, viewingList])
+  }, [categoryTaxo, isLoading, priceRange, refineProductList, typeTaxo, viewingList])
 
 
 
@@ -300,18 +300,20 @@ export default function SectionProducts() {
 
   // ================
 
-  // const loopProducts = useCallback(
-  //   ({ mystore }) => {
-  //     return viewingList.length > 0 ? viewingList.map((value, i) => {
-  //       return <FCGridItem
-  //         value={value}
-  //         i={i}
-  //         key={value._id}
-  //         mystore={mystore}
-  //         isLoading={isLoading}
-  //       />
-  //     }) : null
-  //   }, [isLoading, viewingList])
+  const loopProducts = useCallback(
+    () => {
+
+      console.log(viewingList);
+      return viewingList.length > 0 ? viewingList.map((value, i) => {
+        return <FCGridItem
+          value={value}
+          i={i}
+          key={value._id}
+          mystore={redux_currentmystore}
+          isLoading={isLoading}
+        />
+      }) : null
+    }, [isLoading, redux_currentmystore, viewingList])
 
   // const handleLoadMore = useCallback(
   //   () => {
@@ -323,26 +325,27 @@ export default function SectionProducts() {
   //   }, [myFcState])
 
   return (
-    <div className={classes.section}>{console.log('render')}
+   !isLoading ?  <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
         <GridItem md={3} sm={3}>
             
             <FCEcommercePanel
-            toggleCategoryTaxo={({cb_NewChecked})=> {
+            toggleEcomPanel={({categoryTaxo, typeTaxo, priceRange})=> {
 
-              console.log(cb_NewChecked);
-              // setCheckedCategoryTaxo(cb_NewChecked)
+              console.log(categoryTaxo);
+              setViewingList()
+              refineProductList({categoryTaxo, typeTaxo, priceRange})
             } }
             />
 
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
-              {/* {!isLoading && priceRange ? 
-              loopProducts({ mystore })
-              : null} */}
+            { viewingList ? 
+              loopProducts()
+              : null} 
             </GridContainer>
             <GridItem
               md={6}
@@ -359,6 +362,6 @@ export default function SectionProducts() {
           </GridItem>
         </GridContainer>
       </div>
-    </div> 
+    </div> : null
   );
 }
