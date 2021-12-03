@@ -69,7 +69,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
   const dispatch = useDispatch()
 
-  const [priceRange, setPriceRange] = React.useState(null);
+  const [priceRange, setPriceRange] = React.useState();
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [isOverTheme, setOverTheme] = React.useState();
@@ -95,7 +95,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   }, [dispatch])
 
   /* Get Theme */
-  React.useEffect(() => {
+/*   React.useEffect(() => {
 
     if (!isOverTheme && current_mysite) {
       processOverTheme({ currentmysite: current_mysite }).then((theme) => {
@@ -106,22 +106,23 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
     }
 
 
-  }, [current_mysite, isOverTheme])
+  }, [current_mysite, isOverTheme]) */
 
+  /* LG Change */
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
-      && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-    ) {
+  //   if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
+  //     && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+  //   ) {
 
-      console.log('resetter');
-      setPriceRange(null)
-      setCheckedCategoryTaxo([])
-      setCheckedTypeTaxo([])
-    }
+  //     console.log('resetter');
+  //     setPriceRange(null)
+  //     setCheckedCategoryTaxo([])
+  //     setCheckedTypeTaxo([])
+  //   }
 
-  }, [currencyuser, current_mysite, dispatch, localeuser])
+  // }, [currencyuser, current_mysite, dispatch, localeuser])
 
   const loadProducts = useCallback(async (item) => {
     console.log('load products');
@@ -150,6 +151,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
       let result = await actionFuncs_recalculatePrice_v2({ root_products, dispatch, current_mysite, currencyuser, localeuser })
 
+      
       // ======= SET TAXONOMY ========
       let category_taxo_array = []
       for (let eachproduct of result.recalculated_list) {
@@ -257,7 +259,8 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
       setIsLoading(true)
       loadProducts().then(({ category_taxo_array, type_taxo_array, result_products, floor_price_min, round_price_max }) => {
-
+// refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
+//           setViewingList(newViewingList)
 
         setCategoryTaxo(category_taxo_array)
         setTypeTaxo(type_taxo_array)
@@ -349,10 +352,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
     if (!isLoading) {
 
-      if (document
-        .getElementById("sliderRegular")
-        .classList.contains("noUi-target")
-        && priceRange
+      if (priceRange
         && product_list
         && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
       ) {
@@ -457,7 +457,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
       setFcState(newMyFcState)
     }, [myFcState])
 
-  return (!isLoading ?
+  return (!isLoading && priceRange ?
     <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
         <h2>{mystore.title}</h2>
@@ -493,6 +493,8 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
                     {
                       title: mystore.pricerange_nametag,
                       content: (<PriceSlider
+
+                        priceparent={priceRange}
                         // isCategoryArray={isCategoryArray}
                         // cbActionOnClick={({ value }) => {
                         //   setIsLoading(true)
