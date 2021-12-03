@@ -24,8 +24,9 @@ import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-r
 import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
-import PriceSlider from "./PriceSlider.js"
+import processOverTheme from "../../../../../../theming/Funcs/processOverTheme";
+import PriceSlider from "./PriceSlider.js";
+import FCEcommercePanel from "./FCEcommercePanel";
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
@@ -44,7 +45,8 @@ import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/Us
 
 const useStyles = makeStyles(styles);
 
-export default function SectionProducts({ mystore, toggleCartMsg }) {
+export default function SectionProducts() {
+  const dispatch = useDispatch()
 
   const fc_state = {
     localStorage: {
@@ -68,8 +70,8 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   let currencyuser = useSelector(state => state.user.currencyUser)
   let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let product_list = useSelector(state => state.product.list)
+  let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
-  const dispatch = useDispatch()
 
   const [priceRange, setPriceRange] = React.useState();
 
@@ -83,18 +85,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
   const classes = useStyles({ overtheme: isOverTheme });
 
-  /* Clean Up */
-  React.useEffect(() => {
 
-    return function cleanup() {
-
-      console.log('cleanup');
-
-      plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
-
-    };
-
-  }, [dispatch])
 
   /* Get Theme */
   /*   React.useEffect(() => {
@@ -194,32 +185,22 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   // }, [currencyuser, current_mysite, dispatch, localeuser])
 
 
-  const loadProducts = useCallback(async (item) => {
-    console.log('load products');
+  const loadPrice = useCallback(async () => {
+ 
+    // // Viewparams and limits have to be carried out on a SUM array of products
 
-    let inQuery = {}
-
-    Object.assign(inQuery, {
-      country: { "$eq": localeuser.referenceID.alpha2Code },
-      language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
-      visible: true,
-    });
-
-    let result_products = await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
-
-    // Viewparams and limits have to be carried out on a SUM array of products
-
-    let priceArray = result_products.payload.map(a => a.price)
+    let priceArray = product_list.map(a => a.price)
     const price_min = Math.min(...priceArray)
     const price_max = Math.max(...priceArray)
 
 
 
-    return { result_products: result_products.payload, floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+
+    // return { result_products: [], floor_price_min: 0, round_price_max: 0 }
 
 
-
-  }, [dispatch, localeuser.referenceID.alpha2Code, localeuser.referenceID.languages])
+  }, [product_list])
 
 
   // React.useEffect(()=>{
@@ -329,56 +310,20 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
   },[checkedCategoryTaxo, checkedTypeTaxo, myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, priceRange, product_list])
 
-  const establishTaxonomy = useCallback(async ({ result_products}) => {
-       let category_taxo_array = []
-        for (let eachproduct of result_products) {
-
-          if (eachproduct.category.length > 0) {
-
-            for (let catvalue of eachproduct.category) {
-
-              let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
-
-              if (!dupe) {
-                category_taxo_array.push(catvalue)
-              }
-
-            }
-          }
-        }
-
-        let type_taxo_array = []
-        for (let eachproduct of result_products) {
-
-          if (eachproduct.type.length > 0) {
-
-            for (let typevalue of eachproduct.type) {
-
-              let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
-
-              if (!dupe) {
-                type_taxo_array.push(typevalue)
-              }
-            }
-          }
-        }
-
-        return {category_taxo_array, type_taxo_array}
-  }, [])
-
+  
   React.useEffect(() => {
 
     // RUN FUNCTION
     if (!viewingList
       && isLoading
+      // To Ponizej do wywalenia jak zrobie juz jezyki
       // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
 
     ) {
 
-      setIsLoading(true)
-      if(!product_list && !priceRange) {
+      if(!priceRange) {
 
-        loadProducts().then(({ result_products, floor_price_min, round_price_max }) => {
+        loadPrice().then(({ floor_price_min, round_price_max }) => {
 
           /* Refine Temporary */
           // refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
@@ -387,17 +332,14 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   
           // ======
   
-          establishTaxonomy({ result_products}).then(({category_taxo_array, type_taxo_array}) => {
-            setViewingList(result_products)
 
-            setCategoryTaxo(category_taxo_array)
-            setTypeTaxo(type_taxo_array)
-  
-            setLocalUser(localeuser)
-            setPriceRange([floor_price_min, round_price_max])
-            setIsLoading(false)
-          })
-  
+
+          setViewingList(product_list)
+
+          // setLocalUser(localeuser)
+
+          setPriceRange([floor_price_min, round_price_max])
+          setIsLoading(false)
   
         })
       } else if (priceRange && product_list) {
@@ -412,7 +354,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
 
     }
-  }, [establishTaxonomy, isLoading, loadProducts, localeuser, priceRange, product_list, refineProducts, viewingList])
+  }, [ isLoading, loadPrice, localeuser, priceRange, product_list, refineProducts, viewingList])
 
 
 
@@ -466,93 +408,12 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   return (!isLoading && priceRange ?
     <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
-        <h2>{mystore.title}</h2>
+        <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
-          <GridItem md={3} sm={3}>
-            <Card plain>
-              <CardBody className={classes.cardBodyRefine}>
+        <GridItem md={3} sm={3}>
+            
+            <FCEcommercePanel />
 
-                {/* Here should be a SEARCH FIELD */}
-                {/* <h4 className={classes.cardTitle + " " + classes.textLeft}>
-                  Refine
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Reset Filter"
-                    placement="top"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button
-                      link
-                      justIcon
-                      size="sm"
-                      className={classes.pullRight + " " + classes.refineButton}
-                    >
-                      <Cached />
-                    </Button>
-                  </Tooltip>
-                  <Clearfix />
-                </h4> */}
-                <AccordionFunc
-                  active={[0, 1, 2]}
-                  activeColor="primary"
-                  collapses={[
-                    {
-                      title: mystore.pricerange_nametag,
-                      content: (<PriceSlider
-
-                        priceparent={priceRange}
-                      // isCategoryArray={isCategoryArray}
-                      // cbActionOnClick={({ value }) => {
-                      //   setIsLoading(true)
-                      //   setIsFilter(value)
-                      // }}
-                      // isFilter={isFilter}
-                      // item={item}
-                      />
-
-                      ),
-                    },
-                    {
-                      title: mystore.column_one_nametag,
-                      content: (
-                        <div className={classes.customExpandPanel}>
-                          <div
-                            className={cx(classes.checkboxAndRadio, classes.checkboxAndRadioHorizontal)}
-                          >
-                            <FCTaxonomy 
-                          arrayTaxo={categoryTaxo}
-                          checkedTaxo={checkedCategoryTaxo}
-                          cb_runCheckedTaxo={({cb_NewChecked})=>{
-
-                            console.log('runcheck');
-                            setIsLoading(true)
-                            setCheckedCategoryTaxo(cb_NewChecked)
-                            setViewingList()
-
-                          }
-                       
-                          }
-                          />
-                          </div>
-                        </div>
-                      ),
-                    },
-                    {
-                      title: mystore.column_two_nametag,
-                      content: (
-                        <div className={classes.customExpandPanel}>
-                          <div
-                            className={cx(classes.checkboxAndRadio, classes.checkboxAndRadioHorizontal)}
-                          >
-                            {/* {loopColumnTwo()} */}
-                          </div>
-                        </div>
-                      ),
-                    },
-                  ]}
-                />
-              </CardBody>
-            </Card>
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>

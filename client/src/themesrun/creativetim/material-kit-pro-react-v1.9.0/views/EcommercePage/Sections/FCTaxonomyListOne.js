@@ -21,8 +21,8 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
 
     let current_mysite = useSelector(state => state.mysite.CurrentMysite)
 
-
     const [isOverTheme, setOverTheme] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
 
@@ -30,6 +30,7 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
           processOverTheme({currentmysite: current_mysite}).then((theme)=>{
     
             setOverTheme(theme)
+            setIsLoading(false)
           })
         }
     
@@ -39,7 +40,7 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
     const classes = useStyles({overtheme: isOverTheme});
 
     let render = () => {
-      return <FormControlLabel
+      return !isLoading ? <FormControlLabel
         control={
           <Checkbox
             // id={value._id}
@@ -58,7 +59,7 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
         }
         classes={{ label: classes.label }}
         label={value.name}
-      />
+      /> : null
     }
 
     return render()

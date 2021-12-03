@@ -43,6 +43,7 @@ import {
     DETAIL_NEWSLETTER,
     LIST_NEWSLETTER,
     DETAIL_MYSTORE,
+    CURRENT_MYSTORE,
     LIST_MYSTORE,
     DETAIL_CONTACT,
     LIST_CONTACT,
@@ -190,6 +191,9 @@ export async function getOutputType({ model = null, actionType = null }) {
             break
         case model === 'mystore' && actionType === 'detail':
             getOutputType = DETAIL_MYSTORE
+            break
+        case model === 'mystore' && actionType === 'current':
+            getOutputType = CURRENT_MYSTORE
             break
         case model === 'contact' && actionType === 'list':
             getOutputType = LIST_CONTACT

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { storeFuncs_loadList } from '../../functions/HookFuncs/store_funcs';
 // import { InputToComponent } from "./HomeFuncs/home_funcs"
@@ -8,7 +8,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
-    plg_clearProps
+    plg_clearProps,
+    plg_findMany
 } from '../utils/Plugs/cms_plugs';
 
 export default function Home() {
@@ -18,41 +19,67 @@ export default function Home() {
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currencyuser = useSelector(state => state.user.currencyUser)
+    let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
+    const [isMystore, setIsMystore] = useState();
     const [isloading, setIsLoading] = useState(true);
-    const [isMystore, setMystore] = useState(null);
 
-    React.useEffect(() => {
+    const loadProducts = useCallback(async () => {
+        console.log('load products');
+    
+        let inQuery = {}
+    
+        Object.assign(inQuery, {
+          country: { "$eq": localeuser.referenceID.alpha2Code },
+          language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
+          visible: true,
+        });
+    
+         await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
+   
+    
+      }, [dispatch, localeuser])
 
-        async function loadPage() {
+    const loadPage = useCallback(
+        async () => {
+
             return await storeFuncs_loadList({
                 dispatch,
                 model:'mystore',
+                actionType: 'current',
                 localeuser
             })
-        }
+
+        },[dispatch, localeuser])
+    React.useEffect(() => {
 
         if (
-            localeuser !== undefined
-            && currencyuser !== undefined
+            localeuser
+            && currencyuser
             && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
         ) {
 
-            setIsLoading(true)
-
-
             loadPage().then((item) => {
 
-                setMystore(item)
-                setIsLoading(false)
+                loadProducts().then(()=>{
+                    // setIsMystore(item.payload)
+
+                    setIsLoading(false)
+                })
+
             })
         }
+
+
+    }, [currencyuser, loadPage, loadProducts, localeuser]);
+
+
+    React.useEffect(() => {
         return function cleanup() {
-            plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
+            plg_clearProps({ dispatch, model: 'mystore', actionType: 'current' })
 
         };
-
-    }, [currencyuser, dispatch, localeuser]);
+    },[dispatch])
 
     if (isloading) {
         return (
@@ -76,11 +103,9 @@ export default function Home() {
             </div>
         )
     } else if (!isloading) {
-        return (
-                    <EcommercePage
-                        list={isMystore}
-                    /> 
-
+        return (<div>{console.log('ecommerce render')}
+                    <EcommercePage /> 
+</div>
         )
     }
 }

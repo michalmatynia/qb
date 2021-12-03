@@ -101,6 +101,7 @@ export const DETAIL_LOGIN = 'detail_login';
 // Mystore
 export const LIST_MYSTORE = 'list_mystore';
 export const DETAIL_MYSTORE = 'detail_mystore';
+export const CURRENT_MYSTORE = 'current_mystore';
 
 // Newsletter
 export const LIST_NEWSLETTER = 'list_newsletter';

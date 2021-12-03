@@ -2,7 +2,7 @@ import {
     plg_findOne_QueMod
 } from '../../components/utils/Plugs/cms_plugs';
 
-export async function storeFuncs_loadList({model = null, dispatch = null, localeuser = null }) {
+export async function storeFuncs_loadList({model = null, dispatch = null, localeuser = null, actionType }) {
 
     let inQuery = {}
     Object.assign(inQuery, {
@@ -10,7 +10,7 @@ export async function storeFuncs_loadList({model = null, dispatch = null, locale
         language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
         isdefault: true
     });
-    let result_store = await plg_findOne_QueMod({ model, dispatch, actionType: 'samestate', inQuery })
+    let result_store = await plg_findOne_QueMod({ model, dispatch, actionType, inQuery })
 
     return result_store.payload
 }

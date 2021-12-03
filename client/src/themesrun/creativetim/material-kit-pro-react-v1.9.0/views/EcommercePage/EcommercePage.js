@@ -6,6 +6,7 @@ import GridContainer from "../../../../../themesrun/creativetim/material-kit-pro
 import GridItem from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 // import Parallax from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax";
 import Parallax from "../../../material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Parallax/ParallaxTransform";
+import { useSelector, useDispatch } from 'react-redux'
 
 // ============
 // sections for this page
@@ -22,11 +23,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/ecommerceStyle.js";
 const useStyles = makeStyles(styles);
 
-export default function EcommercePage({ list }) {
+export default function EcommercePage() {
+  const dispatch = useDispatch()
+  let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
+console.log('insideparallax');
 
   // React.useEffect(() => {
-  //   window.scrollTo(0, 0);
-  //   document.body.scrollTop = 0;
+
+  //   if (!redux_currentmystore) {
+
+  //   }
   // });
   const classes = useStyles();
 
@@ -34,8 +40,8 @@ export default function EcommercePage({ list }) {
     <div className={classes.staticwrapper}>
 
       <Parallax
-        item={list}
-        filter={list.image_filter === 'transparent' ? null : list.image_filter }
+        item={redux_currentmystore}
+        filter={redux_currentmystore.image_filter === 'transparent' ? null : redux_currentmystore.image_filter }
         small
       >
         <div className={classes.container}>
@@ -50,9 +56,9 @@ export default function EcommercePage({ list }) {
               )}
             >
               <div className={classes.brand}>
-                <h1 className={classes.title}>{list.name}</h1>
+                <h1 className={classes.title}>{redux_currentmystore.name}</h1>
                 <h4 style={{color: 'lightgrey'}}>
-                  {list.description}
+                  {redux_currentmystore.description}
                 </h4>
               </div>
             </GridItem>
@@ -62,7 +68,6 @@ export default function EcommercePage({ list }) {
 
       <div className={classNames(classes.main, classes.mainRaised)}>
         <SectionProducts
-          mystore={list}
         />
       </div>
       </div>
