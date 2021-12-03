@@ -41,16 +41,23 @@ const useStyles = makeStyles(featuresStyle);
 
 export function SectionFeaturesFeature02({ item, i }) {
     const [isBrickStyle, setBrickStyle] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
     const processStyle = useCallback(async (item) => {
-        return await parseBlockstyle(item)
+      return await parseBlockstyle(item)
     }, [])
-
+    
     React.useEffect(() => {
-
+      if (item.blockstyle.length > 0) {
         processStyle({ item }).then((result) => {
-            setBrickStyle(result)
+    
+          setBrickStyle(result)
+          setIsLoading(false)
         })
+      } else {
+        setIsLoading(false)
+      }
+    
     }, [item, processStyle])
 
     const classes = useStyles();
@@ -118,7 +125,7 @@ export function SectionFeaturesFeature02({ item, i }) {
 
     return (
         // we've set the className to cd-section so we can make smooth scroll to it
-        <WrapperOutputNext>
+        !isLoading ? <WrapperOutputNext>
             <div className={dynoclasses.dynamiccontainer}>
                 <GridContainer>
                     <GridItem
@@ -149,7 +156,7 @@ export function SectionFeaturesFeature02({ item, i }) {
                 <GridContainer >
                     {loopChecked({ item })}
                 </GridContainer></div>
-        </WrapperOutputNext>
+        </WrapperOutputNext> : null
     );
 
 }

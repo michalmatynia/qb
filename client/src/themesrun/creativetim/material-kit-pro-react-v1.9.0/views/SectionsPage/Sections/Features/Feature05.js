@@ -40,18 +40,25 @@ const useStyles = makeStyles(featuresStyle);
 
 export function SectionFeaturesFeature05({ item, i }) {
     const [isBrickStyle, setBrickStyle] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
 
     const processStyle = useCallback(async (item) => {
-        return await parseBlockstyle(item)
+      return await parseBlockstyle(item)
     }, [])
-
+    
     React.useEffect(() => {
-
+      if (item.blockstyle.length > 0) {
         processStyle({ item }).then((result) => {
-            setBrickStyle(result)
+    
+          setBrickStyle(result)
+          setIsLoading(false)
         })
+      } else {
+        setIsLoading(false)
+      }
+    
     }, [item, processStyle])
-
+    
     const classes = useStyles();
 
     const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
@@ -117,8 +124,7 @@ export function SectionFeaturesFeature05({ item, i }) {
         }, [classes.features5, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 
     return (
-
-        <WrapperOutputNext>
+        !isLoading ? <WrapperOutputNext>
             <div className={dynoclasses.dynamiccontainer}>
                 <GridContainer>
                     <GridItem
@@ -145,7 +151,7 @@ export function SectionFeaturesFeature05({ item, i }) {
                     </div>
                 </GridContainer>
             </div>
-        </WrapperOutputNext>
+        </WrapperOutputNext> : null
     );
 }
 

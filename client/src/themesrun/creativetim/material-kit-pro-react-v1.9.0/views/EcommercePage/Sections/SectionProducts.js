@@ -23,6 +23,7 @@ import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
+import PriceSlider from "./PriceSlider.js"
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
@@ -42,7 +43,6 @@ import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/Us
 const useStyles = makeStyles(styles);
 
 export default function SectionProducts({ mystore, toggleCartMsg }) {
-
 
   const fc_state = {
     localStorage: {
@@ -84,21 +84,22 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
   /* Clean Up */
   React.useEffect(() => {
 
-      return function cleanup() {
+    return function cleanup() {
 
-        console.log('cleanup');
+      console.log('cleanup');
 
-        plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
+      plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
 
-      };
+    };
 
-  }, [dispatch]) 
+  }, [dispatch])
 
-    /* Get Theme */
+  /* Get Theme */
   React.useEffect(() => {
 
     if (!isOverTheme && current_mysite) {
       processOverTheme({ currentmysite: current_mysite }).then((theme) => {
+        console.log('set theme');
 
         setOverTheme(theme)
       })
@@ -114,6 +115,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
       && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
     ) {
 
+      console.log('resetter');
       setPriceRange(null)
       setCheckedCategoryTaxo([])
       setCheckedTypeTaxo([])
@@ -121,137 +123,131 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
 
   }, [currencyuser, current_mysite, dispatch, localeuser])
 
-  React.useEffect(() => {
-
-    async function loadProducts() {
-
-      let inQuery = {}
-
-      if (current_mysite.default_language.referenceID.alpha2Code !== localeuser.referenceID.alpha2Code
-      ) {
+  const loadProducts = useCallback(async (item) => {
+    console.log('load products');
 
 
-        Object.assign(inQuery, {
-          country: { "$eq": current_mysite.default_language.referenceID.alpha2Code },
-          language: { "$eq": current_mysite.default_language.referenceID.languages[0].iso639_1 },
-          visible: true,
-        });
+    let inQuery = {}
 
-        let root_products = await plg_findMany({ model: 'product', dispatch, actionType: 'samestate', inQuery })
+    if (current_mysite.default_language.referenceID.alpha2Code !== localeuser.referenceID.alpha2Code
+    ) {
 
-        let priceArray = root_products.payload.map(a => a.price)
-        const price_min = Math.min(...priceArray)
-        const price_max = Math.max(...priceArray)
 
-        let converted_price_min = price_min / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-        let converted_price_max = price_max / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-        setPriceRange([Math.floor(converted_price_min), Math.round(converted_price_max)])
+      Object.assign(inQuery, {
+        country: { "$eq": current_mysite.default_language.referenceID.alpha2Code },
+        language: { "$eq": current_mysite.default_language.referenceID.languages[0].iso639_1 },
+        visible: true,
+      });
 
-        let result = await actionFuncs_recalculatePrice_v2({ root_products, dispatch, current_mysite, currencyuser, localeuser })
+      let root_products = await plg_findMany({ model: 'product', dispatch, actionType: 'samestate', inQuery })
 
-        // ======= SET TAXONOMY ========
-        let category_taxo_array = []
-        for (let eachproduct of result.recalculated_list) {
+      let priceArray = root_products.payload.map(a => a.price)
+      const price_min = Math.min(...priceArray)
+      const price_max = Math.max(...priceArray)
 
-          if (eachproduct.category.length > 0) {
+      let converted_price_min = price_min / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
+      let converted_price_max = price_max / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
 
-            for (let catvalue of eachproduct.category) {
+      let result = await actionFuncs_recalculatePrice_v2({ root_products, dispatch, current_mysite, currencyuser, localeuser })
 
-              let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
+      // ======= SET TAXONOMY ========
+      let category_taxo_array = []
+      for (let eachproduct of result.recalculated_list) {
 
-              if (!dupe) {
-                category_taxo_array.push(catvalue)
-              }
+        if (eachproduct.category.length > 0) {
 
+          for (let catvalue of eachproduct.category) {
+
+            let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
+
+            if (!dupe) {
+              category_taxo_array.push(catvalue)
             }
+
           }
         }
-
-        let type_taxo_array = []
-        for (let eachproduct of result.recalculated_list) {
-
-          if (eachproduct.type.length > 0) {
-
-            for (let typevalue of eachproduct.type) {
-
-              let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
-
-              if (!dupe) {
-                type_taxo_array.push(typevalue)
-              }
-            }
-          }
-        }
-
-        setCategoryTaxo(category_taxo_array)
-        setTypeTaxo(type_taxo_array)
-
-        // ==========
-        setViewingList(result.recalculated_list)
-        dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
-
-
-      } else {
-
-        Object.assign(inQuery, {
-          country: { "$eq": localeuser.referenceID.alpha2Code },
-          language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
-          visible: true,
-        });
-
-        let result_products = await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
-
-        // Viewparams and limits have to be carried out on a SUM array of products
-
-        let priceArray = result_products.payload.map(a => a.price)
-        const price_min = Math.min(...priceArray)
-        const price_max = Math.max(...priceArray)
-
-        // ======= SET TAXONOMY ========
-
-        let category_taxo_array = []
-        for (let eachproduct of result_products.payload) {
-
-          if (eachproduct.category.length > 0) {
-
-            for (let catvalue of eachproduct.category) {
-
-              let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
-
-              if (!dupe) {
-                category_taxo_array.push(catvalue)
-              }
-
-            }
-          }
-        }
-
-        let type_taxo_array = []
-        for (let eachproduct of result_products.payload) {
-
-          if (eachproduct.type.length > 0) {
-
-            for (let typevalue of eachproduct.type) {
-
-              let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
-
-              if (!dupe) {
-                type_taxo_array.push(typevalue)
-              }
-            }
-          }
-        }
-
-        setCategoryTaxo(category_taxo_array)
-        setTypeTaxo(type_taxo_array)
-        // ======
-        setViewingList(result_products.payload)
-
-        setPriceRange([Math.floor(price_min), Math.round(price_max)])
-
       }
 
+      let type_taxo_array = []
+      for (let eachproduct of result.recalculated_list) {
+
+        if (eachproduct.type.length > 0) {
+
+          for (let typevalue of eachproduct.type) {
+
+            let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
+
+            if (!dupe) {
+              type_taxo_array.push(typevalue)
+            }
+          }
+        }
+      }
+
+      dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
+      return { category_taxo_array, type_taxo_array, result_products: result.recalculated_list, floor_price_min: Math.floor(converted_price_min), round_price_max: Math.round(converted_price_max) }
+
+    } else {
+
+      Object.assign(inQuery, {
+        country: { "$eq": localeuser.referenceID.alpha2Code },
+        language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
+        visible: true,
+      });
+
+      let result_products = await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
+
+      // Viewparams and limits have to be carried out on a SUM array of products
+
+      let priceArray = result_products.payload.map(a => a.price)
+      const price_min = Math.min(...priceArray)
+      const price_max = Math.max(...priceArray)
+
+      // ======= SET TAXONOMY ========
+
+      let category_taxo_array = []
+      for (let eachproduct of result_products.payload) {
+
+        if (eachproduct.category.length > 0) {
+
+          for (let catvalue of eachproduct.category) {
+
+            let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
+
+            if (!dupe) {
+              category_taxo_array.push(catvalue)
+            }
+
+          }
+        }
+      }
+
+      let type_taxo_array = []
+      for (let eachproduct of result_products.payload) {
+
+        if (eachproduct.type.length > 0) {
+
+          for (let typevalue of eachproduct.type) {
+
+            let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
+
+            if (!dupe) {
+              type_taxo_array.push(typevalue)
+            }
+          }
+        }
+      }
+
+
+      return { category_taxo_array, type_taxo_array, result_products: result_products.payload, floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+
     }
+
+
+  }, [currencyuser, current_mysite, dispatch, localeuser])
+
+
+  React.useEffect(() => {
 
     // RUN FUNCTION
     if (!priceRange
@@ -260,186 +256,183 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
     ) {
 
       setIsLoading(true)
-      setLocalUser(localeuser)
-      loadProducts()
-      setIsLoading(false)
+      loadProducts().then(({ category_taxo_array, type_taxo_array, result_products, floor_price_min, round_price_max }) => {
+
+
+        setCategoryTaxo(category_taxo_array)
+        setTypeTaxo(type_taxo_array)
+        // ======
+        setViewingList(result_products)
+
+        setPriceRange([floor_price_min, round_price_max])
+        setLocalUser(localeuser)
+        setIsLoading(false)
+
+      })
 
     }
-  }, [dispatch, currencyuser, localeuser, current_mysite, priceRange])
+  }, [currencyuser.rates, loadProducts, localeuser, priceRange])
 
 
-  React.useEffect(() => {
+  const refineProducts = useCallback(async ({ left_price, right_price }) => {
 
-    async function refineProducts({ left_price, right_price }) {
+    console.log('refine');
 
-      let newViewingList = []
+    let newViewingList = []
 
-      newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
+    newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
-        // Reduce on Price Range
+      // Reduce on Price Range
 
-        if (currentValue.price >= left_price && currentValue.price <= right_price) {
+      if (currentValue.price >= left_price && currentValue.price <= right_price) {
 
-          let cat_bool = true
-          let type_bool = true
+        let cat_bool = true
+        let type_bool = true
 
-          if (checkedCategoryTaxo.length > 0) {
-            // cat_bool = false
-            let cv_extracted_ids = currentValue.category.map(item => item._id)
+        if (checkedCategoryTaxo.length > 0) {
+          // cat_bool = false
+          let cv_extracted_ids = currentValue.category.map(item => item._id)
 
-            for (let eachCatValue of checkedCategoryTaxo) {
+          for (let eachCatValue of checkedCategoryTaxo) {
 
-              if (!cv_extracted_ids.includes(eachCatValue._id)) {
-                cat_bool = false
-              }
+            if (!cv_extracted_ids.includes(eachCatValue._id)) {
+              cat_bool = false
             }
           }
+        }
 
-          if (checkedTypeTaxo.length > 0) {
-            // cat_bool = false
-            let cv_extracted_ids = currentValue.type.map(item => item._id)
+        if (checkedTypeTaxo.length > 0) {
+          // cat_bool = false
+          let cv_extracted_ids = currentValue.type.map(item => item._id)
 
-            for (let eachTypeValue of checkedTypeTaxo) {
+          for (let eachTypeValue of checkedTypeTaxo) {
 
-              if (!cv_extracted_ids.includes(eachTypeValue._id)) {
-                type_bool = false
-              }
+            if (!cv_extracted_ids.includes(eachTypeValue._id)) {
+              type_bool = false
             }
           }
+        }
 
-          if (cat_bool && type_bool) {
-            accum = [...accum, currentValue]
+        if (cat_bool && type_bool) {
+          accum = [...accum, currentValue]
 
-          } else {
-            accum = [...accum]
-          }
+        } else {
+          accum = [...accum]
+        }
 
-        } else { accum = [...accum] }
+      } else { accum = [...accum] }
 
-        // Category Taxonomy
+      // Category Taxonomy
 
-        return accum
+      return accum
 
-      }, []);
-
-
-      if (myFcState.localStorage.viewparams.sortOrder === 1) {
-        newViewingList.sort(function (a, b) {
-          return a[myFcState.localStorage.viewparams.sortBy] - b[myFcState.localStorage.viewparams.sortBy];
-        });
-      } else {
-        newViewingList.sort(function (a, b) {
-          return b[myFcState.localStorage.viewparams.sortBy] - a[myFcState.localStorage.viewparams.sortBy];
-        });
-      }
-      newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
-
-      setViewingList(newViewingList)
-
-    }
-
-    if (document
-      .getElementById("sliderRegular")
-      .classList.contains("noUi-target")
-      && priceRange
-      && product_list
-      && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-
-    ) {
-      refineProducts({ left_price: priceRange[0], right_price: priceRange[1] })
-
-    }
-  }, [checkedCategoryTaxo, checkedTypeTaxo, currencyuser, current_mysite, localeuser, myFcState, priceRange, product_list])
+    }, []);
 
 
-  React.useEffect(() => {
-    if (
-      !document
-        .getElementById("sliderRegular")
-        .classList.contains("noUi-target")
-      && priceRange
-    ) {
-      Slider.create(document.getElementById("sliderRegular"), {
-        start: [priceRange[0], priceRange[1]],
-        connect: true,
-        range: { min: priceRange[0], max: priceRange[1] },
-        step: 1,
-      }).on("update", async function (values) {
-
-        await setPriceRange([Math.floor(values[0]), Math.round(values[1])])
-
+    if (myFcState.localStorage.viewparams.sortOrder === 1) {
+      newViewingList.sort(function (a, b) {
+        return a[myFcState.localStorage.viewparams.sortBy] - b[myFcState.localStorage.viewparams.sortBy];
+      });
+    } else {
+      newViewingList.sort(function (a, b) {
+        return b[myFcState.localStorage.viewparams.sortBy] - a[myFcState.localStorage.viewparams.sortBy];
       });
     }
+    newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
-  }, [current_mysite, localeuser, priceRange, product_list]);
+    return newViewingList
+
+  },[checkedCategoryTaxo, checkedTypeTaxo, myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
 
 
+  React.useEffect(() => {
 
+    if (!isLoading) {
+
+      if (document
+        .getElementById("sliderRegular")
+        .classList.contains("noUi-target")
+        && priceRange
+        && product_list
+        && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+      ) {
+        refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
+          setViewingList(newViewingList)
+
+        })
+
+      }
+    }
+
+  }, [currencyuser.rates, isLoading, localeuser.referenceID.currencies, priceRange, product_list, refineProducts])
+
+
+  
 
   // ================
-  const handleToggleCategory = useCallback(
-    ({ value, i }) => {
-      const currentIndex = checkedCategoryTaxo.indexOf(value)
-      const newChecked = [...checkedCategoryTaxo];
-      if (currentIndex === -1) {
-        newChecked.push(value);
-      } else {
-        newChecked.splice(currentIndex, 1);
-      }
-      setCheckedCategoryTaxo(newChecked);
-    }, [checkedCategoryTaxo])
+  // const handleToggleCategory = useCallback(
+  //   ({ value, i }) => {
+  //     const currentIndex = checkedCategoryTaxo.indexOf(value)
+  //     const newChecked = [...checkedCategoryTaxo];
+  //     if (currentIndex === -1) {
+  //       newChecked.push(value);
+  //     } else {
+  //       newChecked.splice(currentIndex, 1);
+  //     }
+  //     setCheckedCategoryTaxo(newChecked);
+  //   }, [checkedCategoryTaxo])
 
-  const handleToggleType = useCallback(
-    ({ value, i }) => {
-      const currentIndex = checkedTypeTaxo.indexOf(value)
-      const newChecked = [...checkedTypeTaxo];
-      if (currentIndex === -1) {
-        newChecked.push(value);
-      } else {
-        newChecked.splice(currentIndex, 1);
-      }
-      setCheckedTypeTaxo(newChecked);
-    }, [checkedTypeTaxo])
+  // const handleToggleType = useCallback(
+  //   ({ value, i }) => {
+  //     const currentIndex = checkedTypeTaxo.indexOf(value)
+  //     const newChecked = [...checkedTypeTaxo];
+  //     if (currentIndex === -1) {
+  //       newChecked.push(value);
+  //     } else {
+  //       newChecked.splice(currentIndex, 1);
+  //     }
+  //     setCheckedTypeTaxo(newChecked);
+  //   }, [checkedTypeTaxo])
 
-  const loopProducts = useCallback(
-    ({ mystore }) => {
-      return viewingList.length > 0 ? viewingList.map((value, i) => {
-        return <FCGridItem
-          value={value}
-          i={i}
-          key={value._id}
-          mystore={mystore}
-          isLoading={isLoading}
-        />
-      }) : null
-    }, [isLoading, viewingList])
+  // const loopProducts = useCallback(
+  //   ({ mystore }) => {
+  //     return viewingList.length > 0 ? viewingList.map((value, i) => {
+  //       return <FCGridItem
+  //         value={value}
+  //         i={i}
+  //         key={value._id}
+  //         mystore={mystore}
+  //         isLoading={isLoading}
+  //       />
+  //     }) : null
+  //   }, [isLoading, viewingList])
 
-  const loopColumnOne = useCallback(
-    () => {
-      return categoryTaxo ? categoryTaxo.map((value, i) => {
-        return <FCTaxonomyListOne
-          value={value}
-          i={i}
-          key={value._id}
-          togglefunction={() => handleToggleCategory({ value, i })}
-          sumofchecked={checkedCategoryTaxo}
-        />
-      }) : null
-    }, [categoryTaxo, checkedCategoryTaxo, handleToggleCategory])
+  // const loopColumnOne = useCallback(
+  //   () => {
+  //     return categoryTaxo ? categoryTaxo.map((value, i) => {
+  //       return <FCTaxonomyListOne
+  //         value={value}
+  //         i={i}
+  //         key={value._id}
+  //         togglefunction={() => handleToggleCategory({ value, i })}
+  //         sumofchecked={checkedCategoryTaxo}
+  //       />
+  //     }) : null
+  //   }, [categoryTaxo, checkedCategoryTaxo, handleToggleCategory])
 
-  const loopColumnTwo = useCallback(
-    () => {
-      return typeTaxo ? typeTaxo.map((value, i) => {
-        return <FCTaxonomyListOne
-          value={value}
-          i={i}
-          key={value._id}
-          togglefunction={() => handleToggleType({ value, i })}
-          sumofchecked={checkedTypeTaxo}
+  // const loopColumnTwo = useCallback(
+  //   () => {
+  //     return typeTaxo ? typeTaxo.map((value, i) => {
+  //       return <FCTaxonomyListOne
+  //         value={value}
+  //         i={i}
+  //         key={value._id}
+  //         togglefunction={() => handleToggleType({ value, i })}
+  //         sumofchecked={checkedTypeTaxo}
 
-        />
-      }) : null
-    }, [checkedTypeTaxo, handleToggleType, typeTaxo])
+  //       />
+  //     }) : null
+  //   }, [checkedTypeTaxo, handleToggleType, typeTaxo])
 
   // const handleToggle = ({ value, i }) => {
 
@@ -464,10 +457,8 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
       setFcState(newMyFcState)
     }, [myFcState])
 
-
-
-  return (
-    <div className={classes.section}>
+  return (!isLoading ?
+    <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
         <h2>{mystore.title}</h2>
         <GridContainer>
@@ -501,28 +492,16 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
                   collapses={[
                     {
                       title: mystore.pricerange_nametag,
-                      content: (
-                        <CardBody className={classes.cardBodyRefine}>
-                          <span
-                            className={cx(
-                              classes.pullLeft,
-                              classes.priceSlider
-                            )}
-                          >
-                            {Object.keys(currencyuser.rates)} {priceRange ? priceRange[0] : null}
-                          </span>
-                          <span
-                            className={cx(
-                              classes.pullRight,
-                              classes.priceSlider
-                            )}
-                          >
-                            {Object.keys(currencyuser.rates)} {priceRange ? priceRange[1] : null}
-                          </span>
-                          <br />
-                          <br />
-                          <div id="sliderRegular" className="slider-gray" />
-                        </CardBody>
+                      content: (<PriceSlider
+                        // isCategoryArray={isCategoryArray}
+                        // cbActionOnClick={({ value }) => {
+                        //   setIsLoading(true)
+                        //   setIsFilter(value)
+                        // }}
+                        // isFilter={isFilter}
+                        // item={item}
+                      />
+                       
                       ),
                     },
                     {
@@ -536,7 +515,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
                               classes.checkboxAndRadioHorizontal
                             }
                           >
-                            {loopColumnOne()}
+                            {/* {loopColumnOne()} */}
                           </div>
                         </div>
                       ),
@@ -552,7 +531,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
                               classes.checkboxAndRadioHorizontal
                             }
                           >
-                            {loopColumnTwo()}
+                            {/* {loopColumnTwo()} */}
                           </div>
                         </div>
                       ),
@@ -564,7 +543,7 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
-              { loopProducts({ mystore }) }
+              {/* {loopProducts({ mystore })} */}
             </GridContainer>
             <GridItem
               md={6}
@@ -581,6 +560,6 @@ export default function SectionProducts({ mystore, toggleCartMsg }) {
           </GridItem>
         </GridContainer>
       </div>
-    </div>
+    </div> : null
   );
 }

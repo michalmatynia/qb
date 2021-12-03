@@ -32,16 +32,23 @@ const useStyles = makeStyles(contentStyle);
 export function SectionContent01({ item, i }) {
 
   const [isBrickStyle, setBrickStyle] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const processStyle = useCallback(async (item) => {
     return await parseBlockstyle(item)
   }, [])
-
+  
   React.useEffect(() => {
-
-    processStyle({ item }).then((result) => {
-      setBrickStyle(result)
-    })
+    if (item.blockstyle.length > 0) {
+      processStyle({ item }).then((result) => {
+  
+        setBrickStyle(result)
+        setIsLoading(false)
+      })
+    } else {
+      setIsLoading(false)
+    }
+  
   }, [item, processStyle])
 
   const classes = useStyles();
@@ -138,7 +145,7 @@ export function SectionContent01({ item, i }) {
     }, [classes.section, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 
   return (
-    <WrapperOutputNext>
+    isLoading ? <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <div className={classes.container} >
@@ -169,7 +176,7 @@ export function SectionContent01({ item, i }) {
             </GridItem>
           </GridContainer>
         </div></div>
-    </WrapperOutputNext>
+    </WrapperOutputNext> : null
   );
 
 }
