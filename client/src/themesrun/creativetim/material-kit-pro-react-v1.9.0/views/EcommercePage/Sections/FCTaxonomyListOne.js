@@ -1,12 +1,8 @@
-import React, {useCallback} from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-  useRouter,
-} from "../../../../../../hoc/Funcs/hook_funcs";
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
+
+import { useSelector } from 'react-redux'
 
 // nodejs library that concatenates classes
-import cx from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
 

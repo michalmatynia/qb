@@ -42,13 +42,18 @@ import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/Us
 
 export default function FCTaxonomy({ arrayTaxo, cb_runCheckedTaxo, checkedTaxo }) {
 
-    console.log('parse FCTaxonomy');
 
     const [isArrayTaxo, setArrayTaxo] = React.useState(arrayTaxo)
     const [isLoading, setIsLoading] = React.useState(true);
 
-    console.log(isArrayTaxo);
+    React.useEffect(() => {
 
+        if(arrayTaxo && isLoading) {
+            setArrayTaxo(arrayTaxo)
+            setIsLoading(false)
+        }
+    
+    },[arrayTaxo, isLoading])
   const handleToggle = useCallback(
    async ({ value, i }) => {
       const currentIndex = checkedTaxo.indexOf(value)
@@ -60,32 +65,20 @@ export default function FCTaxonomy({ arrayTaxo, cb_runCheckedTaxo, checkedTaxo }
       }
 
       cb_runCheckedTaxo({cb_NewChecked: newChecked});
+      setIsLoading(false)
+
     }, [cb_runCheckedTaxo, checkedTaxo])
 
-    // const loopColumnOne = useCallback(
-    //   () => {
-    //     return categoryTaxo ? categoryTaxo.map((value, i) => {
-    //       return <FCTaxonomyListOne
-    //         value={value}
-    //         i={i}
-    //         key={value._id}
-    //         togglefunction={() => handleToggleCategory({ value, i })}
-    //         sumofchecked={checkedCategoryTaxo}
-    //       />
-    //     }) : null
-    //   }, [categoryTaxo, checkedCategoryTaxo, handleToggleCategory]
-
-
-
-
-
     return (
-        isArrayTaxo ? isArrayTaxo.map((value, i) => {
+        !isLoading && isArrayTaxo ? isArrayTaxo.map((value, i) => {
             return <FCTaxonomyListOne
                 value={value}
                 i={i}
                 key={value._id}
-                togglefunction={({value, i}) => handleToggle({ value, i })}
+                togglefunction={({value, i}) => {
+                    setIsLoading(true)
+                    handleToggle({ value, i })}
+                }
                 sumofchecked={checkedTaxo}
             />
         }) : null

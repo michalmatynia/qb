@@ -66,9 +66,9 @@ export default function SectionProducts() {
 
   // let taxonomy_list = useSelector(state => state.taxonomy.list)
   // let reduxprops = useSelector(state => state)
-  let localeuser = useSelector(state => state.user.localeUser)
-  let currencyuser = useSelector(state => state.user.currencyUser)
-  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+  // let localeuser = useSelector(state => state.user.localeUser)
+  // let currencyuser = useSelector(state => state.user.currencyUser)
+  // let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let product_list = useSelector(state => state.product.list)
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
@@ -185,64 +185,9 @@ export default function SectionProducts() {
   // }, [currencyuser, current_mysite, dispatch, localeuser])
 
 
-  const loadPrice = useCallback(async () => {
- 
-    // // Viewparams and limits have to be carried out on a SUM array of products
-
-    let priceArray = product_list.map(a => a.price)
-    const price_min = Math.min(...priceArray)
-    const price_max = Math.max(...priceArray)
 
 
-
-    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
-
-    // return { result_products: [], floor_price_min: 0, round_price_max: 0 }
-
-
-  }, [product_list])
-
-
-  // React.useEffect(()=>{
-  //       // ======= SET TAXONOMY ========
-
-  //       let category_taxo_array = []
-  //       for (let eachproduct of result_products.payload) {
-
-  //         if (eachproduct.category.length > 0) {
-
-  //           for (let catvalue of eachproduct.category) {
-
-  //             let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
-
-  //             if (!dupe) {
-  //               category_taxo_array.push(catvalue)
-  //             }
-
-  //           }
-  //         }
-  //       }
-
-  //       let type_taxo_array = []
-  //       for (let eachproduct of result_products.payload) {
-
-  //         if (eachproduct.type.length > 0) {
-
-  //           for (let typevalue of eachproduct.type) {
-
-  //             let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
-
-  //             if (!dupe) {
-  //               type_taxo_array.push(typevalue)
-  //             }
-  //           }
-  //         }
-  //       }
-  // setCategoryTaxo(category_taxo_array)
-  // setTypeTaxo(type_taxo_array)
-  // })
-
-  const refineProducts = useCallback(async () => {
+  const refineProductList = useCallback(async ({checkedCategoryTaxo = null , checkedTypeTaxo = null}) => {
 
     let newViewingList = []
 
@@ -308,53 +253,25 @@ export default function SectionProducts() {
 
     return newViewingList
 
-  },[checkedCategoryTaxo, checkedTypeTaxo, myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, priceRange, product_list])
+  },[myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, priceRange, product_list])
 
   
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    // RUN FUNCTION
-    if (!viewingList
-      && isLoading
-      // To Ponizej do wywalenia jak zrobie juz jezyki
-      // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+  //   // RUN FUNCTION
+  //   // if (priceRange && product_list) {
+  //   //     console.log('refineproducts');
 
-    ) {
+  //   //     refineProducts().then((newViewingList) => {
+  //   //       setViewingList(newViewingList)
+  //   //       setIsLoading(false)
 
-      if(!priceRange) {
-
-        loadPrice().then(({ floor_price_min, round_price_max }) => {
-
-          /* Refine Temporary */
-          // refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
-          //           setViewingList(newViewingList)
-  
-  
-          // ======
-  
+  //   //     })
+  //   //   }
 
 
-          setViewingList(product_list)
-
-          // setLocalUser(localeuser)
-
-          setPriceRange([floor_price_min, round_price_max])
-          setIsLoading(false)
-  
-        })
-      } else if (priceRange && product_list) {
-        console.log('refineproducts');
-
-        refineProducts().then((newViewingList) => {
-          setViewingList(newViewingList)
-          setIsLoading(false)
-
-        })
-      }
-
-
-    }
-  }, [ isLoading, loadPrice, localeuser, priceRange, product_list, refineProducts, viewingList])
+    
+  // }, [isLoading, priceRange, product_list, refineProducts, viewingList])
 
 
 
@@ -405,19 +322,27 @@ export default function SectionProducts() {
   //     setFcState(newMyFcState)
   //   }, [myFcState])
 
-  return (!isLoading && priceRange ?
+  return (
     <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
         <GridItem md={3} sm={3}>
             
-            <FCEcommercePanel />
+            <FCEcommercePanel
+            toggleCategoryTaxo={({cb_NewChecked})=> {
+
+              console.log(cb_NewChecked);
+              // setCheckedCategoryTaxo(cb_NewChecked)
+            } }
+            />
 
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
-              {/* {loopProducts({ mystore })} */}
+              {/* {!isLoading && priceRange ? 
+              loopProducts({ mystore })
+              : null} */}
             </GridContainer>
             <GridItem
               md={6}
@@ -434,6 +359,6 @@ export default function SectionProducts() {
           </GridItem>
         </GridContainer>
       </div>
-    </div> : null
+    </div> 
   );
 }

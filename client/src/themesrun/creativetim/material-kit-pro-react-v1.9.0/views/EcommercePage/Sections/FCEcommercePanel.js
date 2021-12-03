@@ -42,7 +42,7 @@ import {
 import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ value, i, togglefunction, sumofchecked }) {
+export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, togglefunction, sumofchecked }) {
     const dispatch = useDispatch()
 
 
@@ -58,9 +58,6 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
         }
     }
 
-    const [myFcState, setFcState] = React.useState(fc_state);
-
-    const [viewingList, setViewingList] = React.useState();
 
     // let taxonomy_list = useSelector(state => state.taxonomy.list)
     // let reduxprops = useSelector(state => state)
@@ -72,6 +69,9 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
 
 
     const [priceRange, setPriceRange] = React.useState();
+    const [myFcState, setFcState] = React.useState(fc_state);
+
+    const [viewingList, setViewingList] = React.useState();
 
     const [isLoading, setIsLoading] = React.useState(true);
     const [isOverTheme, setOverTheme] = React.useState();
@@ -83,6 +83,50 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
 
 
     const classes = useStyles({ overtheme: isOverTheme });
+
+    
+  const loadPrice = useCallback(async () => {
+ 
+    // // Viewparams and limits have to be carried out on a SUM array of products
+
+    let priceArray = product_list.map(a => a.price)
+    const price_min = Math.min(...priceArray)
+    const price_max = Math.max(...priceArray)
+
+
+
+    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+
+    // return { result_products: [], floor_price_min: 0, round_price_max: 0 }
+
+
+  }, [product_list])
+  React.useEffect(() => {
+
+    if(!priceRange) {
+        loadPrice().then(({ floor_price_min, round_price_max }) => {
+
+            /* Refine Temporary */
+            // refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
+            //           setViewingList(newViewingList)
+    
+    
+            // ======
+    
+    
+    
+            // setViewingList(product_list)
+    
+            // setLocalUser(localeuser)
+    
+            setPriceRange([floor_price_min, round_price_max])
+    
+          })
+    }
+    
+
+})
+
 
 
     /* Get Theme */
@@ -145,6 +189,7 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
 
             setCategoryTaxo(category_taxo_array)
             setTypeTaxo(type_taxo_array)
+            setIsLoading(false)
 
 
         })
@@ -152,8 +197,8 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
 
     }, [categoryTaxo, establishTaxonomy, typeTaxo])
 
-    return (categoryTaxo && typeTaxo ? 
-        <Card plain>
+    return (categoryTaxo && typeTaxo && priceRange && !isLoading ? 
+        <Card plain>{console.log('EcommercePanel Render')}
             <CardBody className={classes.cardBodyRefine}>
 
                 {/* Here should be a SEARCH FIELD */}
@@ -211,7 +256,10 @@ export default function FCEcommercePanel({ value, i, togglefunction, sumofchecke
                                                 console.log('runcheck');
                                                 setIsLoading(true)
                                                 setCheckedCategoryTaxo(cb_NewChecked)
-                                                setViewingList()
+                                                toggleCategoryTaxo({cb_NewChecked})
+                                                setIsLoading(false)
+
+                                                // setViewingList()
 
                                             }
 
