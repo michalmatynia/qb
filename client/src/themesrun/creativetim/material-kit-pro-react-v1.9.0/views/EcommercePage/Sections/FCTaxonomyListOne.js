@@ -46,7 +46,7 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
 
             disableRipple
             tabIndex={-1}
-            onClick={() => togglefunction()}
+            onClick={() => togglefunction({value, i})}
             checked={
               sumofchecked.find((chvalue) => chvalue._id === value._id) === value ? true : false
             }
