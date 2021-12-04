@@ -26,7 +26,6 @@ const useStyles = makeStyles(styles);
 export default function EcommercePage() {
   const dispatch = useDispatch()
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
-console.log('insideparallax');
 
   // React.useEffect(() => {
 

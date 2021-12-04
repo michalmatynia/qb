@@ -103,7 +103,7 @@ export default function Home() {
             </div>
         )
     } else if (!isloading) {
-        return (<div>{console.log('ecommerce render')}
+        return (<div>
                     <EcommercePage /> 
 </div>
         )

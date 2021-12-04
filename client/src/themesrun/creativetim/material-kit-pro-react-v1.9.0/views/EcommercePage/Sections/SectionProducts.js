@@ -191,6 +191,8 @@ export default function SectionProducts() {
 
     let newViewingList = []
 console.log(categoryTaxo);
+console.log(priceRange);
+
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
       // Reduce on Price Range
@@ -252,8 +254,8 @@ console.log(categoryTaxo);
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
     
-    console.log(newViewingList);
-
+    // console.log(newViewingList);
+    // return newViewingList
     setViewingList(newViewingList)
 
     // return newViewingList
@@ -328,7 +330,7 @@ console.log(categoryTaxo);
   //   }, [myFcState])
 
   return (
-     <div className={classes.section}>{console.log('render')}
+     <div className={classes.section}>{console.log('render Webstore')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
@@ -340,6 +342,7 @@ console.log(categoryTaxo);
               // setViewingList()
               refineProductList({categoryTaxo, typeTaxo, priceRange})
             } }
+            viewingList={viewingList}
             />
 
           </GridItem>

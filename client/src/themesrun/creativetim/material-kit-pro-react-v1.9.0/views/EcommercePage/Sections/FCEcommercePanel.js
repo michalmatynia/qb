@@ -42,7 +42,7 @@ import {
 import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleEcomPanel, sumofchecked }) {
+export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleEcomPanel, viewingList, sumofchecked }) {
     const dispatch = useDispatch()
 
 
@@ -71,7 +71,7 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     const [priceRange, setPriceRange] = React.useState();
     const [myFcState, setFcState] = React.useState(fc_state);
 
-    const [viewingList, setViewingList] = React.useState();
+    // const [viewingList, setViewingList] = React.useState();
 
     const [isLoading, setIsLoading] = React.useState(true);
     const [isOverTheme, setOverTheme] = React.useState();
@@ -107,18 +107,21 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
           })
     }
     
-
 })
 
 React.useEffect(() => {
 
-    if(priceRange && categoryTaxo && isLoading) {
+    if(priceRange && categoryTaxo && !viewingList && isLoading ) {
+
+        console.log('Ecommerce load price / category to refine list');
+
+        console.log(priceRange);
 
         toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo: [], priceRange })
         setIsLoading(false)
     }
 
-},[categoryTaxo, checkedCategoryTaxo, isLoading, priceRange, toggleEcomPanel])
+},[categoryTaxo, checkedCategoryTaxo, isLoading, priceRange, toggleEcomPanel, viewingList])
 
     /* Get Theme */
     /*   React.useEffect(() => {
@@ -184,7 +187,7 @@ React.useEffect(() => {
 
     }, [categoryTaxo, establishTaxonomy, typeTaxo])
 
-    return (categoryTaxo && typeTaxo && priceRange && !isLoading ? 
+    return (categoryTaxo && typeTaxo && priceRange && viewingList && !isLoading  ? 
         <Card plain>{console.log('EcommercePanel Render')}
             <CardBody className={classes.cardBodyRefine}>
 
@@ -215,14 +218,14 @@ React.useEffect(() => {
                         {
                             title: redux_currentmystore.pricerange_nametag,
                             content: (<PriceSlider
-
+                                // toggleEcomPanel={({cb_NewChecked})=> toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_NewChecked})}
                                 priceparent={priceRange}
-                                cb_runCheckedTaxo={({ cb_NewChecked }) => {
+                                cb_runChangePrice={({ cb_ChangedPrice }) => {
 
                                     console.log('run price');
                                     setIsLoading(true)
-                                    setPriceRange(cb_NewChecked)
-                                    toggleEcomPanel({categoryTaxo, typeTaxo, priceRange: cb_NewChecked})
+                                    setPriceRange(cb_ChangedPrice)
+                                    toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_ChangedPrice})
 
                                     setIsLoading(false)
 

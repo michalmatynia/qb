@@ -3,7 +3,10 @@ import React, { useCallback } from "react";
 import cx from "classnames";
 
 // plugin that creates slider
-import Slider from "nouislider";
+// import Slider from "nouislider";
+import noUiSlider from 'nouislider';
+
+
 import FCGridItem from "./FCGridItem";
 
 // @material-ui/core components
@@ -23,76 +26,126 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider ({ priceparent, cb_runCheckedTaxo }) {
-    const dispatch = useDispatch()
-    let redux_currencyuser = useSelector(state => state.user.currencyUser)
+export default function PriceSlider({ priceparent, cb_runChangePrice }) {
+  const dispatch = useDispatch()
+  let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
-    const [priceRange, setPriceRange] = React.useState(priceparent);
-    const [isLoading, setIsLoading] = React.useState(true);
+  const [priceRange, setPriceRange] = React.useState(priceparent);
+  const [isLoading, setIsLoading] = React.useState(true);
 
-    const classes = useStyles();
+  const classes = useStyles();
 
 
-    React.useEffect(() => {
+  React.useEffect(() => {
 
-          if (priceRange &&
-            !document
-              .getElementById("sliderRegular")
-              .classList.contains("noUi-target")
-          ) {
-    
-            console.log('slider create');
-    
-            Slider.create(document.getElementById("sliderRegular"), {
-              start: [priceRange[0], priceRange[1]],
-              connect: true,
-              range: { min: priceRange[0], max: priceRange[1] },
-              step: 1,
-            }).on("update", async function (values) {
-    
-              setPriceRange([Math.floor(values[0]), Math.round(values[1])])
+    if (priceparent &&
+      !document
+        .getElementById("sliderRegular")
+        .classList.contains("noUi-target")
+    ) {
+      let pp = document.getElementById("sliderRegular")
 
-              console.log('price update');
+      console.log('slider create');
 
-            });
-          }
-      }, [cb_runCheckedTaxo, priceRange]);
+      noUiSlider.create(pp, {
+        start: [priceRange[0], priceRange[1]],
+        connect: true,
+        range: { min: priceRange[0], max: priceRange[1] },
+        step: 1,
+      }).on('change', function (values, handle) {
+        console.log('updates');
+        cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
-      React.useEffect(() => {
+      })
 
-        console.log(priceRange);
-        console.log(priceparent);
+      //   
 
-        // if(priceRange && priceRange !== priceparent){
-        //       cb_runCheckedTaxo({cb_NewChecked: [Math.floor(priceRange[0]), Math.round(priceRange[1])]});
+      pp.noUiSlider.on('update', function (values, handle) {
+        setPriceRange([Math.floor(values[0]), Math.round(values[1])])
 
-        // }
 
-      },[cb_runCheckedTaxo, priceRange, priceparent])
+      })
 
-      return (
+    }
 
-        priceRange ? <CardBody className={classes.cardBodyRefine}>
-    <span
-      className={cx(
-        classes.pullLeft,
-        classes.priceSlider
-      )}
-    >
-      {Object.keys(redux_currencyuser.rates)} {priceRange ? priceRange[0] : null}
-    </span>
-    <span
-      className={cx(
-        classes.pullRight,
-        classes.priceSlider
-      )}
-    >
-      {Object.keys(redux_currencyuser.rates)} {priceRange ? priceRange[1] : null}
-    </span>
-    <br />
-    <br />
-    <div id="sliderRegular" className="slider-gray" />
-  </CardBody> : null)
+
+
+    // .on('update', function(values, handle) {
+
+    //   setPriceRange([Math.floor(values[0]), Math.round(values[1])])
+
+    // })
+  }, [cb_runChangePrice, priceRange, priceparent]);
+
+  // React.useEffect(() => {
+
+
+
+
+  //           if (priceparent &&
+  //             document
+  //               .getElementById("sliderRegular")
+  //               .classList.contains("noUi-target")
+  //           ) {
+
+  //             console.log(document
+  //               .getElementById("sliderRegular"));
+  //               console.log(Slider);
+
+  //               console.log(document.getElementById("sliderRegular")[Slider]);
+
+  //               // document.getElementById("sliderRegular").Slider.on('update', function (values, handle) {
+  //               // console.log('updates');
+  //               //       });
+
+  //           }
+
+  // },[priceparent])
+
+
+
+
+  /* Change Price */
+
+  // React.useEffect(() => {
+
+
+  //   if(priceRange && priceRange !== priceparent && document
+  //     .getElementById("sliderRegular")
+  //     .classList.contains("noUi-target") ){
+
+  //     console.log(priceRange);
+  //     console.log(priceparent);
+  //     console.log('in');
+  //         // cb_runCheckedTaxo({cb_NewChecked: [Math.floor(priceRange[0]), Math.round(priceRange[1])]});
+
+  //   }
+
+  // },[cb_runCheckedTaxo,  priceRange, priceparent])
+
+  return (
+
+    priceparent ? <CardBody className={classes.cardBodyRefine}>
+      <span
+        className={cx(
+          classes.pullLeft,
+          classes.priceSlider
+        )}
+      >
+        {Object.keys(redux_currencyuser.rates)} {priceRange ? priceRange[0] : null}
+      </span>
+      <span
+        className={cx(
+          classes.pullRight,
+          classes.priceSlider
+        )}
+      >
+        {Object.keys(redux_currencyuser.rates)} {priceRange ? priceRange[1] : null}
+      </span>
+      <br />
+      <br />
+      <div id="sliderRegular" className="slider-gray" />
+    </CardBody> : null)
 
 
 }
