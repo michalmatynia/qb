@@ -190,7 +190,7 @@ export default function SectionProducts() {
   const refineProductList = useCallback(async ({categoryTaxo, typeTaxo, priceRange}) => {
 
     let newViewingList = []
-
+console.log(categoryTaxo);
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
       // Reduce on Price Range
@@ -253,25 +253,29 @@ export default function SectionProducts() {
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
     
     console.log(newViewingList);
-    return newViewingList
+
+    setViewingList(newViewingList)
+
+    // return newViewingList
+    
 
   },[myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if (isLoading && !viewingList) {
-        console.log('refineproducts');
+  //   if (isLoading && priceRange && categoryTaxo && !viewingList) {
+  //       console.log('refineproducts');
 
-        refineProductList({categoryTaxo, typeTaxo, priceRange}).then((newViewingList) => {
-          setViewingList(newViewingList)
-          setIsLoading(false)
+  //       refineProductList({categoryTaxo, typeTaxo, priceRange}).then((newViewingList) => {
+  //         setViewingList(newViewingList)
+  //         setIsLoading(false)
 
-        })
-      }
+  //       })
+  //     }
 
 
     
-  }, [categoryTaxo, isLoading, priceRange, refineProductList, typeTaxo, viewingList])
+  // }, [categoryTaxo, isLoading, priceRange, refineProductList, typeTaxo, viewingList])
 
 
 
@@ -303,7 +307,6 @@ export default function SectionProducts() {
   const loopProducts = useCallback(
     () => {
 
-      console.log(viewingList);
       return viewingList.length > 0 ? viewingList.map((value, i) => {
         return <FCGridItem
           value={value}
@@ -325,7 +328,7 @@ export default function SectionProducts() {
   //   }, [myFcState])
 
   return (
-   !isLoading ?  <div className={classes.section}>{console.log('render')}
+     <div className={classes.section}>{console.log('render')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
@@ -334,8 +337,7 @@ export default function SectionProducts() {
             <FCEcommercePanel
             toggleEcomPanel={({categoryTaxo, typeTaxo, priceRange})=> {
 
-              console.log(categoryTaxo);
-              setViewingList()
+              // setViewingList()
               refineProductList({categoryTaxo, typeTaxo, priceRange})
             } }
             />
@@ -362,6 +364,6 @@ export default function SectionProducts() {
           </GridItem>
         </GridContainer>
       </div>
-    </div> : null
+    </div> 
   );
 }

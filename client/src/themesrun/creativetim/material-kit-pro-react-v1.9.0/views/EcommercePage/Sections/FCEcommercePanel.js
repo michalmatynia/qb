@@ -93,8 +93,6 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     const price_min = Math.min(...priceArray)
     const price_max = Math.max(...priceArray)
 
-
-
     return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
 
     // return { result_products: [], floor_price_min: 0, round_price_max: 0 }
@@ -105,31 +103,22 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
     if(!priceRange) {
         loadPrice().then(({ floor_price_min, round_price_max }) => {
-
-            /* Refine Temporary */
-            // refineProducts({ left_price: priceRange[0], right_price: priceRange[1] }).then((newViewingList) => {
-            //           setViewingList(newViewingList)
-    
-    
-            // ======
-    
-    
-    
-            // setViewingList(product_list)
-    
-            // setLocalUser(localeuser)
-    
             setPriceRange([floor_price_min, round_price_max])
-            toggleEcomPanel({categoryTaxo, typeTaxo, priceRange : [floor_price_min, round_price_max]})
-            setIsLoading(false)
-
           })
     }
     
 
 })
 
+React.useEffect(() => {
 
+    if(priceRange && categoryTaxo && isLoading) {
+
+        toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo: [], priceRange })
+        setIsLoading(false)
+    }
+
+},[categoryTaxo, checkedCategoryTaxo, isLoading, priceRange, toggleEcomPanel])
 
     /* Get Theme */
     /*   React.useEffect(() => {
@@ -186,15 +175,10 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     React.useEffect(() => {
 
         if(!categoryTaxo && !typeTaxo) {
-            setIsLoading(true)
-
         establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
 
             setCategoryTaxo(category_taxo_array)
             setTypeTaxo(type_taxo_array)
-            setIsLoading(false)
-
-
         })
     }
 
@@ -233,13 +217,17 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
                             content: (<PriceSlider
 
                                 priceparent={priceRange}
-                            // isCategoryArray={isCategoryArray}
-                            // cbActionOnClick={({ value }) => {
-                            //   setIsLoading(true)
-                            //   setIsFilter(value)
-                            // }}
-                            // isFilter={isFilter}
-                            // item={item}
+                                cb_runCheckedTaxo={({ cb_NewChecked }) => {
+
+                                    console.log('run price');
+                                    setIsLoading(true)
+                                    setPriceRange(cb_NewChecked)
+                                    toggleEcomPanel({categoryTaxo, typeTaxo, priceRange: cb_NewChecked})
+
+                                    setIsLoading(false)
+
+                                }}
+ 
                             />
 
                             ),
@@ -258,6 +246,7 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
                                                 console.log('runcheck');
                                                 setIsLoading(true)
+
                                                 setCheckedCategoryTaxo(cb_NewChecked)
                                                 toggleEcomPanel({categoryTaxo: cb_NewChecked, typeTaxo, priceRange})
 

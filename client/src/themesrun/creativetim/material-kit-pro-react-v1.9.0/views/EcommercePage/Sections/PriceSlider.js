@@ -23,7 +23,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider ({ priceparent }) {
+export default function PriceSlider ({ priceparent, cb_runCheckedTaxo }) {
     const dispatch = useDispatch()
     let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
@@ -51,10 +51,24 @@ export default function PriceSlider ({ priceparent }) {
             }).on("update", async function (values) {
     
               setPriceRange([Math.floor(values[0]), Math.round(values[1])])
-    
+
+              console.log('price update');
+
             });
           }
-      }, [ priceRange]);
+      }, [cb_runCheckedTaxo, priceRange]);
+
+      React.useEffect(() => {
+
+        console.log(priceRange);
+        console.log(priceparent);
+
+        // if(priceRange && priceRange !== priceparent){
+        //       cb_runCheckedTaxo({cb_NewChecked: [Math.floor(priceRange[0]), Math.round(priceRange[1])]});
+
+        // }
+
+      },[cb_runCheckedTaxo, priceRange, priceparent])
 
       return (
 

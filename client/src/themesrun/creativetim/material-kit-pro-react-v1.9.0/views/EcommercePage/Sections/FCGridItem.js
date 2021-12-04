@@ -158,30 +158,36 @@ export default  function FCGridItem({ value, i, mystore, isLoading }) {
         </GridItem>
 
     }
-    if (isLoading) {
-        return (
-          <div
-            style={{
-              //   backgroundImage: "url(" + image + ")",
-              backgroundSize: "cover",
-              // backgroundColor: '#595959',
-              backgroundPosition: " center",
-              paddingTop: '25%',
-              position: 'fixed',
-              left: '0px',
-              top: '0px',
-              width: '100%',
-              height: '100%',
-              // zIndex: '9999',
-              textAlign: 'center',
-            }}
-          >
-            <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
-          </div>
-        )
-      } else if (!isLoading) {
-        return render()
-      }
+
+
+    return render()
+
+
+
+    // if (isLoading) {
+    //     return (
+    //       <div
+    //         style={{
+    //           //   backgroundImage: "url(" + image + ")",
+    //           backgroundSize: "cover",
+    //           // backgroundColor: '#595959',
+    //           backgroundPosition: " center",
+    //           paddingTop: '25%',
+    //           position: 'fixed',
+    //           left: '0px',
+    //           top: '0px',
+    //           width: '100%',
+    //           height: '100%',
+    //           // zIndex: '9999',
+    //           textAlign: 'center',
+    //         }}
+    //       >
+    //         <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+    //       </div>
+    //     )
+    //   } else if (!isLoading) {
+    //     return render()
+    //   }
 
 
 }
