@@ -33,7 +33,9 @@ export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_
   
   const [priceRange, setPriceRange] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isChildCheckedCategoryTaxo, setChildCheckedCategoryTaxo] = React.useState(childCheckedCategoryTaxo);
+  const [isChildCheckedCategoryTaxo, setChildCheckedCategoryTaxo] = React.useState();
+
+  console.log(childCheckedCategoryTaxo);
 
   const classes = useStyles();
 
@@ -61,6 +63,72 @@ export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_
     }
     
 })
+
+const getFakinVar = useCallback(async () => {
+        console.log(isChildCheckedCategoryTaxo);
+
+},[isChildCheckedCategoryTaxo])
+
+React.useEffect(() => {
+if(childCheckedCategoryTaxo !== isChildCheckedCategoryTaxo) {
+
+  if(!isChildCheckedCategoryTaxo) {
+    setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
+
+  } else {
+    setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
+
+
+
+    let pp = document.getElementById("sliderRegular")
+
+      console.log('slider 22222222222222 create');
+      console.log(isChildCheckedCategoryTaxo);
+      console.log(childCheckedCategoryTaxo);
+
+      // noUiSlider.create(pp, {
+      //   start: [priceRange[0], priceRange[1]],
+      //   connect: true,
+      //   range: { min: initialPriceRange[0], max: initialPriceRange[1] },
+      //   step: 1,
+      // }).on('change', function (values, handle) {
+      //   console.log(values);
+
+      //   console.log(handle);
+      //   console.log(isChildCheckedCategoryTaxo);
+      //   console.log('updates');
+      //   getFakinVar().then(()=>{
+      //     cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])], isChildCheckedCategoryTaxo });
+
+      //   })
+
+
+      // })
+
+      //   
+
+      pp.noUiSlider.on('update', function (values, handle) {
+
+        setPriceRange([Math.floor(values[0]), Math.round(values[1])])
+
+
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+}
+},[childCheckedCategoryTaxo, isChildCheckedCategoryTaxo])
   React.useEffect(() => {
 
     if (!isLoading
@@ -71,6 +139,7 @@ export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_
       let pp = document.getElementById("sliderRegular")
 
       console.log('slider create');
+      console.log(isChildCheckedCategoryTaxo);
 
       noUiSlider.create(pp, {
         start: [priceRange[0], priceRange[1]],
@@ -78,11 +147,19 @@ export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_
         range: { min: initialPriceRange[0], max: initialPriceRange[1] },
         step: 1,
       }).on('change', function (values, handle) {
-        console.log('updates');
+        console.log(values);
+
+        console.log(handle);
+        console.log(childCheckedCategoryTaxo);
+
 
         console.log(isChildCheckedCategoryTaxo);
+        console.log('updates');
+        getFakinVar().then(()=>{
+          cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])], isChildCheckedCategoryTaxo });
 
-        cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
+        })
+
 
       })
 
@@ -97,7 +174,7 @@ export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_
 
     }
 
-  }, [cb_runChangePrice, initialPriceRange, isChildCheckedCategoryTaxo, isLoading, priceRange]);
+  }, [cb_runChangePrice, childCheckedCategoryTaxo, getFakinVar, initialPriceRange, isChildCheckedCategoryTaxo, isLoading, priceRange]);
 
   // React.useEffect(() => {
 
