@@ -78,9 +78,9 @@ export default function SectionProducts() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isOverTheme, setOverTheme] = React.useState();
   const [categoryTaxo, setCategoryTaxo] = React.useState();
-  const [typeTaxo, setTypeTaxo] = React.useState(null);
-  const [checkedCategoryTaxo, setCheckedCategoryTaxo] = React.useState([]);
-  const [checkedTypeTaxo, setCheckedTypeTaxo] = React.useState([]);
+  const [typeTaxo, setTypeTaxo] = React.useState();
+  // const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState([]);
+  const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState([]);
   const [isLocalUser, setLocalUser] = React.useState();
 
   const classes = useStyles({ overtheme: isOverTheme });
@@ -187,11 +187,11 @@ export default function SectionProducts() {
 
 
 
-  const refineProductList = useCallback(async ({categoryTaxo, typeTaxo, priceRange}) => {
+  const refineProductList = useCallback(async ({ parentCheckedCategoryTaxo, typeTaxo, priceRange }) => {
 
     let newViewingList = []
-console.log(categoryTaxo);
-console.log(priceRange);
+    console.log(parentCheckedCategoryTaxo);
+    console.log(priceRange);
 
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
@@ -202,11 +202,11 @@ console.log(priceRange);
         let cat_bool = true
         let type_bool = true
 
-        if (categoryTaxo.length > 0) {
+        if (parentCheckedCategoryTaxo.length > 0) {
 
           let cv_extracted_ids = currentValue.category.map(item => item._id)
 
-          for (let eachCatValue of categoryTaxo) {
+          for (let eachCatValue of parentCheckedCategoryTaxo) {
 
             if (!cv_extracted_ids.includes(eachCatValue._id)) {
               cat_bool = false
@@ -253,15 +253,15 @@ console.log(priceRange);
       });
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
-    
+
     // console.log(newViewingList);
     // return newViewingList
     setViewingList(newViewingList)
 
     // return newViewingList
-    
 
-  },[myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
+
+  }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
 
   // React.useEffect(() => {
 
@@ -276,7 +276,7 @@ console.log(priceRange);
   //     }
 
 
-    
+
   // }, [categoryTaxo, isLoading, priceRange, refineProductList, typeTaxo, viewingList])
 
 
@@ -330,27 +330,29 @@ console.log(priceRange);
   //   }, [myFcState])
 
   return (
-     <div className={classes.section}>{console.log('render Webstore')}
+    <div className={classes.section}>{console.log('render Section Products')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
-        <GridItem md={3} sm={3}>
-            
-            <FCEcommercePanel
-            toggleEcomPanel={({categoryTaxo, typeTaxo, priceRange})=> {
+          <GridItem md={3} sm={3}>
 
-              // setViewingList()
-              refineProductList({categoryTaxo, typeTaxo, priceRange})
-            } }
-            viewingList={viewingList}
+            <FCEcommercePanel
+              toggleEcomPanel={({ parentCheckedCategoryTaxo, typeTaxo, priceRange }) => {
+
+                console.log(parentCheckedCategoryTaxo);
+                // setParentCheckedCategoryTaxo(parentCheckedCategoryTaxo)
+                // setViewingList()
+                refineProductList({ parentCheckedCategoryTaxo, typeTaxo, priceRange })
+              }}
+              viewingList={viewingList}
             />
 
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
-            { viewingList ? 
-              loopProducts()
-              : null} 
+              {viewingList ?
+                loopProducts()
+                : null}
             </GridContainer>
             <GridItem
               md={6}
@@ -367,6 +369,6 @@ console.log(priceRange);
           </GridItem>
         </GridContainer>
       </div>
-    </div> 
+    </div>
   );
 }

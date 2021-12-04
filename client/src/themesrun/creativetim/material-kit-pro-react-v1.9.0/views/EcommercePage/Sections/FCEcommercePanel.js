@@ -76,52 +76,55 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     const [isLoading, setIsLoading] = React.useState(true);
     const [isOverTheme, setOverTheme] = React.useState();
     const [categoryTaxo, setCategoryTaxo] = React.useState();
-    const [typeTaxo, setTypeTaxo] = React.useState(null);
+    const [typeTaxo, setTypeTaxo] = React.useState();
     const [checkedCategoryTaxo, setCheckedCategoryTaxo] = React.useState([]);
     const [checkedTypeTaxo, setCheckedTypeTaxo] = React.useState([]);
     const [isLocalUser, setLocalUser] = React.useState();
+    const [initialPriceRange, setInitialPriceRange] = React.useState();
 
 
     const classes = useStyles({ overtheme: isOverTheme });
 
-    
-  const loadPrice = useCallback(async () => {
- 
-    // // Viewparams and limits have to be carried out on a SUM array of products
 
-    let priceArray = product_list.map(a => a.price)
-    const price_min = Math.min(...priceArray)
-    const price_max = Math.max(...priceArray)
+    const loadPrice = useCallback(async () => {
 
-    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+        // // Viewparams and limits have to be carried out on a SUM array of products
 
-    // return { result_products: [], floor_price_min: 0, round_price_max: 0 }
+        let priceArray = product_list.map(a => a.price)
+        const price_min = Math.min(...priceArray)
+        const price_max = Math.max(...priceArray)
+
+        return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
 
 
-  }, [product_list])
-  React.useEffect(() => {
 
-    if(!priceRange) {
-        loadPrice().then(({ floor_price_min, round_price_max }) => {
-            setPriceRange([floor_price_min, round_price_max])
-          })
-    }
-    
-})
+    }, [product_list])
+    React.useEffect(() => {
 
-React.useEffect(() => {
+        if (!initialPriceRange) {
 
-    if(priceRange && categoryTaxo && !viewingList && isLoading ) {
+            console.log('load price');
+            loadPrice().then(({ floor_price_min, round_price_max }) => {
+                setInitialPriceRange([floor_price_min, round_price_max])
+                setPriceRange([floor_price_min, round_price_max])
+            })
+        }
 
-        console.log('Ecommerce load price / category to refine list');
+    })
 
-        console.log(priceRange);
+    React.useEffect(() => {
 
-        toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo: [], priceRange })
-        setIsLoading(false)
-    }
+        if (initialPriceRange && priceRange && categoryTaxo && checkedCategoryTaxo && !viewingList && isLoading) {
 
-},[categoryTaxo, checkedCategoryTaxo, isLoading, priceRange, toggleEcomPanel, viewingList])
+            console.log('Ecommerce load price / category to refine list');
+console.log(priceRange);
+console.log(checkedCategoryTaxo);
+
+            toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, typeTaxo: [], priceRange })
+            setIsLoading(false)
+        }
+
+    }, [categoryTaxo, checkedCategoryTaxo, initialPriceRange, isLoading, priceRange, toggleEcomPanel, viewingList])
 
     /* Get Theme */
     /*   React.useEffect(() => {
@@ -177,18 +180,20 @@ React.useEffect(() => {
 
     React.useEffect(() => {
 
-        if(!categoryTaxo && !typeTaxo) {
-        establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
+        if (!categoryTaxo && !typeTaxo) {
 
-            setCategoryTaxo(category_taxo_array)
-            setTypeTaxo(type_taxo_array)
-        })
-    }
+            console.log('Establish Taxonomy');
+            establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
+                
+                setCategoryTaxo(category_taxo_array)
+                setTypeTaxo(type_taxo_array)
+            })
+        }
 
     }, [categoryTaxo, establishTaxonomy, typeTaxo])
 
-    return (categoryTaxo && typeTaxo && priceRange && viewingList && !isLoading  ? 
-        <Card plain>{console.log('EcommercePanel Render')}
+    return (categoryTaxo && typeTaxo && initialPriceRange && viewingList && !isLoading ?
+        <Card plain>{console.log('EcommercePanel Render', {checkedCategoryTaxo})}
             <CardBody className={classes.cardBodyRefine}>
 
                 {/* Here should be a SEARCH FIELD */}
@@ -219,18 +224,22 @@ React.useEffect(() => {
                             title: redux_currentmystore.pricerange_nametag,
                             content: (<PriceSlider
                                 // toggleEcomPanel={({cb_NewChecked})=> toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_NewChecked})}
-                                priceparent={priceRange}
+                                priceparent={initialPriceRange}
+                                childCheckedCategoryTaxo={checkedCategoryTaxo}
                                 cb_runChangePrice={({ cb_ChangedPrice }) => {
 
-                                    console.log('run price');
-                                    setIsLoading(true)
-                                    setPriceRange(cb_ChangedPrice)
-                                    toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_ChangedPrice})
+                                    console.log('run price change functions');
+                                    // setIsLoading(true)
+                                    // setPriceRange(cb_ChangedPrice)
 
-                                    setIsLoading(false)
+
+                                    console.log(checkedCategoryTaxo);
+                                    toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_ChangedPrice })
+
+                                    // setIsLoading(false)
 
                                 }}
- 
+
                             />
 
                             ),
@@ -248,12 +257,11 @@ React.useEffect(() => {
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
 
                                                 console.log('runcheck');
-                                                setIsLoading(true)
-
+                                                console.log(cb_NewChecked);
                                                 setCheckedCategoryTaxo(cb_NewChecked)
-                                                toggleEcomPanel({categoryTaxo: cb_NewChecked, typeTaxo, priceRange})
+                                                toggleEcomPanel({ parentCheckedCategoryTaxo: cb_NewChecked, typeTaxo, priceRange })
 
-                                                setIsLoading(false)
+                                                // setIsLoading(false)
 
                                             }
 

@@ -7,8 +7,6 @@ import cx from "classnames";
 import noUiSlider from 'nouislider';
 
 
-import FCGridItem from "./FCGridItem";
-
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -26,20 +24,47 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider({ priceparent, cb_runChangePrice }) {
-  const dispatch = useDispatch()
-  let redux_currencyuser = useSelector(state => state.user.currencyUser)
+export default function PriceSlider({ priceparent, childCheckedCategoryTaxo, cb_runChangePrice }) {
 
-  const [priceRange, setPriceRange] = React.useState(priceparent);
+  let redux_currencyuser = useSelector(state => state.user.currencyUser)
+  let product_list = useSelector(state => state.product.list)
+
+  const [initialPriceRange, setInitialPriceRange] = React.useState(priceparent);
+  
+  const [priceRange, setPriceRange] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isChildCheckedCategoryTaxo, setChildCheckedCategoryTaxo] = React.useState(childCheckedCategoryTaxo);
 
   const classes = useStyles();
 
+  const loadPrice = useCallback(async () => {
+ 
+    // // Viewparams and limits have to be carried out on a SUM array of products
 
+    let priceArray = product_list.map(a => a.price)
+    const price_min = Math.min(...priceArray)
+    const price_max = Math.max(...priceArray)
+
+    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+
+
+  }, [product_list])
+  
   React.useEffect(() => {
 
-    if (priceparent &&
-      !document
+    if(!priceRange ) {
+        loadPrice().then(({ floor_price_min, round_price_max }) => {
+          setInitialPriceRange([floor_price_min, round_price_max])
+          setPriceRange([floor_price_min, round_price_max])
+          setIsLoading(false)
+          })
+    }
+    
+})
+  React.useEffect(() => {
+
+    if (!isLoading
+      && !document
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
     ) {
@@ -50,10 +75,13 @@ export default function PriceSlider({ priceparent, cb_runChangePrice }) {
       noUiSlider.create(pp, {
         start: [priceRange[0], priceRange[1]],
         connect: true,
-        range: { min: priceRange[0], max: priceRange[1] },
+        range: { min: initialPriceRange[0], max: initialPriceRange[1] },
         step: 1,
       }).on('change', function (values, handle) {
         console.log('updates');
+
+        console.log(isChildCheckedCategoryTaxo);
+
         cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
       })
@@ -61,6 +89,7 @@ export default function PriceSlider({ priceparent, cb_runChangePrice }) {
       //   
 
       pp.noUiSlider.on('update', function (values, handle) {
+
         setPriceRange([Math.floor(values[0]), Math.round(values[1])])
 
 
@@ -68,14 +97,7 @@ export default function PriceSlider({ priceparent, cb_runChangePrice }) {
 
     }
 
-
-
-    // .on('update', function(values, handle) {
-
-    //   setPriceRange([Math.floor(values[0]), Math.round(values[1])])
-
-    // })
-  }, [cb_runChangePrice, priceRange, priceparent]);
+  }, [cb_runChangePrice, initialPriceRange, isChildCheckedCategoryTaxo, isLoading, priceRange]);
 
   // React.useEffect(() => {
 
@@ -125,7 +147,7 @@ export default function PriceSlider({ priceparent, cb_runChangePrice }) {
 
   return (
 
-    priceparent ? <CardBody className={classes.cardBodyRefine}>
+    !isLoading ? <CardBody className={classes.cardBodyRefine}>
       <span
         className={cx(
           classes.pullLeft,
