@@ -74,13 +74,13 @@ export default function SectionProducts() {
 
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isOverTheme, setOverTheme] = React.useState();
   const [categoryTaxo, setCategoryTaxo] = React.useState();
   const [typeTaxo, setTypeTaxo] = React.useState();
   const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState();
   const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState();
   const [isLocalUser, setLocalUser] = React.useState();
   const [parentPriceRange, setParentPriceRange] = React.useState();
+  const [isRefreshChild, setRefreshChild] = React.useState();
 
   const classes = useStyles();
 
@@ -257,7 +257,7 @@ export default function SectionProducts() {
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
-    return newViewingList
+    return { newViewingList, sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }
 
     // sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange
 
@@ -288,13 +288,12 @@ export default function SectionProducts() {
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
         console.log('loadprice done');
-        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((newViewingList) => {
+        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
           console.log('populate local states');
-          console.log(newViewingList);
           setParentCheckedCategoryTaxo([])
           setParentCheckedTypeTaxo([])
           setParentPriceRange([floor_price_min, round_price_max])
-          setViewingList(newViewingList)
+          setViewingList(result.newViewingList)
 
           setIsLoading(false)
         })
@@ -347,21 +346,41 @@ export default function SectionProducts() {
 
             <FCEcommercePanel
               toggleEcomPanel={({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }) => {
-                // setViewingList()
-                refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }).then((newViewingList)=>{
-                  
-                  console.log('program continues');
-                  setParentCheckedCategoryTaxo(sourceCheckedCategoryTaxo)
-                  setParentCheckedTypeTaxo(sourceCheckedTypeTaxo)
 
-                  setViewingList(newViewingList)
+                refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }).then((result) => {
+                  loadPrice({ looproducts: result.newViewingList }).then(({ floor_price_min, round_price_max }) => {
+                    console.log(result);
+                    // setIsLoading(true)
+
+                    if (result.sourceCheckedCategoryTaxo) {
+                      setParentCheckedCategoryTaxo(result.sourceCheckedCategoryTaxo)
+                    }
+
+                    if (result.sourceCheckedTypeTaxo) {
+                      setParentCheckedTypeTaxo(result.sourceCheckedTypeTaxo)
+                    }
+
+                    setParentPriceRange([floor_price_min, round_price_max])
+
+                    setViewingList(result.newViewingList)
+                    setRefreshChild(true)
+
+                    // setIsLoading(false)
+
+                  })
 
                 })
 
               }}
+              toggleIsRefreshChild={(boolean)=>{
+                setRefreshChild(boolean)
+
+              }}
               viewingList={viewingList}
-              // priceRange={parentPriceRange}
               parentCheckedCategoryTaxo={parentCheckedCategoryTaxo}
+              parentCheckedTypeTaxo={parentCheckedTypeTaxo}
+              parentPriceRange={parentPriceRange}
+              isRefreshChild={isRefreshChild}
 
             />
 

@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentCheckedCategoryTaxo, priceRange }) {
+export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild, viewingList, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, isRefreshChild }) {
 
     let product_list = useSelector(state => state.product.list)
     let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
@@ -42,19 +42,24 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
     const [typeTaxo, setTypeTaxo] = React.useState();
     const [checkedCategoryTaxo, setCheckedCategoryTaxo] = React.useState();
     const [checkedTypeTaxo, setCheckedTypeTaxo] = React.useState();
+    const [isMidPriceRange, setMidPriceRange] = React.useState();
+
     const [isLocalUser, setLocalUser] = React.useState();
 
 
     const classes = useStyles();
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        if(isLoading && !checkedCategoryTaxo) {
+    //     if(isLoading && !checkedCategoryTaxo) {
 
-            console.log('load checked');
-            setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
-            setIsLoading(false)
-        }
-    }, [checkedCategoryTaxo, isLoading, parentCheckedCategoryTaxo])
+    //         console.log('load checked');
+    //         setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
+    //         setCheckedTypeTaxo(parentCheckedTypeTaxo)
+    //         setCheckedCategoryTaxo(parentPriceRange)
+
+    //         setIsLoading(false)
+    //     }
+    // }, [checkedCategoryTaxo, isLoading, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange])
 
     // const loadPrice = useCallback(async ({ looproducts }) => {
 
@@ -80,15 +85,33 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
 
     // })
 
+    /* Sync Mid with Parent */
+
+
+    React.useEffect(() => {
+        if (isRefreshChild) {
+            console.log('Update mid level');
+            console.log(isRefreshChild);
+
+            setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
+            setCheckedTypeTaxo(parentCheckedTypeTaxo)
+            setMidPriceRange(parentPriceRange)
+            toggleIsRefreshChild(false)
+        }
+
+    }, [isRefreshChild, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, toggleIsRefreshChild])
+
+
     // React.useEffect(() => {
+    //     if ( viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange && isLoading && categoryTaxo && typeTaxo && checkedCategoryTaxo && checkedTypeTaxo && isMidPriceRange) {
 
-    //     if (priceRange && categoryTaxo && typeTaxo && checkedCategoryTaxo && checkedTypeTaxo && !viewingList && isLoading) {
-
-    //         toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, parentCheckedTypeTaxo: checkedTypeTaxo, priceRange })
-    //         setIsLoading(false)
+    //         console.log('Update mid level');
+    //         console.log(parentPriceRange);
+    //         // toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, parentCheckedTypeTaxo: checkedTypeTaxo, priceRange })
+    //         // setIsLoading(false)
     //     }
 
-    // }, [categoryTaxo, checkedCategoryTaxo, checkedTypeTaxo, isLoading, priceRange, toggleEcomPanel, typeTaxo, viewingList])
+    // }, [categoryTaxo, checkedCategoryTaxo, checkedTypeTaxo, isLoading, isMidPriceRange, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, toggleEcomPanel, typeTaxo, viewingList])
 
 
     const establishTaxonomy = useCallback(async () => {
@@ -131,7 +154,7 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
 
     React.useEffect(() => {
 
-        if (!categoryTaxo && !typeTaxo) {
+        if (!categoryTaxo && !typeTaxo && parentPriceRange) {
 
             establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
 
@@ -139,11 +162,12 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
                 setTypeTaxo(type_taxo_array)
                 setCheckedCategoryTaxo([])
                 setCheckedTypeTaxo([])
+                setMidPriceRange(parentPriceRange)
                 setIsLoading(false)
             })
         }
 
-    }, [categoryTaxo, establishTaxonomy, typeTaxo])
+    }, [categoryTaxo, establishTaxonomy, parentPriceRange, typeTaxo])
 
     return (categoryTaxo && checkedTypeTaxo && checkedCategoryTaxo && typeTaxo && viewingList && !isLoading ?
         <Card plain>
@@ -181,7 +205,7 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
                                     childCheckedTypeTaxo={checkedTypeTaxo}
                                     viewingList={viewingList}
                                     cb_runChangePrice={({ cb_ChangedPrice }) => {
-                                        toggleEcomPanel({   priceRange: cb_ChangedPrice })
+                                        toggleEcomPanel({ priceRange: cb_ChangedPrice })
                                     }}
 
                                 />
@@ -201,6 +225,7 @@ export default function FCEcommercePanel({ toggleEcomPanel, viewingList, parentC
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
 
                                                 console.log('clicked');
+                                                console.log(cb_NewChecked);
 
                                                 // setCheckedCategoryTaxo(cb_NewChecked)
                                                 toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_NewChecked })
