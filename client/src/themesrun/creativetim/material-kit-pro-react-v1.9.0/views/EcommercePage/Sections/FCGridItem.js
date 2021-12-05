@@ -44,7 +44,7 @@ import { ShowMessages } from '../../../../../../components/Message/Generic/stati
 
 const useStyles = makeStyles(styles);
 
-export default function FCGridItem({ value, i }) {
+export default function FCEachProduct({ value }) {
   let reactrouter_history = useHistory()
   let currencyuser = useSelector(state => state.user.currencyUser)
   let current_mysite = useSelector(state => state.mysite.CurrentMysite)
@@ -53,24 +53,60 @@ export default function FCGridItem({ value, i }) {
 
   const dispatch = useDispatch()
   const [showAddToCart, setShowAddToCart] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isValue, setIsValue] = React.useState();
 
 
   const [isOverTheme, setOverTheme] = React.useState();
-  const classes = useStyles({ overtheme: isOverTheme });
+  const classes = useStyles();
   // ================
-  // ################
   React.useEffect(() => {
 
-    if (!isOverTheme && current_mysite) {
-      processOverTheme({ currentmysite: current_mysite }).then((theme) => {
+    if (value && !isValue && isLoading) {
+      setIsValue(value)
+      setIsLoading(false)
 
-
-        setOverTheme(theme)
-        setIsLoading(false)
-      })
     }
-  }, [current_mysite, isOverTheme])
+    // return function cleanup() {
+    //   setIsValue()
+
+    // };
+
+  }, [isLoading, isValue, value])
+
+  // React.useEffect(() => {
+  //   return function cleanup() {
+  //     setIsValue()
+
+  //   };
+  // })
+
+  // ################
+  // React.useEffect(() => {
+
+  //   if (!isOverTheme && isLoading) {
+  //     processOverTheme({ currentmysite: current_mysite }).then((theme) => {
+
+  //       setOverTheme(theme)
+  //     })
+  //   }
+  // }, [current_mysite, isLoading, isOverTheme])
+
+  React.useEffect(() => {
+
+    if (!isOverTheme && isLoading) {
+
+      processOverTheme({ currentmysite: current_mysite }).then((theme) => {
+        setOverTheme(theme)
+
+      })
+
+      return function cleanup() {
+        setOverTheme()
+
+      };
+    }
+  }, [current_mysite, isLoading, isOverTheme])
 
   const gotoProductDetail = useCallback(
     async ({ value }) => {
@@ -89,7 +125,7 @@ export default function FCGridItem({ value, i }) {
         place='bl'
 
       /> : null}
-      {!isLoading && value ? <Card plain product >
+      {!isLoading && isValue ? <Card plain product >
         <CardHeader noShadow image className={classes.cardHoverScale}>
           <div
             onClick={() => gotoProductDetail({ value })}

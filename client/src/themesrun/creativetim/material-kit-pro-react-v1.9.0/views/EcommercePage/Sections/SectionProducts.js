@@ -4,7 +4,7 @@ import cx from "classnames";
 
 // plugin that creates slider
 import Slider from "nouislider";
-import FCGridItem from "./FCGridItem";
+import FCEachProduct from "./FCGridItem";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -259,19 +259,19 @@ export default function SectionProducts() {
 
   // ================
 
-  const loopProducts = useCallback(
-    async () => {
+  // const loopProducts = useCallback(
+  //   async () => {
 
-      console.log(viewingList);
+  //     console.log(viewingList);
 
-      return viewingList.length > 0 ? viewingList.map( (value, i) => {
-        return <FCGridItem
-          value={value}
-          i={i}
-          key={value._id}
-        />
-      }) : null
-    }, [viewingList])
+  //     return viewingList.length > 0 ? viewingList.map( (value, i) => {
+  //       return <FCGridItem
+  //         value={value}
+  //         i={i}
+  //         key={value._id}
+  //       />
+  //     }) : null
+  //   }, [viewingList])
 
   // const handleLoadMore = useCallback(
   //   () => {
@@ -302,9 +302,9 @@ export default function SectionProducts() {
             <GridContainer>
               {viewingList ?
                 viewingList.length > 0 ? viewingList.map( (value, i) => {
-                  return <FCGridItem
+
+                  return <FCEachProduct
                     value={value}
-                    i={i}
                     key={value._id}
                   />
                 }) : null
