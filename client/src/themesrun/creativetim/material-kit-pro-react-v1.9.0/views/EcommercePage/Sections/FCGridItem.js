@@ -1,7 +1,7 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import {
-    useRouter,
+  useRouter,
 } from "../../../../../../hoc/Funcs/hook_funcs";
 // nodejs library that concatenates classes
 import cx from "classnames";
@@ -10,7 +10,7 @@ import cx from "classnames";
 import Slider from "nouislider";
 
 import {
-    productFuncs_handleAddToCart
+  productFuncs_handleAddToCart
 } from "../../../../../../components/User/Admin/GenericFuncs/product_funcs_vh"
 
 // @material-ui/core components
@@ -44,101 +44,105 @@ import { ShowMessages } from '../../../../../../components/Message/Generic/stati
 
 const useStyles = makeStyles(styles);
 
-export default  function FCGridItem({ value, i, mystore, isLoading }) {
-    let reactrouter_history = useHistory()
+export default function FCGridItem({ value, i }) {
+  let reactrouter_history = useHistory()
   let currencyuser = useSelector(state => state.user.currencyUser)
-  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+  // let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let redux_cart_user = useSelector(state => state.user.cartUser)
+  let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
+
   const dispatch = useDispatch()
   const [showAddToCart, setShowAddToCart] = React.useState(false);
-
-    const [isOverTheme, setOverTheme] = React.useState();
-    const classes = useStyles({overtheme: isOverTheme});
-    // ================
-    React.useEffect(() => {
-
-        if (!isOverTheme && current_mysite) {
-          processOverTheme({currentmysite: current_mysite}).then((theme)=>{
-    
-            setOverTheme(theme)
-          })
-        }
-      },[current_mysite, isOverTheme])
-
-    const gotoProductDetail = useCallback(
-        ({ value }) => {
-            reactrouter_history.push(`/detail/product/${value._id}`)
-
-        }, [reactrouter_history])
-    // <h6 className={classes.cardCategory}>{'price' in value.referenceID ? value.referenceID.price + ' ' + Object.keys(reduxprops.user.currencyUser.rates) : null} </h6>
+  const [isLoading, setIsLoading] = React.useState(false);
 
 
-    let render = () => {
-        return <GridItem md={4} sm={4}>
-            {showAddToCart ? <ShowMessages
-            visible={showAddToCart}
-            message={mystore.addedtocart_msg}
-            color='info'
-            place='bl'
+  const [isOverTheme, setOverTheme] = React.useState();
+  const classes = useStyles({ overtheme: isOverTheme });
+  // ================
+  // React.useEffect(() => {
 
-          /> : null}
-            <Card plain product >
-                <CardHeader noShadow image className={classes.cardHoverScale}>
-                    <div
-                        onClick={() => gotoProductDetail({ value })}
-                    >
-                        <img src={value.images.length > 0 ? value.images[0].secure_url : '/images/image_not_availble.png'} alt=".." />
-                    </div>
-                </CardHeader>
-                <CardBody plain>
-                    <a href="#pablo">
-                        <h4 className={classes.cardTitle}>{value.name}</h4>
-                    </a>
-                    <p className={classes.description}>
-                        {value.description}
-                    </p>
-                </CardBody>
-                <CardFooter plain className={classes.justifyContentBetween}>
-                    <div className={classes.priceContainer}>
-                        <span className={classes.price}> {Object.keys(currencyuser.rates)} {value.price}</span>
-                    </div>
-                    <Button
-                        color="transparent"
-                        style={{
-                            opacity: "0.9",
-                        }}
-                        onClick={async () => {
+  //   if (!isOverTheme && current_mysite) {
+  //     processOverTheme({ currentmysite: current_mysite }).then((theme) => {
 
-                            await productFuncs_handleAddToCart({
-                                value, redux_cart_user, dispatch
-                            })
-                            //      return <ShowMessages
-                            //   visible={true}
-                            //   mystore={mystore}
-                            // />
-                            setShowAddToCart(true)
-                            setTimeout(() => {
-                              setShowAddToCart(false)
 
-                            }, 1000)
+  //       setOverTheme(theme)
+  //       setIsLoading(false)
+  //     })
+  //   }
+  // }, [current_mysite, isOverTheme])
 
-                        }}
-                        className={classes.pullRight}
-                    > <ShoppingCart />
-                    </Button>
-                    <Button
-                        color="primary"
-                        size="sm"
-                        style={{
-                            opacity: "0.9",
-                        }}
-                        onClick={() => gotoProductDetail({ value })}
-                        className={classes.pullRight}
-                    >
-                        {mystore.view_btn}
-                    </Button>
+  const gotoProductDetail = useCallback(
+    async ({ value }) => {
+      reactrouter_history.push(`/detail/product/${value._id}`)
 
-                    {/* <Tooltip
+    }, [reactrouter_history])
+
+
+
+  let render = () => {
+    return <GridItem md={4} sm={4}>
+      {showAddToCart ? <ShowMessages
+        visible={showAddToCart}
+        message={redux_currentmystore.addedtocart_msg}
+        color='info'
+        place='bl'
+
+      /> : null}
+      {!isLoading && currencyuser ? <Card plain product >
+        <CardHeader noShadow image className={classes.cardHoverScale}>
+          <div
+            onClick={() => gotoProductDetail({ value })}
+          >
+            <img src={value.images.length > 0 ? value.images[0].secure_url : '/images/image_not_availble.png'} alt=".." />
+          </div>
+        </CardHeader>
+        <CardBody plain>
+          <a href="#pablo">
+            <h4 className={classes.cardTitle}>{value.name}</h4>
+          </a>
+          <p className={classes.description}>
+            {value.description}
+          </p>
+        </CardBody>
+        <CardFooter plain className={classes.justifyContentBetween}>
+          <div className={classes.priceContainer}>
+            <span className={classes.price}> {Object.keys(currencyuser.rates)} {value.price}</span>
+          </div>
+          <Button
+            color="transparent"
+            style={{
+              opacity: "0.9",
+            }}
+            onClick={ () => {
+
+              productFuncs_handleAddToCart({
+                value, redux_cart_user, dispatch
+              }).then(() => {
+                setShowAddToCart(true)
+                setTimeout(() => {
+                  setShowAddToCart(false)
+
+                }, 1000)
+              })
+
+
+            }}
+            className={classes.pullRight}
+          > <ShoppingCart />
+          </Button>
+          <Button
+            color="primary"
+            size="sm"
+            style={{
+              opacity: "0.9",
+            }}
+            onClick={() => gotoProductDetail({ value })}
+            className={classes.pullRight}
+          >
+            {redux_currentmystore.view_btn}
+          </Button>
+
+          {/* <Tooltip
               id="tooltip-top"
               title="Saved to Wishlist"
               placement="left"
@@ -153,41 +157,13 @@ export default  function FCGridItem({ value, i, mystore, isLoading }) {
                 <Favorite />
               </Button>
             </Tooltip> */}
-                </CardFooter>
-            </Card>
-        </GridItem>
+        </CardFooter>
+      </Card> : null}
+    </GridItem>
 
-    }
-
-
-    return render()
+  }
 
 
-
-    // if (isLoading) {
-    //     return (
-    //       <div
-    //         style={{
-    //           //   backgroundImage: "url(" + image + ")",
-    //           backgroundSize: "cover",
-    //           // backgroundColor: '#595959',
-    //           backgroundPosition: " center",
-    //           paddingTop: '25%',
-    //           position: 'fixed',
-    //           left: '0px',
-    //           top: '0px',
-    //           width: '100%',
-    //           height: '100%',
-    //           // zIndex: '9999',
-    //           textAlign: 'center',
-    //         }}
-    //       >
-    //         <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
-    //       </div>
-    //     )
-    //   } else if (!isLoading) {
-    //     return render()
-    //   }
-
+  return render()
 
 }

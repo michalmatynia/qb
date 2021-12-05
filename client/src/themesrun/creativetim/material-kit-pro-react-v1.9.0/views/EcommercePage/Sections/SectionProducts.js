@@ -73,8 +73,6 @@ export default function SectionProducts() {
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
 
-  const [priceRange, setPriceRange] = React.useState();
-
   const [isLoading, setIsLoading] = React.useState(true);
   const [isOverTheme, setOverTheme] = React.useState();
   const [categoryTaxo, setCategoryTaxo] = React.useState();
@@ -187,11 +185,9 @@ export default function SectionProducts() {
 
 
 
-  const refineProductList = useCallback(async ({ parentCheckedCategoryTaxo, typeTaxo, priceRange }) => {
+  const refineProductList = useCallback(async ({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
 
     let newViewingList = []
-    console.log(parentCheckedCategoryTaxo);
-    console.log(priceRange);
 
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
@@ -215,17 +211,16 @@ export default function SectionProducts() {
           }
         }
 
-        // if (typeTaxo.length > 0) {
-        //   // cat_bool = false
-        //   let cv_extracted_ids = currentValue.type.map(item => item._id)
+        if (parentCheckedTypeTaxo.length > 0) {
+          let cv_extracted_ids = currentValue.type.map(item => item._id)
 
-        //   for (let eachTypeValue of typeTaxo) {
+          for (let eachTypeValue of parentCheckedTypeTaxo) {
 
-        //     if (!cv_extracted_ids.includes(eachTypeValue._id)) {
-        //       type_bool = false
-        //     }
-        //   }
-        // }
+            if (!cv_extracted_ids.includes(eachTypeValue._id)) {
+              type_bool = false
+            }
+          }
+        }
 
         if (cat_bool && type_bool) {
           accum = [...accum, currentValue]
@@ -265,18 +260,18 @@ export default function SectionProducts() {
   // ================
 
   const loopProducts = useCallback(
-    () => {
+    async () => {
 
-      return viewingList.length > 0 ? viewingList.map((value, i) => {
+      console.log(viewingList);
+
+      return viewingList.length > 0 ? viewingList.map( (value, i) => {
         return <FCGridItem
           value={value}
           i={i}
           key={value._id}
-          mystore={redux_currentmystore}
-          isLoading={isLoading}
         />
       }) : null
-    }, [isLoading, redux_currentmystore, viewingList])
+    }, [viewingList])
 
   // const handleLoadMore = useCallback(
   //   () => {
@@ -295,9 +290,9 @@ export default function SectionProducts() {
           <GridItem md={3} sm={3}>
 
             <FCEcommercePanel
-              toggleEcomPanel={({ parentCheckedCategoryTaxo, typeTaxo, priceRange }) => {
+              toggleEcomPanel={({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
 
-                refineProductList({ parentCheckedCategoryTaxo, typeTaxo, priceRange })
+                refineProductList({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange })
               }}
               viewingList={viewingList}
             />
@@ -306,7 +301,13 @@ export default function SectionProducts() {
           <GridItem md={9} sm={9}>
             <GridContainer>
               {viewingList ?
-                loopProducts()
+                viewingList.length > 0 ? viewingList.map( (value, i) => {
+                  return <FCGridItem
+                    value={value}
+                    i={i}
+                    key={value._id}
+                  />
+                }) : null
                 : null}
             </GridContainer>
             <GridItem

@@ -24,7 +24,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePrice, viewingList }) {
+export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategoryTaxo, cb_runChangePrice, viewingList }) {
 
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
   let product_list = useSelector(state => state.product.list)
@@ -34,10 +34,9 @@ export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePric
   const [priceRange, setPriceRange] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
   const [isChildCheckedCategoryTaxo, setChildCheckedCategoryTaxo] = React.useState();
+  const [isChildCheckedTypeTaxo, setChildCheckedTypeTaxo] = React.useState();
 
-  // console.log(isChildCheckedCategoryTaxo);
 
-  // console.log(childCheckedCategoryTaxo);
   const classes = useStyles();
 
   const loadPrice = useCallback(async ({ looproducts }) => {
@@ -57,9 +56,13 @@ export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePric
 
     if (!priceRange && !initialPriceRange) {
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+
+        console.log('loadpric');
         setInitialPriceRange([floor_price_min, round_price_max])
         setPriceRange([floor_price_min, round_price_max])
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
+        setChildCheckedTypeTaxo(childCheckedTypeTaxo)
+
         setIsLoading(false)
       })
     }
@@ -67,31 +70,39 @@ export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePric
   })
   React.useEffect(() => {
     if (!isLoading
-      && isChildCheckedCategoryTaxo !== childCheckedCategoryTaxo
+      && (isChildCheckedCategoryTaxo !== childCheckedCategoryTaxo || isChildCheckedTypeTaxo !== childCheckedTypeTaxo)
       && viewingList
       && document
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
     ) {
 
-      console.log('INSIDE CHANGE');
 
       loadPrice({ looproducts: viewingList }).then(({ floor_price_min, round_price_max }) => {
         let pp = document.getElementById("sliderRegular")
 
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
+        setChildCheckedTypeTaxo(childCheckedTypeTaxo)
 
-  
 
-        if(childCheckedCategoryTaxo.length !== 0) {
+        if (floor_price_min === Infinity || round_price_max === -Infinity) {
+          console.log('destroy');
+          pp.noUiSlider.destroy();
+          // setPriceRange()
+          // setInitialPriceRange()
+        }
+        else if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
           setPriceRange([floor_price_min, round_price_max])
+
+          console.log(floor_price_min);
+          console.log(typeof(floor_price_min));
+
+          console.log(round_price_max);
 
           let newOptions = {
             start: [floor_price_min, round_price_max],
             range: { min: floor_price_min, max: round_price_max },
           }
-
-          // pp.noUiSlider.set([floor_price_min, round_price_max]);
 
           pp.noUiSlider.updateOptions(
             newOptions, // Object
@@ -107,35 +118,32 @@ export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePric
           }
 
 
-          // pp.noUiSlider.set([initialPriceRange[0], initialPriceRange[1]]);
           pp.noUiSlider.updateOptions(
             newOptions, // Object
             true // Boolean 'fireSetEvent'
           );
         }
 
+        if (pp.noUiSlider) {
 
-        console.log(childCheckedCategoryTaxo);
+          pp.noUiSlider.on('change', async function (values, handle) {
+            cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
-        pp.noUiSlider.on('change', async function (values, handle) {
-          console.log('lololo');
-
-          cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])], isChildCheckedCategoryTaxo });
-
-
-
-        })
+          })
+        }
 
       })
 
 
     }
-  }, [cb_runChangePrice, childCheckedCategoryTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isLoading, loadPrice, viewingList])
+  }, [cb_runChangePrice, childCheckedCategoryTaxo, childCheckedTypeTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, loadPrice, viewingList])
 
   React.useEffect(() => {
 
     if (!isLoading
+      && priceRange
       && isChildCheckedCategoryTaxo
+      && isChildCheckedTypeTaxo
       && !document
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
@@ -146,76 +154,25 @@ export default function PriceSlider({ childCheckedCategoryTaxo, cb_runChangePric
 
       noUiSlider.create(pp, {
         start: [priceRange[0], priceRange[1]],
-        connect: true,
+
         range: { min: initialPriceRange[0], max: initialPriceRange[1] },
-        step: 1,
       }).on('change', async function (values, handle) {
         console.log('updates');
 
-        cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])], isChildCheckedCategoryTaxo });
-
-
+        cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
       })
-
-      //   
 
       pp.noUiSlider.on('update', function (values, handle) {
 
         setPriceRange([Math.floor(values[0]), Math.round(values[1])])
 
-
       })
 
     }
 
-  }, [cb_runChangePrice, childCheckedCategoryTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isLoading, priceRange]);
+  }, [cb_runChangePrice, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, priceRange]);
 
-  // React.useEffect(() => {
-
-
-
-
-  //           if (priceparent &&
-  //             document
-  //               .getElementById("sliderRegular")
-  //               .classList.contains("noUi-target")
-  //           ) {
-
-  //             console.log(document
-  //               .getElementById("sliderRegular"));
-  //               console.log(Slider);
-
-  //               console.log(document.getElementById("sliderRegular")[Slider]);
-
-  //               // document.getElementById("sliderRegular").Slider.on('update', function (values, handle) {
-  //               // console.log('updates');
-  //               //       });
-
-  //           }
-
-  // },[priceparent])
-
-
-
-
-  /* Change Price */
-
-  // React.useEffect(() => {
-
-
-  //   if(priceRange && priceRange !== priceparent && document
-  //     .getElementById("sliderRegular")
-  //     .classList.contains("noUi-target") ){
-
-  //     console.log(priceRange);
-  //     console.log(priceparent);
-  //     console.log('in');
-  //         // cb_runCheckedTaxo({cb_NewChecked: [Math.floor(priceRange[0]), Math.round(priceRange[1])]});
-
-  //   }
-
-  // },[cb_runCheckedTaxo,  priceRange, priceparent])
 
   return (
 
