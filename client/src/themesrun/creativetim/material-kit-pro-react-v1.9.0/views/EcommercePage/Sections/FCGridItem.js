@@ -45,19 +45,14 @@ export default function FCEachProduct({ value }) {
   const classes = useStyles({ overtheme: redux_overtheme_mysite });
   // ================
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if (value && !isValue && isLoading) {
-      setIsValue(value)
-      setIsLoading(false)
+  //   if (value && !isValue && isLoading) {
+  //     setIsValue(value)
+  //     setIsLoading(false)
 
-    }
-    // return function cleanup() {
-    //   setIsValue()
-
-    // };
-
-  }, [isLoading, isValue, value])
+  //   }
+  // }, [isLoading, isValue, value])
 
   const gotoProductDetail = useCallback(
     async ({ value }) => {

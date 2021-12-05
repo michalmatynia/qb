@@ -251,7 +251,6 @@ export default function SectionProducts() {
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
     // return newViewingList
-
     // setParentCheckedCategoryTaxo(parentCheckedCategoryTaxo)
     // setParentCheckedTypeTaxo(parentCheckedTypeTaxo)
 
@@ -290,14 +289,14 @@ export default function SectionProducts() {
       setFcState(newMyFcState)
 
       // return newViewingList
-      setViewingList(newViewingList)
+      // setViewingList(newViewingList)
 
       // setViewingList()
 
     }, [myFcState, viewingList])
 
   return (
-    <div className={classes.section}>{console.log('render Section Products')}
+    !isLoading ? <div className={classes.section}>{console.log('render Section Products')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
@@ -305,8 +304,6 @@ export default function SectionProducts() {
 
             <FCEcommercePanel
               toggleEcomPanel={({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
-                // setIsLoading(true)
-
                 refineProductList({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange })
 
               }}
@@ -317,16 +314,16 @@ export default function SectionProducts() {
           <GridItem md={9} sm={9}>
             <GridContainer>
               {
-              // viewingList ?
-              //   viewingList.length > 0 ? viewingList.map((value, i) => {
+              viewingList ?
+                viewingList.length > 0 ? viewingList.map((value, i) => {
 
-              //     return <FCEachProduct
-              //       value={value}
-              //       key={value._id}
-              //     />
+                  return <FCEachProduct
+                    value={value}
+                    key={value._id}
+                  />
 
-              //   }) : null
-              //   : null
+                }) : null
+                : null
                 }
             </GridContainer>
             <GridItem
@@ -335,21 +332,21 @@ export default function SectionProducts() {
               className={cx(classes.mlAuto, classes.mrAuto)}
             >
               {
-              // viewingList && redux_currentmystore ? 
-              // viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
-              // <Button
-              //   color="primary"
-              //   // onClick={() => handleLoadMore()}
-              // >
-              //   {/* {redux_currentmystore.loadmore_btn} */}
-              // </Button> 
-              // : null
-              // : null
+              viewingList && redux_currentmystore ? 
+              viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
+              <Button
+                color="primary"
+                onClick={() => handleLoadMore()}
+              >
+                {redux_currentmystore.loadmore_btn}
+              </Button> 
+              : null
+              : null
               }
             </GridItem>
           </GridItem>
         </GridContainer>
       </div>
-    </div>
+    </div> : null
   );
 }
