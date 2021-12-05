@@ -73,13 +73,14 @@ export default function SectionProducts() {
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
 
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [isOverTheme, setOverTheme] = React.useState();
   const [categoryTaxo, setCategoryTaxo] = React.useState();
   const [typeTaxo, setTypeTaxo] = React.useState();
-  const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState([]);
-  const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState([]);
+  const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState();
+  const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState();
   const [isLocalUser, setLocalUser] = React.useState();
+  const [parentPriceRange, setParentPriceRange] = React.useState();
 
   const classes = useStyles();
 
@@ -185,7 +186,13 @@ export default function SectionProducts() {
 
 
 
-  const refineProductList = useCallback(async ({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
+  const refineProductList = useCallback(async ({ sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange }) => {
+
+    console.log('refine');
+
+    console.log(sourceCheckedCategoryTaxo);
+    console.log(sourceCheckedTypeTaxo);
+    console.log(sourcePriceRange);
 
     let newViewingList = []
 
@@ -194,16 +201,16 @@ export default function SectionProducts() {
 
       // Reduce on Price Range
 
-      if (currentValue.price >= priceRange[0] && currentValue.price <= priceRange[1]) {
+      if (currentValue.price >= sourcePriceRange[0] && currentValue.price <= sourcePriceRange[1]) {
 
         let cat_bool = true
         let type_bool = true
 
-        if (parentCheckedCategoryTaxo.length > 0) {
+        if (sourceCheckedCategoryTaxo.length > 0) {
 
           let cv_extracted_ids = currentValue.category.map(item => item._id)
 
-          for (let eachCatValue of parentCheckedCategoryTaxo) {
+          for (let eachCatValue of sourceCheckedCategoryTaxo) {
 
             if (!cv_extracted_ids.includes(eachCatValue._id)) {
               cat_bool = false
@@ -212,10 +219,10 @@ export default function SectionProducts() {
           }
         }
 
-        if (parentCheckedTypeTaxo.length > 0) {
+        if (sourceCheckedTypeTaxo.length > 0) {
           let cv_extracted_ids = currentValue.type.map(item => item._id)
 
-          for (let eachTypeValue of parentCheckedTypeTaxo) {
+          for (let eachTypeValue of sourceCheckedTypeTaxo) {
 
             if (!cv_extracted_ids.includes(eachTypeValue._id)) {
               type_bool = false
@@ -250,17 +257,53 @@ export default function SectionProducts() {
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
-    // return newViewingList
-    // setParentCheckedCategoryTaxo(parentCheckedCategoryTaxo)
-    // setParentCheckedTypeTaxo(parentCheckedTypeTaxo)
+    return newViewingList
 
-    setViewingList(newViewingList)
+    // sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange
+
+  }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list])
+
+  const loadPrice = useCallback(async ({ looproducts }) => {
+
+    // // Viewparams and limits have to be carried out on a SUM array of products
+
+    let priceArray = looproducts.map(a => a.price)
+    const price_min = Math.min(...priceArray)
+    const price_max = Math.max(...priceArray)
+
+    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
 
 
 
-  }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
+  }, [])
+  // React.useEffect(() => {
+  //   if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
+
+  //   }
+
+  // })
+  React.useEffect(() => {
+
+    if (isLoading && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
+      loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+
+        console.log('loadprice done');
+        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((newViewingList) => {
+          console.log('populate local states');
+          console.log(newViewingList);
+          setParentCheckedCategoryTaxo([])
+          setParentCheckedTypeTaxo([])
+          setParentPriceRange([floor_price_min, round_price_max])
+          setViewingList(newViewingList)
+
+          setIsLoading(false)
+        })
 
 
+      })
+    }
+
+  }, [isLoading, loadPrice, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
   // ================
 
   // const loopProducts = useCallback(
@@ -277,54 +320,66 @@ export default function SectionProducts() {
   //     }) : null
   //   }, [viewingList])
 
-  const handleLoadMore = useCallback(
-    async () => {
-      let newMyFcState = { ...myFcState }
+  // const handleLoadMore = useCallback(
+  //   async () => {
+  //     let newMyFcState = { ...myFcState }
 
-      console.log(viewingList);
+  //     console.log(viewingList);
 
-      newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
-      let newViewingList = viewingList.slice(0, newMyFcState.localStorage.viewparams.limit)
+  //     newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
+  //     let newViewingList = viewingList.slice(0, newMyFcState.localStorage.viewparams.limit)
 
-      setFcState(newMyFcState)
+  //     setFcState(newMyFcState)
 
-      // return newViewingList
-      // setViewingList(newViewingList)
+  //     // return newViewingList
+  //     // setViewingList(newViewingList)
 
-      // setViewingList()
+  //     // setViewingList()
 
-    }, [myFcState, viewingList])
+  //   }, [myFcState, viewingList])
 
   return (
-    !isLoading ? <div className={classes.section}>{console.log('render Section Products')}
+    !isLoading && viewingList ? <div className={classes.section}>{console.log('render Section Products')}
       <div className={classes.container}>
         <h2>{redux_currentmystore.title}</h2>
         <GridContainer>
           <GridItem md={3} sm={3}>
 
             <FCEcommercePanel
-              toggleEcomPanel={({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
-                refineProductList({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange })
+              toggleEcomPanel={({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }) => {
+                // setViewingList()
+                refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }).then((newViewingList)=>{
+                  
+                  console.log('program continues');
+                  setParentCheckedCategoryTaxo(sourceCheckedCategoryTaxo)
+                  setParentCheckedTypeTaxo(sourceCheckedTypeTaxo)
+
+                  setViewingList(newViewingList)
+
+                })
 
               }}
               viewingList={viewingList}
+              // priceRange={parentPriceRange}
+              parentCheckedCategoryTaxo={parentCheckedCategoryTaxo}
+
             />
 
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
               {
-              viewingList ?
-                viewingList.length > 0 ? viewingList.map((value, i) => {
+                viewingList ?
+                  viewingList.length > 0 ? viewingList.map((value, i) => {
 
-                  return <FCEachProduct
-                    value={value}
-                    key={value._id}
-                  />
+                    return <FCEachProduct
+                      value={value}
+                      key={value._id}
+                    />
 
-                }) : null
-                : null
-                }
+                  }) : null
+                  : null
+              }
             </GridContainer>
             <GridItem
               md={6}
@@ -332,16 +387,16 @@ export default function SectionProducts() {
               className={cx(classes.mlAuto, classes.mrAuto)}
             >
               {
-              viewingList && redux_currentmystore ? 
-              viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
-              <Button
-                color="primary"
-                onClick={() => handleLoadMore()}
-              >
-                {redux_currentmystore.loadmore_btn}
-              </Button> 
-              : null
-              : null
+                // viewingList && redux_currentmystore ? 
+                // viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
+                // <Button
+                //   color="primary"
+                //   onClick={() => handleLoadMore()}
+                // >
+                //   {redux_currentmystore.loadmore_btn}
+                // </Button> 
+                // : null
+                // : null
               }
             </GridItem>
           </GridItem>

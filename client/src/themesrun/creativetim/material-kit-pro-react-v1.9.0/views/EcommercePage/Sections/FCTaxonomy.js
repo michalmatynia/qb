@@ -9,47 +9,48 @@ import FCTaxonomyListOne from './FCTaxonomyListOne'
 
 
 export default function FCTaxonomy({ arrayTaxo, cb_runCheckedTaxo, checkedTaxo }) {
+    // const [isArrayTaxo, setArrayTaxo] = React.useState(arrayTaxo)
+    const [isCheckedTaxo, setCheckedTaxo] = React.useState([])
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    // React.useEffect(() => {
+
+    //     if( !isCheckedTaxo) {
+    //         setCheckedTaxo([])
+    //     }
+
+    // },[isCheckedTaxo])
+
+    const handleToggle = useCallback(
 
 
-    const [isArrayTaxo, setArrayTaxo] = React.useState(arrayTaxo)
-    const [isLoading, setIsLoading] = React.useState(true);
+       async ({ value, i }) => {
+            const currentIndex = isCheckedTaxo.indexOf(value)
+            const newChecked = [...isCheckedTaxo];
+            if (currentIndex === -1) {
+                newChecked.push(value);
+            } else {
+                newChecked.splice(currentIndex, 1);
+            }
+            setCheckedTaxo(newChecked)
+            cb_runCheckedTaxo({ cb_NewChecked: newChecked });
 
-    React.useEffect(() => {
-
-        if(arrayTaxo && isLoading) {
-            setArrayTaxo(arrayTaxo)
-            setIsLoading(false)
-        }
-    
-    },[arrayTaxo, isLoading])
-  const handleToggle = useCallback(
-   async ({ value, i }) => {
-      const currentIndex = checkedTaxo.indexOf(value)
-      const newChecked = [...checkedTaxo];
-      if (currentIndex === -1) {
-        newChecked.push(value);
-      } else {
-        newChecked.splice(currentIndex, 1);
-      }
-
-      cb_runCheckedTaxo({cb_NewChecked: newChecked});
-      setIsLoading(false)
-
-    }, [cb_runCheckedTaxo, checkedTaxo])
+        }, [cb_runCheckedTaxo, isCheckedTaxo])
 
     return (
-        !isLoading && isArrayTaxo ? isArrayTaxo.map((value, i) => {
+         arrayTaxo.map((value, i) => {
+
             return <FCTaxonomyListOne
                 value={value}
                 i={i}
                 key={value._id}
-                togglefunction={({value, i}) => {
-                    setIsLoading(true)
-                    handleToggle({ value, i })}
+                togglefunction={({ value, i }) => {
+                    handleToggle({ value, i })
                 }
-                sumofchecked={checkedTaxo}
+                }
+                sumofchecked={isCheckedTaxo}
             />
-        }) : null
+        })
     )
 
 

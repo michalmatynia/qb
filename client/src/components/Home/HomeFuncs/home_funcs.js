@@ -28,8 +28,6 @@ function WrapperOutputNext(props) {
 
 export function LoopItems({ item }) {
 
-    console.log('begin looping');
-
     return (
         <div>
             <WrapperOutputNext

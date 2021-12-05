@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 
 // nodejs library that concatenates classes
 import { makeStyles } from "@material-ui/core/styles";
-import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 
@@ -14,29 +13,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 const useStyles = makeStyles(styles);
 
 export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofchecked }) {
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-    let current_mysite = useSelector(state => state.mysite.CurrentMysite)
-
-    const [isOverTheme, setOverTheme] = React.useState();
-    const [isLoading, setIsLoading] = React.useState(true);
-
-    React.useEffect(() => {
-
-        if (!isOverTheme && current_mysite) {
-          processOverTheme({currentmysite: current_mysite}).then((theme)=>{
-    
-            setOverTheme(theme)
-            setIsLoading(false)
-          })
-        }
-    
-    
-      },[current_mysite, isOverTheme])
-
-    const classes = useStyles({overtheme: isOverTheme});
+    const classes = useStyles({overtheme: redux_overtheme_mysite});
 
     let render = () => {
-      return !isLoading ? <FormControlLabel
+      return <FormControlLabel
         control={
           <Checkbox
             // id={value._id}
@@ -55,7 +37,7 @@ export default  function  FCTaxonomyListOne({ value, i, togglefunction, sumofche
         }
         classes={{ label: classes.label }}
         label={value.name}
-      /> : null
+      />
     }
 
     return render()
