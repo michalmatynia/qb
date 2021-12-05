@@ -47,7 +47,7 @@ const useStyles = makeStyles(styles);
 export default function FCGridItem({ value, i }) {
   let reactrouter_history = useHistory()
   let currencyuser = useSelector(state => state.user.currencyUser)
-  // let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let redux_cart_user = useSelector(state => state.user.cartUser)
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
@@ -59,17 +59,18 @@ export default function FCGridItem({ value, i }) {
   const [isOverTheme, setOverTheme] = React.useState();
   const classes = useStyles({ overtheme: isOverTheme });
   // ================
-  // React.useEffect(() => {
+  // ################
+  React.useEffect(() => {
 
-  //   if (!isOverTheme && current_mysite) {
-  //     processOverTheme({ currentmysite: current_mysite }).then((theme) => {
+    if (!isOverTheme && current_mysite) {
+      processOverTheme({ currentmysite: current_mysite }).then((theme) => {
 
 
-  //       setOverTheme(theme)
-  //       setIsLoading(false)
-  //     })
-  //   }
-  // }, [current_mysite, isOverTheme])
+        setOverTheme(theme)
+        setIsLoading(false)
+      })
+    }
+  }, [current_mysite, isOverTheme])
 
   const gotoProductDetail = useCallback(
     async ({ value }) => {
@@ -113,7 +114,7 @@ export default function FCGridItem({ value, i }) {
             style={{
               opacity: "0.9",
             }}
-            onClick={ () => {
+            onClick={() => {
 
               productFuncs_handleAddToCart({
                 value, redux_cart_user, dispatch

@@ -86,18 +86,12 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
 
         if (floor_price_min === Infinity || round_price_max === -Infinity) {
-          console.log('destroy');
           pp.noUiSlider.destroy();
           // setPriceRange()
           // setInitialPriceRange()
         }
         else if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
           setPriceRange([floor_price_min, round_price_max])
-
-          console.log(floor_price_min);
-          console.log(typeof(floor_price_min));
-
-          console.log(round_price_max);
 
           let newOptions = {
             start: [floor_price_min, round_price_max],

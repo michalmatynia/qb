@@ -19,13 +19,10 @@ export default function Home() {
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currencyuser = useSelector(state => state.user.currencyUser)
-    let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
-    const [isMystore, setIsMystore] = useState();
     const [isloading, setIsLoading] = useState(true);
 
     const loadProducts = useCallback(async () => {
-        console.log('load products');
     
         let inQuery = {}
     
@@ -62,7 +59,6 @@ export default function Home() {
             loadPage().then((item) => {
 
                 loadProducts().then(()=>{
-                    // setIsMystore(item.payload)
 
                     setIsLoading(false)
                 })

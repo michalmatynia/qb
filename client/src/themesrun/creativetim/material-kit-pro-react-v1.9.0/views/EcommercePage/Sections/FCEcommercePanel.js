@@ -46,7 +46,7 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     const [isLocalUser, setLocalUser] = React.useState();
 
 
-    const classes = useStyles({ overtheme: isOverTheme });
+    const classes = useStyles();
 
 
     const loadPrice = useCallback(async ({ looproducts }) => {
@@ -66,7 +66,6 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
         if (!priceRange && isLoading) {
 
-            console.log('load price');
             loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
                 setPriceRange([floor_price_min, round_price_max])
             })
@@ -127,7 +126,6 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
         if (!categoryTaxo && !typeTaxo) {
 
-            console.log('Establish Taxonomy');
             establishTaxonomy().then(({ category_taxo_array, type_taxo_array }) => {
 
                 setCategoryTaxo(category_taxo_array)
@@ -138,7 +136,7 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     }, [categoryTaxo, establishTaxonomy, typeTaxo])
 
     return (categoryTaxo && typeTaxo && viewingList && !isLoading ?
-        <Card plain>{console.log('EcommercePanel Render')}
+        <Card plain>
             <CardBody className={classes.cardBodyRefine}>
 
                 {/* Here should be a SEARCH FIELD */}
@@ -172,13 +170,8 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
                                     childCheckedCategoryTaxo={checkedCategoryTaxo}
                                     childCheckedTypeTaxo={checkedTypeTaxo}
                                     viewingList={viewingList}
-                                    cb_runChangePrice={({ cb_ChangedPrice }) => {
-
-                                        console.log('run price change functions');
-                       
+                                    cb_runChangePrice={({ cb_ChangedPrice }) => {                       
                                         toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, parentCheckedTypeTaxo: checkedTypeTaxo, priceRange: cb_ChangedPrice })
-
-
                                     }}
 
                                 />
