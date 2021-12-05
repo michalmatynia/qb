@@ -81,14 +81,14 @@ export default function FCGridItem({ value, i }) {
 
   let render = () => {
     return <GridItem md={4} sm={4}>
-      {showAddToCart && redux_currentmystore ? <ShowMessages
+      {showAddToCart ? <ShowMessages
         visible={showAddToCart}
         message={redux_currentmystore.addedtocart_msg}
         color='info'
         place='bl'
 
       /> : null}
-      {!isLoading && value ? <Card plain product >
+      {!isLoading && currencyuser ? <Card plain product >
         <CardHeader noShadow image className={classes.cardHoverScale}>
           <div
             onClick={() => gotoProductDetail({ value })}
