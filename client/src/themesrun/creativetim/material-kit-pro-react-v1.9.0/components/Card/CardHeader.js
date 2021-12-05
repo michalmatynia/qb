@@ -16,25 +16,9 @@ import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-
 const useStyles = makeStyles(styles);
 
 export default function CardHeader(props) {
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-  let currentmysite = useSelector(state => state.mysite.CurrentMysite)
-  const [isOverTheme, setOverTheme] = React.useState();
-
-  const classes = useStyles({overtheme: isOverTheme});
-
-
-  React.useEffect(() => {
-
-    if (!isOverTheme && currentmysite) {
-      processOverTheme({currentmysite}).then((theme)=>{
-
-        setOverTheme(theme)
-      })
-    }
-
-
-  },[currentmysite, isOverTheme])
-
+  const classes = useStyles({overtheme: redux_overtheme_mysite});
 
   const {
     className,

@@ -73,15 +73,15 @@ export default function SectionProducts() {
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isOverTheme, setOverTheme] = React.useState();
   const [categoryTaxo, setCategoryTaxo] = React.useState();
   const [typeTaxo, setTypeTaxo] = React.useState();
-  // const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState([]);
+  const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState([]);
   const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState([]);
   const [isLocalUser, setLocalUser] = React.useState();
 
-  const classes = useStyles({ overtheme: isOverTheme });
+  const classes = useStyles();
 
 
 
@@ -189,6 +189,7 @@ export default function SectionProducts() {
 
     let newViewingList = []
 
+
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
       // Reduce on Price Range
@@ -250,6 +251,10 @@ export default function SectionProducts() {
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
     // return newViewingList
+
+    // setParentCheckedCategoryTaxo(parentCheckedCategoryTaxo)
+    // setParentCheckedTypeTaxo(parentCheckedTypeTaxo)
+
     setViewingList(newViewingList)
 
 
@@ -273,14 +278,23 @@ export default function SectionProducts() {
   //     }) : null
   //   }, [viewingList])
 
-  // const handleLoadMore = useCallback(
-  //   () => {
-  //     let newMyFcState = { ...myFcState }
+  const handleLoadMore = useCallback(
+    async () => {
+      let newMyFcState = { ...myFcState }
 
-  //     newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
+      console.log(viewingList);
 
-  //     setFcState(newMyFcState)
-  //   }, [myFcState])
+      newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
+      let newViewingList = viewingList.slice(0, newMyFcState.localStorage.viewparams.limit)
+
+      setFcState(newMyFcState)
+
+      // return newViewingList
+      setViewingList(newViewingList)
+
+      // setViewingList()
+
+    }, [myFcState, viewingList])
 
   return (
     <div className={classes.section}>{console.log('render Section Products')}
@@ -291,8 +305,10 @@ export default function SectionProducts() {
 
             <FCEcommercePanel
               toggleEcomPanel={({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange }) => {
+                // setIsLoading(true)
 
                 refineProductList({ parentCheckedCategoryTaxo, parentCheckedTypeTaxo, priceRange })
+
               }}
               viewingList={viewingList}
             />
@@ -300,27 +316,36 @@ export default function SectionProducts() {
           </GridItem>
           <GridItem md={9} sm={9}>
             <GridContainer>
-              {viewingList ?
-                viewingList.length > 0 ? viewingList.map( (value, i) => {
+              {
+              // viewingList ?
+              //   viewingList.length > 0 ? viewingList.map((value, i) => {
 
-                  return <FCEachProduct
-                    value={value}
-                    key={value._id}
-                  />
-                }) : null
-                : null}
+              //     return <FCEachProduct
+              //       value={value}
+              //       key={value._id}
+              //     />
+
+              //   }) : null
+              //   : null
+                }
             </GridContainer>
             <GridItem
               md={6}
               sm={6}
               className={cx(classes.mlAuto, classes.mrAuto)}
             >
-              {/* {viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? <Button
-                color="primary"
-                onClick={() => handleLoadMore()}
-              >
-                {mystore.loadmore_btn}
-              </Button> : null} */}
+              {
+              // viewingList && redux_currentmystore ? 
+              // viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
+              // <Button
+              //   color="primary"
+              //   // onClick={() => handleLoadMore()}
+              // >
+              //   {/* {redux_currentmystore.loadmore_btn} */}
+              // </Button> 
+              // : null
+              // : null
+              }
             </GridItem>
           </GridItem>
         </GridContainer>

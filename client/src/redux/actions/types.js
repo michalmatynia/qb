@@ -45,6 +45,7 @@ export const LIST_MESSAGES = 'list_messages';
 // Mysite
 export const CURRENT_MYSITE = 'current_mysite';
 export const DETAIL_MYSITE = 'detail_mysite';
+export const OVERTHEME_MYSITE = 'overtheme_mysite';
 export const LIST_MYSITE = 'list_mysite';
 
 // Taxonomy

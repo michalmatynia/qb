@@ -8,11 +8,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import parentstyleFunc from "./theming/Funcs/parentstyleFunc";
+import processOverTheme from "./theming/Funcs/processOverTheme";
 
 import {
     plg_findOne_QueMod,
-} from './components/utils/Plugs/cms_plugs';
 
+} from './components/utils/Plugs/cms_plugs';
+import {
+    act_injectProp,
+  } from './redux/actions/generic/generic_actions';
 import Panel from './components/Panel/panel'
 import Frontside from './components/Frontside/frontside'
 import HeaderHolder from './components/Header_footer/Header';
@@ -51,7 +55,7 @@ export default function App() {
 
             if (mysite_result.payload.checked.length > 0) {
 
-                return processStyle({ currentmysite: mysite_result.payload })
+                return {maintheme: processStyle({ currentmysite: mysite_result.payload }), overtheme: processOverTheme({ currentmysite: mysite_result.payload }) } 
 
             } else {
                 return null
@@ -60,8 +64,15 @@ export default function App() {
 
         if (currentmysite === undefined) {
 
-            findMysite().then((result)=>{
-                setIsBodyTheme(result)
+            findMysite().then((result) => {
+
+                if (result) {
+
+                  dispatch(act_injectProp({ dataToSubmit: result.overtheme, model: 'mysite', actionType: 'overtheme' }))
+                    setIsBodyTheme(result)
+
+                }
+
                 setIsLoading(false)
             })
         }

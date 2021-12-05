@@ -11,76 +11,53 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/buttonStyle";
-import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
-
 const useStyles = makeStyles(styles);
 
 const RegularButton = React.forwardRef((props, ref) => {
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-  let currentmysite = useSelector(state => state.mysite.CurrentMysite)
   const [isBrickStyle, setBrickStyle] = React.useState();
   const [isOverTheme, setOverTheme] = React.useState();
 
   const [isLoading, setIsLoading] = React.useState(true);
 
   // const classes = useStyles({overtheme: isOverTheme && isOverTheme !== {} ? isOverTheme : null});
-  const classes = useStyles({ overtheme: isOverTheme });
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
+// console.log(redux_overtheme_mysite);
+//   const classes = useStyles();
+
+  // const useStyles = makeStyles(redux_overtheme_mysite ? redux_overtheme_mysite : null);
+  // const classes = useStyles();
+
   const processStyle = useCallback(async (item) => {
 
     return await parseBlockstyle(item)
   }, [])
 
   React.useEffect(() => {
-    //  try {
 
-    //   if (props.item) {
-
-    //   } else {
-    //     throw err
-    //   }
-    //  } catch(err) {
-    //   setOverTheme(theme)
-    //   setIsLoading(false)    
-
-    //  }
-    if (props.item) {
-
-      if (!isOverTheme && currentmysite && isLoading) {
-        processOverTheme({ currentmysite }).then((theme) => {
+    if (props.item && isLoading) {
 
           if (props.item.blockstyle.length > 0) {
             processStyle({ item: props.item }).then((result) => {
 
-              setOverTheme(theme)
               setBrickStyle(result)
               setIsLoading(false)
 
             })
           } else {
 
-            setOverTheme(theme)
             setIsLoading(false)
+            
           }
-        })
-      }
-    } else {
-      if (!isOverTheme && currentmysite && isLoading) {
-        processOverTheme({ currentmysite }).then((theme) => {
 
-          setOverTheme(theme)
-          setIsLoading(false)
+    } 
 
-        })
-      }
-    }
-
-  }, [currentmysite, isLoading, isOverTheme, processStyle, props.item])
-
-
+ 
+  }, [ isLoading, isOverTheme, processStyle, props.item])
 
   const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
   const dynoclasses = useDynoStyles();
-
 
   const {
     color,
@@ -117,11 +94,11 @@ const RegularButton = React.forwardRef((props, ref) => {
     [dynoclasses.btn_launch_innerbtn]: dynoclasses.btn_launch_innerbtn
   });
 
-  return !isLoading ? (
+  return  (
     <Button {...rest} ref={ref} classes={muiClasses} className={btnClasses}>
       {children}
     </Button>
-  ) : null
+  )
 });
 
 RegularButton.propTypes = {

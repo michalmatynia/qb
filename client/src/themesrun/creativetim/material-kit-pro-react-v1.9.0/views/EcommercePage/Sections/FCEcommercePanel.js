@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleEcomPanel, viewingList, sumofchecked }) {
+export default function FCEcommercePanel({ toggleEcomPanel, viewingList }) {
 
     let product_list = useSelector(state => state.product.list)
     let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
@@ -75,13 +75,13 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
     React.useEffect(() => {
 
-        if (priceRange && categoryTaxo && checkedCategoryTaxo && checkedTypeTaxo && !viewingList && isLoading) {
+        if (priceRange && categoryTaxo && typeTaxo && checkedCategoryTaxo && checkedTypeTaxo && !viewingList && isLoading) {
 
             toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, parentCheckedTypeTaxo: checkedTypeTaxo, priceRange })
             setIsLoading(false)
         }
 
-    }, [categoryTaxo, checkedCategoryTaxo, checkedTypeTaxo, isLoading, priceRange, toggleEcomPanel, viewingList])
+    }, [categoryTaxo, checkedCategoryTaxo, checkedTypeTaxo, isLoading, priceRange, toggleEcomPanel, typeTaxo, viewingList])
 
 
     const establishTaxonomy = useCallback(async () => {

@@ -1,13 +1,5 @@
 import React, { useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-  useRouter,
-} from "../../../../../../hoc/Funcs/hook_funcs";
-// nodejs library that concatenates classes
-import cx from "classnames";
-
-// plugin that creates slider
-import Slider from "nouislider";
+import { useHistory } from "react-router-dom";
 
 import {
   productFuncs_handleAddToCart
@@ -15,9 +7,6 @@ import {
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 // @material-ui icons
 // import Favorite from "@material-ui/icons/Favorite";
@@ -25,16 +14,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
 
 // core components
-import AccordionFunc from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Accordion/AccordionFunc.js";
 
-import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
 import CardHeader from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardHeader.js";
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import CardFooter from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardFooter.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import processOverTheme from "../../../../../../theming/Funcs/processOverTheme"
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
@@ -47,7 +33,8 @@ const useStyles = makeStyles(styles);
 export default function FCEachProduct({ value }) {
   let reactrouter_history = useHistory()
   let currencyuser = useSelector(state => state.user.currencyUser)
-  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
+
   let redux_cart_user = useSelector(state => state.user.cartUser)
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
@@ -55,11 +42,9 @@ export default function FCEachProduct({ value }) {
   const [showAddToCart, setShowAddToCart] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isValue, setIsValue] = React.useState();
-
-
-  const [isOverTheme, setOverTheme] = React.useState();
-  const classes = useStyles();
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
   // ================
+
   React.useEffect(() => {
 
     if (value && !isValue && isLoading) {
@@ -73,40 +58,6 @@ export default function FCEachProduct({ value }) {
     // };
 
   }, [isLoading, isValue, value])
-
-  // React.useEffect(() => {
-  //   return function cleanup() {
-  //     setIsValue()
-
-  //   };
-  // })
-
-  // ################
-  // React.useEffect(() => {
-
-  //   if (!isOverTheme && isLoading) {
-  //     processOverTheme({ currentmysite: current_mysite }).then((theme) => {
-
-  //       setOverTheme(theme)
-  //     })
-  //   }
-  // }, [current_mysite, isLoading, isOverTheme])
-
-  React.useEffect(() => {
-
-    if (!isOverTheme && isLoading) {
-
-      processOverTheme({ currentmysite: current_mysite }).then((theme) => {
-        setOverTheme(theme)
-
-      })
-
-      return function cleanup() {
-        setOverTheme()
-
-      };
-    }
-  }, [current_mysite, isLoading, isOverTheme])
 
   const gotoProductDetail = useCallback(
     async ({ value }) => {
@@ -125,7 +76,7 @@ export default function FCEachProduct({ value }) {
         place='bl'
 
       /> : null}
-      {!isLoading && isValue ? <Card plain product >
+      <Card plain product >
         <CardHeader noShadow image className={classes.cardHoverScale}>
           <div
             onClick={() => gotoProductDetail({ value })}
@@ -195,7 +146,7 @@ export default function FCEachProduct({ value }) {
               </Button>
             </Tooltip> */}
         </CardFooter>
-      </Card> : null}
+      </Card>
     </GridItem>
 
   }

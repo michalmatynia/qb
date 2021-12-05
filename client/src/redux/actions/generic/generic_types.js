@@ -19,6 +19,7 @@ import {
     DETAIL_MESSAGE,
     LIST_MESSAGES,
     CURRENT_MYSITE,
+    OVERTHEME_MYSITE,
     DETAIL_MYSITE,
     LIST_MYSITE,
     DETAIL_TAXONOMY,
@@ -131,6 +132,9 @@ export async function getOutputType({ model = null, actionType = null }) {
             break
         case model === 'mysite' && actionType === 'detail':
             getOutputType = DETAIL_MYSITE
+            break
+        case model === 'mysite' && actionType === 'overtheme':
+            getOutputType = OVERTHEME_MYSITE
             break
         case model === 'mysite' && actionType === 'list':
             getOutputType = LIST_MYSITE
