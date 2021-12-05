@@ -28,22 +28,10 @@ import processOverTheme from "../../../../../../theming/Funcs/processOverTheme";
 import PriceSlider from "./PriceSlider.js";
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
-import {
-    plg_findMany,
-    // plg_findOne_QueMod,
-    plg_clearProps
-} from '../../../../../../components/utils/Plugs/cms_plugs';
 
-import {
-    act_injectProp,
-} from '../../../../../../redux/actions/generic/generic_actions';
-
-
-import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 const useStyles = makeStyles(styles);
 
 export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleEcomPanel, viewingList, sumofchecked }) {
-    const dispatch = useDispatch()
 
 
     const fc_state = {
@@ -69,7 +57,6 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
 
     const [priceRange, setPriceRange] = React.useState();
-    const [myFcState, setFcState] = React.useState(fc_state);
 
     // const [viewingList, setViewingList] = React.useState();
 
@@ -86,11 +73,11 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
     const classes = useStyles({ overtheme: isOverTheme });
 
 
-    const loadPrice = useCallback(async () => {
+    const loadPrice = useCallback(async ({looproducts}) => {
 
         // // Viewparams and limits have to be carried out on a SUM array of products
 
-        let priceArray = product_list.map(a => a.price)
+        let priceArray = looproducts.map(a => a.price)
         const price_min = Math.min(...priceArray)
         const price_max = Math.max(...priceArray)
 
@@ -98,14 +85,13 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
 
 
-    }, [product_list])
+    }, [])
     React.useEffect(() => {
 
-        if (!initialPriceRange) {
+        if (!priceRange && isLoading) {
 
             console.log('load price');
-            loadPrice().then(({ floor_price_min, round_price_max }) => {
-                setInitialPriceRange([floor_price_min, round_price_max])
+            loadPrice({looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
                 setPriceRange([floor_price_min, round_price_max])
             })
         }
@@ -114,17 +100,13 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
     React.useEffect(() => {
 
-        if (initialPriceRange && priceRange && categoryTaxo && checkedCategoryTaxo && !viewingList && isLoading) {
-
-            console.log('Ecommerce load price / category to refine list');
-            console.log(priceRange);
-            console.log(checkedCategoryTaxo);
+        if ( priceRange && categoryTaxo && checkedCategoryTaxo && !viewingList && isLoading) {
 
             toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, typeTaxo: [], priceRange })
             setIsLoading(false)
         }
 
-    }, [categoryTaxo, checkedCategoryTaxo, initialPriceRange, isLoading, priceRange, toggleEcomPanel, viewingList])
+    }, [categoryTaxo, checkedCategoryTaxo, isLoading, priceRange, toggleEcomPanel, viewingList])
 
     /* Get Theme */
     /*   React.useEffect(() => {
@@ -192,8 +174,8 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
 
     }, [categoryTaxo, establishTaxonomy, typeTaxo])
 
-    return (categoryTaxo && typeTaxo && initialPriceRange && viewingList && !isLoading ?
-        <Card plain>{console.log('EcommercePanel Render', { checkedCategoryTaxo })}
+    return (categoryTaxo && typeTaxo  && viewingList && !isLoading ?
+        <Card plain>{console.log('EcommercePanel Render')}
             <CardBody className={classes.cardBodyRefine}>
 
                 {/* Here should be a SEARCH FIELD */}
@@ -222,18 +204,20 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
                     collapses={[
                         {
                             title: redux_currentmystore.pricerange_nametag,
-                            content: (<PriceSlider
+                            content: (
+                            
+                            
+                            <PriceSlider
                                 // toggleEcomPanel={({cb_NewChecked})=> toggleEcomPanel({categoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_NewChecked})}
-                                priceparent={initialPriceRange}
                                 childCheckedCategoryTaxo={checkedCategoryTaxo}
+                                viewingList={viewingList}
                                 cb_runChangePrice={({ cb_ChangedPrice, isChildCheckedCategoryTaxo }) => {
 
                                     console.log('run price change functions');
                                     // setIsLoading(true)
                                     // setPriceRange(cb_ChangedPrice)
 
-                                    console.log(isChildCheckedCategoryTaxo);
-                                    console.log(checkedCategoryTaxo);
+         
                                     toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, typeTaxo, priceRange: cb_ChangedPrice })
 
                                     // setIsLoading(false)
@@ -257,7 +241,6 @@ export default function FCEcommercePanel({ value, i, toggleCategoryTaxo, toggleE
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
 
                                                 console.log('runcheck');
-                                                console.log(cb_NewChecked);
                                                 setCheckedCategoryTaxo(cb_NewChecked)
                                                 toggleEcomPanel({ parentCheckedCategoryTaxo: cb_NewChecked, typeTaxo, priceRange })
 

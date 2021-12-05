@@ -254,54 +254,12 @@ export default function SectionProducts() {
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
-    // console.log(newViewingList);
     // return newViewingList
     setViewingList(newViewingList)
 
-    // return newViewingList
 
 
   }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, product_list])
-
-  // React.useEffect(() => {
-
-  //   if (isLoading && priceRange && categoryTaxo && !viewingList) {
-  //       console.log('refineproducts');
-
-  //       refineProductList({categoryTaxo, typeTaxo, priceRange}).then((newViewingList) => {
-  //         setViewingList(newViewingList)
-  //         setIsLoading(false)
-
-  //       })
-  //     }
-
-
-
-  // }, [categoryTaxo, isLoading, priceRange, refineProductList, typeTaxo, viewingList])
-
-
-
-  // React.useEffect(() => {
-
-  //   if (isLoading) {
-
-  //     if (priceRange
-  //       && product_list
-  //       && viewingList
-  //       // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-  //     ) {
-  //       refineProducts().then((newViewingList) => {
-  //         setViewingList(newViewingList)
-  //         setIsLoading(false)
-
-  //       })
-
-  //     }
-  //   }
-
-  // }, [isLoading, priceRange, product_list, refineProducts, viewingList])
-
-
 
 
   // ================
@@ -339,9 +297,6 @@ export default function SectionProducts() {
             <FCEcommercePanel
               toggleEcomPanel={({ parentCheckedCategoryTaxo, typeTaxo, priceRange }) => {
 
-                console.log(parentCheckedCategoryTaxo);
-                // setParentCheckedCategoryTaxo(parentCheckedCategoryTaxo)
-                // setViewingList()
                 refineProductList({ parentCheckedCategoryTaxo, typeTaxo, priceRange })
               }}
               viewingList={viewingList}
