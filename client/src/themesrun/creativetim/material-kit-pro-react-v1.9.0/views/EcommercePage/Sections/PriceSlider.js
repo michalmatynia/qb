@@ -57,11 +57,6 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
     if (!priceRange && !initialPriceRange) {
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
-
-        console.log(childCheckedCategoryTaxo);
-        console.log(childCheckedTypeTaxo);
-
-        console.log('loadpric');
         setInitialPriceRange([floor_price_min, round_price_max])
         setPriceRange([floor_price_min, round_price_max])
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
@@ -80,8 +75,6 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
         .classList.contains("noUi-target")
     ) {
     
-      console.log('modify slider');
-
 
         let pp = document.getElementById("sliderRegular")
 
@@ -122,8 +115,6 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
         if (pp.noUiSlider) {
 
-          console.log('jest giit');
-
           pp.noUiSlider.on('change', async function (values, handle) {
             cb_runChangePrice({ cb_CheckedCategoryTaxo: childCheckedCategoryTaxo, cb_CheckedTypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
             setPriceRange([Math.floor(values[0]), Math.round(values[1])])
@@ -150,14 +141,11 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
     ) {
       let pp = document.getElementById("sliderRegular")
 
-      console.log('slider create');
-
       noUiSlider.create(pp, {
         start: [priceRange[0], priceRange[1]],
 
         range: { min: initialPriceRange[0], max: initialPriceRange[1] },
       }).on('change', async function (values, handle) {
-        console.log('PIERWSZY UPDATE');
 
         cb_runChangePrice({ cb_CategoryTaxo: childCheckedCategoryTaxo, cb_TypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 

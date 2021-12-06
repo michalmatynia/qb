@@ -94,24 +94,10 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
 
             setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
             setCheckedTypeTaxo(parentCheckedTypeTaxo)
-            setMidPriceRange(parentPriceRange)
             toggleIsRefreshChild(false)
         }
 
     }, [isRefreshChild, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, toggleIsRefreshChild])
-
-
-    // React.useEffect(() => {
-    //     if ( viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange && isLoading && categoryTaxo && typeTaxo && checkedCategoryTaxo && checkedTypeTaxo && isMidPriceRange) {
-
-    //         console.log('Update mid level');
-    //         console.log(parentPriceRange);
-    //         // toggleEcomPanel({ parentCheckedCategoryTaxo: checkedCategoryTaxo, parentCheckedTypeTaxo: checkedTypeTaxo, priceRange })
-    //         // setIsLoading(false)
-    //     }
-
-    // }, [categoryTaxo, checkedCategoryTaxo, checkedTypeTaxo, isLoading, isMidPriceRange, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, toggleEcomPanel, typeTaxo, viewingList])
-
 
     const establishTaxonomy = useCallback(async () => {
         let category_taxo_array = []
@@ -204,12 +190,6 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
                                     childCheckedTypeTaxo={checkedTypeTaxo}
                                     viewingList={viewingList}
                                     cb_runChangePrice={({ cb_CheckedCategoryTaxo, cb_CheckedTypeTaxo, cb_ChangedPrice }) => {
-
-                                        console.log(checkedCategoryTaxo);
-                                        console.log(cb_CheckedCategoryTaxo);
-
-                                        console.log(cb_ChangedPrice);
-
                                         toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_CheckedCategoryTaxo, sourceCheckedTypeTaxo: cb_CheckedTypeTaxo, sourcePriceRange: cb_ChangedPrice })
                                     }}
 
@@ -228,13 +208,7 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
                                             arrayTaxo={categoryTaxo}
                                             checkedTaxo={checkedCategoryTaxo}
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
-
-                                                console.log('clicked');
-                                                console.log(cb_NewChecked);
-
-                                                // setCheckedCategoryTaxo(cb_NewChecked)
                                                 toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_NewChecked })
-
                                             }
 
                                             }
@@ -254,10 +228,8 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
                                             arrayTaxo={typeTaxo}
                                             checkedTaxo={checkedTypeTaxo}
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
-
                                                 setCheckedTypeTaxo(cb_NewChecked)
                                                 toggleEcomPanel({ sourceCheckedTypeTaxo: cb_NewChecked })
-
                                             }
                                             }
                                         />

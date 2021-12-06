@@ -3,50 +3,28 @@ import React, { useCallback } from "react";
 import cx from "classnames";
 
 // plugin that creates slider
-import Slider from "nouislider";
 import FCEachProduct from "./FCGridItem";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-
 // @material-ui icons
 // import Favorite from "@material-ui/icons/Favorite";
 // import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import FCTaxonomyListOne from './FCTaxonomyListOne'
-import FCTaxonomy from './FCTaxonomy'
-
 // core components
-import AccordionFunc from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Accordion/AccordionFunc.js";
 
 import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
-import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
-import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import processOverTheme from "../../../../../../theming/Funcs/processOverTheme";
-import PriceSlider from "./PriceSlider.js";
+
 import FCEcommercePanel from "./FCEcommercePanel";
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  plg_findMany,
-  // plg_findOne_QueMod,
-  plg_clearProps
-} from '../../../../../../components/utils/Plugs/cms_plugs';
-
-import {
-  act_injectProp,
-} from '../../../../../../redux/actions/generic/generic_actions';
-
-
-import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 
 const useStyles = makeStyles(styles);
 
 export default function SectionProducts() {
-  const dispatch = useDispatch()
 
   const fc_state = {
     localStorage: {
@@ -66,56 +44,36 @@ export default function SectionProducts() {
 
   // let taxonomy_list = useSelector(state => state.taxonomy.list)
   // let reduxprops = useSelector(state => state)
-  // let localeuser = useSelector(state => state.user.localeUser)
-  // let currencyuser = useSelector(state => state.user.currencyUser)
-  // let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+  let localeuser = useSelector(state => state.user.localeUser)
+  let currencyuser = useSelector(state => state.user.currencyUser)
+  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
   let product_list = useSelector(state => state.product.list)
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryTaxo, setCategoryTaxo] = React.useState();
-  const [typeTaxo, setTypeTaxo] = React.useState();
   const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState();
   const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState();
   const [isLocalUser, setLocalUser] = React.useState();
   const [parentPriceRange, setParentPriceRange] = React.useState();
   const [isRefreshChild, setRefreshChild] = React.useState();
 
-  const classes = useStyles();
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
+
+  const loadPrice = useCallback(async ({ looproducts }) => {
+
+    // // Viewparams and limits have to be carried out on a SUM array of products
+
+    let priceArray = looproducts.map(a => a.price)
+    const price_min = Math.min(...priceArray)
+    const price_max = Math.max(...priceArray)
+
+    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
 
 
 
-  /* Get Theme */
-  /*   React.useEffect(() => {
-  
-      if (!isOverTheme && current_mysite) {
-        processOverTheme({ currentmysite: current_mysite }).then((theme) => {
-          console.log('set theme');
-  
-          setOverTheme(theme)
-        })
-      }
-  
-  
-    }, [current_mysite, isOverTheme]) */
-
-  /* LG Change */
-
-  // React.useEffect(() => {
-
-  //   if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
-  //     && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-  //   ) {
-
-  //     console.log('resetter');
-  //     setPriceRange(null)
-  //     setCheckedCategoryTaxo([])
-  //     setCheckedTypeTaxo([])
-  //   }
-
-  // }, [currencyuser, current_mysite, dispatch, localeuser])
-
+  }, [])
   // const lgchangeLoadProducts = useCallback(async (item) => {
   //   console.log('load products');
 
@@ -186,19 +144,9 @@ export default function SectionProducts() {
 
 
 
-  const refineProductList = useCallback(async ({ sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange }) => {
-
-    console.log('refine');
-
-    console.log(sourceCheckedCategoryTaxo);
-    console.log(sourceCheckedTypeTaxo);
-    console.log(sourcePriceRange);
-
-    // lista obencnych get przegowe eny przez load pirce
-    // viewingList
+  const refineProductList = useCallback(async ({ sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange, tableLimit = myFcState.localStorage.viewparams.limit }) => {
 
     let newViewingList = []
-
 
     newViewingList = product_list.reduce((accum, currentValue, CurrentIndex) => {
 
@@ -258,44 +206,98 @@ export default function SectionProducts() {
         return b[myFcState.localStorage.viewparams.sortBy] - a[myFcState.localStorage.viewparams.sortBy];
       });
     }
-    newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
+    newViewingList = newViewingList.slice(0, tableLimit)
 
     return { newViewingList, sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }
 
-    // sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange
-
   }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list])
 
-  const loadPrice = useCallback(async ({ looproducts }) => {
 
-    // // Viewparams and limits have to be carried out on a SUM array of products
+/* LG Change */
 
-    let priceArray = looproducts.map(a => a.price)
-    const price_min = Math.min(...priceArray)
-    const price_max = Math.max(...priceArray)
+React.useEffect(() => {
 
-    return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
+  // if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
+  //   && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+  //   && product_list
+  // ) {
 
 
+    if (isLocalUser !== localeuser && isLocalUser
+      // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+      && product_list
+    ) {
 
-  }, [])
-  // React.useEffect(() => {
-  //   if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
+      
 
-  //   }
 
-  // })
+    console.log('Resetter');
+    
+        loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+
+
+          console.log(floor_price_min);
+          console.log(round_price_max);
+
+          console.log(product_list);
+          console.log(localeuser);
+          console.log(isLocalUser);
+          setLocalUser(localeuser)
+
+    })
+    // setIsLoading(true)
+    // console.log(product_list);
+
+    // loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+
+    //   console.log();
+
+    //   refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+    //     // setParentCheckedCategoryTaxo([])
+    //     // setParentCheckedTypeTaxo([])
+    //     // setParentPriceRange([floor_price_min, round_price_max])
+    //     // setViewingList(result.newViewingList)
+    //     // setIsLoading(false)
+
+    //   })
+    // })
+
+
+    // console.log('resetter');
+    // setParentPriceRange()
+    // setParentCheckedCategoryTaxo([])
+    // setParentCheckedTypeTaxo([])
+  }
+
+}, [isLocalUser, localeuser, product_list])
+
+/* First Load */
   React.useEffect(() => {
 
-    if (isLoading && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
+    if (isLoading && !isLocalUser && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
-        console.log('loadprice done');
         refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
-          console.log('populate local states');
           setParentCheckedCategoryTaxo([])
           setParentCheckedTypeTaxo([])
           setParentPriceRange([floor_price_min, round_price_max])
+          setViewingList(result.newViewingList)
+          setLocalUser(localeuser)
+          setIsLoading(false)
+        })
+      })
+    }
+
+  }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
+
+  /* Load more Refresh */
+  React.useEffect(() => {
+
+    if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
+      loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+
+        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+
           setViewingList(result.newViewingList)
 
           setIsLoading(false)
@@ -306,39 +308,20 @@ export default function SectionProducts() {
     }
 
   }, [isLoading, loadPrice, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
-  // ================
 
-  // const loopProducts = useCallback(
-  //   async () => {
+  const handleLoadMore = useCallback(
+    async () => {
+      let newMyFcState = { ...myFcState }
 
-  //     console.log(viewingList);
+      newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
 
-  //     return viewingList.length > 0 ? viewingList.map( (value, i) => {
-  //       return <FCGridItem
-  //         value={value}
-  //         i={i}
-  //         key={value._id}
-  //       />
-  //     }) : null
-  //   }, [viewingList])
+      refineProductList({parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, tableLimit: newMyFcState.localStorage.viewparams.limit }).then((result) => {
 
-  // const handleLoadMore = useCallback(
-  //   async () => {
-  //     let newMyFcState = { ...myFcState }
+        setViewingList(result.newViewingList)
 
-  //     console.log(viewingList);
+      })
 
-  //     newMyFcState.localStorage.viewparams.limit = myFcState.localStorage.viewparams.limit + 6
-  //     let newViewingList = viewingList.slice(0, newMyFcState.localStorage.viewparams.limit)
-
-  //     setFcState(newMyFcState)
-
-  //     // return newViewingList
-  //     // setViewingList(newViewingList)
-
-  //     // setViewingList()
-
-  //   }, [myFcState, viewingList])
+    }, [myFcState, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, refineProductList])
 
   return (
     !isLoading && viewingList ? <div className={classes.section}>
@@ -351,9 +334,7 @@ export default function SectionProducts() {
               toggleEcomPanel={({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }) => {
 
                   refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }).then((result) => {
-                      console.log(result);
-                      // setIsLoading(true)
-  
+     
                       if (result.sourceCheckedCategoryTaxo) {
                         setParentCheckedCategoryTaxo(result.sourceCheckedCategoryTaxo)
                       }
@@ -363,16 +344,12 @@ export default function SectionProducts() {
                       }
   
                       if(sourcePriceRange) {
-                        console.log(sourcePriceRange);
                         setParentPriceRange(result.sourcePriceRange)
 
                       }
   
                       setViewingList(result.newViewingList)
                       setRefreshChild(true)
-  
-                      // setIsLoading(false)
-  
   
                   })
 
@@ -413,16 +390,16 @@ export default function SectionProducts() {
               className={cx(classes.mlAuto, classes.mrAuto)}
             >
               {
-                // viewingList && redux_currentmystore ? 
-                // viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
-                // <Button
-                //   color="primary"
-                //   onClick={() => handleLoadMore()}
-                // >
-                //   {redux_currentmystore.loadmore_btn}
-                // </Button> 
-                // : null
-                // : null
+                viewingList && redux_currentmystore ? 
+                viewingList.length > 0 && viewingList.length >= myFcState.localStorage.viewparams.limit ? 
+                <Button
+                  color="primary"
+                  onClick={() => handleLoadMore()}
+                >
+                  {redux_currentmystore.loadmore_btn}
+                </Button> 
+                : null
+                : null
               }
             </GridItem>
           </GridItem>

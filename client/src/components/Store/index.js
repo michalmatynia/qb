@@ -73,6 +73,7 @@ export default function Home() {
     React.useEffect(() => {
         return function cleanup() {
             plg_clearProps({ dispatch, model: 'mystore', actionType: 'current' })
+            plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
 
         };
     },[dispatch])
