@@ -19,7 +19,7 @@ export default function Home() {
 
     let localeuser = useSelector(state => state.user.localeUser)
     let currencyuser = useSelector(state => state.user.currencyUser)
-
+    const [isLocalUser, setLocalUser] = React.useState();
     const [isloading, setIsLoading] = useState(true);
 
     const loadProducts = useCallback(async () => {
@@ -50,15 +50,14 @@ export default function Home() {
         },[dispatch, localeuser])
     React.useEffect(() => {
 
-        if (
-            localeuser
-            && currencyuser
-            && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-        ) {
+        if (isLocalUser !== localeuser ) {
 
             loadPage().then((item) => {
 
                 loadProducts().then(()=>{
+                    console.log('LG Change');
+
+                    setLocalUser(localeuser)
 
                     setIsLoading(false)
                 })
@@ -67,11 +66,12 @@ export default function Home() {
         }
 
 
-    }, [currencyuser, loadPage, loadProducts, localeuser]);
+    }, [isLocalUser, loadPage, loadProducts, localeuser]);
 
 
     React.useEffect(() => {
         return function cleanup() {
+            console.log('cleanup');
             plg_clearProps({ dispatch, model: 'mystore', actionType: 'current' })
             plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
 

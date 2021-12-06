@@ -16,7 +16,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-
+import {
+  plg_clearProps,
+  plg_findMany
+} from '../../../../../../components/utils/Plugs/cms_plugs';
 import FCEcommercePanel from "./FCEcommercePanel";
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
@@ -25,6 +28,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 export default function SectionProducts() {
+  const dispatch = useDispatch()
 
   const fc_state = {
     localStorage: {
@@ -53,6 +57,10 @@ export default function SectionProducts() {
 
 
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isMystore, setIsMystore] = React.useState();
+
+
+
   const [parentCheckedCategoryTaxo, setParentCheckedCategoryTaxo] = React.useState();
   const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState();
   const [isLocalUser, setLocalUser] = React.useState();
@@ -213,6 +221,18 @@ export default function SectionProducts() {
   }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list])
 
 
+//   React.useEffect(() => {
+
+//     if (isLocalUser !== localeuser && isLocalUser) {
+
+//       console.log('clear product list');
+//       plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
+//     }
+//     // return function cleanup() {
+//     //     console.log('cleanup');
+
+//     // };
+// },[dispatch, isLocalUser, localeuser])
 /* LG Change */
 
 React.useEffect(() => {
@@ -224,12 +244,15 @@ React.useEffect(() => {
 
 
     if (isLocalUser !== localeuser && isLocalUser
+      && redux_currentmystore !== isMystore
       // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
       && product_list
     ) {
 
       
-
+      // if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
+      //   && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+      // ) {
 
     console.log('Resetter');
     
@@ -243,6 +266,7 @@ React.useEffect(() => {
           console.log(localeuser);
           console.log(isLocalUser);
           setLocalUser(localeuser)
+          setIsMystore(redux_currentmystore)
 
     })
     // setIsLoading(true)
@@ -269,7 +293,7 @@ React.useEffect(() => {
     // setParentCheckedTypeTaxo([])
   }
 
-}, [isLocalUser, localeuser, product_list])
+}, [isLocalUser, isMystore, loadPrice, localeuser, product_list, redux_currentmystore])
 
 /* First Load */
   React.useEffect(() => {
@@ -283,12 +307,13 @@ React.useEffect(() => {
           setParentPriceRange([floor_price_min, round_price_max])
           setViewingList(result.newViewingList)
           setLocalUser(localeuser)
+          setIsMystore(redux_currentmystore)
           setIsLoading(false)
         })
       })
     }
 
-  }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
+  }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, redux_currentmystore, refineProductList, viewingList])
 
   /* Load more Refresh */
   React.useEffect(() => {
