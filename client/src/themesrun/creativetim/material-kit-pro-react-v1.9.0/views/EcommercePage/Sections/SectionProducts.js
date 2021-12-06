@@ -194,6 +194,12 @@ export default function SectionProducts() {
     console.log(sourceCheckedTypeTaxo);
     console.log(sourcePriceRange);
 
+    // lista obencnych get przegowe eny przez load pirce
+    // viewingList
+
+
+
+
     let newViewingList = []
 
 
@@ -203,18 +209,26 @@ export default function SectionProducts() {
 
       if (currentValue.price >= sourcePriceRange[0] && currentValue.price <= sourcePriceRange[1]) {
 
+
         let cat_bool = true
         let type_bool = true
 
         if (sourceCheckedCategoryTaxo.length > 0) {
 
+
           let cv_extracted_ids = currentValue.category.map(item => item._id)
+          console.log(currentValue);
+          console.log(cv_extracted_ids);
 
           for (let eachCatValue of sourceCheckedCategoryTaxo) {
+            console.log(eachCatValue);
+
+            console.log(sourceCheckedCategoryTaxo);
+
+            console.log(cv_extracted_ids.includes(eachCatValue._id));
 
             if (!cv_extracted_ids.includes(eachCatValue._id)) {
               cat_bool = false
-              break
             }
           }
         }
@@ -229,6 +243,9 @@ export default function SectionProducts() {
             }
           }
         }
+
+        console.log(cat_bool, type_bool);
+
 
         if (cat_bool && type_bool) {
           accum = [...accum, currentValue]
@@ -257,6 +274,7 @@ export default function SectionProducts() {
     }
     newViewingList = newViewingList.slice(0, myFcState.localStorage.viewparams.limit)
 
+    console.log(newViewingList);
     return { newViewingList, sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }
 
     // sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange
@@ -347,29 +365,33 @@ export default function SectionProducts() {
             <FCEcommercePanel
               toggleEcomPanel={({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }) => {
 
-                refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange }).then((result) => {
-                  loadPrice({ looproducts: result.newViewingList }).then(({ floor_price_min, round_price_max }) => {
-                    console.log(result);
-                    // setIsLoading(true)
-
-                    if (result.sourceCheckedCategoryTaxo) {
-                      setParentCheckedCategoryTaxo(result.sourceCheckedCategoryTaxo)
-                    }
-
-                    if (result.sourceCheckedTypeTaxo) {
-                      setParentCheckedTypeTaxo(result.sourceCheckedTypeTaxo)
-                    }
-
-                    setParentPriceRange([floor_price_min, round_price_max])
-
-                    setViewingList(result.newViewingList)
-                    setRefreshChild(true)
-
-                    // setIsLoading(false)
-
+                loadPrice({ looproducts: viewingList }).then(({ floor_price_min, round_price_max }) => {
+                  refineProductList({ sourceCheckedCategoryTaxo, sourceCheckedTypeTaxo, sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+                    loadPrice({ looproducts: result.newViewingList }).then(({ floor_price_min, round_price_max }) => {
+                      console.log(result);
+                      // setIsLoading(true)
+  
+                      if (result.sourceCheckedCategoryTaxo) {
+                        setParentCheckedCategoryTaxo(result.sourceCheckedCategoryTaxo)
+                      }
+  
+                      if (result.sourceCheckedTypeTaxo) {
+                        setParentCheckedTypeTaxo(result.sourceCheckedTypeTaxo)
+                      }
+  
+                      setParentPriceRange([floor_price_min, round_price_max])
+  
+                      setViewingList(result.newViewingList)
+                      setRefreshChild(true)
+  
+                      // setIsLoading(false)
+  
+                    })
+  
                   })
-
                 })
+
+          
 
               }}
               toggleIsRefreshChild={(boolean)=>{
