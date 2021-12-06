@@ -57,6 +57,10 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
     if (!priceRange && !initialPriceRange) {
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
+
+        console.log(childCheckedCategoryTaxo);
+        console.log(childCheckedTypeTaxo);
+
         console.log('loadpric');
         setInitialPriceRange([floor_price_min, round_price_max])
         setPriceRange([floor_price_min, round_price_max])
@@ -71,31 +75,28 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
   React.useEffect(() => {
     if (!isLoading
       && (isChildCheckedCategoryTaxo !== childCheckedCategoryTaxo || isChildCheckedTypeTaxo !== childCheckedTypeTaxo)
-      && viewingList
       && document
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
     ) {
+    
+      console.log('modify slider');
 
 
-      loadPrice({ looproducts: viewingList }).then(({ floor_price_min, round_price_max }) => {
         let pp = document.getElementById("sliderRegular")
+
+        console.log(childCheckedCategoryTaxo);
 
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
         setChildCheckedTypeTaxo(childCheckedTypeTaxo)
 
 
-        if (floor_price_min === Infinity || round_price_max === -Infinity) {
-          pp.noUiSlider.destroy();
-          // setPriceRange()
-          // setInitialPriceRange()
-        }
-        else if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
-          setPriceRange([floor_price_min, round_price_max])
+       if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
+          // setPriceRange([floor_price_min, round_price_max])
 
           let newOptions = {
-            start: [floor_price_min, round_price_max],
-            range: { min: floor_price_min, max: round_price_max },
+            start: [priceRange[0], priceRange[1]],
+            range: { min: initialPriceRange[0], max: initialPriceRange[1] },
           }
 
           pp.noUiSlider.updateOptions(
@@ -121,18 +122,20 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
         if (pp.noUiSlider) {
 
           pp.noUiSlider.on('change', async function (values, handle) {
-            cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
+            cb_runChangePrice({ cb_CheckedCategoryTaxo: childCheckedCategoryTaxo, cb_CheckedTypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
+            setPriceRange([Math.floor(values[0]), Math.round(values[1])])
 
           })
         }
 
-      })
 
 
     }
-  }, [cb_runChangePrice, childCheckedCategoryTaxo, childCheckedTypeTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, loadPrice, viewingList])
+  }, [cb_runChangePrice, childCheckedCategoryTaxo, childCheckedTypeTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, priceRange])
 
   React.useEffect(() => {
+
+
 
     if (!isLoading
       && priceRange
@@ -153,7 +156,7 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
       }).on('change', async function (values, handle) {
         console.log('updates');
 
-        cb_runChangePrice({ cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
+        cb_runChangePrice({ cb_CategoryTaxo: childCheckedCategoryTaxo, cb_TypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
       })
 
@@ -165,7 +168,7 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
     }
 
-  }, [cb_runChangePrice, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, priceRange]);
+  }, [cb_runChangePrice, childCheckedCategoryTaxo, childCheckedTypeTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, priceRange]);
 
 
   return (

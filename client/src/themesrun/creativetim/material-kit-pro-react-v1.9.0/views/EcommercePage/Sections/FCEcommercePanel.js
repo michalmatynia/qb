@@ -90,8 +90,7 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
 
     React.useEffect(() => {
         if (isRefreshChild) {
-            console.log('Update mid level');
-            console.log(isRefreshChild);
+
 
             setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
             setCheckedTypeTaxo(parentCheckedTypeTaxo)
@@ -204,8 +203,14 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
                                     childCheckedCategoryTaxo={checkedCategoryTaxo}
                                     childCheckedTypeTaxo={checkedTypeTaxo}
                                     viewingList={viewingList}
-                                    cb_runChangePrice={({ cb_ChangedPrice }) => {
-                                        toggleEcomPanel({ priceRange: cb_ChangedPrice })
+                                    cb_runChangePrice={({ cb_CheckedCategoryTaxo, cb_CheckedTypeTaxo, cb_ChangedPrice }) => {
+
+                                        console.log(checkedCategoryTaxo);
+                                        console.log(cb_CheckedCategoryTaxo);
+
+                                        console.log(cb_ChangedPrice);
+
+                                        toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_CheckedCategoryTaxo, sourceCheckedTypeTaxo: cb_CheckedTypeTaxo, sourcePriceRange: cb_ChangedPrice })
                                     }}
 
                                 />
