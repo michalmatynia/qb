@@ -90,6 +90,7 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
         setChildCheckedTypeTaxo(childCheckedTypeTaxo)
 
+        pp.noUiSlider.off('change');
 
        if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
           // setPriceRange([floor_price_min, round_price_max])
@@ -120,6 +121,8 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
         }
 
         if (pp.noUiSlider) {
+
+          console.log('jest giit');
 
           pp.noUiSlider.on('change', async function (values, handle) {
             cb_runChangePrice({ cb_CheckedCategoryTaxo: childCheckedCategoryTaxo, cb_CheckedTypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
@@ -154,7 +157,7 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
         range: { min: initialPriceRange[0], max: initialPriceRange[1] },
       }).on('change', async function (values, handle) {
-        console.log('updates');
+        console.log('PIERWSZY UPDATE');
 
         cb_runChangePrice({ cb_CategoryTaxo: childCheckedCategoryTaxo, cb_TypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
 
