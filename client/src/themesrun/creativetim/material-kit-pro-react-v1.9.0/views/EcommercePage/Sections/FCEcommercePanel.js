@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild, viewingList, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, isRefreshChild }) {
+export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild, viewingList, parentCheckedCategoryTaxo = [], parentCheckedTypeTaxo = [], parentPriceRange, isRefreshChild }) {
 
     let product_list = useSelector(state => state.product.list)
     let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
@@ -48,48 +48,15 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
 
 
     const classes = useStyles();
-    // React.useEffect(() => {
-
-    //     if(isLoading && !checkedCategoryTaxo) {
-
-    //         console.log('load checked');
-    //         setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
-    //         setCheckedTypeTaxo(parentCheckedTypeTaxo)
-    //         setCheckedCategoryTaxo(parentPriceRange)
-
-    //         setIsLoading(false)
-    //     }
-    // }, [checkedCategoryTaxo, isLoading, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange])
-
-    // const loadPrice = useCallback(async ({ looproducts }) => {
-
-    //     // // Viewparams and limits have to be carried out on a SUM array of products
-
-    //     let priceArray = looproducts.map(a => a.price)
-    //     const price_min = Math.min(...priceArray)
-    //     const price_max = Math.max(...priceArray)
-
-    //     return { floor_price_min: Math.floor(price_min), round_price_max: Math.round(price_max) }
-
-
-
-    // }, [])
-    // React.useEffect(() => {
-
-    //     if (!priceRange && isLoading) {
-
-    //         loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
-    //             setPriceRange([floor_price_min, round_price_max])
-    //         })
-    //     }
-
-    // })
-
+  
     /* Sync Mid with Parent */
-
 
     React.useEffect(() => {
         if (isRefreshChild) {
+
+            console.log('is refresh');
+
+            console.log(parentCheckedCategoryTaxo);
 
 
             setCheckedCategoryTaxo(parentCheckedCategoryTaxo)

@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 // nodejs library that concatenates classes
 import cx from "classnames";
+import { arraysEqual } from '../../../../../../components/utils/Funcs/array_funcs'
 
 // plugin that creates slider
 // import Slider from "nouislider";
@@ -24,7 +25,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategoryTaxo, cb_runChangePrice, viewingList }) {
+export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCategoryTaxo = [], cb_runChangePrice, viewingList }) {
 
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
   let product_list = useSelector(state => state.product.list)
@@ -54,7 +55,9 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
   React.useEffect(() => {
 
-    if (!priceRange && !initialPriceRange) {
+    if (!priceRange && !initialPriceRange && !isChildCheckedCategoryTaxo && !isChildCheckedTypeTaxo) {
+
+      console.log('initiate local state');
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
         setInitialPriceRange([floor_price_min, round_price_max])
@@ -69,56 +72,59 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
   })
   React.useEffect(() => {
     if (!isLoading
-      && (isChildCheckedCategoryTaxo !== childCheckedCategoryTaxo || isChildCheckedTypeTaxo !== childCheckedTypeTaxo)
+      && (isChildCheckedCategoryTaxo || isChildCheckedTypeTaxo)
+
+      && (
+        arraysEqual(isChildCheckedCategoryTaxo, childCheckedCategoryTaxo) === false
+        || arraysEqual(isChildCheckedTypeTaxo, childCheckedTypeTaxo) === false
+      )
       && document
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
     ) {
-    
 
-        let pp = document.getElementById("sliderRegular")
+      let pp = document.getElementById("sliderRegular")
 
-        setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
-        setChildCheckedTypeTaxo(childCheckedTypeTaxo)
+      setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
+      setChildCheckedTypeTaxo(childCheckedTypeTaxo)
 
-        pp.noUiSlider.off('change');
+      pp.noUiSlider.off('change');
 
-       if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
-          // setPriceRange([floor_price_min, round_price_max])
+      if (childCheckedCategoryTaxo.length !== 0 || childCheckedTypeTaxo.length !== 0) {
 
-          let newOptions = {
-            start: [priceRange[0], priceRange[1]],
-            range: { min: initialPriceRange[0], max: initialPriceRange[1] },
-          }
-
-          pp.noUiSlider.updateOptions(
-            newOptions, // Object
-            true // Boolean 'fireSetEvent'
-          );
-
-        } else {
-          setPriceRange([initialPriceRange[0], initialPriceRange[1]])
-
-          let newOptions = {
-            start: [initialPriceRange[0], initialPriceRange[1]],
-            range: { min: initialPriceRange[0], max: initialPriceRange[1] },
-          }
-
-
-          pp.noUiSlider.updateOptions(
-            newOptions, // Object
-            true // Boolean 'fireSetEvent'
-          );
+        let newOptions = {
+          start: [priceRange[0], priceRange[1]],
+          range: { min: initialPriceRange[0], max: initialPriceRange[1] },
         }
 
-        if (pp.noUiSlider) {
+        pp.noUiSlider.updateOptions(
+          newOptions, // Object
+          true // Boolean 'fireSetEvent'
+        );
 
-          pp.noUiSlider.on('change', async function (values, handle) {
-            cb_runChangePrice({ cb_CheckedCategoryTaxo: childCheckedCategoryTaxo, cb_CheckedTypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
-            setPriceRange([Math.floor(values[0]), Math.round(values[1])])
+      } else {
+        setPriceRange([initialPriceRange[0], initialPriceRange[1]])
 
-          })
+        let newOptions = {
+          start: [initialPriceRange[0], initialPriceRange[1]],
+          range: { min: initialPriceRange[0], max: initialPriceRange[1] },
         }
+
+
+        pp.noUiSlider.updateOptions(
+          newOptions, // Object
+          true // Boolean 'fireSetEvent'
+        );
+      }
+
+      if (pp.noUiSlider) {
+
+        pp.noUiSlider.on('change', async function (values, handle) {
+          cb_runChangePrice({ cb_CheckedCategoryTaxo: childCheckedCategoryTaxo, cb_CheckedTypeTaxo: childCheckedTypeTaxo, cb_ChangedPrice: [Math.floor(values[0]), Math.round(values[1])] });
+          setPriceRange([Math.floor(values[0]), Math.round(values[1])])
+
+        })
+      }
 
 
 
@@ -126,8 +132,6 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
   }, [cb_runChangePrice, childCheckedCategoryTaxo, childCheckedTypeTaxo, initialPriceRange, isChildCheckedCategoryTaxo, isChildCheckedTypeTaxo, isLoading, priceRange])
 
   React.useEffect(() => {
-
-
 
     if (!isLoading
       && priceRange
@@ -137,6 +141,11 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
         .getElementById("sliderRegular")
         .classList.contains("noUi-target")
     ) {
+
+      console.log('create slider');
+
+      console.log(isChildCheckedCategoryTaxo);
+
       let pp = document.getElementById("sliderRegular")
 
       noUiSlider.create(pp, {
