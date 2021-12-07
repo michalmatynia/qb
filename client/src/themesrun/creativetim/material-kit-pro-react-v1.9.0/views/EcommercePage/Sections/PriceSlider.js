@@ -78,8 +78,6 @@ export default function PriceSlider({ childCheckedTypeTaxo, childCheckedCategory
 
         let pp = document.getElementById("sliderRegular")
 
-        console.log(childCheckedCategoryTaxo);
-
         setChildCheckedCategoryTaxo(childCheckedCategoryTaxo)
         setChildCheckedTypeTaxo(childCheckedTypeTaxo)
 
