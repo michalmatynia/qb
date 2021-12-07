@@ -8,8 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
 import { useSelector } from 'react-redux'
 
-import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
-
 // core components
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/cardHeaderStyle.js";
 

@@ -25,7 +25,6 @@ import { purchase_email, confirmation_email } from '../../utils/Email/templates'
 import Close from "@material-ui/icons/Close";
 import { validateForm } from "../../utils/Form/Funcs/validateForm"
 import Paypal from '../../utils/paypal'
-import processOverTheme from "../../../theming/Funcs/processOverTheme"
 import {
     plg_clearProps
   } from '../../utils/Plugs/cms_plugs';
@@ -78,8 +77,6 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
     const dispatch = useDispatch()
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
-    const [isOverTheme, setOverTheme] = React.useState();
-  
     /* Lazy initializatoin */
     const [fcstate, setFcState] = useState(() => {
         const initialState = translateLabels({ state: checkout_state, list });
@@ -89,19 +86,10 @@ export default function CheckoutModal({ list, showCheckModal, toggleModal, toggl
     const [isFormValid, setIsFormValid] = React.useState(false);
 
     let redux_cartuser = useSelector(state => state.user.cartUser)
-    const classes = useStyles({overtheme: isOverTheme});
+    let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
+    const classes = useStyles({overtheme: redux_overtheme_mysite});
 
-    React.useEffect(() => {
-    
-        if (!isOverTheme && redux_currentmysite) {
-          processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
-    
-            setOverTheme(theme)
-          })
-        }
-    
-    
-      },[redux_currentmysite, isOverTheme])
+
     React.useEffect(() => {
 
         if(isFormValid_v2({ formdata: fcstate })) {

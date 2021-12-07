@@ -21,7 +21,6 @@ import Card from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/c
 import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 import CardHeader from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardHeader.js";
 import { ShowMessages } from '../../../components/Message/Generic/static_msg'
-import processOverTheme from "../../../theming/Funcs/processOverTheme"
 
 /* ACTIONS */
 import { loginUser } from '../../../redux/actions/user_actions';
@@ -34,7 +33,7 @@ import { generateData, isFormValid_v2 } from '../../utils/Form/formActions';
 
 const useStyles = makeStyles(loginPageStyle);
 
-export default function LoginPage({ list}) {
+export default function LoginPage({ list }) {
 
     let history = useHistory();
     const dispatch = useDispatch()
@@ -43,20 +42,10 @@ export default function LoginPage({ list}) {
     const [fcstate, setFcState] = useState(login_state);
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [isOverTheme, setOverTheme] = React.useState();
-    const classes = useStyles({overtheme: isOverTheme});
-  
-    React.useEffect(() => {
-  
-      if (!isOverTheme && redux_currentmysite) {
-        processOverTheme({currentmysite: redux_currentmysite}).then((theme)=>{
-  
-          setOverTheme(theme)
-        })
-      }
-  
-  
-    },[redux_currentmysite, isOverTheme])
+    let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
+
+    const classes = useStyles({ overtheme: redux_overtheme_mysite });
+
 
     React.useEffect(() => {
 
@@ -175,11 +164,11 @@ export default function LoginPage({ list}) {
     return (
         <GridContainer justifyContent="center">
             {isShowMessage ? <ShowMessages
-            visible={isShowMessage}
-            message={list.message_loginfailed}
-            color='danger'
-            place='bl'
-        /> : null}
+                visible={isShowMessage}
+                message={list.message_loginfailed}
+                color='danger'
+                place='bl'
+            /> : null}
             <GridItem xs={12} sm={12} md={4}>
                 <Card>
                     <CardHeader

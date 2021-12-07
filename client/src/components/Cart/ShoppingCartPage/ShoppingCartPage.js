@@ -17,7 +17,6 @@ import CardBody from "../../../themesrun/creativetim/material-kit-pro-react-v1.9
 
 import CheckoutModal from "../Checkout/index"
 import { ShowMessages } from '../../Message/Generic/static_msg'
-import processOverTheme from "../../../theming/Funcs/processOverTheme"
 import loopCartItems from "./LoopCartItems"
 
 import shoppingCartStyle from "../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/shoppingCartStyle.js";
@@ -27,32 +26,14 @@ const useStyles = makeStyles(shoppingCartStyle);
 export default function ShoppingCartPage({ list }) {
 
   let currencyuser = useSelector(state => state.user.currencyUser)
-  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const [totalSum, setTotalSum] = useState(0);
   const [showCheckModal, setShowCheckModal] = useState(false);
   const [isShowMessage, setShowMessage] = useState(false);
-  const [isOverTheme, setOverTheme] = React.useState();
-  const classes = useStyles({ overtheme: isOverTheme });
 
-  React.useEffect(() => {
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-    if (!isOverTheme && redux_currentmysite) {
-      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
-        setOverTheme(theme)
-      })
-    }
-
-
-  }, [redux_currentmysite, isOverTheme])
-  React.useEffect(() => {
-
-    if (!isOverTheme && redux_currentmysite) {
-      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
-        setOverTheme(theme)
-      })
-    }
-  }, [redux_currentmysite, isOverTheme])
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
 
 
   const cbTotalSum = useCallback(

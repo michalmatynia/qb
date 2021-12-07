@@ -14,7 +14,6 @@ import {
   plg_clearProps
 } from '../../utils/Plugs/cms_plugs';
 
-import processOverTheme from "../../../theming/Funcs/processOverTheme"
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Close from "@material-ui/icons/Close";
@@ -30,9 +29,9 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   let currencyuser = useSelector(state => state.user.currencyUser)
 
   let cart_user = useSelector(state => state.user.cartUser)
-  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-  const [isOverTheme, setOverTheme] = React.useState();
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
 
   const [totalSum, setTotalSum] = useState();
   const [totalQuantity, setTotalQuantity] = useState();
@@ -41,18 +40,8 @@ export default function LoopCartItems({ list, cbTotalSum, cbShowCheckModal }) {
   const [isNoItems, setNoItems] = React.useState();
   const [isMainTable, setMainTable] = React.useState();
 
-  const classes = useStyles({ overtheme: isOverTheme });
 
 
-  React.useEffect(() => {
-
-    if (!isOverTheme && redux_currentmysite) {
-      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
-
-        setOverTheme(theme)
-      })
-    }
-  }, [redux_currentmysite, isOverTheme])
 
   React.useEffect(() => {
     if (cart_user) {

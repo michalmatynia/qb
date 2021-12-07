@@ -1,4 +1,4 @@
-export default async function processOverTheme({ currentmysite = null }) {
+export default async function parentstyleFunc({ currentmysite = null }) {
     let parentstyle = {
         body: {}
     }

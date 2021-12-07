@@ -10,14 +10,12 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 // @material-ui/icons
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
 
 import styles from "../../assets/jss/material-kit-pro-react/components/accordionStyle.js";
 
 const useStyles = makeStyles(styles);
 
 export default function AccordionFunc(props) {
-  let currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
   const [active, setActive] = React.useState(
     props.active.length === undefined ? [props.active] : props.active
@@ -25,23 +23,12 @@ export default function AccordionFunc(props) {
   const [single] = React.useState(
     props.active.length === undefined ? true : false
   );
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-  const [isOverTheme, setOverTheme] = React.useState();
-
-  const classes = useStyles({overtheme: isOverTheme});
-
-
-  React.useEffect(() => {
-
-    if (!isOverTheme && currentmysite) {
-      processOverTheme({currentmysite}).then((theme)=>{
-
-        setOverTheme(theme)
-      })
-    }
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
 
 
-  },[currentmysite, isOverTheme])
+  
 
 
   const handleChange = (panel) => () => {

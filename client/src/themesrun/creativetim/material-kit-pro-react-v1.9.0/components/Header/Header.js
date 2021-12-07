@@ -16,7 +16,6 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 import Close from "@material-ui/icons/Close";
 import Fade from 'react-reveal/Fade';
-import processOverTheme from "../../../../../theming/Funcs/processOverTheme"
 
 // core components
 import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/components/headerStyle.js";
@@ -33,23 +32,13 @@ function hasWhiteSpace(s) {
 }
 
 export default function Header(props) {
-  let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
-  const [isOverTheme, setOverTheme] = React.useState();
   const [isLogostring, setIsLogostring] = React.useState();
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
-  React.useEffect(() => {
-
-    if (!isOverTheme && redux_currentmysite) {
-      processOverTheme({ currentmysite: redux_currentmysite }).then((theme) => {
-
-        setOverTheme(theme)
-      })
-    }
-  }, [redux_currentmysite, isOverTheme])
+  const classes = useStyles({ overtheme: redux_overtheme_mysite });
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const classes = useStyles({ overtheme: isOverTheme });
   // const useDynoStyles = makeStyles(isOverTheme ? isOverTheme : null);
   // const dynoclasses = useDynoStyles();
   

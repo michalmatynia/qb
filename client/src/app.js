@@ -16,7 +16,7 @@ import {
 } from './components/utils/Plugs/cms_plugs';
 import {
     act_injectProp,
-  } from './redux/actions/generic/generic_actions';
+} from './redux/actions/generic/generic_actions';
 import Panel from './components/Panel/panel'
 import Frontside from './components/Frontside/frontside'
 import HeaderHolder from './components/Header_footer/Header';
@@ -55,7 +55,7 @@ export default function App() {
 
             if (mysite_result.payload.checked.length > 0) {
 
-                return {maintheme: processStyle({ currentmysite: mysite_result.payload }), overtheme: processOverTheme({ currentmysite: mysite_result.payload }) } 
+                return { maintheme: await processStyle({ currentmysite: mysite_result.payload }), overtheme: await processOverTheme({ currentmysite: mysite_result.payload }) }
 
             } else {
                 return null
@@ -64,24 +64,17 @@ export default function App() {
 
         if (currentmysite === undefined) {
 
-            findMysite().then(async (result) => {
-                console.log(result);
+            findMysite().then((result) => {
 
                 if (result) {
-
-                  await dispatch(act_injectProp({ dataToSubmit: result.overtheme, model: 'mysite', actionType: 'overtheme' }))
-
-                  console.log(result);
-                    setIsBodyTheme(result.overtheme)
-
+                    dispatch(act_injectProp({ dataToSubmit: result.overtheme, model: 'mysite', actionType: 'overtheme' }))
+                    setIsBodyTheme(result.maintheme)
                 }
-
                 setIsLoading(false)
             })
         }
 
     }, [currentmysite, dispatch, processStyle]);
-
 
     const MemoizedWrapper = React.useCallback((props) => {
 
