@@ -84,75 +84,6 @@ export default function SectionProducts() {
 
 
   }, [])
-  // const lgchangeLoadProducts = useCallback(async (item) => {
-  //   console.log('load products');
-
-
-  //   let inQuery = {}
-
-  //   // if (current_mysite.default_language.referenceID.alpha2Code !== localeuser.referenceID.alpha2Code
-  //   // ) {
-
-
-  //     Object.assign(inQuery, {
-  //       country: { "$eq": current_mysite.default_language.referenceID.alpha2Code },
-  //       language: { "$eq": current_mysite.default_language.referenceID.languages[0].iso639_1 },
-  //       visible: true,
-  //     });
-
-  //     let root_products = await plg_findMany({ model: 'product', dispatch, actionType: 'samestate', inQuery })
-
-  //     let priceArray = root_products.payload.map(a => a.price)
-  //     const price_min = Math.min(...priceArray)
-  //     const price_max = Math.max(...priceArray)
-
-  //     let converted_price_min = price_min / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-  //     let converted_price_max = price_max / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-
-  //     let result = await actionFuncs_recalculatePrice_v2({ root_products, dispatch, current_mysite, currencyuser, localeuser })
-
-
-  //     // ======= SET TAXONOMY ========
-  //     let category_taxo_array = []
-  //     for (let eachproduct of result.recalculated_list) {
-
-  //       if (eachproduct.category.length > 0) {
-
-  //         for (let catvalue of eachproduct.category) {
-
-  //           let dupe = category_taxo_array.find(eachcato => eachcato._id === catvalue._id)
-
-  //           if (!dupe) {
-  //             category_taxo_array.push(catvalue)
-  //           }
-
-  //         }
-  //       }
-  //     }
-
-  //     let type_taxo_array = []
-  //     for (let eachproduct of result.recalculated_list) {
-
-  //       if (eachproduct.type.length > 0) {
-
-  //         for (let typevalue of eachproduct.type) {
-
-  //           let dupe = type_taxo_array.find(eachcato => eachcato._id === typevalue._id)
-
-  //           if (!dupe) {
-  //             type_taxo_array.push(typevalue)
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
-  //     return { category_taxo_array, type_taxo_array, result_products: result.recalculated_list, floor_price_min: Math.floor(converted_price_min), round_price_max: Math.round(converted_price_max) }
-  //   // }
-  // }, [currencyuser, current_mysite, dispatch, localeuser])
-
-
-
 
   const refineProductList = useCallback(async ({ sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange, tableLimit = myFcState.localStorage.viewparams.limit }) => {
 
@@ -223,196 +154,31 @@ export default function SectionProducts() {
   }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list])
 
 
-  //   React.useEffect(() => {
-
-  //     if (isLocalUser !== localeuser && isLocalUser) {
-
-  //       console.log('clear product list');
-  //       plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
-  //     }
-  //     // return function cleanup() {
-  //     //     console.log('cleanup');
-
-  //     // };
-  // },[dispatch, isLocalUser, localeuser])
-  /* LG Change */
-
-
-  const refineProductList_LgChange = useCallback(async ({ sourceCheckedCategoryTaxo = parentCheckedCategoryTaxo, sourceCheckedTypeTaxo = parentCheckedTypeTaxo, sourcePriceRange = parentPriceRange, tableLimit = myFcState.localStorage.viewparams.limit }) => {
-
-    console.log('inside callback');
-
-
-    // if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
-    //   && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-    // ) {
-
-
-
-    // #########################
-
-
-    //   let inQuery = {}
-
-    //   // if (current_mysite.default_language.referenceID.alpha2Code !== localeuser.referenceID.alpha2Code
-    //   // ) {
-
-
-    //     Object.assign(inQuery, {
-    //       country: { "$eq": current_mysite.default_language.referenceID.alpha2Code },
-    //       language: { "$eq": current_mysite.default_language.referenceID.languages[0].iso639_1 },
-    //       visible: true,
-    //     });
-
-    //     let root_products = await plg_findMany({ model: 'product', dispatch, actionType: 'samestate', inQuery })
-
-    //     let priceArray = root_products.payload.map(a => a.price)
-    //     const price_min = Math.min(...priceArray)
-    //     const price_max = Math.max(...priceArray)
-
-    //     let converted_price_min = price_min / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-    //     let converted_price_max = price_max / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-
-    //     let result = await actionFuncs_recalculatePrice_v2({ root_products, dispatch, current_mysite, currencyuser, localeuser })
-
-    // #################################
-
-    // let inPipeline = [{
-    //   $group: {
-    //     _id: '$data.country.iso_code',
-    //     "mycount": { $sum: 1 },  //$sum accumulator
-    //   }
-    // }, {$sort: {"mycount": -1}}, {$limit: 2} ]
-
-    // #################################
-    let inPipeline = [
-      // Match country
-      {
-        "$match": {
-          country: { "$eq": current_mysite.default_language.referenceID.alpha2Code },
-          language: { "$eq": current_mysite.default_language.referenceID.languages[0].iso639_1 },
-        }
-      },
-      // Group by product type, capturing each product's total value + quantity
-      {
-        "$group": {
-          "_id": {},
-          minPrice: { $min: "$price" },
-          maxPrice: { $max: "$price" }
-        }
-      },
-    ];
-
-
-
-
-    let agg = await plg_aggregate({ model: 'product', dispatch, actionType: 'samestate', inPipeline })
-
-
-    let converted_price_min = agg.payload[0].minPrice / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-    let converted_price_max = agg.payload[0].maxPrice / currencyuser.deflgrates[current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(currencyuser.rates)[0][1]
-
-    console.log(Math.floor(converted_price_min));
-    console.log(Math.round(converted_price_max));
-    
-  }, [currencyuser.deflgrates, currencyuser.rates, current_mysite.default_language.referenceID.alpha2Code, current_mysite.default_language.referenceID.currencies, current_mysite.default_language.referenceID.languages, dispatch, myFcState.localStorage.viewparams.limit, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange])
-
+  // /* First Load */
   React.useEffect(() => {
 
-    // if (current_mysite.default_language.referenceID._id !== localeuser.referenceID._id
-    //   && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-    //   && product_list
-    // ) {
-
-
-    if (isLocalUser !== localeuser && isLocalUser
-      && redux_currentmystore !== isMystore
-      && !isLoading
-      // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
-      && product_list
-    ) {
-
-      console.log('lg change effect');
-      refineProductList_LgChange({}).then(() => {
-
-      })
-
-
-
-
-      //     const price_min = Math.min(...priceArray)
-      //     const price_max = Math.max(...priceArray)
-
-
-      //     loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
-
-
-      //       console.log(floor_price_min);
-      //       console.log(round_price_max);
-
-      //       console.log(product_list);
-      //       console.log(localeuser);
-      //       console.log(isLocalUser);
-      //       setLocalUser(localeuser)
-      //       setIsMystore(redux_currentmystore)
-
-      // })
-
-
-
-
-
-
-
-
-
-
-
-      // setIsLoading(true)
-      // console.log(product_list);
-
-      // loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
-
-      //   console.log();
-
-      //   refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
-      //     // setParentCheckedCategoryTaxo([])
-      //     // setParentCheckedTypeTaxo([])
-      //     // setParentPriceRange([floor_price_min, round_price_max])
-      //     // setViewingList(result.newViewingList)
-      //     // setIsLoading(false)
-
-      //   })
-      // })
-
-
-      // console.log('resetter');
-      // setParentPriceRange()
-      // setParentCheckedCategoryTaxo([])
-      // setParentCheckedTypeTaxo([])
-    }
-
-  }, [isLoading, isLocalUser, isMystore, localeuser, product_list, redux_currentmystore, refineProductList_LgChange])
-
-  /* First Load */
-  React.useEffect(() => {
-
-    if (isLoading && localeuser !== isLocalUser && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
-     
+    if (isLoading && 
+      (
+        !isLocalUser 
+        || (
+          isLocalUser 
+          && localeuser !== isLocalUser
+          ))  
+        && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
      console.log('first load');
      
-      // loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+      loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
-      //   refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
-      //     setParentCheckedCategoryTaxo([])
-      //     setParentCheckedTypeTaxo([])
-      //     setParentPriceRange([floor_price_min, round_price_max])
-      //     setViewingList(result.newViewingList)
-      //     setLocalUser(localeuser)
-      //     setIsMystore(redux_currentmystore)
-      //     setIsLoading(false)
-      //   })
-      // })
+        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+          setParentCheckedCategoryTaxo([])
+          setParentCheckedTypeTaxo([])
+          setParentPriceRange([floor_price_min, round_price_max])
+          setViewingList(result.newViewingList)
+          setLocalUser(localeuser)
+          setIsMystore(redux_currentmystore)
+          setIsLoading(false)
+        })
+      })
     }
 
   }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, redux_currentmystore, refineProductList, viewingList])
