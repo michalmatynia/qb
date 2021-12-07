@@ -5,6 +5,7 @@ import { storeFuncs_loadList } from '../../functions/HookFuncs/store_funcs';
 import EcommercePage from '../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/EcommercePage/EcommercePage'
 
 import { useSelector, useDispatch } from 'react-redux'
+import { actionFuncs_recalculatePrice_v3 } from '../../components/User/Admin/ActionFunctions/recalculatePrice'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
@@ -12,49 +13,69 @@ import {
     plg_findMany
 } from '../utils/Plugs/cms_plugs';
 
+import {
+    act_injectProp,
+} from '../../redux/actions/generic/generic_actions';
+
 export default function Home() {
     // const classes = useStyles();
 
     const dispatch = useDispatch()
 
     let localeuser = useSelector(state => state.user.localeUser)
+    let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+
     let currencyuser = useSelector(state => state.user.currencyUser)
     const [isLocalUser, setLocalUser] = React.useState();
     const [isloading, setIsLoading] = useState(true);
 
     const loadProducts = useCallback(async () => {
-    
+
         let inQuery = {}
-    
+
         Object.assign(inQuery, {
-          country: { "$eq": localeuser.referenceID.alpha2Code },
-          language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
-          visible: true,
+            country: { "$eq": localeuser.referenceID.alpha2Code },
+            language: { "$eq": localeuser.referenceID.languages[0].iso639_1 },
+            visible: true,
         });
-    
-         await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
-   
-    
-      }, [dispatch, localeuser])
+
+        let current_products = await plg_findMany({ model: 'product', dispatch, actionType: 'list', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
+
+        if (current_mysite.default_language.referenceID.alpha2Code !== localeuser.referenceID.alpha2Code
+        ) {
+
+            let result = await actionFuncs_recalculatePrice_v3({ current_products, dispatch, current_mysite, currencyuser })
+
+            dispatch(act_injectProp({ dataToSubmit: result.recalculated_list, model: 'product', actionType: 'list' }))
+
+        }
+
+    }, [currencyuser, current_mysite, dispatch, localeuser])
 
     const loadPage = useCallback(
         async () => {
 
             return await storeFuncs_loadList({
                 dispatch,
-                model:'mystore',
+                model: 'mystore',
                 actionType: 'current',
                 localeuser
             })
 
-        },[dispatch, localeuser])
+        }, [dispatch, localeuser])
     React.useEffect(() => {
 
-        if (isLocalUser !== localeuser ) {
+        if (
+            isLocalUser !== localeuser
+            && currencyuser
+            && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
+
+            ) {
+            setIsLoading(true)
 
             loadPage().then((item) => {
 
-                loadProducts().then(()=>{
+                loadProducts().then(() => {
                     console.log('LG Change');
 
                     setLocalUser(localeuser)
@@ -66,7 +87,7 @@ export default function Home() {
         }
 
 
-    }, [isLocalUser, loadPage, loadProducts, localeuser]);
+    }, [currencyuser, isLocalUser, loadPage, loadProducts, localeuser]);
 
 
     React.useEffect(() => {
@@ -76,7 +97,7 @@ export default function Home() {
             plg_clearProps({ dispatch, model: 'product', actionType: 'list' })
 
         };
-    },[dispatch])
+    }, [dispatch])
 
     if (isloading) {
         return (
@@ -101,8 +122,8 @@ export default function Home() {
         )
     } else if (!isloading) {
         return (<div>
-                    <EcommercePage /> 
-</div>
+            <EcommercePage />
+        </div>
         )
     }
 }

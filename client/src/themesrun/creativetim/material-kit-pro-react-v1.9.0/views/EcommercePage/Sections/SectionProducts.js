@@ -331,6 +331,8 @@ export default function SectionProducts() {
       // && localeuser.referenceID.currencies[0].code === Object.keys(currencyuser.rates)[0]
       && product_list
     ) {
+
+      console.log('lg change effect');
       refineProductList_LgChange({}).then(() => {
 
       })
@@ -395,41 +397,46 @@ export default function SectionProducts() {
   /* First Load */
   React.useEffect(() => {
 
-    if (isLoading && !isLocalUser && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
-      loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+    if (isLoading && localeuser !== isLocalUser && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
+     
+     console.log('first load');
+     
+      // loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
-        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
-          setParentCheckedCategoryTaxo([])
-          setParentCheckedTypeTaxo([])
-          setParentPriceRange([floor_price_min, round_price_max])
-          setViewingList(result.newViewingList)
-          setLocalUser(localeuser)
-          setIsMystore(redux_currentmystore)
-          setIsLoading(false)
-        })
-      })
+      //   refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+      //     setParentCheckedCategoryTaxo([])
+      //     setParentCheckedTypeTaxo([])
+      //     setParentPriceRange([floor_price_min, round_price_max])
+      //     setViewingList(result.newViewingList)
+      //     setLocalUser(localeuser)
+      //     setIsMystore(redux_currentmystore)
+      //     setIsLoading(false)
+      //   })
+      // })
     }
 
   }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, redux_currentmystore, refineProductList, viewingList])
 
   /* Load more Refresh */
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-    if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
-      loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
+  //   console.log('refresh');
 
-        refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
+  //   if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
+  //     loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
-          setViewingList(result.newViewingList)
+  //       refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
 
-          setIsLoading(false)
-        })
+  //         setViewingList(result.newViewingList)
+
+  //         setIsLoading(false)
+  //       })
 
 
-      })
-    }
+  //     })
+  //   }
 
-  }, [isLoading, loadPrice, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
+  // }, [isLoading, loadPrice, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
 
   const handleLoadMore = useCallback(
     async () => {
