@@ -40,8 +40,6 @@ export default function FCEachProduct({ value }) {
 
   const dispatch = useDispatch()
   const [showAddToCart, setShowAddToCart] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [isValue, setIsValue] = React.useState();
   const classes = useStyles({ overtheme: redux_overtheme_mysite });
   // ================
 

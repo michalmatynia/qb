@@ -17,7 +17,6 @@ const RegularButton = React.forwardRef((props, ref) => {
   let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
   const [isBrickStyle, setBrickStyle] = React.useState();
-  const [isOverTheme, setOverTheme] = React.useState();
 
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -54,7 +53,7 @@ const RegularButton = React.forwardRef((props, ref) => {
     } 
 
  
-  }, [ isLoading, isOverTheme, processStyle, props.item])
+  }, [ isLoading,  processStyle, props.item])
 
   const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
   const dynoclasses = useDynoStyles();

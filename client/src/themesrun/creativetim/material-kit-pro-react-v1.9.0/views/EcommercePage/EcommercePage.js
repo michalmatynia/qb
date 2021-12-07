@@ -6,7 +6,7 @@ import GridContainer from "../../../../../themesrun/creativetim/material-kit-pro
 import GridItem from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 // import Parallax from "../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Parallax/Parallax";
 import Parallax from "../../../material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Parallax/ParallaxTransform";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // ============
 // sections for this page
@@ -24,7 +24,6 @@ import styles from "../../../../../themesrun/creativetim/material-kit-pro-react-
 const useStyles = makeStyles(styles);
 
 export default function EcommercePage() {
-  const dispatch = useDispatch()
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
   // React.useEffect(() => {

@@ -35,6 +35,8 @@ export async function preinputFuncs_formatData_Add({ combinedTranslation = null,
 
         let category_values
         let type_values
+        let variant_one_taxo
+        let variant_two_taxo
 
         if ('category' in mystate.localStorage.form.formdata) {
             category_values = [...mystate.localStorage.form.formdata.category.value]
@@ -49,17 +51,18 @@ export async function preinputFuncs_formatData_Add({ combinedTranslation = null,
             /* Prospect here refers to original _id not lg binder, so it doesn't work when changed not from root language */
             type_values = [...prospect.type]
         }
+  
 
         if ('variant_one_taxo' in mystate.localStorage.form.formdata) {
-            type_values = [...mystate.localStorage.form.formdata.variant_one_taxo.value]
+            variant_one_taxo = [...mystate.localStorage.form.formdata.variant_one_taxo.value]
         } else {
-            type_values = [...prospect.type]
+            variant_one_taxo = [...prospect.type]
         }
 
         if ('variant_two_taxo' in mystate.localStorage.form.formdata) {
-            type_values = [...mystate.localStorage.form.formdata.variant_two_taxo.value]
+            variant_two_taxo = [...mystate.localStorage.form.formdata.variant_two_taxo.value]
         } else {
-            type_values = [...prospect.type]
+            variant_two_taxo = [...prospect.type]
         }
 
         translatedDataToSubmit['price'] = 0
@@ -77,7 +80,6 @@ export async function preinputFuncs_formatData_Add({ combinedTranslation = null,
 
             let filteredresult = taxonomylist.payload.map(a => a._id);
             translatedDataToSubmit['category'] = filteredresult
-
         }
 
         if (type_values.length > 0) {
@@ -94,6 +96,40 @@ export async function preinputFuncs_formatData_Add({ combinedTranslation = null,
 
             let filteredresult = taxonomylist.payload.map(a => a._id);
             translatedDataToSubmit['type'] = filteredresult
+        }
+
+        if (variant_one_taxo.length > 0) {
+
+            let variant_one_taxo_lgbinders = type_values.map(a => a.lgbinder);
+
+            inQuery = {
+                country: { "$eq": country },
+                language: { "$eq": language },
+                lgbinder: { "$in": variant_one_taxo_lgbinders }
+            }
+
+
+            let taxonomylist = await plg_findMany({ model: 'taxonomy', myprops, actionType: 'samestate', inQuery, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+
+            let filteredresult = taxonomylist.payload.map(a => a._id);
+            translatedDataToSubmit['variant_one_taxo'] = filteredresult
+        }
+
+        if (variant_two_taxo.length > 0) {
+
+            let variant_two_taxo_lgbinders = type_values.map(a => a.lgbinder);
+
+            inQuery = {
+                country: { "$eq": country },
+                language: { "$eq": language },
+                lgbinder: { "$in": variant_two_taxo_lgbinders }
+            }
+
+
+            let taxonomylist = await plg_findMany({ model: 'taxonomy', myprops, actionType: 'samestate', inQuery, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+
+            let filteredresult = taxonomylist.payload.map(a => a._id);
+            translatedDataToSubmit['variant_two_taxo'] = filteredresult
         }
     }
 

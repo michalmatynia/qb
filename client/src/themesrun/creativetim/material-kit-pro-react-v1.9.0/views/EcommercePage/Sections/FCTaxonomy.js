@@ -11,7 +11,6 @@ import FCTaxonomyListOne from './FCTaxonomyListOne'
 export default function FCTaxonomy({ arrayTaxo, cb_runCheckedTaxo, checkedTaxo }) {
     // const [isArrayTaxo, setArrayTaxo] = React.useState(arrayTaxo)
     const [isCheckedTaxo, setCheckedTaxo] = React.useState([])
-    const [isLoading, setIsLoading] = React.useState(false);
 
     // React.useEffect(() => {
 

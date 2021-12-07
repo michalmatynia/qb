@@ -285,7 +285,7 @@ class ListProduct extends Component {
     }
     async componentDidMount() {
 
-        if ('localeUser' in this.props.user) {
+        if ('localeUser' in this.props.user && 'currencyUser' in this.props.user) {
 
 
             let newLocalStorage = await listFuncs_loadList_v2({
