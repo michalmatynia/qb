@@ -25,7 +25,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCategoryTaxo = [], cb_runChangePrice, viewingList }) {
+export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCategoryTaxo = [], childPriceRange = [], cb_runChangePrice, viewingList }) {
 
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
   let product_list = useSelector(state => state.product.list)
@@ -102,20 +102,7 @@ export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCat
           true // Boolean 'fireSetEvent'
         );
 
-      } else {
-        setPriceRange([initialPriceRange[0], initialPriceRange[1]])
-
-        let newOptions = {
-          start: [initialPriceRange[0], initialPriceRange[1]],
-          range: { min: initialPriceRange[0], max: initialPriceRange[1] },
-        }
-
-
-        pp.noUiSlider.updateOptions(
-          newOptions, // Object
-          true // Boolean 'fireSetEvent'
-        );
-      }
+      } 
 
       if (pp.noUiSlider) {
 

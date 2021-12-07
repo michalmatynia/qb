@@ -51,12 +51,11 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
   
     /* Sync Mid with Parent */
 
+
     React.useEffect(() => {
         if (isRefreshChild) {
 
             console.log('is refresh');
-
-            console.log(parentCheckedCategoryTaxo);
 
 
             setCheckedCategoryTaxo(parentCheckedCategoryTaxo)

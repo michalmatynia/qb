@@ -154,6 +154,8 @@ export default function SectionProducts() {
   }, [myFcState.localStorage.viewparams.limit, myFcState.localStorage.viewparams.sortBy, myFcState.localStorage.viewparams.sortOrder, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list])
 
 
+  /* LG Change */
+
   // /* First Load */
   React.useEffect(() => {
 
@@ -165,7 +167,6 @@ export default function SectionProducts() {
           && localeuser !== isLocalUser
           ))  
         && !viewingList && !parentCheckedCategoryTaxo && !parentCheckedTypeTaxo && !parentPriceRange) {
-     console.log('first load');
      
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
