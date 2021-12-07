@@ -16,21 +16,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import {
-  plg_clearProps,
-  plg_findMany,
-  plg_aggregate
-} from '../../../../../../components/utils/Plugs/cms_plugs';
+
 import FCEcommercePanel from "./FCEcommercePanel";
-import { actionFuncs_recalculatePrice_v2 } from '../../../../../../components/User/Admin/ActionFunctions/recalculatePrice'
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector} from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
 export default function SectionProducts() {
-  const dispatch = useDispatch()
 
   const fc_state = {
     localStorage: {
@@ -51,15 +45,13 @@ export default function SectionProducts() {
   // let taxonomy_list = useSelector(state => state.taxonomy.list)
   // let reduxprops = useSelector(state => state)
   let localeuser = useSelector(state => state.user.localeUser)
-  let currencyuser = useSelector(state => state.user.currencyUser)
-  let current_mysite = useSelector(state => state.mysite.CurrentMysite)
+
   let product_list = useSelector(state => state.product.list)
   let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
   let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
 
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isMystore, setIsMystore] = React.useState();
 
 
 
@@ -67,7 +59,6 @@ export default function SectionProducts() {
   const [parentCheckedTypeTaxo, setParentCheckedTypeTaxo] = React.useState();
   const [isLocalUser, setLocalUser] = React.useState();
   const [parentPriceRange, setParentPriceRange] = React.useState();
-  const [isRefreshChild, setRefreshChild] = React.useState();
 
   const classes = useStyles({ overtheme: redux_overtheme_mysite });
 
@@ -176,7 +167,6 @@ export default function SectionProducts() {
           setParentPriceRange([floor_price_min, round_price_max])
           setViewingList(result.newViewingList)
           setLocalUser(localeuser)
-          setIsMystore(redux_currentmystore)
           setIsLoading(false)
         })
       })
@@ -184,26 +174,6 @@ export default function SectionProducts() {
 
   }, [isLoading, isLocalUser, loadPrice, localeuser, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, redux_currentmystore, refineProductList, viewingList])
 
-  /* Load more Refresh */
-  // React.useEffect(() => {
-
-  //   console.log('refresh');
-
-  //   if (isLoading && !viewingList && parentCheckedCategoryTaxo && parentCheckedTypeTaxo && parentPriceRange) {
-  //     loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
-
-  //       refineProductList({ sourceCheckedCategoryTaxo: [], sourceCheckedTypeTaxo: [], sourcePriceRange: [floor_price_min, round_price_max] }).then((result) => {
-
-  //         setViewingList(result.newViewingList)
-
-  //         setIsLoading(false)
-  //       })
-
-
-  //     })
-  //   }
-
-  // }, [isLoading, loadPrice, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, product_list, refineProductList, viewingList])
 
   const handleLoadMore = useCallback(
     async () => {
@@ -245,22 +215,14 @@ export default function SectionProducts() {
                   }
 
                   setViewingList(result.newViewingList)
-                  setRefreshChild(true)
-
                 })
 
-
-
               }}
-              toggleIsRefreshChild={(boolean) => {
-                setRefreshChild(boolean)
-
-              }}
+     
               viewingList={viewingList}
               parentCheckedCategoryTaxo={parentCheckedCategoryTaxo}
               parentCheckedTypeTaxo={parentCheckedTypeTaxo}
               parentPriceRange={parentPriceRange}
-              isRefreshChild={isRefreshChild}
 
             />
 

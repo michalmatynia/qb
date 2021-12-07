@@ -20,12 +20,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
 
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
 
-export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCategoryTaxo = [], childPriceRange = [], cb_runChangePrice, viewingList }) {
+export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCategoryTaxo = [],  cb_runChangePrice }) {
 
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
   let product_list = useSelector(state => state.product.list)

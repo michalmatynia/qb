@@ -2,8 +2,10 @@ import React, { useCallback } from "react";
 // nodejs library that concatenates classes
 import cx from "classnames";
 
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+
 
 // @material-ui icons
 // import Favorite from "@material-ui/icons/Favorite";
@@ -13,25 +15,52 @@ import FCTaxonomy from './FCTaxonomy'
 // core components
 import AccordionFunc from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Accordion/AccordionFunc.js";
 
+import GridContainer from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridContainer.js";
+import GridItem from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Card from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/Card.js";
 import CardBody from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/Card/CardBody.js";
-
+import Button from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import processOverTheme from "../../../../../../theming/Funcs/processOverTheme";
 import PriceSlider from "./PriceSlider.js";
 import styles from "../../../../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/productStyle.js";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(styles);
 
-export default function FCEcommercePanel({ toggleEcomPanel,  viewingList, parentCheckedCategoryTaxo = [], parentCheckedTypeTaxo = [], parentPriceRange}) {
+export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild, viewingList, parentCheckedCategoryTaxo = [], parentCheckedTypeTaxo = [], parentPriceRange, isRefreshChild }) {
 
     let product_list = useSelector(state => state.product.list)
     let redux_currentmystore = useSelector(state => state.mystore.CurrentMystore)
 
+
+    // const [priceRange, setPriceRange] = React.useState();
+
+    // const [viewingList, setViewingList] = React.useState();
+
     const [isLoading, setIsLoading] = React.useState(true);
     const [categoryTaxo, setCategoryTaxo] = React.useState();
     const [typeTaxo, setTypeTaxo] = React.useState();
+    const [checkedCategoryTaxo, setCheckedCategoryTaxo] = React.useState();
+    const [checkedTypeTaxo, setCheckedTypeTaxo] = React.useState();
+
 
     const classes = useStyles();
+  
+    /* Sync Mid with Parent */
+
+
+    React.useEffect(() => {
+        if (isRefreshChild) {
+
+            console.log('is refresh');
+
+
+            setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
+            setCheckedTypeTaxo(parentCheckedTypeTaxo)
+            toggleIsRefreshChild(false)
+        }
+
+    }, [isRefreshChild, parentCheckedCategoryTaxo, parentCheckedTypeTaxo, parentPriceRange, toggleIsRefreshChild])
 
     const establishTaxonomy = useCallback(async () => {
         let category_taxo_array = []
@@ -79,14 +108,15 @@ export default function FCEcommercePanel({ toggleEcomPanel,  viewingList, parent
 
                 setCategoryTaxo(category_taxo_array)
                 setTypeTaxo(type_taxo_array)
-
+                setCheckedCategoryTaxo([])
+                setCheckedTypeTaxo([])
                 setIsLoading(false)
             })
         }
 
     }, [categoryTaxo, establishTaxonomy, parentPriceRange, typeTaxo])
 
-    return (categoryTaxo && parentCheckedTypeTaxo && parentCheckedCategoryTaxo && typeTaxo && viewingList && !isLoading ?
+    return (categoryTaxo && checkedTypeTaxo && checkedCategoryTaxo && typeTaxo && viewingList && !isLoading ?
         <Card plain>
             <CardBody className={classes.cardBodyRefine}>
 
@@ -118,8 +148,9 @@ export default function FCEcommercePanel({ toggleEcomPanel,  viewingList, parent
                             title: redux_currentmystore.pricerange_nametag,
                             content: (
                                 <PriceSlider
-                                    childCheckedCategoryTaxo={parentCheckedCategoryTaxo}
-                                    childCheckedTypeTaxo={parentCheckedTypeTaxo}
+                                    childCheckedCategoryTaxo={checkedCategoryTaxo}
+                                    childCheckedTypeTaxo={checkedTypeTaxo}
+                                    viewingList={viewingList}
                                     cb_runChangePrice={({ cb_CheckedCategoryTaxo, cb_CheckedTypeTaxo, cb_ChangedPrice }) => {
                                         toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_CheckedCategoryTaxo, sourceCheckedTypeTaxo: cb_CheckedTypeTaxo, sourcePriceRange: cb_ChangedPrice })
                                     }}
@@ -137,7 +168,7 @@ export default function FCEcommercePanel({ toggleEcomPanel,  viewingList, parent
                                     >
                                         <FCTaxonomy
                                             arrayTaxo={categoryTaxo}
-                                            checkedTaxo={parentCheckedCategoryTaxo}
+                                            checkedTaxo={checkedCategoryTaxo}
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
                                                 toggleEcomPanel({ sourceCheckedCategoryTaxo: cb_NewChecked })
                                             }
@@ -157,8 +188,9 @@ export default function FCEcommercePanel({ toggleEcomPanel,  viewingList, parent
                                     >
                                         <FCTaxonomy
                                             arrayTaxo={typeTaxo}
-                                            checkedTaxo={parentCheckedTypeTaxo}
+                                            checkedTaxo={checkedTypeTaxo}
                                             cb_runCheckedTaxo={({ cb_NewChecked }) => {
+                                                setCheckedTypeTaxo(cb_NewChecked)
                                                 toggleEcomPanel({ sourceCheckedTypeTaxo: cb_NewChecked })
                                             }
                                             }
