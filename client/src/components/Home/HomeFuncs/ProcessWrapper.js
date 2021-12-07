@@ -48,7 +48,6 @@ export default function Wrapper({ props }) {
 
     const classes = useStyles();
 
-    // console.log(isBrickStyle);
     const useDynoStyles = makeStyles(isBrickStyle ? isBrickStyle : null);
     const dynoclasses = useDynoStyles();
 

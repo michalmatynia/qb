@@ -5,7 +5,6 @@ import React, { useCallback } from "react";
 
 export default function ProcessSingleImage({image, i, alt='...', parentClassName,  parentStyle }) {
 
-    // console.log(this.props);
     const [imagePreviewUrl, setImagePreviewUrl] = React.useState();
     const [isFileType, setIsFileType] = React.useState();
 

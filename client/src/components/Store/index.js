@@ -76,7 +76,6 @@ export default function Home() {
             loadPage().then((item) => {
 
                 loadProducts().then(() => {
-                    console.log('LG Change');
 
                     setLocalUser(localeuser)
 

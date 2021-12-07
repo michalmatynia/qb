@@ -64,12 +64,15 @@ export default function App() {
 
         if (currentmysite === undefined) {
 
-            findMysite().then((result) => {
+            findMysite().then(async (result) => {
+                console.log(result);
 
                 if (result) {
 
-                  dispatch(act_injectProp({ dataToSubmit: result.overtheme, model: 'mysite', actionType: 'overtheme' }))
-                    setIsBodyTheme(result)
+                  await dispatch(act_injectProp({ dataToSubmit: result.overtheme, model: 'mysite', actionType: 'overtheme' }))
+
+                  console.log(result);
+                    setIsBodyTheme(result.overtheme)
 
                 }
 
@@ -83,6 +86,7 @@ export default function App() {
     const MemoizedWrapper = React.useCallback((props) => {
 
         if (parentclasses.body) {
+
 
             return <div
                 className={cx(parentclasses.body)}

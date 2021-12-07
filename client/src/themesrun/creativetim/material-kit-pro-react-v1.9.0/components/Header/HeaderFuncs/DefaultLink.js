@@ -85,7 +85,6 @@ export function DefaultLink({ item }) {
             <Link
                 to={item.link_to}
                 onClick={() => {
-                    console.log('staticlink');
                     plg_clearProps({ dispatch, model: 'page', actionType: 'current_detail' })
                 }}
                 className={cx(classes.navLink, {

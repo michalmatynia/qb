@@ -19,14 +19,8 @@ const RegularButton = React.forwardRef((props, ref) => {
   const [isBrickStyle, setBrickStyle] = React.useState();
 
   const [isLoading, setIsLoading] = React.useState(true);
-
-  // const classes = useStyles({overtheme: isOverTheme && isOverTheme !== {} ? isOverTheme : null});
   const classes = useStyles({ overtheme: redux_overtheme_mysite });
-// console.log(redux_overtheme_mysite);
-//   const classes = useStyles();
 
-  // const useStyles = makeStyles(redux_overtheme_mysite ? redux_overtheme_mysite : null);
-  // const classes = useStyles();
 
   const processStyle = useCallback(async (item) => {
 

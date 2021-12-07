@@ -52,9 +52,6 @@ export default function FCEcommercePanel({ toggleEcomPanel, toggleIsRefreshChild
     React.useEffect(() => {
         if (isRefreshChild) {
 
-            console.log('is refresh');
-
-
             setCheckedCategoryTaxo(parentCheckedCategoryTaxo)
             setCheckedTypeTaxo(parentCheckedTypeTaxo)
             toggleIsRefreshChild(false)

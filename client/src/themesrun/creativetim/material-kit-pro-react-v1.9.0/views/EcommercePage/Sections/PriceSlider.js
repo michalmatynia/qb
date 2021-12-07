@@ -129,10 +129,6 @@ export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCat
         .classList.contains("noUi-target")
     ) {
 
-      console.log('create slider');
-
-      console.log(isChildCheckedCategoryTaxo);
-
       let pp = document.getElementById("sliderRegular")
 
       noUiSlider.create(pp, {

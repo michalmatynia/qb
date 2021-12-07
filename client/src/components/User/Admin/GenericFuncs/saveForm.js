@@ -59,9 +59,6 @@ export async function saveForm({
                     redux_localeuser
                 })
 
-                // console.log('IN');
-                // console.log(newLocalStorage);
-
                 newLocalStorage = await attachtoFuncs_populateEdit_vh2({
                     model: Object.keys(newLocalStorage.attachto)[0],
                     newLocalStorage,

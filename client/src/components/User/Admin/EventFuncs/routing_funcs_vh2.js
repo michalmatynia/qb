@@ -48,7 +48,6 @@ export async function routing_gotoEdit_vh2({
 
         }
 
-        // console.log(routerparam_attachto);
         myprops.history.push(`/${redirectpath}/edit/${model}/${showthis}`)
     }
 

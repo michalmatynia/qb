@@ -152,7 +152,7 @@ const [isMainTable, setIsMainTable] = React.useState();
   // const classes = useStyles();
   return (
     // <div className={classNames(classes.main)}>
-    !isLoading ?<div>{console.log('Sectionspage')}
+    !isLoading ?<div>
       {isMainTable}
       <nav id="cd-vertical-nav">
         <ul >
