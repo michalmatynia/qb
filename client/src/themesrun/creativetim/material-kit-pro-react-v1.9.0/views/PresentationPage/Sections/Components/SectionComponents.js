@@ -27,6 +27,7 @@ const useStyles = makeStyles(componentsStyle);
 
 export function SectionComponents01({ item, i }) {
 
+
   const [isBrickStyle, setBrickStyle] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -104,13 +105,13 @@ export function SectionComponents01({ item, i }) {
           throw item.blockstyle
         }
       } catch (err) {
-        return <div className={classes.wrapperasbg}
+        return <div 
         >{props.children}</div>      }
 
     }, [classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 
   return (
-    isLoading ? <WrapperOutputNext>
+    !isLoading ? <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <div className={classes.container}>
@@ -126,7 +127,7 @@ export function SectionComponents01({ item, i }) {
                 <h5 className={cx(
                   classes.description,
                   dynoclasses.description_style
-                )}>
+                )}>{console.log(item.description)}
                   {item.description}
                 </h5></div>
             </GridItem>

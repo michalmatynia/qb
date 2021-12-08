@@ -139,6 +139,7 @@ function InputToComponent({  item, i }) {
         />
 
     } else if (item.htmltype === 'CT_SectionComponents_01') {
+
         return <SectionComponents01
             item={item}
             i={i}
@@ -146,6 +147,7 @@ function InputToComponent({  item, i }) {
         />
 
     } else if (item.htmltype === 'CT_SectionContent_01') {
+
         return <SectionContent01
             item={item}
             i={i}

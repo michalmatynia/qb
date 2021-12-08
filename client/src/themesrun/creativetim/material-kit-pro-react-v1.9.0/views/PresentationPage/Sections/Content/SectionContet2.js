@@ -145,7 +145,7 @@ export function SectionContent01({ item, i }) {
     }, [classes.section, classes.wrapperasbg, item.blockstyle, item.css_wrap_card])
 
   return (
-    isLoading ? <WrapperOutputNext>
+    !isLoading ? <WrapperOutputNext>
       <div className={dynoclasses.dynamiccontainer}>
 
         <div className={classes.container} >

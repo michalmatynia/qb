@@ -34,15 +34,27 @@ export default function Wrapper({ props }) {
 
     React.useEffect(() => {
 
-        if (props.item.blockstyle.length > 0) {
-            processStyle({ item: props.item }).then((result) => {
-                setBrickStyle(result)
-                setIsLoading(false)
-            })
-        } else {
+        try {
+            if (props.item.blockstyle) {
+                if (props.item.blockstyle.length > 0) {
+                    processStyle({ item: props.item }).then((result) => {
+                        setBrickStyle(result)
+                        setIsLoading(false)
+                    })
+                } else {
+                    throw props.item
+
+                }
+            } else {
+                throw props.item
+            }
+
+        } catch (err) {
             setIsLoading(false)
 
         }
+
+
 
     }, [processStyle, props.item])
 
@@ -59,17 +71,17 @@ export default function Wrapper({ props }) {
 
                 if (props.item.blockstyle.length > 0) {
 
-                        if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
-                            return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
-                                props={props}
-                                list={props.item.blockstyle[0].referenceID}
+                    if (props.item.blockstyle[0] && props.item.blockstyle[0].referenceID.images.length > 0) {
+                        return <Card className={cx(classes.card1, dynoclasses.blockwrapper)}><ProcessAsWrapperBG
+                            props={props}
+                            list={props.item.blockstyle[0].referenceID}
         /* parentClassName={classes.card1} */ ><CardBody>{props.children}</CardBody></ProcessAsWrapperBG></Card>
-                        } else {
-                            // IF THERE ARE NO IMAGE
+                    } else {
+                        // IF THERE ARE NO IMAGE
 
-                            throw props.item.blockstyle
-                        }
-              
+                        throw props.item.blockstyle
+                    }
+
                 } else {
                     throw props.item.blockstyle
                 }
