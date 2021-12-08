@@ -208,7 +208,7 @@ export default function ContactUsPage({ list, toggleMessage }) {
                 <h2 className={classes.title}
                     style={{ color: '#FFF' }}
                 >{list.title}</h2>
-                <h5 className={classes.description}>
+                <h5 className={classes.description} style={{ color: '#FFF' }}>
                     {list.description}
                 </h5>
                 <InfoArea

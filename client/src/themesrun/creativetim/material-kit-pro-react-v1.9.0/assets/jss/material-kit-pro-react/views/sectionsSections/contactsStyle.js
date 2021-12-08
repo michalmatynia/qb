@@ -37,7 +37,9 @@ const contactsSection = {
       left: "0",
       top: "0",
       content: "''",
-      backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.7)",
+      backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.3)",
+      // backgroundColor: "rgba(" + hexToRgb(blackColor) + ", 0.7)",
+
     },
     "& $title": {
       color: whiteColor,

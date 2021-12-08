@@ -22,11 +22,9 @@ const useStyles = makeStyles(productStyle);
 
 
 export default function LoopSimilarProducts(props) {
-
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
+  const classes = useStyles({overtheme: redux_overtheme_mysite});
   let reactrouter_history = useHistory()
-
-
-  const classes = useStyles();
 
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
@@ -50,7 +48,7 @@ export default function LoopSimilarProducts(props) {
       key={item._id + '-' + parent_id} id={item._id + '-' + parent_id}
       className={cx(
         classes.cardCategory,
-        classes.textRose
+        classes.textMyprimary
       )}
     >
       {item.name}

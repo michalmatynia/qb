@@ -59,11 +59,10 @@ const useStyles = makeStyles(productStyle);
 
 const Wrapper = styled.div`
 width: 100%;
-height: 100vh;
+// height: 100vh;
 display: flex;
 justify-content: center;
 align-items: center;
-// background-color: #eaeaea;
 `;
 
 
@@ -131,15 +130,15 @@ export default function ProductPage() {
   React.useEffect(() => {
 
     if (reactrouter_history.location.pathname !== reactrouter_location.pathname || isLocalUser !== redux_localeuser) {
-      
+
       setIsLoading(true)
 
       setPrevLocation(reactrouter_location)
       setPrevLocalUser(isLocalUser)
       setLocalUser(redux_localeuser)
       setPrevDetail(redux_productdetail)
-      
-      if(redux_productdetail && isLocalUser && redux_localeuser !== isLocalUser) {
+
+      if (redux_productdetail && isLocalUser && redux_localeuser !== isLocalUser) {
         reactrouter_history.push(`/detail/product/${redux_productdetail._id}`)
       }
 
@@ -161,7 +160,7 @@ export default function ProductPage() {
       };
     }
 
-  }, [dispatch, isLocalUser, isPrevLocation, reactrouter_location.pathname, redux_localeuser]) 
+  }, [dispatch, isLocalUser, isPrevLocation, reactrouter_location.pathname, redux_localeuser])
 
   // EFFECT - /* find Product */
 
@@ -201,7 +200,7 @@ export default function ProductPage() {
     // ========================
 
     let product = await plg_findOne_QueMod({ model: 'product', dispatch, actionType: 'detail', inQuery, populate: [{ path: 'category' }, { path: 'type' }, { path: 'variant_one_taxo' }, { path: 'variant_two_taxo' }] })
-   
+
     if (product.payload) {
 
       setImages(product.payload.images.map((image) => { return image.secure_url }))
@@ -212,7 +211,7 @@ export default function ProductPage() {
     }
     return { product }
 
-  }, [dispatch, isPrevDetail, isPrevLocalUser, reactrouter.match.params.id, reactrouter_history, redux_localeuser.referenceID.alpha2Code, redux_localeuser.referenceID.languages])
+  }, [dispatch, isPrevDetail, isPrevLocalUser, reactrouter.match.params.id, reactrouter_history, redux_localeuser])
 
 
   const loadPage = useCallback(async ({ found }) => {
@@ -291,7 +290,7 @@ export default function ProductPage() {
 
     })
 
-  }, [findProduct, loadPage]) 
+  }, [findProduct, loadPage])
 
   React.useEffect(() => {
 
@@ -326,205 +325,207 @@ export default function ProductPage() {
 
 
   if (!isloading && redux_productdetail && redux_trnsdetailproduct && isLocalUser === redux_localeuser) {
-    return (    <div className={classes.productPage}>
-        {showAddToCart ? <ShowMessages
-            visible={showAddToCart}
-            message={isTranslationPanel.addedtocart_msg}
-            color='info'
-            place='bl'
+    return (<div className={classes.productPage}>
+      {showAddToCart ? <ShowMessages
+        visible={showAddToCart}
+        message={isTranslationPanel.addedtocart_msg}
+        color='success'
+        place='bl'
 
-          /> : null}
+      /> : null}
 
-        <Parallax
-          item={isTranslationPanel}
-          filter={isTranslationPanel.image_filter === 'transparent' ? null : isTranslationPanel.image_filter }
-          className={classes.pageHeader}
-        >
-          <div className={classes.container}>
-            <GridContainer className={classes.titleRow}>
-              <GridItem md={12} className={classes.mlAuto}>
-                <Button color="white" className={classes.floatLeft} onClick={() => {
-                  reactrouter_history.push('/store')
-                }}>
-                  {redux_trnsdetailproduct.back_btn}
-                </Button>
+      <Parallax
+        item={isTranslationPanel}
+        filter={isTranslationPanel.image_filter === 'transparent' ? null : isTranslationPanel.image_filter}
+        className={classes.pageHeader}
+      >
+        <div className={classes.container}>
+          <GridContainer className={classes.titleRow}>
+            <GridItem md={12} className={classes.mlAuto}>
+              <Button color="white" className={classes.floatLeft} onClick={() => {
+                reactrouter_history.push('/store')
+              }}>
+                {redux_trnsdetailproduct.back_btn}
+              </Button>
+            </GridItem>
+          </GridContainer>
+        </div>
+      </Parallax>
+      <div className={cx(classes.section)}>
+        <div className={classes.container}>
+          <div className={cx(classes.main, classes.mainRaised)}>
+            <GridContainer>
+              <GridItem md={6} sm={6}>
+
+                <Wrapper className="App">
+
+                  <Carousel
+                    images={images}
+                    setWidth={setWidth}
+                    xPosition={xPosition}
+                    handleClickPrev={handleClickPrev}
+                    handleClicknext={handleClicknext}
+                  />
+                </Wrapper>
+              </GridItem>
+              <GridItem md={6} sm={6}>
+                <h2 className={classes.title}>{redux_productdetail.name}</h2>
+                <h3 className={classes.mainPrice}><GrabProperPrice
+                  value={redux_productdetail}
+                /> {Object.keys(redux_currencyuser.rates)}</h3>
+                <AccordionFunc
+                  active={0}
+                  activeColor="primary"
+                  collapses={[
+                    {
+                      title: redux_trnsdetailproduct.description_one_nametag,
+                      content: (
+                        <p>{redux_productdetail.description}
+                        </p>
+                      )
+                    },
+                    redux_productdetail.description_two ? {
+                      title: redux_trnsdetailproduct.description_two_nametag,
+                      content: (
+                        <p>{redux_productdetail.description_two}
+                        </p>
+                      )
+                    } : {
+                      title: redux_trnsdetailproduct.description_two_nametag,
+                      content: null
+                    },
+                  ]}
+                />
+                <GridContainer className={classes.pickSize}>
+                  {redux_productdetail.variant_one_toggle && redux_productdetail.variant_one_taxo.length > 0 ?
+                    <GridItem md={6} sm={6}>
+                      <label>{redux_productdetail.variant_one_name}</label>
+                      <FormControl
+                        fullWidth
+                        className={classes.selectFormControl}
+                      >
+                        <Select
+                          MenuProps={{
+                            className: classes.selectMenu
+                          }}
+                          classes={{
+                            select: classes.select
+                          }}
+                          value={variantOneSelect}
+                          onChange={event => setVariantOneSelect(event.target.value)}
+                          inputProps={{
+                            name: "variantOneSelect",
+                            id: "variant-one-select"
+                          }}
+                        >{
+                            redux_productdetail.variant_one_taxo.map((variantone, index) => {
+                              return <MenuItem
+                                classes={{
+                                  root: classes.selectMenuItem,
+                                  selected: classes.selectMenuItemSelected
+                                }}
+                                value={index}
+                                key={variantone._id}
+                              >
+                                {variantone.name}
+                              </MenuItem>
+                            })
+                          }
+                        </Select>
+                      </FormControl>
+                    </GridItem> : null}
+                  {redux_productdetail.variant_two_toggle && redux_productdetail.variant_two_taxo.length > 0 ?
+                    <GridItem md={6} sm={6}>
+                      <label>{redux_productdetail.variant_two_name}</label>
+                      <FormControl
+                        fullWidth
+                        className={classes.selectFormControl}
+                      >
+                        <Select
+                          MenuProps={{
+                            className: classes.selectMenu
+                          }}
+                          classes={{
+                            select: classes.select
+                          }}
+                          value={variantTwoSelect}
+                          onChange={event => setVariantTwoSelect(event.target.value)}
+                          inputProps={{
+                            name: "variantTwoSelect",
+                            id: "variant-two-select"
+                          }}
+                        >{
+                            redux_productdetail.variant_two_taxo.map((varianttwo, index) => {
+                              return <MenuItem
+                                classes={{
+                                  root: classes.selectMenuItem,
+                                  selected: classes.selectMenuItemSelected
+                                }}
+                                value={index}
+                                key={varianttwo._id}
+                              >
+                                {varianttwo.name}
+                              </MenuItem>
+                            })
+                          }
+                        </Select>
+                      </FormControl>
+                    </GridItem> : null}
+                </GridContainer>
+                <GridContainer className={classes.pullRight}>
+                  <Button
+                    color="primary"
+                    round
+                    style={{
+                      opacity: "0.9",
+                    }}
+                    onClick={async () => {
+                      setShowAddToCart(true)
+                      setTimeout(() => {
+                        setShowAddToCart(false)
+
+                      }, 1000)
+
+                      await productFuncs_handleAddToCart({
+                        value: redux_productdetail, variantOneSelect, variantTwoSelect, redux_cart_user, dispatch
+                      })
+
+
+                    }}
+                  // className={classes.pullRight}
+                  >{redux_trnsdetailproduct.buy_btn} &nbsp; <ShoppingCart />
+                  </Button>
+                </GridContainer>
               </GridItem>
             </GridContainer>
           </div>
-        </Parallax>
-        <div className={cx(classes.section)}>
-          <div className={classes.container}>
-            <div className={cx(classes.main, classes.mainRaised)}>
-              <GridContainer>
-                <GridItem md={6} sm={6}>
-                  <Wrapper className="App">
-                    <Carousel
-                      images={images}
-                      setWidth={setWidth}
-                      xPosition={xPosition}
-                      handleClickPrev={handleClickPrev}
-                      handleClicknext={handleClicknext}
-                    />
-                  </Wrapper>
-                </GridItem>
-                <GridItem md={6} sm={6}>
-                  <h2 className={classes.title}>{redux_productdetail.name}</h2>
-                  <h3 className={classes.mainPrice}><GrabProperPrice 
-            value = {redux_productdetail} 
-            /> {Object.keys(redux_currencyuser.rates)}</h3>
-                  <AccordionFunc
-                    active={0}
-                    activeColor="primary"
-                    collapses={[
-                      {
-                        title: redux_trnsdetailproduct.description_one_nametag,
-                        content: (
-                          <p>{redux_productdetail.description}
-                          </p>
-                        )
-                      },
-                      redux_productdetail.description_two ? {
-                        title: redux_trnsdetailproduct.description_two_nametag,
-                        content: (
-                          <p>{redux_productdetail.description_two}
-                          </p>
-                        )
-                      } : {
-                        title: redux_trnsdetailproduct.description_two_nametag,
-                        content: null
-                      },
-                    ]}
-                  />
-                  <GridContainer className={classes.pickSize}>
-                    {redux_productdetail.variant_one_toggle && redux_productdetail.variant_one_taxo.length > 0 ?
-                      <GridItem md={6} sm={6}>
-                        <label>{redux_productdetail.variant_one_name}</label>
-                        <FormControl
-                          fullWidth
-                          className={classes.selectFormControl}
-                        >
-                          <Select
-                            MenuProps={{
-                              className: classes.selectMenu
-                            }}
-                            classes={{
-                              select: classes.select
-                            }}
-                            value={variantOneSelect}
-                            onChange={event => setVariantOneSelect(event.target.value)}
-                            inputProps={{
-                              name: "variantOneSelect",
-                              id: "variant-one-select"
-                            }}
-                          >{
-                              redux_productdetail.variant_one_taxo.map((variantone, index) => {
-                                return <MenuItem
-                                  classes={{
-                                    root: classes.selectMenuItem,
-                                    selected: classes.selectMenuItemSelected
-                                  }}
-                                  value={index}
-                                  key={variantone._id}
-                                >
-                                  {variantone.name}
-                                </MenuItem>
-                              })
-                            }
-                          </Select>
-                        </FormControl>
-                      </GridItem> : null}
-                    {redux_productdetail.variant_two_toggle && redux_productdetail.variant_two_taxo.length > 0 ?
-                      <GridItem md={6} sm={6}>
-                        <label>{redux_productdetail.variant_two_name}</label>
-                        <FormControl
-                          fullWidth
-                          className={classes.selectFormControl}
-                        >
-                          <Select
-                            MenuProps={{
-                              className: classes.selectMenu
-                            }}
-                            classes={{
-                              select: classes.select
-                            }}
-                            value={variantTwoSelect}
-                            onChange={event => setVariantTwoSelect(event.target.value)}
-                            inputProps={{
-                              name: "variantTwoSelect",
-                              id: "variant-two-select"
-                            }}
-                          >{
-                              redux_productdetail.variant_two_taxo.map((varianttwo, index) => {
-                                return <MenuItem
-                                  classes={{
-                                    root: classes.selectMenuItem,
-                                    selected: classes.selectMenuItemSelected
-                                  }}
-                                  value={index}
-                                  key={varianttwo._id}
-                                >
-                                  {varianttwo.name}
-                                </MenuItem>
-                              })
-                            }
-                          </Select>
-                        </FormControl>
-                      </GridItem> : null}
-                  </GridContainer>
-                  <GridContainer className={classes.pullRight}>
-                    <Button
-                      color="primary"
-                      round
-                      style={{
-                        opacity: "0.9",
-                      }}
-                      onClick={async () => {
-                        setShowAddToCart(true)
-                        setTimeout(() => {
-                          setShowAddToCart(false)
+          <div className={cx(classes.features, classes.textCenter)}>
+            <GridContainer>
+              {loopInfoArea({ redux_trnsdetailproduct })}
+            </GridContainer>
+          </div>
+          <div className={classes.relatedProducts}>
+            <h3 className={cx(classes.title, classes.textCenter)}>
+              {redux_trnsdetailproduct.similar_product_nametag}
+            </h3>
+            <GridContainer>
+              <LoopSimilarProducts
+                isSimilarProducts={isSimilarProducts}
+                cb_setLocalUser={(cb_boolean) => {
+                  setLocalUser(cb_boolean)
 
-                        }, 1000)
+                }}
+                cb_setIsLoading={(cb_boolean) => {
+                  setIsLoading(cb_boolean)
 
-                        await productFuncs_handleAddToCart({
-                          value: redux_productdetail, variantOneSelect, variantTwoSelect, redux_cart_user, dispatch
-                        })
-
-
-                      }}
-                    // className={classes.pullRight}
-                    >{redux_trnsdetailproduct.buy_btn} &nbsp; <ShoppingCart />
-                    </Button>
-                  </GridContainer>
-                </GridItem>
-              </GridContainer>
-            </div>
-            <div className={cx(classes.features, classes.textCenter)}>
-              <GridContainer>
-                {loopInfoArea({ redux_trnsdetailproduct })}
-              </GridContainer>
-            </div>
-            <div className={classes.relatedProducts}>
-              <h3 className={cx(classes.title, classes.textCenter)}>
-                {redux_trnsdetailproduct.similar_product_nametag}
-              </h3>
-              <GridContainer>
-                <LoopSimilarProducts
-                  isSimilarProducts={isSimilarProducts}
-                  cb_setLocalUser={(cb_boolean) => {
-                    setLocalUser(cb_boolean)
-
-                  }}
-                  cb_setIsLoading={(cb_boolean) => {
-                    setIsLoading(cb_boolean)
-
-                  }}
-                />
-              </GridContainer>
-            </div>
+                }}
+              />
+            </GridContainer>
           </div>
         </div>
       </div>
-)
+    </div>
+    )
   } else {
     return (
       <div
