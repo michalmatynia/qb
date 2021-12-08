@@ -112,8 +112,6 @@ const MemoizedWrapper = useCallback(
   const addStylesForRotatingCards = () => {
     var rotatingCards = document.getElementsByClassName(classes.cardRotate);
 
-    console.log(rotatingCards);
-
     for (let i = 0; i < rotatingCards.length; i++) {
       var rotatingCard = rotatingCards[i];
       var cardFront = rotatingCard.getElementsByClassName(classes.front)[0];

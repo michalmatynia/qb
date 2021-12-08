@@ -29,7 +29,7 @@ import ProcessAsWrapperBG from '../../../../../../../functions/HookFuncs/Process
 // images
 const useStyles = makeStyles(contentStyle);
 
-export function SectionContent01({ item, i }) {
+export function SectionContent02({ item, i }) {
 
   const [isBrickStyle, setBrickStyle] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -37,18 +37,18 @@ export function SectionContent01({ item, i }) {
   const processStyle = useCallback(async (item) => {
     return await parseBlockstyle(item)
   }, [])
-  
+
   React.useEffect(() => {
     if (item.blockstyle.length > 0) {
       processStyle({ item }).then((result) => {
-  
+
         setBrickStyle(result)
         setIsLoading(false)
       })
     } else {
       setIsLoading(false)
     }
-  
+
   }, [item, processStyle])
 
   const classes = useStyles();
@@ -65,15 +65,15 @@ export function SectionContent01({ item, i }) {
       parentStyle = { margin: "0", padding: "0px" }
       /* parentStyle={objectFit: "cover"} */
       return item.images.length > 0 ? item.images.map((image, i) => {
-      
+
 
         if (i === 0) {
           parentClassName = cx(classes.ipadImg, dynoclasses.image_one_style)
 
-          return <FuncRevealWrapper key={image.asset_id}
-          item={item} revealarray={reveal_array_image_one}>
+          return <FuncRevealWrapper key={image.asset_id ? image.asset_id : image.name}
+            item={item} revealarray={reveal_array_image_one}>
             <ProcessSingleImage
-              key={image.asset_id}
+              key={image.asset_id ? image.asset_id : image.name}
               parentClassName={parentClassName}
               image={image}
               item={item}
@@ -83,10 +83,10 @@ export function SectionContent01({ item, i }) {
         } else if (isOdd(i) && i > 0) {
           parentClassName = cx(classes.areaImg, parentStyle, dynoclasses.image_two_style)
 
-          return <div key={image.asset_id} className={classes.animeAreaImg}>
-            <FuncRevealWrapper key={image.asset_id} item={item} revealarray={reveal_array_image_two}>
+          return <div key={image.asset_id ? image.asset_id : image.name} className={classes.animeAreaImg}>
+            <FuncRevealWrapper key={image.asset_id ? image.asset_id : image.name} item={item} revealarray={reveal_array_image_two}>
               <ProcessSingleImage
-                key={image.asset_id}
+                key={image.asset_id ? image.asset_id : image.name}
                 parentClassName={parentClassName}
                 // parentStyle={parentStyle}
                 image={image}
@@ -101,8 +101,8 @@ export function SectionContent01({ item, i }) {
           parentClassName = cx(classes.infoImg, parentStyle, dynoclasses.image_three_style)
 
           return <div key={i} className={classes.animeInfoImg}>
-            <FuncRevealWrapper key={image.asset_id} item={item} revealarray={reveal_array_image_three}><ProcessSingleImage
-              key={image.asset_id}
+            <FuncRevealWrapper  key={image.asset_id ? image.asset_id : image.name} item={item} revealarray={reveal_array_image_three}><ProcessSingleImage
+              key={image.asset_id ? image.asset_id : image.name}
               parentClassName={parentClassName}
               // parentStyle={parentStyle}
               image={image}
@@ -121,16 +121,16 @@ export function SectionContent01({ item, i }) {
   const WrapperOutputNext = useCallback(
     (props) => {
       try {
-    
+
         if (item.blockstyle.length > 0 && !item.css_wrap_card) {
 
           if (item.blockstyle[0].referenceID.images.length > 0) {
             return <ProcessAsWrapperBG
-            props={props}
-            list={item.blockstyle[0].referenceID}
-            parentClassName={cx(classes.section, classes.wrapperasbg)}
-  
-          />
+              props={props}
+              list={item.blockstyle[0].referenceID}
+              parentClassName={cx(classes.section, classes.wrapperasbg)}
+
+            />
 
           } else {
             throw item.blockstyle
@@ -170,7 +170,7 @@ export function SectionContent01({ item, i }) {
             </GridItem>
             <GridItem md={7} className={classes.mlAuto}>
               <div className={cx(classes.imageContainer, dynoclasses.image_all_style)}>
-              <FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_image_all}>{loopImages({ item })}</FuncRevealWrapper>
+                <FuncRevealWrapper key={item._id} item={item} revealarray={reveal_array_image_all}>{loopImages({ item })}</FuncRevealWrapper>
 
               </div>
             </GridItem>

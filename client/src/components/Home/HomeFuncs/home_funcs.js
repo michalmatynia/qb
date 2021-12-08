@@ -13,7 +13,7 @@ import { SectionProjectsProject03 } from '../../../themesrun/creativetim/materia
 import { SectionTestimonialsTestimonial01 } from '../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Testimonials/Testimonial01.js'
 import { SectionParallax01 } from '../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/SectionsPage/Sections/Parallax/Parallax01.js'
 import { SectionComponents01 } from '../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/PresentationPage/Sections/Components/SectionComponents.js'
-import { SectionContent01 } from '../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/PresentationPage/Sections/Content/SectionContet2'
+import { SectionContent02 } from '../../../themesrun/creativetim/material-kit-pro-react-v1.9.0/views/PresentationPage/Sections/Content/SectionContet2'
 import ProcessWrapper from './ProcessWrapper'
 
 import ContactUsWrapper from '../../StaticBricks/Contact/ContactUsWrapper'
@@ -148,7 +148,7 @@ function InputToComponent({  item, i }) {
 
     } else if (item.htmltype === 'CT_SectionContent_01') {
 
-        return <SectionContent01
+        return <SectionContent02
             item={item}
             i={i}
             key={i}

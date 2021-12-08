@@ -110,9 +110,9 @@ class EditBrick extends Component {
                                 public_id: `${Date.now()}`,
                                 resource_type: 'auto',
                                 folder: this.props.mysite.CurrentMysite._id + '/Brick/File',
-                                width: 1500,
-                                height: 1000,
-                                crop: "fill"
+                                // width: 1500,
+                                // height: 1000,
+                                // crop: "fill"
                             }
                         },
                         inputprops: {

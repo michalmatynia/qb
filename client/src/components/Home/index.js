@@ -168,7 +168,7 @@ export default function Home() {
                 style={{
                     //   backgroundImage: "url(" + image + ")",
                     backgroundSize: "cover",
-                    backgroundColor: '#595959',
+                    backgroundColor: '#E2E2E2', // #595959 
                     backgroundPosition: " center",
                     paddingTop: '25%',
                     position: 'fixed',

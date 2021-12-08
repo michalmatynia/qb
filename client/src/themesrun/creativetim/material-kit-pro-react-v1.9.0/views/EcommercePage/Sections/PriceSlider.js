@@ -57,7 +57,6 @@ export default function PriceSlider({ childCheckedTypeTaxo = [], childCheckedCat
 
     if (!priceRange && !initialPriceRange && !isChildCheckedCategoryTaxo && !isChildCheckedTypeTaxo) {
 
-      console.log('initiate local state');
       loadPrice({ looproducts: product_list }).then(({ floor_price_min, round_price_max }) => {
 
         setInitialPriceRange([floor_price_min, round_price_max])

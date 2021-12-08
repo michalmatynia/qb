@@ -7,7 +7,7 @@ export default  function FuncRevealWrapper(props) {
 
             if(props.item.blockstyle[0].referenceID[props.revealarray[0]] !== 'None') {
 
-                return  <ProcessRevealWrapper props={props} revealarray={props.revealarray} />
+                return <ProcessRevealWrapper key={props.item._id} props={props} revealarray={props.revealarray} />
             } else {
                 let error = 'error'
                 throw error

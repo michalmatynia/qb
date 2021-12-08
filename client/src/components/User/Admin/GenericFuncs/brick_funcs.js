@@ -158,7 +158,6 @@ export async function brickFuncs_populateMultimodel_preInput({ myprops = null, m
                             language,
                             country
                         })
-console.log(added.payload);
                         grabbed_content_array.push(added.payload)
 
                     }

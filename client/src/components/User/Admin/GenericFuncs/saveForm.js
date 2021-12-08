@@ -80,7 +80,6 @@ export async function saveForm({
             }
         }
     } catch (err) {
-        console.log(err);
 
         await errorClosure({ dispatch })
         return isLocalStorage
