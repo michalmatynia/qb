@@ -233,7 +233,9 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  background-color: #0a0615;
+  /* background-color: #0a0615; */
+  background-color: #E2E2E2;
+
   color: #3c4858;
   margin: 0;
   font-size: 1rem;

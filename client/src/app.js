@@ -113,7 +113,8 @@ export default function App() {
                 <Frontside />
             </MemoizedWrapper>
         </div>
-    } else {
+    } 
+    else {
         return (
             <div
                 style={{

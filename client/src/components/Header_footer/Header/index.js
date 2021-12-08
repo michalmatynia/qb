@@ -35,25 +35,25 @@ function HeaderHolder() {
 
 
     if (isloading) {
-        return (
-            <div
-                style={{
-                    //   backgroundImage: "url(" + image + ")",
-                    backgroundSize: "cover",
-                    backgroundColor: '#595959',
-                    backgroundPosition: " center",
-                    paddingTop: '25%',
-                    position: 'fixed',
-                    left: '0px',
-                    top: '0px',
-                    width: '100%',
-                    height: '100%',
-                    // zIndex: '9999',
-                    textAlign: 'center',
-                }}
-            >
-                <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
-            </div>
+        return (null
+            // <div
+            //     style={{
+            //         //   backgroundImage: "url(" + image + ")",
+            //         backgroundSize: "cover",
+            //         backgroundColor: '#E2E2E2',
+            //         backgroundPosition: " center",
+            //         paddingTop: '25%',
+            //         position: 'fixed',
+            //         left: '0px',
+            //         top: '0px',
+            //         width: '100%',
+            //         height: '100%',
+            //         // zIndex: '9999',
+            //         textAlign: 'center',
+            //     }}
+            // >
+            //     <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+            // </div>
         )
     } else if (!isloading && isImages) {
         return (

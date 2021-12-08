@@ -531,7 +531,7 @@ export default function ProductPage() {
         style={{
           //   backgroundImage: "url(" + image + ")",
           backgroundSize: "cover",
-          backgroundColor: '#595959',
+          backgroundColor: '#E2E2E2',
           backgroundPosition: " center",
           paddingTop: '25%',
           position: 'fixed',
