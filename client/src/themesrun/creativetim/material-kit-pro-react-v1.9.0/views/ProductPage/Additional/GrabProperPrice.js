@@ -40,8 +40,7 @@ export default function GrabProperPrice(props) {
   
     React.useEffect(() => {
 
-      if (redux_current_mysite.default_language.referenceID.alpha2Code !== redux_localeuser.referenceID.alpha2Code
-          ) {
+      if (redux_current_mysite.default_language.referenceID.alpha2Code !== redux_localeuser.referenceID.alpha2Code) {
            recalculatePrice({ value: isValue }).then((price) => setPrice(price))
 
           } else {

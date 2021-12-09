@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   plg_clearProps,
   plg_findOne_QueMod,
-  plg_findMany
+  plg_findMany,
 } from '../../../../../components/utils/Plugs/cms_plugs';
 
 import styled from 'styled-components';
@@ -15,8 +15,9 @@ import {
 import {
   productFuncs_handleAddToCart
 } from "../../../../../components/User/Admin/GenericFuncs/product_funcs_vh"
-
-import GrabProperPrice from "./Additional/GrabProperPrice";
+import {
+  act_injectProp,
+} from '../../../../../redux/actions/generic/generic_actions';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -99,9 +100,10 @@ export default function ProductPage() {
   let redux_currencyuser = useSelector(state => state.user.currencyUser)
   let redux_productdetail = useSelector(state => state.product.detail)
   let redux_trnsdetailproduct = useSelector(state => state.trnsdetailproduct.detail)
-  // let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
-  let redux_cart_user = useSelector(state => state.user.cartUser)
+  let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
 
+  let redux_cart_user = useSelector(state => state.user.cartUser)
+  let redux_overtheme_mysite = useSelector(state => state.mysite.OverthemeMysite)
   const [isTranslationPanel, setTranslationPanel] = useState(null);
   const [isSimilarProducts, setSimilarProducts] = useState(null);
 
@@ -125,6 +127,7 @@ export default function ProductPage() {
   const [xPosition, setXPosition] = useState(0);
 
   const [showAddToCart, setShowAddToCart] = React.useState(false);
+  const classes = useStyles({overtheme: redux_overtheme_mysite});
 
   /* Cleanup */
   React.useEffect(() => {
@@ -162,6 +165,25 @@ export default function ProductPage() {
 
   }, [dispatch, isLocalUser, isPrevLocation, reactrouter_location.pathname, redux_localeuser])
 
+  const grabRecalculatedValue = useCallback(async ({value}) => {
+
+    let newValue = {...value}
+    let inQuery = {}
+    Object.assign(inQuery, {
+      country: { "$eq": redux_current_mysite.default_language.referenceID.alpha2Code },
+      language: { "$eq": redux_current_mysite.default_language.referenceID.languages[0].iso639_1 },
+      lgbinder: { "$eq": value.lgbinder }
+    });
+
+    let root_product = await plg_findOne_QueMod({ model: 'product', dispatch, actionType: 'samestate', inQuery, populate: [{ path: 'category' }, { path: 'type' }] })
+
+    let convertedPrice = root_product.payload.price / redux_currencyuser.deflgrates[redux_current_mysite.default_language.referenceID.currencies[0].code] * Object.entries(redux_currencyuser.rates)[0][1]
+    let decimalPrice = Math.round((convertedPrice + Number.EPSILON) * 100) / 100
+
+    newValue.price = decimalPrice
+
+    return newValue
+  },[dispatch, redux_currencyuser, redux_current_mysite.default_language.referenceID.alpha2Code, redux_current_mysite.default_language.referenceID.currencies, redux_current_mysite.default_language.referenceID.languages])
   // EFFECT - /* find Product */
 
   const findProduct = useCallback(async () => {
@@ -201,7 +223,21 @@ export default function ProductPage() {
 
     let product = await plg_findOne_QueMod({ model: 'product', dispatch, actionType: 'detail', inQuery, populate: [{ path: 'category' }, { path: 'type' }, { path: 'variant_one_taxo' }, { path: 'variant_two_taxo' }] })
 
+  
+
+
+
     if (product.payload) {
+
+      if (redux_current_mysite.default_language.referenceID.alpha2Code !== redux_localeuser.referenceID.alpha2Code) {
+
+        grabRecalculatedValue({ value: product.payload }).then((newValue) =>  {
+
+        dispatch(act_injectProp({ dataToSubmit: newValue, model: 'product', actionType: 'detail' }))
+        
+        })
+  
+       } 
 
       setImages(product.payload.images.map((image) => { return image.secure_url }))
 
@@ -211,7 +247,7 @@ export default function ProductPage() {
     }
     return { product }
 
-  }, [dispatch, isPrevDetail, isPrevLocalUser, reactrouter.match.params.id, reactrouter_history, redux_localeuser])
+  }, [dispatch, grabRecalculatedValue, isPrevDetail, isPrevLocalUser, reactrouter.match.params.id, reactrouter_history, redux_current_mysite.default_language.referenceID.alpha2Code, redux_localeuser.referenceID.alpha2Code, redux_localeuser.referenceID.languages])
 
 
   const loadPage = useCallback(async ({ found }) => {
@@ -305,7 +341,6 @@ export default function ProductPage() {
   }, [PrepareView, isloading, reactrouter.match.params.id, redux_productdetail])
 
 
-  const classes = useStyles();
 
   const images = isImages
   const handleClickPrev = () => {
@@ -356,9 +391,7 @@ export default function ProductPage() {
           <div className={cx(classes.main, classes.mainRaised)}>
             <GridContainer>
               <GridItem md={6} sm={6}>
-
                 <Wrapper className="App">
-
                   <Carousel
                     images={images}
                     setWidth={setWidth}
@@ -370,9 +403,8 @@ export default function ProductPage() {
               </GridItem>
               <GridItem md={6} sm={6}>
                 <h2 className={classes.title}>{redux_productdetail.name}</h2>
-                <h3 className={classes.mainPrice}><GrabProperPrice
-                  value={redux_productdetail}
-                /> {Object.keys(redux_currencyuser.rates)}</h3>
+                <h3 className={cx(classes.mainPrice, classes.textMyprimary)} >{redux_productdetail.price}
+                   {Object.keys(redux_currencyuser.rates)}</h3>
                 <AccordionFunc
                   active={0}
                   activeColor="primary"
