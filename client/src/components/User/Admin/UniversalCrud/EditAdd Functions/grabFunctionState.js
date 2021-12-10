@@ -11,6 +11,7 @@ export async function grabFunctionState({ model, redux_current_mysite, dispatch,
 
     switch (true) {
         case (model === 'slide' && kind === 'list'):
+
             rawFunctionState = await rawStateFunction_Slide_List({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         case (model === 'slide' && !kind):

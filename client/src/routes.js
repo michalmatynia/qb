@@ -43,7 +43,8 @@ import Dashboard from "./themesrun/creativetim/material-dashboard-pro-react-v1.9
 
 import AddSlide from './components/User/Admin/UniversalCrud/EditAdd';
 import EditSlide from './components/User/Admin/UniversalCrud/EditAdd';
-import ListSlide from './components/User/Admin/CMS/Slides/list_slide';
+import ListSlide from './components/User/Admin/UniversalCrud/List/ListPanel';
+// import ListSlide from './components/User/Admin/CMS/Slides/list_slide';
 
 import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
 import EditBrick from './components/User/Admin/CMS/Brick/edit_brick';
@@ -160,10 +161,9 @@ let dashRoutes = [
             redirect: true
           },
           {
-            path: "/list/slide",
             /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
-            // path: "/list/:model",
-            // navlink: "/list/slide",
+            path: "/list/:model",
+            navlink: "/list/slide",
             name: "List Slide",
             component: ListSlide,
             layout: "/admin",

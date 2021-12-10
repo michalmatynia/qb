@@ -156,7 +156,7 @@ export default async function rawStateFunction_Slide_List({ redux_current_mysite
                 ]
             },
             viewparams: {
-                limit: 5,
+                limit: 10,
                 skip: 0,
                 size: 0,
                 sortBy: 'position',

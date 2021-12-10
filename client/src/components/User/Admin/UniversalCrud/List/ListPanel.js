@@ -7,6 +7,7 @@ import { useHistory, useLocation } from "react-router-dom";
 
 import { imageFuncs_removeImagesHandler_vh2 } from '../../GenericFuncs/image_funcs_vh'
 import { submitFuncs_fullSubmit_vh2 } from '../../GenericFuncs/submit_funcs_vh'
+import { listFuncs_loadList_v2_vh } from '../../GenericFuncs/list_funcs_vh'
 
 import {
     useRouter,
@@ -32,7 +33,8 @@ import { compoFuncs_Refresh_vh3 } from '../../GenericFuncs/compo_funcs_vh'
 
 import {
     plg_clearProps,
-    plg_findOne_QueMod
+    plg_findOne_QueMod,
+    plg_findMany
 } from '../../../../utils/Plugs/cms_plugs';
 
 export default function EditAdd() {
@@ -44,6 +46,9 @@ export default function EditAdd() {
     let redux_localeuser = useSelector(state => state.user.localeUser)
 
     let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
+    let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
+    let redux_slide_list = useSelector(state => state.slide.list)
+
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
     const [isPrevLocalStorage, setPrevLocalStorage] = React.useState();
@@ -53,22 +58,24 @@ export default function EditAdd() {
     const [isloading, setIsLoading] = React.useState(true);
     const [isComponentType, setComponentType] = React.useState();
 
-    let redux_module = useSelector(state => state[reactrouter.match.params.model])
 
     /* SET RAWSTATE  */
 
     const establishStateParams = useCallback(async () => {
 
-        let rawstate = await grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model, kind: 'list' })
+        return await grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model, kind: 'list' })
 
-        setRawState(rawstate)
 
     }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
 
-            establishStateParams()
+            establishStateParams().then((rawstate) => {
+                console.log(rawstate);
+                setRawState(rawstate)
+
+            })
 
         }
 
@@ -76,46 +83,106 @@ export default function EditAdd() {
 
     /* CLEANUP */
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        if (isRawState && isLocalUser === redux_localeuser && reactrouter_history.location.pathname === reactrouter_location.pathname && redux_localeuser) {
+    //     if (isRawState && isLocalUser === redux_localeuser && reactrouter_history.location.pathname === reactrouter_location.pathname && redux_localeuser) {
 
+    //         return function cleanup() {
 
-            return function cleanup() {
+    //             console.log('cleanup');
 
-                console.log('cleanup');
+    //             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
+    //             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
 
-                plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
-                plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
+    //         };
+    //     }
 
-            };
-        }
-
-    }, [dispatch, isLocalUser, isRawState, reactrouter.match.params.model, reactrouter_history.location.pathname, reactrouter_location, redux_localeuser])
+    // }, [dispatch, isLocalUser, isRawState, reactrouter.match.params.model, reactrouter_history.location.pathname, reactrouter_location, redux_localeuser])
 
 
     /* CLEAR RAWSTATE */
 
-    const unhingeRawState = useCallback(async () => {
+    // const unhingeRawState = useCallback(async () => {
 
-        setRawState()
-        setLocalUser()
-        setPrevLocalStorage(isLocalStorage)
-        // setPrevLocation(reactrouter_location)
-        setLocalStorage()
+    //     setRawState()
+    //     setLocalUser()
+    //     setPrevLocalStorage(isLocalStorage)
+    //     // setPrevLocation(reactrouter_location)
+    //     setLocalStorage()
 
-    }, [isLocalStorage])
+    // }, [isLocalStorage])
+
+    // React.useEffect(() => {
+    //     if (isLocalUser && isRawState && redux_current_mysite && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || isPrevLocation.pathname !== reactrouter_location.pathname)) {
+    //         setIsLoading(true)
+    //         unhingeRawState()
+    //     }
+
+    // }, [isLocalUser, isRawState, reactrouter_location, redux_current_mysite, redux_localeuser, unhingeRawState, reactrouter_history.location.pathname, reactrouter_history, isPrevLocation])
+
+    /* Grab List */
+    const grabListFromMongo = useCallback(async () => {
+
+        let inQuery = {}
+        let found = { payload: '' }
+
+        if (isRawState.localStorage.poliglot) {
+
+            Object.assign(inQuery, {
+                country: { "$eq": redux_localeuser.referenceID.alpha2Code },
+                language: { "$eq": redux_localeuser.referenceID.languages[0].iso639_1 }
+            })
+
+        }
+        // if (isPrevLocalStorage && isRawState.localStorage.poliglot) {
+
+        //     Object.assign(inQuery, { lgbinder: { "$eq": isPrevLocalStorage.form.formdata.lgbinder.value } })
+
+        // } else {
+        //     Object.assign(inQuery, { _id: { "$eq": reactrouter.match.params.id } })
+        // }
+
+        // if (isPrevLocalStorage && 'lgbinder' in isPrevLocalStorage.form.formdata && isPrevLocalStorage.form.formdata.lgbinder.value === '') {
+        //     found = { payload: '' }
+
+        // } else if (Object.values(inQuery).length > 0) {
+        //     found = await plg_findMany({ model: reactrouter.match.params.model, dispatch, actionType: 'samestate', inQuery, populate: isRawState.localStorage.qhelpers.populate })
+        // }
+
+
+        // found = await plg_findMany({ model: reactrouter.match.params.model, dispatch, actionType: 'samestate', inQuery, populate: isRawState.localStorage.qhelpers.populate })
+
+        // console.log(found);
+
+    }, [isRawState, redux_localeuser])
+
 
     React.useEffect(() => {
 
+        if (isRawState && redux_current_mysite && !redux_model_list) {
+            let inQuery = {}
+            let found = { payload: '' }
 
-        if (isLocalUser && isRawState && redux_current_mysite && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || isPrevLocation.pathname !== reactrouter_location.pathname)) {
-            setIsLoading(true)
-            unhingeRawState()
+            listFuncs_loadList_v2_vh({
+                sublistkey: null,
+                model: reactrouter.match.params.model,
+                redux_localeuser,
+                dispatch,
+                isRawState,
+                populate: isRawState.localStorage.qhelpers.populate,
+                // poliglot: isRawState.localStorage.poliglot,
+                hideIDs: null,
+                inQuery
+            }).then(() => {
+                setIsLoading(false)
+
+            })
         }
 
-    }, [isLocalUser, isRawState, reactrouter_location, redux_current_mysite, redux_localeuser, unhingeRawState, reactrouter_history.location.pathname, reactrouter_history, isPrevLocation])
+    }, [dispatch, isRawState, reactrouter.match.params.model, redux_current_mysite, redux_localeuser, redux_model_list])
 
 
-    
+
+    return null
 }
+
