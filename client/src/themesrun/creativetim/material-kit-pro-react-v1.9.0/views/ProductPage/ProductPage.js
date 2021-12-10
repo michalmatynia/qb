@@ -223,10 +223,6 @@ export default function ProductPage() {
 
     let product = await plg_findOne_QueMod({ model: 'product', dispatch, actionType: 'detail', inQuery, populate: [{ path: 'category' }, { path: 'type' }, { path: 'variant_one_taxo' }, { path: 'variant_two_taxo' }] })
 
-  
-
-
-
     if (product.payload) {
 
       if (redux_current_mysite.default_language.referenceID.alpha2Code !== redux_localeuser.referenceID.alpha2Code) {

@@ -4,7 +4,6 @@ import {
 
 export async function productFuncs_handleAddToCart({ value, variantOneSelect = null, variantTwoSelect = null, redux_cart_user, dispatch }) {
 
-  console.log(value);
     let newCart = []
     let cart_item
   

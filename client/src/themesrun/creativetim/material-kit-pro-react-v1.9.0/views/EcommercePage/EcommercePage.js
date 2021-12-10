@@ -65,8 +65,7 @@ export default function EcommercePage() {
       </Parallax>
 
       <div className={classNames(classes.main, classes.mainRaised)}>
-        <SectionProducts
-        />
+        <SectionProducts />
       </div>
       </div>
   );
