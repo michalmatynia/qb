@@ -35,7 +35,7 @@ import {
     plg_findOne_QueMod
 } from '../../../utils/Plugs/cms_plugs';
 
-export default function EditSlide() {
+export default function EditAdd() {
     let reactrouter = useRouter()
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()

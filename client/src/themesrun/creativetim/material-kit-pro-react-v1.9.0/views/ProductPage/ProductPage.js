@@ -399,8 +399,7 @@ export default function ProductPage() {
               </GridItem>
               <GridItem md={6} sm={6}>
                 <h2 className={classes.title}>{redux_productdetail.name}</h2>
-                <h3 className={cx(classes.mainPrice, classes.textMyprimary)} >{redux_productdetail.price}
-                   {Object.keys(redux_currencyuser.rates)}</h3>
+                <h3 className={cx(classes.mainPrice, classes.textMyprimary)} >{redux_productdetail.price} {Object.keys(redux_currencyuser.rates)}</h3>
                 <AccordionFunc
                   active={0}
                   activeColor="primary"

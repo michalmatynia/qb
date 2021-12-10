@@ -5,8 +5,7 @@ import { actionFuncs_handleArrayOfIds_vh1, actionFuncs_transformIdsToArray_vh1 }
 
 export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
     
-    const 
-    state = {
+    const state = {
         localStorage: {
             model: 'slide',
             resetok: true,

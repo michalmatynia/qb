@@ -3,26 +3,28 @@ import rawStateFunctionSlide from "../../CMS/Slides/Additional/func_state"
 import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
 
+import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
 
-export async function grabFunctionState({ model, redux_current_mysite, dispatch, redux_localeuser }) {
+export async function grabFunctionState({ model, redux_current_mysite, dispatch, redux_localeuser, kind = null }) {
     let rawFunctionState = null;
 
-    switch (model) {
-        case ('slide'):
+    switch (true) {
+        case (model === 'slide' && kind === 'list'):
+            rawFunctionState = await rawStateFunction_Slide_List({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'slide' && !kind):
             rawFunctionState = await rawStateFunctionSlide({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
-        case ('theme'):
+        case (model === 'theme' && !kind):
             rawFunctionState = await rawStateFunctionTheme({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
-        case ('blockstyle'):
+        case (model === 'blockstyle' && !kind):
             rawFunctionState = await rawStateFunctionBlockstyle({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         default:
             rawFunctionState = null;
     }
-
-
 
     return rawFunctionState
 }
