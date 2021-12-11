@@ -10,7 +10,7 @@ import {
     Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Slide_List({ redux_current_mysite, dispatch, redux_localeuser, model }) {
+export default async function rawStateFunction_Slide_List() {
 
 
     const state = {

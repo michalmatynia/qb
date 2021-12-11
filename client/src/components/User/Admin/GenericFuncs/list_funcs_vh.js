@@ -14,17 +14,15 @@ export async function listFuncs_loadList_v2_vh({
     sublistkey = null, 
     cell = null, 
     model = null, 
-    mystate = null, 
-    myprops = null, 
     inLimit = null, 
     inSortOrder = null, 
     inSortBy = null, 
     populate = null, 
-    poliglot = null, 
     hideIDs = null,
     isRawState,
     redux_localeuser,
     newLocalStorage = null,
+    thisview,
     inQuery  = {}
 }) {
 
@@ -33,14 +31,13 @@ export async function listFuncs_loadList_v2_vh({
     }
     let cellvalue
     let viewpath
-    let thisview
 
     if (cell) {
         cellvalue = Object.values(cell)[0]
     }
 
     if (!model && cellvalue) {
-        model = mystate.localStorage[cellvalue.sublist.tiedtoelementkey].viewmodel
+        model = isRawState.localStorage[cellvalue.sublist.tiedtoelementkey].viewmodel
     }
 
     if (sublistkey) {
@@ -50,7 +47,7 @@ export async function listFuncs_loadList_v2_vh({
     } else {
         viewpath = 'viewparams'
     }
-    thisview = resolvePath({ object: newLocalStorage, path: viewpath })
+
 
     if (isRawState.localStorage.poliglot) {
         Object.assign(inQuery, {

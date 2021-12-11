@@ -16,12 +16,12 @@ import { search_inDatabase } from '../../EventFuncs/search_funcs'
 
 // import FormElement from '../../../../utils/Form/Funcs/formContainer'
 // import SearchFieldFC from '../../../../utils/Form/Funcs/FormSearchInput';
-import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput';
+import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
 import { roleFuncs_listEvent } from '../../RoleFuncs/cm_presets'
 import { imageFuncs_removeImagesHandler_vh2 } from '../../GenericFuncs/image_funcs_vh'
 import { submitFuncs_fullSubmit_vh2 } from '../../GenericFuncs/submit_funcs_vh'
 import { listFuncs_loadList_v2_vh } from '../../GenericFuncs/list_funcs_vh'
-import ListTable from '../../GenericCompos/list_table'
+import ListTable from '../../GenericCompos/list_table_vh'
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import {
@@ -56,29 +56,8 @@ import {
 
 
 export default function ListPanel() {
-    let reactrouter = useRouter()
-    let reactrouter_history = useHistory()
-    let reactrouter_location = useLocation()
 
-    const dispatch = useDispatch()
-    let redux_localeuser = useSelector(state => state.user.localeUser)
-
-    let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
-    let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
-    let redux_slide_list = useSelector(state => state.slide.list)
-
-    const [isRawState, setRawState] = React.useState();
-    const [isLocalStorage, setLocalStorage] = React.useState();
-    const [isPrevLocalStorage, setPrevLocalStorage] = React.useState();
-    const [isPrevLocation, setPrevLocation] = React.useState();
-
-    const [isLocalUser, setLocalUser] = React.useState();
-    const [isLoading, setIsLoading] = React.useState(true);
-    const [isComponentType, setComponentType] = React.useState();
-    const [isCurrentSearch, setIsCurrentSearch] = React.useState('');
-    const [isPrevSearch, setIsPrevSearch] = React.useState('');
-
-    let viewparams = {
+    const viewparams = {
         limit: 10,
         skip: 0,
         size: 0,
@@ -108,11 +87,12 @@ export default function ListPanel() {
                         <Search />
                     </InputAdornment>
                 ),
-                onBlur: (event) => this.onSearch({
-                    event,
-                    cell: { search: this.state.localStorage.viewparams.search },
-                    blur: true
-                })
+                /* When field Loses Focus */
+                // onBlur: ({ event, cell, value }) => onSearch({
+                //     event,
+                //     // cell: { search: this.isViewparams.search },
+                //     blur: true
+                // })
 
             },
             configparams: {
@@ -137,6 +117,31 @@ export default function ListPanel() {
 
         },
     }
+
+    let reactrouter = useRouter()
+    let reactrouter_history = useHistory()
+    let reactrouter_location = useLocation()
+
+    const dispatch = useDispatch()
+    let redux_localeuser = useSelector(state => state.user.localeUser)
+
+    let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
+    let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
+    let redux_slide_list = useSelector(state => state.slide.list)
+
+    const [isRawState, setRawState] = React.useState();
+    const [isLocalStorage, setLocalStorage] = React.useState();
+    const [isPrevLocalStorage, setPrevLocalStorage] = React.useState();
+    const [isPrevLocation, setPrevLocation] = React.useState();
+
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [isComponentType, setComponentType] = React.useState();
+    const [isCurrentSearch, setIsCurrentSearch] = React.useState('');
+    const [isPrevSearch, setIsPrevSearch] = React.useState('');
+    const [isViewparams, setIsViewparams] = React.useState(viewparams);
+
+
 
     /* SET RAWSTATE  */
 
@@ -200,14 +205,13 @@ export default function ListPanel() {
 
     React.useEffect(() => {
 
-        if (isRawState 
-            && redux_current_mysite 
+        if (isRawState
+            && redux_current_mysite
             && !redux_model_list
-            &&  ((isCurrentSearch !== '') 
             && isLoading
             // || (isCurrentSearch && isCurrentSearch !== isPrevSearch)
-            )
-            ) {
+            // &&  ((isCurrentSearch !== '')             )
+        ) {
             let inQuery = {}
             let found = { payload: '' }
             /* This is for later */
@@ -227,8 +231,8 @@ export default function ListPanel() {
                 redux_localeuser,
                 dispatch,
                 isRawState,
+                thisview: isViewparams,
                 populate: isRawState.localStorage.qhelpers.populate,
-                // poliglot: isRawState.localStorage.poliglot,
                 hideIDs: null,
                 inQuery
             }).then(() => {
@@ -237,137 +241,114 @@ export default function ListPanel() {
             })
         }
 
-    }, [dispatch, isCurrentSearch, isPrevSearch, isRawState, reactrouter.match.params.model, redux_current_mysite, redux_localeuser, redux_model_list])
+    }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_current_mysite, redux_localeuser, redux_model_list, isViewparams])
 
 
+    // const onSearch = useCallback(async ({ event, blur, cell, isValid, value = null, sublistkey = null, tiedtoformkey = null }) => {
+    //     // let newLocalStorage = { ...this.state.localStorage }
+    //     // plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
+    //     // setIsLoading(true)
+    //     // setIsCurrentSearch(value)
+    //     const cellkey = Object.keys(cell)[0]
+    //     const cellvalue = Object.values(cell)[0]
+
+    //     // newLocalStorage[cellkey] = cellvalue
+    //     // this.updateLocalStorage(newLocalStorage)
+
+    //     // await search_inDatabase({
+    //     //     value,
+    //     //     blur,
+    //     //     event,
+    //     //     sublistkey,
+    //     //     tiedtoformkey,
+    //     //     mystate: this.state,
+    //     //     myprops: this.props,
+    //     //     poliglot: this.state.localStorage.poliglot,
+    //     //     // newLocalStorage
+    //     // })
 
 
-    // const updateFormValues = useCallback(
-    //     async ({ event, cellkey }) => {
-    //         // VERSION 2
-    //         let validated = { isValid: false }
-    //         if (fcstate[cellkey].validation.parse) {
-    //             validated = validateForm({ formcell: fcstate[cellkey], event })
-
-    //             if (!validated.isValid) {
-    //                 setFcState(prevState => ({
-    //                     ...prevState,
-    //                     [cellkey]: {
-    //                         ...prevState[cellkey],
-    //                         validation: { ...prevState[cellkey].validation, message: validated.vtext[0] },
-    //                         value: event.target.value,
-    //                         valid: false
-    //                     }
-    //                 }));
-
-    //             } else {
-    //                 setFcState(prevState => ({
-    //                     ...prevState,
-    //                     [cellkey]: {
-    //                         ...prevState[cellkey],
-    //                         validation: { ...prevState[cellkey].validation, message: '' },
-    //                         value: event.target.value,
-    //                         valid: true
-    //                     }
-    //                 }));
+    //     listFuncs_loadList_v2_vh({
+    //         sublistkey: null,
+    //         model: reactrouter.match.params.model,
+    //         redux_localeuser,
+    //         dispatch,
+    //         isRawState,
+    //         thisview: isViewparams,
+    //         populate: isRawState.localStorage.qhelpers.populate,
+    //         hideIDs: null,
+    //         // inQuery
+    //     }).then(()=>{
+    //         setIsViewparams(prevState => ({
+    //             ...prevState,
+    //             [cellkey]: {
+    //                 ...prevState[cellkey],
+    //                 value,
+    //                 valid: isValid
     //             }
-
-    //         } else {
-    //             setFcState(prevState => ({
-    //                 ...prevState,
-    //                 [cellkey]: {
-    //                     ...prevState[cellkey],
-    //                     value: event.target.value,
-    //                 }
-    //             }));
-    //         }
-    //     }, [fcstate])
+    //         }));
+    
+    //     })
 
 
-
-
-
-
-    const onSearch = useCallback(async ({ event, blur, value = null, cell = null, sublistkey = null, tiedtoformkey = null }) => {
-        // let newLocalStorage = { ...this.state.localStorage }
-
-        const cellkey = Object.keys(cell)[0]
-        const cellvalue = Object.values(cell)[0]
-
-        setIsCurrentSearch(cellvalue)
-
-        // newLocalStorage[cellkey] = cellvalue
-        // this.updateLocalStorage(newLocalStorage)
-
-        // await search_inDatabase({
-        //     value,
-        //     blur,
-        //     event,
-        //     sublistkey,
-        //     tiedtoformkey,
-        //     mystate: this.state,
-        //     myprops: this.props,
-        //     poliglot: this.state.localStorage.poliglot,
-        //     // newLocalStorage
-        // })
-    }, [])
+    // }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
 
     return (
-        !isLoading ? <div>
-            <div>{<ShowMessages />}</div>
+        !isLoading && isRawState? <div>
+            <div>{<ShowMessages />}</div>{console.log('render')}
             <GridContainer>
                 <GridItem xs={12}>
                     <Card>
                         <CardHeader color="rose" icon>
-                            <FormCustomInput
-                                // formcell={fcstate.email}
-                                // change={({ event }) => updateFormValues({ event, cellkey: 'email' })}
-                                // formcell={isRawState.localStorage.viewparams.search}
-
-                                formcell={isCurrentSearch}
+                            {/* <FormCustomInput
+                      
+                                formcell={isViewparams.search}
+                                value={isViewparams.value}
                                 formcellkey='search'
-                                change={({ event, cell }) => onSearch({
+                                change={({ event, value, cell, isValid }) => onSearch({
                                     event,
-                                    cell
+                                    value,
+                                    cell,
+                                    isValid
                                 })}
-                            />
+                            /> */}
                         </CardHeader>
                         <CardBody>
-                            {/* <ListTable
-                            // model={this.props.match.params.model}
-                            model={isRawState.localStorage.model}    
-                            myprops={this.props}
-                                mystate={this.state}
-                                changeSort={({ event }) => {
-                                    return this.onChangeSort({
-                                        event
-                                    })
-                                }}
-                                removeItem={({ value, removeall, event }) => {
+                            <ListTable
+                                model={reactrouter.match.params.model}
+                                tableparams={isRawState.localStorage.tableparams}
+                                viewparams={isViewparams}
+                                mystate={isRawState}
+                            // changeSort={({ event }) => {
+                            //     return this.onChangeSort({
+                            //         event
+                            //     })
+                            // }}
+                            // removeItem={({ value, removeall, event }) => {
 
-                                    return this.onRemoveItem({
-                                        removeall,
-                                        event,
-                                        value
-                                    })
-                                }}
-                                changePosition={({ value, direction, event }) => {
+                            //     return this.onRemoveItem({
+                            //         removeall,
+                            //         event,
+                            //         value
+                            //     })
+                            // }}
+                            // changePosition={({ value, direction, event }) => {
 
-                                    return this.onChangePos({
-                                        direction,
-                                        event,
-                                        value
-                                    })
-                                }}
-                                handleSwitch={({ value, event }) => {
+                            //     return this.onChangePos({
+                            //         direction,
+                            //         event,
+                            //         value
+                            //     })
+                            // }}
+                            // handleSwitch={({ value, event }) => {
 
-                                    return this.onToggleSwitch({
-                                        event,
-                                        value,
-                                    })
-                                }}
-                            /> */}
+                            //     return this.onToggleSwitch({
+                            //         event,
+                            //         value,
+                            //     })
+                            // }}
+                            />
                             {/* {
                                 this.state.localStorage.viewparams.size > 0 && this.state.localStorage.viewparams.size >= this.state.localStorage.viewparams.limit ?
                                     <Button id='loadmore' style={{ width: '100%' }} onClick={(event) => {
