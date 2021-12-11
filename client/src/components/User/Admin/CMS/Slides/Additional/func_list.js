@@ -15,7 +15,7 @@ export default async function rawStateFunction_Slide_List({ redux_current_mysite
 
     const state = {
         localStorage: {
-            model: 'slide',
+            // model: 'slide',
             attachto: {
                 brick: [],
                 // page:[]
@@ -155,65 +155,65 @@ export default async function rawStateFunction_Slide_List({ redux_current_mysite
                     },
                 ]
             },
-            viewparams: {
-                limit: 10,
-                skip: 0,
-                size: 0,
-                sortBy: 'position',
-                sortOrder: 1,
-                search: {
-                    element: 'input',
-                    category: 'ct_custominput',
-                    value: '',
-                    wrapcompos: {
-                        griditem: {
-                            xs: 12,
-                            xm: 4,
-                            md: 4,
-                        },
-                    },
-                    formcontrolprops: {
-                        fullWidth: true,
-                    },
-                    inputprops: {
-                        id: 'search',
-                        type: 'text',
-                        name: 'search_input',
-                        placeholder: 'Search...',
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Search />
-                            </InputAdornment>
-                        ),
-                        onBlur: (event) => this.onSearch({
-                            event,
-                            cell: { search: this.state.localStorage.viewparams.search },
-                            blur: true
-                        })
+            // viewparams: {
+            //     limit: 10,
+            //     skip: 0,
+            //     size: 0,
+            //     sortBy: 'position',
+            //     sortOrder: 1,
+            //     search: {
+            //         element: 'input',
+            //         category: 'ct_custominput',
+            //         value: '',
+            //         wrapcompos: {
+            //             griditem: {
+            //                 xs: 12,
+            //                 xm: 4,
+            //                 md: 4,
+            //             },
+            //         },
+            //         formcontrolprops: {
+            //             fullWidth: true,
+            //         },
+            //         inputprops: {
+            //             id: 'search',
+            //             type: 'text',
+            //             name: 'search_input',
+            //             placeholder: 'Search...',
+            //             startAdornment: (
+            //                 <InputAdornment position="start">
+            //                     <Search />
+            //                 </InputAdornment>
+            //             ),
+            //             onBlur: (event) => this.onSearch({
+            //                 event,
+            //                 cell: { search: this.state.localStorage.viewparams.search },
+            //                 blur: true
+            //             })
 
-                    },
-                    configparams: {
-                        showlabel: false,
-                        showhelpertext: false
+            //         },
+            //         configparams: {
+            //             showlabel: false,
+            //             showhelpertext: false
 
-                    },
-                    config: {
-                        label: 'Search',
-                        valuetype: 'string',
-                        helpertext: 'Enter text for Search',
-                        autocomplete: 'Off',
-                    },
-                    validation: {
-                        parse: false,
-                        // type: ['required']
-                    },
-                    range: ['name', 'description'],
-                    depth: [],
-                    valid: false,
-                    touched: false,
+            //         },
+            //         config: {
+            //             label: 'Search',
+            //             valuetype: 'string',
+            //             helpertext: 'Enter text for Search',
+            //             autocomplete: 'Off',
+            //         },
+            //         validation: {
+            //             parse: false,
+            //             // type: ['required']
+            //         },
+            //         range: ['name', 'description'],
+            //         depth: [],
+            //         valid: false,
+            //         touched: false,
 
-                },
-            },
+            //     },
+            // },
             qhelpers: {
             },
             linguistic: {
