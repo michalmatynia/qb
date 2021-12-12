@@ -134,7 +134,7 @@ export default function ListPanel() {
     const [isPrevLocation, setPrevLocation] = React.useState();
 
     const [isLocalUser, setLocalUser] = React.useState();
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
     const [isComponentType, setComponentType] = React.useState();
     const [isCurrentSearch, setIsCurrentSearch] = React.useState('');
     const [isPrevSearch, setIsPrevSearch] = React.useState('');
@@ -151,7 +151,7 @@ export default function ListPanel() {
     }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
-        if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser ) {
+        if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser && isLoading) {
 
             establishStateParams().then((rawstate) => {
                 // console.log(rawstate);
@@ -160,7 +160,7 @@ export default function ListPanel() {
             })
         }
 
-    }, [establishStateParams, isLocalUser, isRawState, redux_current_mysite, redux_localeuser])
+    }, [establishStateParams, isLoading, isLocalUser, isRawState, redux_current_mysite, redux_localeuser])
 
     // /* CLEANUP */
 
@@ -200,52 +200,53 @@ export default function ListPanel() {
 
     /* Grab List */
 
-    // React.useEffect(() => {
+    React.useEffect(() => {
 
-    //     if (isRawState
-    //         && !redux_model_list
-    //         && isLoading
-    //         // || (isCurrentSearch && isCurrentSearch !== isPrevSearch)
-    //         // &&  ((isCurrentSearch !== '')             )
-    //     ) {
+        if (isRawState
+            && !redux_model_list
+            && isLoading
+            // || (isCurrentSearch && isCurrentSearch !== isPrevSearch)
+            // &&  ((isCurrentSearch !== '')             )
+        ) {
 
-    //         let inQuery = {}
-    //         let found = { payload: '' }
-    //         /* This is for later */
-    //         /*             if (this.props.user.userData.role === 2) {
+            let inQuery = {}
+            let found = { payload: '' }
+            /* This is for later */
+            /*             if (this.props.user.userData.role === 2) {
             
-    //                         inQuery = await roleFuncs_listEvent({
-    //                             inQuery,
-    //                             event_lgbinder: '60fa0baa2956083e2c28e208',
-    //                             myprops: this.props,
-    //                         })
-    //                     } */
+                            inQuery = await roleFuncs_listEvent({
+                                inQuery,
+                                event_lgbinder: '60fa0baa2956083e2c28e208',
+                                myprops: this.props,
+                            })
+                        } */
 
 
-    //         listFuncs_loadList_v2_vh({
-    //             sublistkey: null,
-    //             model: reactrouter.match.params.model,
-    //             redux_localeuser,
-    //             dispatch,
-    //             isRawState,
-    //             thisview: isViewparams,
-    //             populate: isRawState.localStorage.qhelpers.populate,
-    //             hideIDs: null,
-    //             inQuery
-    //         }).then(() => {
-    //             setIsLoading(false)
+            listFuncs_loadList_v2_vh({
+                sublistkey: null,
+                model: reactrouter.match.params.model,
+                redux_localeuser,
+                dispatch,
+                isRawState,
+                thisview: isViewparams,
+                populate: isRawState.localStorage.qhelpers.populate,
+                hideIDs: null,
+                inQuery
+            }).then(() => {
+                setIsLoading(false)
 
-    //         })
+            })
 
 
-    //     }
+        }
 
-    // }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
+    }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
 
     React.useEffect(() => {
 
-        if (isRawState && isViewparams) {
+        if (isRawState && isViewparams && !isLoading) {
 
+            console.log('fdfd');
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
                 model: reactrouter.match.params.model,
@@ -259,9 +260,25 @@ export default function ListPanel() {
             })
         }
 
-    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+    }, [dispatch, isLoading, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
- 
+    const onChangeSort = useCallback(async ({ event, cell = null, sublistkey = null, tiedtoformkey = null }) => {
+
+        console.log('sort');
+
+        // let newLocalStorage = await changesort_classicSort({
+        //     event,
+        //     cell,
+        //     sublistkey,
+        //     tiedtoformkey,
+        //     mystate: this.state,
+        //     myprops: this.props,
+        //     poliglot: this.state.localStorage.poliglot
+        // })
+
+        // this.updateLocalStorage(newLocalStorage)
+    }, [])
+
 
     return (
         <div>
@@ -292,7 +309,7 @@ export default function ListPanel() {
                                 }
                             />
                         </CardHeader>
-                        {isRawState && redux_model_list ? <CardBody>{console.log('render')}
+                        {!isLoading ? <CardBody>{console.log('render')}
                             <ListTable
                                 model={reactrouter.match.params.model}
                                 tableparams={isRawState.localStorage.tableparams}

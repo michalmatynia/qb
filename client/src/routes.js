@@ -162,8 +162,8 @@ let dashRoutes = [
           },
           {
             /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
-            path: "/list/:model",
-            navlink: "/list/slide",
+            path: "/unilist/:model",
+            navlink: "/unilist/slide",
             name: "List Slide",
             component: ListSlide,
             layout: "/admin",
