@@ -64,7 +64,6 @@ import priceImage3 from "../../../../../templates/creativetim/material-dashboard
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
-  console.log('ddd');
   const [isListVisit, setListVisit] = React.useState();
   const [isListParsed, setListParsed] = React.useState();
   const [isCheckedLayers, setCheckedLayers] = React.useState([]);
@@ -74,6 +73,7 @@ export default function Dashboard() {
   const [isListVisitLimit, setListVisitLimit] = React.useState(10);
   const [isListVisitSortOrder, setListVisitSortOrder] = React.useState(-1);
   const [isListVisitSortBy, setListVisitSortBy] = React.useState('createdAt');
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const dispatch = useDispatch()
 
@@ -147,6 +147,7 @@ export default function Dashboard() {
 
         setListVisit(response.payload)
         setListParsed(show_list_array)
+        setIsLoading(false)
 
       })
     }
@@ -161,7 +162,7 @@ export default function Dashboard() {
   const customClassesForCells = [0, 2]
 
   return (
-    <div>
+    !isLoading ? <div>{console.log('rendash')}
       <GridContainer>
         <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>
@@ -596,6 +597,6 @@ export default function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
-    </div>
+    </div> : null
   );
 }

@@ -5,7 +5,7 @@ export default function SolidFC(props) {
     console.log('ree');
     const { Page } = props
 
-    const [isloading, setIsLoading] = useState(true);
+    const [isloading, setIsLoading] = useState(false);
 
 
     React.useEffect(() => {
