@@ -93,6 +93,8 @@ export async function plg_findMany({ viewparams = null, model = null, myprops = 
 
     }
 
+    // console.log(reqBody.reqhelper);
+
     if (dispatch) {
         return await dispatch(act_findMany_queMod({ dataToSubmit: reqBody, actionType }))
 

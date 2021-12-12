@@ -119,8 +119,8 @@ export default function ListPanel() {
     }
 
     let reactrouter = useRouter()
-    let reactrouter_history = useHistory()
-    let reactrouter_location = useLocation()
+    // let reactrouter_history = useHistory()
+    // let reactrouter_location = useLocation()
 
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
@@ -243,49 +243,71 @@ export default function ListPanel() {
 
     }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
 
+    React.useEffect(() => {
 
-    const onSearch = useCallback(async ({ event, blur, cell, isValid, value = null, sublistkey = null, tiedtoformkey = null }) => {
-        // let newLocalStorage = { ...this.state.localStorage }
-        // plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
-        // setIsCurrentSearch(value)
-        const cellkey = Object.keys(cell)[0]
-        const cellvalue = Object.values(cell)[0]
-
-        // newLocalStorage[cellkey] = cellvalue
-        // this.updateLocalStorage(newLocalStorage)
-
-        // setIsLoading(true)
-        listFuncs_loadList_v2_vh({
-            sublistkey: null,
-            model: reactrouter.match.params.model,
-            redux_localeuser,
-            dispatch,
-            isRawState,
-            thisview: isViewparams,
-            populate: isRawState.localStorage.qhelpers.populate,
-            hideIDs: null,
-            // inQuery
-        }).then(() => {
-            setIsViewparams(prevState => ({
-                ...prevState,
-                [cellkey]: {
-                    ...prevState[cellkey],
-                    value,
-                    valid: isValid
-                }
-            }));
-            // setIsLoading(false)
-
-        })
-
+        if (isRawState && isViewparams !== '') {
+            listFuncs_loadList_v2_vh({
+                sublistkey: null,
+                model: reactrouter.match.params.model,
+                redux_localeuser,
+                dispatch,
+                isRawState,
+                thisview: isViewparams,
+                populate: isRawState.localStorage.qhelpers.populate,
+                hideIDs: null,
+                // inQuery
+            })
+        }
 
     }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+
+
+
+
+
+
+    // const onSearch = useCallback(async ({ event, blur, cell, isValid, value = null, sublistkey = null, tiedtoformkey = null }) => {
+
+    //     const cellkey = Object.keys(cell)[0]
+    //     const cellvalue = Object.values(cell)[0]
+
+
+    //     // // setIsLoading(true)
+    //     listFuncs_loadList_v2_vh({
+    //         sublistkey: null,
+    //         model: reactrouter.match.params.model,
+    //         redux_localeuser,
+    //         dispatch,
+    //         isRawState,
+    //         thisview: isViewparams,
+    //         populate: isRawState.localStorage.qhelpers.populate,
+    //         hideIDs: null,
+    //         // inQuery
+    //     }).then(() => {
+    //         setIsViewparams(prevState => ({
+    //             ...prevState,
+    //             [cellkey]: {
+    //                 ...prevState[cellkey],
+    //                 value,
+    //                 valid: isValid
+    //             }
+    //         }));
+    //         // setIsLoading(false)
+
+    //     })
+
+    //     // #################################
+
+
+
+
+    // }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
 
     return (
         <div>
             <div>{<ShowMessages />}</div>
-             <GridContainer>
+            <GridContainer>
                 <GridItem xs={12}>
                     <Card>
                         <CardHeader color="rose" icon>
@@ -293,12 +315,30 @@ export default function ListPanel() {
                                 formcell={isViewparams.search}
                                 value={isViewparams.value}
                                 formcellkey='search'
-                                change={({ event, value, cell, isValid }) => onSearch({
-                                    event,
-                                    value,
-                                    cell,
-                                    isValid
-                                })}
+                                change={({ event, value, cell, isValid }) => {
+
+                                    const cellkey = Object.keys(cell)[0]
+                                    const cellvalue = Object.values(cell)[0]
+
+                                    setIsViewparams(prevState => ({
+                                        ...prevState,
+                                        [cellkey]: {
+                                            ...prevState[cellkey],
+                                            value,
+                                            valid: isValid
+                                        }
+                                    }));
+
+                                    // onSearch({
+                                    //     event,
+                                    //     value,
+                                    //     cell,
+                                    //     isValid
+                                    // })
+
+                                }
+
+                                }
                             />
                         </CardHeader>
                         {!isLoading ? <CardBody>{console.log('render')}
@@ -351,7 +391,7 @@ export default function ListPanel() {
                     </Card>
 
                 </GridItem>
-            </GridContainer> 
+            </GridContainer>
         </div>
     )
 }
