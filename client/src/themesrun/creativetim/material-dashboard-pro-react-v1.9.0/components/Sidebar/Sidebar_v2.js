@@ -573,7 +573,7 @@ class Sidebar extends React.Component {
     return (
       <div ref={this.mainPanel}>
         <Hidden mdUp implementation="css">
-          {/* <Drawer
+          <Drawer
             variant="temporary"
             anchor={rtlActive ? "left" : "right"}
             open={this.props.open}
@@ -598,9 +598,9 @@ class Sidebar extends React.Component {
                 style={{ backgroundImage: "url(" + image + ")" }}
               />
             ) : null}
-          </Drawer> */}
+          </Drawer>
         </Hidden>
-        {/* <Hidden smDown implementation="css">
+        <Hidden smDown implementation="css">
           <Drawer
             onMouseOver={() => this.setState({ miniActive: false })}
             onMouseOut={() => this.setState({ miniActive: true })}
@@ -624,7 +624,7 @@ class Sidebar extends React.Component {
               />
             ) : null}
           </Drawer>
-        </Hidden> */}
+        </Hidden>
       </div>
     );
   }

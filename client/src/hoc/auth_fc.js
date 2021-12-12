@@ -24,9 +24,6 @@ export default function AuthFC(props) {
 
     const dispatch = useDispatch()
 
-    let reduxprops = useSelector(state => state)
-    // let redux_userdata = useSelector(state => state.user.userData)
-
     const [isloading, setIsLoading] = useState(true);
     // const [isAuthed, setIsAuthed] = useState(false);
 

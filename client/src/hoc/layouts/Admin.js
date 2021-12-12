@@ -99,7 +99,6 @@ export default function Dashboard(props) {
 
   const getRoutes = useCallback( (routes) => {
     return routes.map((prop, key) => {
-      console.log(prop);
       // Wyswietlanie
 
       if (prop.collapse) {
@@ -123,8 +122,7 @@ export default function Dashboard(props) {
 
         return (
           // Side options for additional authentication per subpage
-          // <Route exact path={reactrouter.match.path + prop.path} key={key}><SolidFC Page={prop.component} reload={prop.reload} /></Route>
-          <Route exact path={reactrouter.match.path + prop.path} key={key}>rr</Route>
+          <Route exact path={reactrouter.match.path + prop.path} key={key}><SolidFC Page={prop.component} reload={prop.reload} /></Route>
 
         );
       } else {
@@ -179,9 +177,9 @@ export default function Dashboard(props) {
           <div className={classes.content}>
             <div className={classes.container}>
               <Switch>
-                {/* {getRoutes(routes)} */}
-                {/* <Redirect from="/admin" to="/admin/dashboard" />
-                <Redirect from="/contentmanager" to="/contentmanager/dashboard" /> */}
+                {getRoutes(routes)}
+                <Redirect from="/admin" to="/admin/dashboard" />
+                <Redirect from="/contentmanager" to="/contentmanager/dashboard" />
 
               </Switch>
             </div>
@@ -189,9 +187,9 @@ export default function Dashboard(props) {
         ) : (
           <div className={classes.map}>
             <Switch>
-              {/* {getRoutes(routes)} */}
-              {/* <Redirect from="/admin" to="/admin/dashboard" />
-              <Redirect from="/contentmanager" to="/contentmanager/dashboard" /> */}
+              {getRoutes(routes)}
+              <Redirect from="/admin" to="/admin/dashboard" />
+              <Redirect from="/contentmanager" to="/contentmanager/dashboard" />
             </Switch>
           </div>
         )}

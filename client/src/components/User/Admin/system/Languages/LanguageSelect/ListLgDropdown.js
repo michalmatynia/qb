@@ -30,16 +30,15 @@ export default function ListLanguageMenu() {
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
-    let redux_current_detail_page = useSelector(state => state.page.current_detail_page)
 
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
   const [isLoading, setIsLoading] = React.useState(true);
+  const [isLocalUser, setIsLocalUser] = React.useState();
 
     const establishStateParams = useCallback(async () => {
 
-        let rawstate = await rawStateFunction({ redux_localeuser, dispatch })
-        setRawState(rawstate)
+        return await rawStateFunction({ redux_localeuser, dispatch })
 
     }, [dispatch, redux_localeuser])
 
@@ -47,7 +46,10 @@ export default function ListLanguageMenu() {
 
         if (!isRawState && redux_localeuser) {
 
-            establishStateParams()
+            establishStateParams().then((rawstate)=>{
+                setRawState(rawstate)
+
+            })
 
         }
 
@@ -80,91 +82,93 @@ export default function ListLanguageMenu() {
     }, [isLoading, isRawState, redux_localeuser, runInStateFunctions])
 
     /* Cleanup */
+    const findLanguage = useCallback(async (cm) => {
+        let iplocator = await act_getGeoLocation()
 
-    React.useEffect(() => {
+        // let iplocator = {payload: ''}
+        let inQuery
+        await plg_create_oprMod({ model: 'visit', dispatch, actionType: 'samestate', inInsert: iplocator.payload })
+        try {
+            if (iplocator.payload.Success) {
 
-        async function findLanguage(cm) {
-
-            let iplocator = await act_getGeoLocation()
-
-            // let iplocator = {payload: ''}
-            let inQuery
-            await plg_create_oprMod({ model: 'visit', dispatch, actionType: 'samestate', inInsert: iplocator.payload })
-            try {
-                if (iplocator.payload.Success) {
-
-                    let inPipeline = [
-                        {
-                            $match: {
-                                alpha2Code: { "$eq": iplocator.payload.data.country.iso_code }
-                            }
-                        },
-                        {
-                            $lookup:
-                            {
-                                from: "languages",
-                                as: "agg_lg",
-                                let: { wspolny_id: "$_id" },
-                                pipeline: [{
-                                    $match: {
-                                        $expr: { $eq: ["$$wspolny_id", "$referenceID"] },
-                                    }
-                                },
-                                ]
-                            }
-                        },
-                        {
-                            $set: {
-                                agg_nation: "$$ROOT"
-                            }
+                let inPipeline = [
+                    {
+                        $match: {
+                            alpha2Code: { "$eq": iplocator.payload.data.country.iso_code }
                         }
-
-                    ]
-
-                    let result = await plg_aggregate({ model: 'nation', dispatch, actionType: 'samestate', inPipeline })
-
-                    if (result.payload[0].agg_lg[0]) {
-                        result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
-                        let lg_found = result.payload[0].agg_lg[0]
-
-                        dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
-                        dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
-
-                    } else {
-                        throw iplocator
+                    },
+                    {
+                        $lookup:
+                        {
+                            from: "languages",
+                            as: "agg_lg",
+                            let: { wspolny_id: "$_id" },
+                            pipeline: [{
+                                $match: {
+                                    $expr: { $eq: ["$$wspolny_id", "$referenceID"] },
+                                }
+                            },
+                            ]
+                        }
+                    },
+                    {
+                        $set: {
+                            agg_nation: "$$ROOT"
+                        }
                     }
+
+                ]
+
+                let result = await plg_aggregate({ model: 'nation', dispatch, actionType: 'samestate', inPipeline })
+
+
+                if (result.payload[0].agg_lg[0]) {
+                    result.payload[0].agg_lg[0].referenceID = result.payload[0].agg_nation
+                    let lg_found = result.payload[0].agg_lg[0]
+
+                    dispatch(act_injectProp({ dataToSubmit: iplocator.payload, model: 'user', actionType: 'geodata' }))
+                    dispatch(act_injectProp({ dataToSubmit: lg_found, model: 'language', actionType: 'locale' }))
 
                 } else {
                     throw iplocator
                 }
 
-            } catch (iplocator) {
-
-                inQuery = {
-                    _id: { "$eq": cm.default_language._id }
-                }
-                let result = await plg_findOne_QueMod({ model: 'language', dispatch, actionType: 'locale', inQuery, populate: [{ path: 'referenceID' }] })
-
-                return result.payload
+            } else {
+                throw iplocator
             }
 
+        } catch (iplocator) {
+
+            console.log(iplocator);
+            console.log(cm);
+
+            inQuery = {
+                _id: { "$eq": cm.default_language._id }
+            }
+            let result = await plg_findOne_QueMod({ model: 'language', dispatch, actionType: 'locale', inQuery, populate: [{ path: 'referenceID' }] })
+
+            return result.payload
         }
+    },[dispatch])
 
-        if (redux_currentmysite !== undefined && redux_localeuser === undefined ) {
+    React.useEffect(() => {
 
-            setIsLoading(true)
-            findLanguage(redux_currentmysite)
+        if (redux_currentmysite && !redux_localeuser && isLoading && !isLocalUser ) {
+
+            findLanguage(redux_currentmysite).then((localeuser)=>{
+                setIsLocalUser(localeuser)
+            })
         }
-    }, [redux_currentmysite, dispatch, redux_localeuser, isRawState])
+    }, [findLanguage, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
 
-        React.useEffect(() => {
+    //     React.useEffect(() => {
 
 
-        if (redux_currentmysite !== undefined && redux_localeuser !== undefined) {
+    //     if (redux_currentmysite && redux_localeuser & isLoading && !isLocalUser) {
 
-            layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
-        }
-    }, [dispatch, redux_currentmysite, redux_localeuser])
+    //         layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
+    //     }
+    // }, [dispatch, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
 
 
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
@@ -206,5 +210,6 @@ export default function ListLanguageMenu() {
         </div> : null
 
     )
+
 
 }
