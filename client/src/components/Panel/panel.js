@@ -23,12 +23,13 @@ export default function Panel() {
 
     // const classes = useStyles();
 
-        return <div>
+        return <div>{console.log('Panel')}
             <Switch>
-                <Route path='/client'><AuthFC Page={AdminLayout} reload={true} /></Route>
-                <Route path='/contentmanager'><AuthFC Page={AdminLayout} reload={true} /></Route>
+                {/* <Route path='/client'><AuthFC Page={AdminLayout} reload={true} /></Route>
+                <Route path='/contentmanager'><AuthFC Page={AdminLayout} reload={true} /></Route> */}
+
                 <Route path='/admin'><AuthFC Page={AdminLayout} reload={true} /></Route>
-                <Route><AuthFC Page={PageNotFound} /></Route>
+                {/* <Route><AuthFC Page={PageNotFound} /></Route> */}
             </Switch>
         </div>
 }

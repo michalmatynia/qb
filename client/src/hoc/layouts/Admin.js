@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useCallback} from "react";
 
 // Access Control
-import AuthFC from '../auth_fc';
+import SolidFC from '../solid_fc';
 // import {
 //   useLocation,
 //   useHistory,
@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // core components
 // import Sidebar from "../../templates/creativetim/material-dashboard-pro-react-v1.9.0/components/Sidebar/Sidebar.js";
-import Sidebar from "../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Sidebar/Sidebar.js";
+import Sidebar from "../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Sidebar/Sidebar_v2.js";
 
 import routes from "../../routes";
 
@@ -84,7 +84,7 @@ export default function Dashboard(props) {
       }
       window.removeEventListener("resize", resizeFunction);
     };
-  });
+  }, [mainPanel]);
   // *** Adopt later
 
   const handleDrawerToggle = () => {
@@ -95,8 +95,11 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
-  const getRoutes = routes => {
+  // const { Page, reload } = props
+
+  const getRoutes = useCallback( (routes) => {
     return routes.map((prop, key) => {
+      console.log(prop);
       // Wyswietlanie
 
       if (prop.collapse) {
@@ -120,7 +123,8 @@ export default function Dashboard(props) {
 
         return (
           // Side options for additional authentication per subpage
-          <Route exact path={reactrouter.match.path + prop.path} key={key}><AuthFC Page={prop.component} reload={prop.reload} /></Route>
+          // <Route exact path={reactrouter.match.path + prop.path} key={key}><SolidFC Page={prop.component} reload={prop.reload} /></Route>
+          <Route exact path={reactrouter.match.path + prop.path} key={key}>rr</Route>
 
         );
       } else {
@@ -128,7 +132,9 @@ export default function Dashboard(props) {
       }
 
     });
-  };
+
+  }, [reactrouter.match.path])
+
 
   const filterRoutes = (routes) => {
 
@@ -152,7 +158,7 @@ export default function Dashboard(props) {
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper}>{console.log('auth')}
       {/* {filterRoutes(routes)} */}
       <Sidebar
         // reduxprops={reduxprops}
@@ -173,9 +179,9 @@ export default function Dashboard(props) {
           <div className={classes.content}>
             <div className={classes.container}>
               <Switch>
-                {getRoutes(routes)}
-                <Redirect from="/admin" to="/admin/dashboard" />
-                <Redirect from="/contentmanager" to="/contentmanager/dashboard" />
+                {/* {getRoutes(routes)} */}
+                {/* <Redirect from="/admin" to="/admin/dashboard" />
+                <Redirect from="/contentmanager" to="/contentmanager/dashboard" /> */}
 
               </Switch>
             </div>
@@ -183,9 +189,9 @@ export default function Dashboard(props) {
         ) : (
           <div className={classes.map}>
             <Switch>
-              {getRoutes(routes)}
-              <Redirect from="/admin" to="/admin/dashboard" />
-              <Redirect from="/contentmanager" to="/contentmanager/dashboard" />
+              {/* {getRoutes(routes)} */}
+              {/* <Redirect from="/admin" to="/admin/dashboard" />
+              <Redirect from="/contentmanager" to="/contentmanager/dashboard" /> */}
             </Switch>
           </div>
         )}

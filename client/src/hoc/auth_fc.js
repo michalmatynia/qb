@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { authasync } from '../redux/actions/user_actions';
 // import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from 'react-redux'
@@ -32,10 +32,12 @@ export default function AuthFC(props) {
 
 
     //==========================
+
+    const authorizeUser = useCallback(async () => {
+           return await dispatch(authasync({ dataToSubmit: { model: 'user' }, actionType: 'auth' }))
+    }, [])
     React.useEffect(() => {
-        const authorizeUser = async () => {
-            return await dispatch(authasync({ dataToSubmit: { model: 'user' }, actionType: 'auth' }))
-        };
+
 
         authorizeUser().then(response => {
 
@@ -84,37 +86,17 @@ export default function AuthFC(props) {
         })
 
 
-    }, [dispatch, history, reactrouter.match.path, reload])
+    }, [authorizeUser, history, reactrouter.match.path, reload])
 
     // const classes = useStyles();
 
-    if (isloading) {
 
 
-        return (null
-        //     <div
-        //     style={{
-        //         //   backgroundImage: "url(" + image + ")",
-        //         backgroundSize: "cover",
-        //         backgroundColor: '#E2E2E2',
-        //         backgroundPosition: " center",
-        //         paddingTop: '25%',
-        //         position: 'fixed',
-        //         left: '0px',
-        //         top: '0px',
-        //         width: '100%',
-        //         height: '100%',
-        //         // zIndex: '9999',
-        //         textAlign: 'center',
-        //     }}
-        // >
-        //     <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
-        // </div>
-        )
-    } else {
-        return (
-                <Page {...reactrouter} user={reduxprops.user} />
-        )
-    }
+    return (
+        !isloading ? <div>{console.log('auth func render')} <Page  /> </div> : null
+    )
+
+
+
 
 }
