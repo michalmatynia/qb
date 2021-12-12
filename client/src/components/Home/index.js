@@ -148,8 +148,6 @@ export default function Home() {
             loadPage().then((allbricks) => {
                 let wall = allbricks.map((a) => a.referenceID)
 
-                console.log(wall);
-
                 setIsWall(wall)
                 setIsLoading(false)
 

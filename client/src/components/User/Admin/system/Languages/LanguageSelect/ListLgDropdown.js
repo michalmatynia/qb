@@ -30,6 +30,7 @@ export default function ListLanguageMenu() {
     let redux_currentmysite = useSelector(state => state.mysite.CurrentMysite)
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
+    let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
     const [isRawState, setRawState] = React.useState();
     const [isLocalStorage, setLocalStorage] = React.useState();
@@ -44,7 +45,7 @@ export default function ListLanguageMenu() {
 
     React.useEffect(() => {
 
-        if (!isRawState && redux_localeuser) {
+        if (!isRawState && redux_localeuser && redux_currencyuser) {
 
             establishStateParams().then((rawstate)=>{
                 setRawState(rawstate)
@@ -53,7 +54,7 @@ export default function ListLanguageMenu() {
 
         }
 
-    }, [establishStateParams, isRawState, redux_localeuser])
+    }, [establishStateParams, isRawState, redux_currencyuser, redux_localeuser])
 
     const runInStateFunctions = useCallback(async () => {
 
@@ -72,14 +73,14 @@ export default function ListLanguageMenu() {
 
     React.useEffect(() => {
 
-        if (isRawState && isLoading && redux_localeuser) {
+        if (isRawState && isLoading && redux_localeuser && redux_currencyuser) {
             runInStateFunctions().then(()=>{
                 setIsLoading(false)
 
             })
         }
 
-    }, [isLoading, isRawState, redux_localeuser, runInStateFunctions])
+    }, [isLoading, isRawState, redux_currencyuser, redux_localeuser, runInStateFunctions])
 
     const findLanguage = useCallback(async (cm) => {
         let iplocator = await act_getGeoLocation()
@@ -149,46 +150,23 @@ export default function ListLanguageMenu() {
 
     React.useEffect(() => {
 
-        if (redux_currentmysite && !redux_localeuser && isLoading && !isLocalUser && !isRawState) {
+        if (redux_currentmysite && !redux_localeuser && !redux_currencyuser && isLoading && !isLocalUser && !isRawState) {
 
 
             findLanguage(redux_currentmysite).then((localeuser)=>{
                 setIsLocalUser(localeuser)
             })
         }
-    }, [findLanguage, isLoading, isLocalUser, isRawState, redux_currentmysite, redux_localeuser])
-
-
-
-
-
-
-    //     React.useEffect(() => {
-
-    //     if (redux_currentmysite && redux_localeuser & isLoading && isLocalUser && !isRawState ) {
-
-    //         console.log('Set Currency');
-
-
-    //         layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
-    //     }
-    // }, [dispatch, isLoading, isLocalUser, isRawState, redux_currentmysite, redux_localeuser])
-
-
+    }, [findLanguage, isLoading, isLocalUser, isRawState, redux_currencyuser, redux_currentmysite, redux_localeuser])
 
 
     React.useEffect(() => {
-        console.log(isLoading);
 
-        if (redux_currentmysite && redux_localeuser & isLoading && !isRawState ) {
-
-
+        if (redux_currentmysite && redux_localeuser  ) {
 
             layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
         }
-    }, [dispatch, isLoading, isRawState, redux_currentmysite, redux_localeuser])
-
-
+    }, [dispatch,  redux_currentmysite, redux_localeuser])
 
     
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
@@ -207,7 +185,7 @@ export default function ListLanguageMenu() {
     }, [dispatch, isLocalStorage, redux_cartuser, redux_localeuser])
 
 
-    return  ( isLocalStorage && !isLoading && redux_localeuser && redux_currentmysite && isRawState ? <div
+    return  ( isLocalStorage && !isLoading && redux_localeuser && redux_currentmysite && redux_currencyuser && isRawState ? <div
         // style={{
         //     position: 'fixed',
         //     // left: '0px',
