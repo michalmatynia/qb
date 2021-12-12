@@ -12,6 +12,8 @@ import CardHeader from "../../../../../themesrun/creativetim/material-dashboard-
 // import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import Button from "../../../../../templates/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import { search_inDatabase } from '../../EventFuncs/search_funcs'
+import { changpos_classicAdjust_vh } from '../../EventFuncs/changepos_funcs_vh'
+import { remove_fromDatabase_vh, remove_fromOverMods_vh } from '../../EventFuncs/remove_funcs_vh'
 
 
 // import FormElement from '../../../../utils/Form/Funcs/formContainer'
@@ -23,6 +25,7 @@ import { submitFuncs_fullSubmit_vh2 } from '../../GenericFuncs/submit_funcs_vh'
 import { listFuncs_loadList_v2_vh } from '../../GenericFuncs/list_funcs_vh'
 import ListTable from '../../GenericCompos/list_table_vh'
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { toggle_boolSwitch_v1_vh } from '../../EventFuncs/toggle_funcs_vh'
 
 import {
     useRouter,
@@ -40,7 +43,8 @@ import { grabFormdata_vh2 } from '../../../../utils/Form/FormActions/grabFormdat
 import { attachtoFuncs_populateEdit_vh2 } from '../../GenericFuncs/attachto_funcs_vh'
 import AutocompleteMenu from '../../GenericCompos/autocomplete_menu'
 
-import { ShowMessages } from '../../GenericFuncs/errormsg_funcs'
+// import { ShowMessages } from '../../GenericFuncs/errormsg_funcs'
+import { ShowMessages } from '../../../../Message/Generic/static_msg'
 
 import FormContainer from '../../../../utils/Form/Funcs/FormContainer_v2'
 
@@ -139,6 +143,8 @@ export default function ListPanel() {
     const [isCurrentSearch, setIsCurrentSearch] = React.useState('');
     const [isPrevSearch, setIsPrevSearch] = React.useState('');
     const [isViewparams, setIsViewparams] = React.useState(viewparams);
+    const [isShowMessage, setShowMessage] = React.useState(false);
+    const [isActualMessage, setIsActualMessage] = React.useState();
 
 
 
@@ -151,7 +157,7 @@ export default function ListPanel() {
     }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
-        if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser ) {
+        if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
                 // console.log(rawstate);
@@ -213,7 +219,7 @@ export default function ListPanel() {
     //         let found = { payload: '' }
     //         /* This is for later */
     //         /*             if (this.props.user.userData.role === 2) {
-            
+
     //                         inQuery = await roleFuncs_listEvent({
     //                             inQuery,
     //                             event_lgbinder: '60fa0baa2956083e2c28e208',
@@ -242,6 +248,37 @@ export default function ListPanel() {
 
     // }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
 
+    const onRemoveItem = useCallback(async ({ event, removeall, value = null }) => {
+        
+        // setIsActualMessage('Removing')
+        // setShowMessage(true)
+        
+        await remove_fromOverMods_vh({
+            value,
+            removeall,
+            overmodel: Object.keys(isRawState.localStorage.attachto)[0],
+            submodel: reactrouter.match.params.model,
+            isRawState,
+            dispatch
+        })
+
+        // await remove_fromDatabase_vh({
+        //     value,
+        //     removeall,
+        //     event,
+        //     cell,
+        //     sublistkey,
+        //     tiedtoformkey,
+        //     mystate: this.state,
+        //     myprops: this.props,
+        //     poliglot: this.state.localStorage.poliglot
+        // }).then(() => {
+        //     setShowMessage(false)
+        //     setIsActualMessage()
+        // })
+
+    },[dispatch, isRawState, reactrouter.match.params.model])
+
     React.useEffect(() => {
 
         if (isRawState && isViewparams) {
@@ -261,11 +298,52 @@ export default function ListPanel() {
 
     }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
- 
+    const onToggleSwitch = useCallback(async ({ event, value = null }) => {
+
+        await toggle_boolSwitch_v1_vh({
+            value,
+            event,
+            model: reactrouter.match.params.model,
+            dispatch,
+            poliglot: isRawState.localStorage.poliglot,
+            isViewparams,
+            isRawState,
+            redux_localeuser
+        })
+
+    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+
+    const onChangePos = useCallback(async ({ event, direction, value = null }) => {
+
+        setIsActualMessage('Changing position')
+        setShowMessage(true)
+
+        await changpos_classicAdjust_vh({
+            value,
+            direction,
+            event,
+            dispatch,
+            poliglot: isRawState.localStorage.poliglot,
+            model: reactrouter.match.params.model,
+            isViewparams,
+            isRawState,
+            redux_localeuser
+        }).then(() => {
+            setShowMessage(false)
+            setIsActualMessage()
+        })
+
+    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+
 
     return (
         <div>
-            <div>{<ShowMessages />}</div>
+            {isShowMessage ? <ShowMessages
+                visible={isShowMessage}
+                message={isActualMessage}
+                color='success'
+                place='tr'
+            /> : null}
             <GridContainer>
                 <GridItem xs={12}>
                     <Card>
@@ -275,10 +353,7 @@ export default function ListPanel() {
                                 value={isViewparams.value}
                                 formcellkey='search'
                                 change={({ event, value, cell, isValid }) => {
-
                                     const cellkey = Object.keys(cell)[0]
-                                    const cellvalue = Object.values(cell)[0]
-
                                     setIsViewparams(prevState => ({
                                         ...prevState,
                                         [cellkey]: {
@@ -288,7 +363,6 @@ export default function ListPanel() {
                                         }
                                     }));
                                 }
-
                                 }
                             />
                         </CardHeader>
@@ -299,46 +373,31 @@ export default function ListPanel() {
                                 viewparams={isViewparams}
                                 mystate={isRawState}
                                 changeSort={({ event }) => {
-
-                                    // sublistkey ? newLocalStorage[sublistkey].viewparams.sortOrder = -1 : newLocalStorage.viewparams.sortOrder = -1
-
                                     setIsViewparams(prevState => ({
                                         ...prevState,
                                         sortOrder: prevState.sortOrder === 1 ? -1 : 1
-
-
-                                        // [cellkey]: {
-                                        //     ...prevState[cellkey],
-                                        //     value,
-                                        //     valid: isValid
-                                        // }
                                     }));
-
-                       
                                 }}
-                            // removeItem={({ value, removeall, event }) => {
-
-                            //     return this.onRemoveItem({
-                            //         removeall,
-                            //         event,
-                            //         value
-                            //     })
-                            // }}
-                            // changePosition={({ value, direction, event }) => {
-
-                            //     return this.onChangePos({
-                            //         direction,
-                            //         event,
-                            //         value
-                            //     })
-                            // }}
-                            // handleSwitch={({ value, event }) => {
-
-                            //     return this.onToggleSwitch({
-                            //         event,
-                            //         value,
-                            //     })
-                            // }}
+                                removeItem={({ value, removeall, event }) => {
+                                    return onRemoveItem({
+                                        removeall,
+                                        event,
+                                        value
+                                    })
+                                }}
+                                changePosition={({ value, direction, event }) => {
+                                    return onChangePos({
+                                        direction,
+                                        event,
+                                        value
+                                    })
+                                }}
+                                handleSwitch={({ value, event }) => {
+                                    return onToggleSwitch({
+                                        event,
+                                        value,
+                                    })
+                                }}
                             />
                             {/* {
                                 this.state.localStorage.viewparams.size > 0 && this.state.localStorage.viewparams.size >= this.state.localStorage.viewparams.limit ?
@@ -353,7 +412,6 @@ export default function ListPanel() {
                             } */}
                         </CardBody> : null}
                     </Card>
-
                 </GridItem>
             </GridContainer>
         </div>

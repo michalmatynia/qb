@@ -372,8 +372,6 @@ class ListSlide extends Component {
             myprops: this.props,
             poliglot: this.state.localStorage.poliglot
         })
-
-
     }
     onToggleSwitch = async ({ event, value = null, cell = null, sublistkey = null, tiedtoformkey = null }) => {
 
