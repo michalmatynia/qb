@@ -8,8 +8,8 @@ import {
   plg_aggregate
 
 } from '../../../../../components/utils/Plugs/cms_plugs'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-// react plugin for creating charts
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // react plugin for creating vector maps
@@ -597,6 +597,19 @@ export default function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
-    </div> : null
+    </div> :             <div
+                style={{
+                    paddingTop: '30%',
+                    position: 'relative',
+                    left: '0px',
+                    top: '0px',
+                    width: '100%',
+                    height: '100%',
+                    // zIndex: '9999',
+                    textAlign: 'center',
+                }}
+            >
+                <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+            </div>
   );
 }

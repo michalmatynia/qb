@@ -385,9 +385,7 @@ export default function EditAdd() {
 
         /> : <div
             style={{
-                backgroundSize: "cover",
-                backgroundPosition: " center",
-                paddingTop: '40%',
+                paddingTop: '30%',
                 position: 'relative',
                 left: '0px',
                 top: '0px',
