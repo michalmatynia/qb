@@ -151,21 +151,46 @@ export default function ListLanguageMenu() {
 
         if (redux_currentmysite && !redux_localeuser && isLoading && !isLocalUser && !isRawState) {
 
+
             findLanguage(redux_currentmysite).then((localeuser)=>{
                 setIsLocalUser(localeuser)
             })
         }
     }, [findLanguage, isLoading, isLocalUser, isRawState, redux_currentmysite, redux_localeuser])
 
-        React.useEffect(() => {
 
-        if (redux_currentmysite && redux_localeuser & isLoading && !isLocalUser) {
+
+
+
+
+    //     React.useEffect(() => {
+
+    //     if (redux_currentmysite && redux_localeuser & isLoading && isLocalUser && !isRawState ) {
+
+    //         console.log('Set Currency');
+
+
+    //         layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
+    //     }
+    // }, [dispatch, isLoading, isLocalUser, isRawState, redux_currentmysite, redux_localeuser])
+
+
+
+
+    React.useEffect(() => {
+        console.log(isLoading);
+
+        if (redux_currentmysite && redux_localeuser & isLoading && !isRawState ) {
+
+
 
             layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
         }
-    }, [dispatch, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
+    }, [dispatch, isLoading, isRawState, redux_currentmysite, redux_localeuser])
 
 
+
+    
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
 
         if (value._id !== redux_localeuser._id && isLocalStorage) {
@@ -182,7 +207,7 @@ export default function ListLanguageMenu() {
     }, [dispatch, isLocalStorage, redux_cartuser, redux_localeuser])
 
 
-    return  ( isLocalStorage && !isLoading && redux_localeuser && isRawState ? <div
+    return  ( isLocalStorage && !isLoading && redux_localeuser && redux_currentmysite && isRawState ? <div
         // style={{
         //     position: 'fixed',
         //     // left: '0px',

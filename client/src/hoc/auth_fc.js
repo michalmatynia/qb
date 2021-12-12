@@ -37,6 +37,8 @@ export default function AuthFC(props) {
 
         authorizeUser().then(response => {
 
+            console.log(response);
+
             if (response.payload.isAuth === false) {
 
 

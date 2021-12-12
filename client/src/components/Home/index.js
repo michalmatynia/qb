@@ -12,6 +12,7 @@ import {
 
 export default function Home() {
 
+
     const dispatch = useDispatch()
 
     let redux_localeuser = useSelector(state => state.user.localeUser)
@@ -146,6 +147,8 @@ export default function Home() {
 
             loadPage().then((allbricks) => {
                 let wall = allbricks.map((a) => a.referenceID)
+
+                console.log(wall);
 
                 setIsWall(wall)
                 setIsLoading(false)
