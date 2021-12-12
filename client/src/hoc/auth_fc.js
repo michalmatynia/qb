@@ -32,9 +32,8 @@ export default function AuthFC(props) {
 
     const authorizeUser = useCallback(async () => {
            return await dispatch(authasync({ dataToSubmit: { model: 'user' }, actionType: 'auth' }))
-    }, [])
+    }, [dispatch])
     React.useEffect(() => {
-
 
         authorizeUser().then(response => {
 
@@ -92,8 +91,6 @@ export default function AuthFC(props) {
     return (
         !isloading ? <div>{console.log('auth func render')} <Page  /> </div> : null
     )
-
-
 
 
 }

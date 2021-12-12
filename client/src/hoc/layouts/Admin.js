@@ -115,7 +115,6 @@ export default function Dashboard(props) {
 
       } else {
         pathmatched = prop.layout === reactrouter.match.path ? true : false
-
       }
 
       if (pathmatched) {
@@ -180,7 +179,6 @@ export default function Dashboard(props) {
                 {getRoutes(routes)}
                 <Redirect from="/admin" to="/admin/dashboard" />
                 <Redirect from="/contentmanager" to="/contentmanager/dashboard" />
-
               </Switch>
             </div>
           </div>

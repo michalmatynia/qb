@@ -64,6 +64,7 @@ import priceImage3 from "../../../../../templates/creativetim/material-dashboard
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
+  console.log('ddd');
   const [isListVisit, setListVisit] = React.useState();
   const [isListParsed, setListParsed] = React.useState();
   const [isCheckedLayers, setCheckedLayers] = React.useState([]);

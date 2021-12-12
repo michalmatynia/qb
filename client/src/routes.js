@@ -128,449 +128,449 @@ let dashRoutes = [
   },
 
 
-  // {
-  //   collapse: true,
-  //   name: "Page Components",
-  //   // rtlName: "المكونات",
-  //   icon: Apps,
-  //   state: "pagecomponentsCollapse",
-  //   layout: ["/contentmanager", "/admin"],
-  //   views: [
-  //     {
-  //       collapse: true,
-  //       name: "Slides",
-  //       // rtlName: "صفحات",
-  //       icon: Image,
-  //       state: "slideCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add/:model",
-  //           navlink: "/add/slide",
-  //           name: "Add Slide",
-  //           component: AddSlide,
-  //           layout: "/admin",
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit/:model/:id",
-  //           name: "Edit Slide",
-  //           component: EditSlide,
-  //           layout: "/admin",
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
-  //           path: "/list/:model",
-  //           navlink: "/list/slide",
-  //           name: "List Slide",
-  //           component: ListSlide,
-  //           layout: "/admin",
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Products",
-  //       // rtlName: "المكونات",
-  //       icon: Apps,
-  //       state: "productCollapse",
-  //       layout: ["/contentmanager", "/admin"],
-  //       views: [
-  //         {
-  //           path: "/add_product",
-  //           name: "Add Product",
-  //           component: AddProduct,
-  //           layout: ["/contentmanager", "/admin"],
-  //           model: 'product',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_product/:id",
-  //           name: "Edit Product",
-  //           component: EditProduct,
-  //           layout: ["/contentmanager", "/admin"],
-  //           model: 'product',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list/product",
-  //           // path: "/list/:model",
-  //           // navlink: "/list/product",
-  //           name: "List Product",
-  //           component: ListProduct,
-  //           layout: ["/contentmanager", "/admin"],
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Product Groups",
-  //       // rtlName: "المكونات",
-  //       icon: Apps,
-  //       state: "productgroupCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_productgroup",
-  //           name: "Add Product Group",
-  //           component: AddProductgroup,
-  //           layout: "/admin",
-  //           model: 'productgroup',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_productgroup/:id",
-  //           name: "Edit Product Group",
-  //           component: EditProductgroup,
-  //           layout: "/admin",
-  //           model: 'productgroup',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_productgroup",
-  //           name: "List Product Group",
-  //           component: ListProductgroup,
-  //           layout: "/admin",
-  //           model: 'productgroup',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Brick",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "brickCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_brick",
-  //           name: "Add Brick",
-  //           component: AddBrick,
-  //           layout: "/admin",
-  //           model: 'brick',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_brick/:id",
-  //           name: "Edit Brick",
-  //           component: EditBrick,
-  //           layout: "/admin",
-  //           model: 'brick',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_brick",
-  //           name: "List Brick",
-  //           component: ListBrick,
-  //           layout: "/admin",
-  //           model: 'brick',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     // {
-  //     //   collapse: true,
-  //     //   name: "Views",
-  //     //   // rtlName: "المكونات",
-  //     //   icon: Apps,
-  //     //   state: "viewCollapse",
-  //     //   layout: "/admin",
-  //     //   views: [
-  //     //     {
-  //     //       path: "/add_view",
-  //     //       name: "Add View",
-  //     //       component: AddView,
-  //     //       layout: "/admin",
-  //     //       model: 'view',
-  //     //       reload: true
-  //     //     },
-  //     //     {
-  //     //       path: "/edit_view/:id",
-  //     //       name: "Edit View",
-  //     //       component: EditView,
-  //     //       layout: "/admin",
-  //     //       model: 'view',
-  //     //       reload: true,
-  //     //       redirect: true
-  //     //     },
-  //     //     {
-  //     //       path: "/list_view",
-  //     //       name: "List View",
-  //     //       component: ListView,
-  //     //       layout: "/admin",
-  //     //       model: 'view',
-  //     //       reload: true
-  //     //     },
-  //     //   ]
-  //     // },
-  //     {
-  //       collapse: true,
-  //       name: "Page",
-  //       // rtlName: "المكونات",
-  //       icon: WidgetsIcon,
-  //       state: "pageCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_page",
-  //           name: "Add Page",
-  //           component: AddPage,
-  //           layout: "/admin",
-  //           model: 'page',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_page/:id",
-  //           name: "Edit Page",
-  //           component: EditPage,
-  //           layout: "/admin",
-  //           model: 'page',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_page",
-  //           name: "List Page",
-  //           component: ListPage,
-  //           layout: "/admin",
-  //           model: 'page',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //   ]
-  // },
+  {
+    collapse: true,
+    name: "Page Components",
+    // rtlName: "المكونات",
+    icon: Apps,
+    state: "pagecomponentsCollapse",
+    layout: ["/contentmanager", "/admin"],
+    views: [
+      {
+        collapse: true,
+        name: "Slides",
+        // rtlName: "صفحات",
+        icon: Image,
+        state: "slideCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add/:model",
+            navlink: "/add/slide",
+            name: "Add Slide",
+            component: AddSlide,
+            layout: "/admin",
+            reload: true
+          },
+          {
+            path: "/edit/:model/:id",
+            name: "Edit Slide",
+            component: EditSlide,
+            layout: "/admin",
+            reload: true,
+            redirect: true
+          },
+          {
+            /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
+            path: "/list/:model",
+            navlink: "/list/slide",
+            name: "List Slide",
+            component: ListSlide,
+            layout: "/admin",
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Products",
+        // rtlName: "المكونات",
+        icon: Apps,
+        state: "productCollapse",
+        layout: ["/contentmanager", "/admin"],
+        views: [
+          {
+            path: "/add_product",
+            name: "Add Product",
+            component: AddProduct,
+            layout: ["/contentmanager", "/admin"],
+            model: 'product',
+            reload: true
+          },
+          {
+            path: "/edit_product/:id",
+            name: "Edit Product",
+            component: EditProduct,
+            layout: ["/contentmanager", "/admin"],
+            model: 'product',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list/product",
+            // path: "/list/:model",
+            // navlink: "/list/product",
+            name: "List Product",
+            component: ListProduct,
+            layout: ["/contentmanager", "/admin"],
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Product Groups",
+        // rtlName: "المكونات",
+        icon: Apps,
+        state: "productgroupCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_productgroup",
+            name: "Add Product Group",
+            component: AddProductgroup,
+            layout: "/admin",
+            model: 'productgroup',
+            reload: true
+          },
+          {
+            path: "/edit_productgroup/:id",
+            name: "Edit Product Group",
+            component: EditProductgroup,
+            layout: "/admin",
+            model: 'productgroup',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_productgroup",
+            name: "List Product Group",
+            component: ListProductgroup,
+            layout: "/admin",
+            model: 'productgroup',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Brick",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "brickCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_brick",
+            name: "Add Brick",
+            component: AddBrick,
+            layout: "/admin",
+            model: 'brick',
+            reload: true
+          },
+          {
+            path: "/edit_brick/:id",
+            name: "Edit Brick",
+            component: EditBrick,
+            layout: "/admin",
+            model: 'brick',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_brick",
+            name: "List Brick",
+            component: ListBrick,
+            layout: "/admin",
+            model: 'brick',
+            reload: true
+          },
+        ]
+      },
+      // {
+      //   collapse: true,
+      //   name: "Views",
+      //   // rtlName: "المكونات",
+      //   icon: Apps,
+      //   state: "viewCollapse",
+      //   layout: "/admin",
+      //   views: [
+      //     {
+      //       path: "/add_view",
+      //       name: "Add View",
+      //       component: AddView,
+      //       layout: "/admin",
+      //       model: 'view',
+      //       reload: true
+      //     },
+      //     {
+      //       path: "/edit_view/:id",
+      //       name: "Edit View",
+      //       component: EditView,
+      //       layout: "/admin",
+      //       model: 'view',
+      //       reload: true,
+      //       redirect: true
+      //     },
+      //     {
+      //       path: "/list_view",
+      //       name: "List View",
+      //       component: ListView,
+      //       layout: "/admin",
+      //       model: 'view',
+      //       reload: true
+      //     },
+      //   ]
+      // },
+      {
+        collapse: true,
+        name: "Page",
+        // rtlName: "المكونات",
+        icon: WidgetsIcon,
+        state: "pageCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_page",
+            name: "Add Page",
+            component: AddPage,
+            layout: "/admin",
+            model: 'page',
+            reload: true
+          },
+          {
+            path: "/edit_page/:id",
+            name: "Edit Page",
+            component: EditPage,
+            layout: "/admin",
+            model: 'page',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_page",
+            name: "List Page",
+            component: ListPage,
+            layout: "/admin",
+            model: 'page',
+            reload: true
+          },
+        ]
+      },
+    ]
+  },
 
 
-  // {
-  //   collapse: true,
-  //   name: "Translation Panels",
-  //   // rtlName: "المكونات",
-  //   icon: Apps,
-  //   state: "trnspanelsCollapse",
-  //   layout: ["/contentmanager", "/admin"],
-  //   views: [
-  //     {
-  //       collapse: true,
-  //       name: "Mystore",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "mystoreCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_mystore",
-  //           name: "Add Mystore",
-  //           component: AddMystore,
-  //           layout: "/admin",
-  //           model: 'mystore',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_mystore/:id",
-  //           name: "Edit Mystore",
-  //           component: EditMystore,
-  //           layout: "/admin",
-  //           model: 'mystore',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_mystore",
-  //           name: "List Mystore",
-  //           component: ListMystore,
-  //           layout: "/admin",
-  //           model: 'mystore',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Cart",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "cartCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_cart",
-  //           name: "Add Cart",
-  //           component: AddCart,
-  //           layout: "/admin",
-  //           model: 'cart',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_cart/:id",
-  //           name: "Edit Cart",
-  //           component: EditCart,
-  //           layout: "/admin",
-  //           model: 'cart',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_cart",
-  //           name: "List Cart",
-  //           component: ListCart,
-  //           layout: "/admin",
-  //           model: 'cart',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Contact",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "contactCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_contact",
-  //           name: "Add Contact",
-  //           component: AddContact,
-  //           layout: "/admin",
-  //           model: 'contact',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_contact/:id",
-  //           name: "Edit Contact",
-  //           component: EditContact,
-  //           layout: "/admin",
-  //           model: 'contact',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_contact",
-  //           name: "List Contact",
-  //           component: ListContact,
-  //           layout: "/admin",
-  //           model: 'contact',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Login",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "loginCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_login",
-  //           name: "Add Login",
-  //           component: AddLogin,
-  //           layout: "/admin",
-  //           model: 'login',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_login/:id",
-  //           name: "Edit Login",
-  //           component: EditLogin,
-  //           layout: "/admin",
-  //           model: 'login',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_login",
-  //           name: "List Login",
-  //           component: ListLogin,
-  //           layout: "/admin",
-  //           model: 'login',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Product Detail",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "productdetailCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_trnsdetailproduct",
-  //           name: "Add Product Detail",
-  //           component: AddTrnsDetailProduct,
-  //           layout: "/admin",
-  //           model: 'trnsdetailproduct',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_trnsdetailproduct/:id",
-  //           name: "Edit Product Detail",
-  //           component: EditTrnsDetailProduct,
-  //           layout: "/admin",
-  //           model: 'trnsdetailproduct',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_trnsdetailproduct",
-  //           name: "List Product Detail",
-  //           component: ListTrnsDetailProduct,
-  //           layout: "/admin",
-  //           model: 'trnsdetailproduct',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Newsletter",
-  //       // rtlName: "المكونات",
-  //       icon: Place,
-  //       state: "newsletterCollapse",
-  //       layout: "/admin",
-  //       views: [
-  //         {
-  //           path: "/add_newsletter",
-  //           name: "Add Newsletter",
-  //           component: AddNewsletter,
-  //           layout: "/admin",
-  //           model: 'newsletter',
-  //           reload: true
-  //         },
-  //         {
-  //           path: "/edit_newsletter/:id",
-  //           name: "Edit Newsletter",
-  //           component: EditNewsletter,
-  //           layout: "/admin",
-  //           model: 'newsletter',
-  //           reload: true,
-  //           redirect: true
-  //         },
-  //         {
-  //           path: "/list_newsletter",
-  //           name: "List Newsletter",
-  //           component: ListNewsletter,
-  //           layout: "/admin",
-  //           model: 'newsletter',
-  //           reload: true
-  //         },
-  //       ]
-  //     },
-  //   ]
-  // },
+  {
+    collapse: true,
+    name: "Translation Panels",
+    // rtlName: "المكونات",
+    icon: Apps,
+    state: "trnspanelsCollapse",
+    layout: ["/contentmanager", "/admin"],
+    views: [
+      {
+        collapse: true,
+        name: "Mystore",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "mystoreCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_mystore",
+            name: "Add Mystore",
+            component: AddMystore,
+            layout: "/admin",
+            model: 'mystore',
+            reload: true
+          },
+          {
+            path: "/edit_mystore/:id",
+            name: "Edit Mystore",
+            component: EditMystore,
+            layout: "/admin",
+            model: 'mystore',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_mystore",
+            name: "List Mystore",
+            component: ListMystore,
+            layout: "/admin",
+            model: 'mystore',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Cart",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "cartCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_cart",
+            name: "Add Cart",
+            component: AddCart,
+            layout: "/admin",
+            model: 'cart',
+            reload: true
+          },
+          {
+            path: "/edit_cart/:id",
+            name: "Edit Cart",
+            component: EditCart,
+            layout: "/admin",
+            model: 'cart',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_cart",
+            name: "List Cart",
+            component: ListCart,
+            layout: "/admin",
+            model: 'cart',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Contact",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "contactCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_contact",
+            name: "Add Contact",
+            component: AddContact,
+            layout: "/admin",
+            model: 'contact',
+            reload: true
+          },
+          {
+            path: "/edit_contact/:id",
+            name: "Edit Contact",
+            component: EditContact,
+            layout: "/admin",
+            model: 'contact',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_contact",
+            name: "List Contact",
+            component: ListContact,
+            layout: "/admin",
+            model: 'contact',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Login",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "loginCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_login",
+            name: "Add Login",
+            component: AddLogin,
+            layout: "/admin",
+            model: 'login',
+            reload: true
+          },
+          {
+            path: "/edit_login/:id",
+            name: "Edit Login",
+            component: EditLogin,
+            layout: "/admin",
+            model: 'login',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_login",
+            name: "List Login",
+            component: ListLogin,
+            layout: "/admin",
+            model: 'login',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Product Detail",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "productdetailCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_trnsdetailproduct",
+            name: "Add Product Detail",
+            component: AddTrnsDetailProduct,
+            layout: "/admin",
+            model: 'trnsdetailproduct',
+            reload: true
+          },
+          {
+            path: "/edit_trnsdetailproduct/:id",
+            name: "Edit Product Detail",
+            component: EditTrnsDetailProduct,
+            layout: "/admin",
+            model: 'trnsdetailproduct',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_trnsdetailproduct",
+            name: "List Product Detail",
+            component: ListTrnsDetailProduct,
+            layout: "/admin",
+            model: 'trnsdetailproduct',
+            reload: true
+          },
+        ]
+      },
+      {
+        collapse: true,
+        name: "Newsletter",
+        // rtlName: "المكونات",
+        icon: Place,
+        state: "newsletterCollapse",
+        layout: "/admin",
+        views: [
+          {
+            path: "/add_newsletter",
+            name: "Add Newsletter",
+            component: AddNewsletter,
+            layout: "/admin",
+            model: 'newsletter',
+            reload: true
+          },
+          {
+            path: "/edit_newsletter/:id",
+            name: "Edit Newsletter",
+            component: EditNewsletter,
+            layout: "/admin",
+            model: 'newsletter',
+            reload: true,
+            redirect: true
+          },
+          {
+            path: "/list_newsletter",
+            name: "List Newsletter",
+            component: ListNewsletter,
+            layout: "/admin",
+            model: 'newsletter',
+            reload: true
+          },
+        ]
+      },
+    ]
+  },
 
 
 
@@ -594,263 +594,263 @@ let dashRoutes = [
 
 
  
-  // {
-  //   collapse: true,
-  //   name: "Taxonomy",
-  //   // rtlName: "المكونات",
-  //   icon: GridOn,
-  //   state: "taxonomyCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/add_taxonomy",
-  //       name: "Add Taxonomy",
-  //       component: AddTaxonomy,
-  //       layout: "/admin",
-  //       model: 'taxonomy',
-  //       reload: true
-  //     },
-  //     {
-  //       path: "/edit_taxonomy/:id",
-  //       name: "Edit Taxonomy",
-  //       component: EditTaxonomy,
-  //       layout: "/admin",
-  //       model: 'taxonomy',
-  //       reload: true,
-  //       redirect: true
-  //     },
-  //     {
-  //       path: "/list_taxonomy",
-  //       name: "List Taxonomy",
-  //       component: ListTaxonomy,
-  //       layout: "/admin",
-  //       model: 'taxonomy',
-  //       reload: true
-  //     },
-  //   ]
-  // },
+  {
+    collapse: true,
+    name: "Taxonomy",
+    // rtlName: "المكونات",
+    icon: GridOn,
+    state: "taxonomyCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/add_taxonomy",
+        name: "Add Taxonomy",
+        component: AddTaxonomy,
+        layout: "/admin",
+        model: 'taxonomy',
+        reload: true
+      },
+      {
+        path: "/edit_taxonomy/:id",
+        name: "Edit Taxonomy",
+        component: EditTaxonomy,
+        layout: "/admin",
+        model: 'taxonomy',
+        reload: true,
+        redirect: true
+      },
+      {
+        path: "/list_taxonomy",
+        name: "List Taxonomy",
+        component: ListTaxonomy,
+        layout: "/admin",
+        model: 'taxonomy',
+        reload: true
+      },
+    ]
+  },
   
-  // {
-  //   collapse: true,
-  //   name: "Theme",
-  //   // rtlName: "المكونات",
-  //   icon: Timeline,
-  //   state: "themeCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/add/:model",
-  //       navlink: "/add/theme",
-  //       name: "Add Theme",
-  //       component: AddTheme,
-  //       layout: "/admin",
-  //       reload: true
-  //     },
-  //     {
-  //       path: "/edit/:model/:id",
-  //       name: "Edit Theme",
-  //       component: EditTheme,
-  //       layout: "/admin",
-  //       reload: true,
-  //       redirect: true
-  //     },
-  //     {
-  //       path: "/list/theme",
+  {
+    collapse: true,
+    name: "Theme",
+    // rtlName: "المكونات",
+    icon: Timeline,
+    state: "themeCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/add/:model",
+        navlink: "/add/theme",
+        name: "Add Theme",
+        component: AddTheme,
+        layout: "/admin",
+        reload: true
+      },
+      {
+        path: "/edit/:model/:id",
+        name: "Edit Theme",
+        component: EditTheme,
+        layout: "/admin",
+        reload: true,
+        redirect: true
+      },
+      {
+        path: "/list/theme",
 
-  //       // path: "/list/:model",
-  //       // navlink: "/list/theme",
-  //       name: "List Theme",
-  //       component: ListTheme,
-  //       layout: ["/contentmanager", "/admin"],
-  //       reload: true
-  //     },
-  //   ]
-  // },
-  // {
-  //   collapse: true,
-  //   name: "Mysite",
-  //   // rtlName: "المكونات",
-  //   icon: Place,
-  //   state: "mysiteCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/add_mysite",
-  //       name: "Add Mysite",
-  //       component: AddMysite,
-  //       layout: "/admin",
-  //       model: 'mysite',
-  //       reload: true
-  //     },
-  //     {
-  //       path: "/edit_mysite/:id",
-  //       name: "Edit Mysite",
-  //       component: EditMysite,
-  //       layout: "/admin",
-  //       model: 'mysite',
-  //       reload: true,
-  //       redirect: true
-  //     },
-  //     {
-  //       path: "/list_mysite",
-  //       name: "List Mysite",
-  //       component: ListMysite,
-  //       layout: "/admin",
-  //       model: 'mysite',
-  //       reload: true
-  //     },
-  //   ]
-  // },
-  // {
-  //   collapse: true,
-  //   name: "User",
-  //   // rtlName: "المكونات",
-  //   icon: AssignmentIndIcon,
-  //   state: "userCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/add_user",
-  //       name: "Add User",
-  //       component: AddUser,
-  //       layout: "/admin",
-  //       model: 'user',
-  //       reload: true
-  //     },
-  //     {
-  //       path: "/edit_user/:id",
-  //       name: "Edit User",
-  //       component: EditUser,
-  //       layout: "/admin",
-  //       model: 'user',
-  //       reload: true,
-  //       redirect: true
-  //     },
-  //     {
-  //       path: "/list_user",
-  //       name: "List User",
-  //       component: ListUser,
-  //       layout: "/admin",
-  //       model: 'user',
-  //       reload: true
-  //     },
-  //   ]
-  // },
-  // {
-  //   collapse: true,
-  //   name: "Languages",
-  //   // rtlName: "صفحات",
-  //   icon: Image,
-  //   state: "languageCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/list_language",
-  //       name: "List Language",
-  //       component: ListLanguage,
-  //       layout: "/admin",
-  //       model: 'language',
-  //       reload: true
-  //     },
-  //   ]
-  // },
+        // path: "/list/:model",
+        // navlink: "/list/theme",
+        name: "List Theme",
+        component: ListTheme,
+        layout: ["/contentmanager", "/admin"],
+        reload: true
+      },
+    ]
+  },
+  {
+    collapse: true,
+    name: "Mysite",
+    // rtlName: "المكونات",
+    icon: Place,
+    state: "mysiteCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/add_mysite",
+        name: "Add Mysite",
+        component: AddMysite,
+        layout: "/admin",
+        model: 'mysite',
+        reload: true
+      },
+      {
+        path: "/edit_mysite/:id",
+        name: "Edit Mysite",
+        component: EditMysite,
+        layout: "/admin",
+        model: 'mysite',
+        reload: true,
+        redirect: true
+      },
+      {
+        path: "/list_mysite",
+        name: "List Mysite",
+        component: ListMysite,
+        layout: "/admin",
+        model: 'mysite',
+        reload: true
+      },
+    ]
+  },
+  {
+    collapse: true,
+    name: "User",
+    // rtlName: "المكونات",
+    icon: AssignmentIndIcon,
+    state: "userCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/add_user",
+        name: "Add User",
+        component: AddUser,
+        layout: "/admin",
+        model: 'user',
+        reload: true
+      },
+      {
+        path: "/edit_user/:id",
+        name: "Edit User",
+        component: EditUser,
+        layout: "/admin",
+        model: 'user',
+        reload: true,
+        redirect: true
+      },
+      {
+        path: "/list_user",
+        name: "List User",
+        component: ListUser,
+        layout: "/admin",
+        model: 'user',
+        reload: true
+      },
+    ]
+  },
+  {
+    collapse: true,
+    name: "Languages",
+    // rtlName: "صفحات",
+    icon: Image,
+    state: "languageCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/list_language",
+        name: "List Language",
+        component: ListLanguage,
+        layout: "/admin",
+        model: 'language',
+        reload: true
+      },
+    ]
+  },
  
-  // {
+  {
 
-  //   collapse: true,
-  //   name: "Blockstyle",
-  //   // rtlName: "المكونات",
-  //   icon: Timeline,
-  //   state: "blockstyleCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/add/:model",
-  //       navlink: "/add/blockstyle",
-  //       name: "Add Blockstyle",
-  //       component: AddBlockstyle,
-  //       layout: "/admin",
-  //       reload: true
-  //     },
-  //     {
-  //       path: "/edit/:model/:id/:attachto",
-  //       name: "Edit Blockstyle",
-  //       component: EditBlockstyle,
-  //       layout: "/admin",
-  //       reload: true,
-  //       redirect: true
-  //     },
-  //     {
-  //       path: "/list/blockstyle",
-  //       // path: "/list/:model",
-  //       // navlink: "/list/blockstyle",
-  //       name: "List Blockstyle",
-  //       component: ListBlockstyle,
-  //       layout: "/admin",
-  //       // model: 'blockstyle',
-  //       reload: true
-  //     },
-  //   ]
-  // },
-  // {
+    collapse: true,
+    name: "Blockstyle",
+    // rtlName: "المكونات",
+    icon: Timeline,
+    state: "blockstyleCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/add/:model",
+        navlink: "/add/blockstyle",
+        name: "Add Blockstyle",
+        component: AddBlockstyle,
+        layout: "/admin",
+        reload: true
+      },
+      {
+        path: "/edit/:model/:id/:attachto",
+        name: "Edit Blockstyle",
+        component: EditBlockstyle,
+        layout: "/admin",
+        reload: true,
+        redirect: true
+      },
+      {
+        path: "/list/blockstyle",
+        // path: "/list/:model",
+        // navlink: "/list/blockstyle",
+        name: "List Blockstyle",
+        component: ListBlockstyle,
+        layout: "/admin",
+        // model: 'blockstyle',
+        reload: true
+      },
+    ]
+  },
+  {
 
-  //   collapse: true,
-  //   name: "Visit",
-  //   // rtlName: "المكونات",
-  //   icon: Timeline,
-  //   state: "visitCollapse",
-  //   layout: "/admin",
-  //   views: [
-  //     {
-  //       path: "/list/visit",
-  //       // path: "/list/:model",
-  //       // navlink: "/list/blockstyle",
-  //       name: "List Visit",
-  //       component: ListVisit,
-  //       layout: "/admin",
-  //       // model: 'blockstyle',
-  //       reload: true
-  //     },
-  //   ]
-  // },
-  // // CONTENT MANAGER
+    collapse: true,
+    name: "Visit",
+    // rtlName: "المكونات",
+    icon: Timeline,
+    state: "visitCollapse",
+    layout: "/admin",
+    views: [
+      {
+        path: "/list/visit",
+        // path: "/list/:model",
+        // navlink: "/list/blockstyle",
+        name: "List Visit",
+        component: ListVisit,
+        layout: "/admin",
+        // model: 'blockstyle',
+        reload: true
+      },
+    ]
+  },
+  // CONTENT MANAGER
 
-  // {
-  //   collapse: true,
-  //   name: "Events",
-  //   // rtlName: "صفحات",
-  //   icon: Image,
-  //   state: "eventCollapse",
-  //   layout: "/contentmanager",
-  //   views: [
-  //     {
-  //       path: "/add_event",
-  //       name: "Add Event",
-  //       component: AddSlide,
-  //       layout: "/contentmanager",
-  //       model: 'slide',
-  //       reload: true,
-  //       attachto: ['60fa0bac2956083e2c28e217']
-  //     },
-  //     {
-  //       path: "/edit_event/:id",
-  //       name: "Edit Event",
-  //       component: EditSlide,
-  //       layout: "/contentmanager",
-  //       model: 'slide',
-  //       reload: true,
-  //       redirect: true // Jesli True, sciezka nie wyswietla sie
-  //     },
-  //     {
-  //       path: "/list_event",
-  //       name: "List Events",
-  //       component: ListSlide,
-  //       layout: "/contentmanager",
-  //       model: 'slide',
-  //       reload: true
-  //     },
-  //   ]
-  // },
+  {
+    collapse: true,
+    name: "Events",
+    // rtlName: "صفحات",
+    icon: Image,
+    state: "eventCollapse",
+    layout: "/contentmanager",
+    views: [
+      {
+        path: "/add_event",
+        name: "Add Event",
+        component: AddSlide,
+        layout: "/contentmanager",
+        model: 'slide',
+        reload: true,
+        attachto: ['60fa0bac2956083e2c28e217']
+      },
+      {
+        path: "/edit_event/:id",
+        name: "Edit Event",
+        component: EditSlide,
+        layout: "/contentmanager",
+        model: 'slide',
+        reload: true,
+        redirect: true // Jesli True, sciezka nie wyswietla sie
+      },
+      {
+        path: "/list_event",
+        name: "List Events",
+        component: ListSlide,
+        layout: "/contentmanager",
+        model: 'slide',
+        reload: true
+      },
+    ]
+  },
 
 ];
 

@@ -54,7 +54,6 @@ export async function productFuncs_handleAddToCart({ value, variantOneSelect = n
   
     }
   
-  console.log(newCart);
      dispatch(act_injectProp({ dataToSubmit: newCart, model: 'user', actionType: 'cart' }))
   
   };

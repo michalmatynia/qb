@@ -81,7 +81,6 @@ export default function ListLanguageMenu() {
 
     }, [isLoading, isRawState, redux_localeuser, runInStateFunctions])
 
-    /* Cleanup */
     const findLanguage = useCallback(async (cm) => {
         let iplocator = await act_getGeoLocation()
 
@@ -139,9 +138,6 @@ export default function ListLanguageMenu() {
 
         } catch (iplocator) {
 
-            console.log(iplocator);
-            console.log(cm);
-
             inQuery = {
                 _id: { "$eq": cm.default_language._id }
             }
@@ -153,22 +149,21 @@ export default function ListLanguageMenu() {
 
     React.useEffect(() => {
 
-        if (redux_currentmysite && !redux_localeuser && isLoading && !isLocalUser ) {
+        if (redux_currentmysite && !redux_localeuser && isLoading && !isLocalUser && !isRawState) {
 
             findLanguage(redux_currentmysite).then((localeuser)=>{
                 setIsLocalUser(localeuser)
             })
         }
-    }, [findLanguage, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
+    }, [findLanguage, isLoading, isLocalUser, isRawState, redux_currentmysite, redux_localeuser])
 
-    //     React.useEffect(() => {
+        React.useEffect(() => {
 
+        if (redux_currentmysite && redux_localeuser & isLoading && !isLocalUser) {
 
-    //     if (redux_currentmysite && redux_localeuser & isLoading && !isLocalUser) {
-
-    //         layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
-    //     }
-    // }, [dispatch, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
+            layoutFuncs_findCurrency({ localeuser: redux_localeuser, currentmysite: redux_currentmysite, dispatch })
+        }
+    }, [dispatch, isLoading, isLocalUser, redux_currentmysite, redux_localeuser])
 
 
     const onChange = useCallback(async ({ event, value = null, cell = null }) => {
