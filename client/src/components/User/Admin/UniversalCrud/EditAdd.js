@@ -59,16 +59,18 @@ export default function EditAdd() {
 
     const establishStateParams = useCallback(async () => {
 
-        let rawstate = await grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model })
+        return await grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model })
 
-        setRawState(rawstate)
 
     }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
 
-            establishStateParams()
+            establishStateParams().then((rawstate) => {
+                setRawState(rawstate)
+
+            })
 
         }
 
@@ -228,7 +230,7 @@ export default function EditAdd() {
 
                 reactrouter_history.push(`/admin/edit/${reactrouter.match.params.model}/${added.payload._id}`)
 
-             }
+            }
 
         }
 
@@ -356,32 +358,36 @@ export default function EditAdd() {
             change={({ cell, event }) => { setLocalStorage(updateFormValues({ cell, event, isLocalStorage })) }}
             save={async ({ event, translate }) => {
                 setLocalStorage(await saveForm({
-                model: reactrouter.match.params.model,
-                event,
-                translate,
-                current: redux_module.detail,
-                dispatch,
-                isLocalStorage,
-                redux_module,
-                redux_localeuser,
-                redux_current_mysite
-            }) )
-            // setIsLoading(true)
-            // unhingeRawState()  
-        }
+                    model: reactrouter.match.params.model,
+                    event,
+                    translate,
+                    current: redux_module.detail,
+                    dispatch,
+                    isLocalStorage,
+                    redux_module,
+                    redux_localeuser,
+                    redux_current_mysite
+                }))
+                // setIsLoading(true)
+                // unhingeRawState()  
+            }
 
-        }
-            submit={({ event, translate }) => submitForm({
-                model: reactrouter.match.params.model,
-                event,
-                translate,
-                current: redux_module.detail,
-                dispatch,
-                isLocalStorage,
-                redux_module,
-                redux_localeuser,
-                redux_current_mysite
-            })}
+            }
+            submit={({ event, translate }) => {
+                submitForm({
+                    model: reactrouter.match.params.model,
+                    translate,
+                    dispatch,
+                    isLocalStorage,
+                    redux_localeuser,
+                    redux_current_mysite
+                }).then((result) => {
+                    setLocalStorage(result)
+
+                })
+
+            }
+            }
 
         /> : <div
             style={{

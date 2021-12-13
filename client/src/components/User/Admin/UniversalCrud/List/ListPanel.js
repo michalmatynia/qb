@@ -262,20 +262,19 @@ export default function ListPanel() {
             dispatch
         })
 
-        // await remove_fromDatabase_vh({
-        //     value,
-        //     removeall,
-        //     event,
-        //     cell,
-        //     sublistkey,
-        //     tiedtoformkey,
-        //     mystate: this.state,
-        //     myprops: this.props,
-        //     poliglot: this.state.localStorage.poliglot
-        // }).then(() => {
-        //     setShowMessage(false)
-        //     setIsActualMessage()
-        // })
+        await remove_fromDatabase_vh({
+            value,
+            removeall,
+            event,
+            isRawState,
+            isViewparams,
+            redux_localeuser,
+            model: reactrouter.match.params.model,
+            poliglot: isRawState.localStorage.poliglot
+        }).then(() => {
+            // setShowMessage(false)
+            // setIsActualMessage()
+        })
 
     },[dispatch, isRawState, reactrouter.match.params.model])
 

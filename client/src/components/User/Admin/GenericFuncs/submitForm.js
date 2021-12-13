@@ -5,12 +5,9 @@ import { attachtoFuncs_overModel_Add_vh2 } from '../../../User/Admin/GenericFunc
 
 export async function submitForm({
     model,
-    event = null,
     dispatch,
     translate = null,
     isLocalStorage,
-    current,
-    redux_module,
     redux_localeuser,
     redux_current_mysite
 }) {
@@ -63,5 +60,7 @@ export async function submitForm({
         } else {
             await errorClosure({ dispatch })
         }
+
+        return newLocalStorage
     }
 }

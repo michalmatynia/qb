@@ -1,6 +1,7 @@
-import { listFuncs_loadList_v2, listFuncs_RemoveItem_v2 } from '../GenericFuncs/list_funcs'
+import { listFuncs_loadList_v2} from '../GenericFuncs/list_funcs'
 import { checkFuncs_handleRemove_Brick } from '../GenericFuncs/check_funcs'
 import { pre_processCheckedIDs } from './CommonFuncs/pre_funcs'
+import { listFuncs_loadList_v2_vh, listFuncs_RemoveItem_v2_vh  } from '../GenericFuncs/list_funcs_vh'
 
 import {
     plg_findMany,
@@ -9,13 +10,23 @@ import {
     plg_findOne_QueMod
 } from '../../../utils/Plugs/cms_plugs';
 
-export async function remove_fromDatabase_vh({ event, value, removeall, cell = null, sublistkey = null, tiedtoformkey = null, mystate = null, myprops = null, poliglot = null }) {
-    let newLocalStorage = { ...mystate.localStorage }
+export async function remove_fromDatabase_vh({ 
+    event, 
+    value, 
+    removeall, 
+    isViewparams,
+    dispatch,
+    model,
+    isRawState,
+    redux_localeuser,
+    poliglot = null 
+}) {
+
+    let newLocalStorage = { ...isRawState.localStorage }
 
     if (event) {
-        let model = sublistkey ? mystate.localStorage[sublistkey].viewmodel : mystate.localStorage.model
 
-        await listFuncs_RemoveItem_v2({
+        await listFuncs_RemoveItem_v2_vh({
             item: value,
             removeall,
             myprops,
@@ -23,19 +34,20 @@ export async function remove_fromDatabase_vh({ event, value, removeall, cell = n
             model,
             poliglot,
         })
-        // ========
-        let checkedIDs = await pre_processCheckedIDs({ tiedtoformkey, newLocalStorage, cell, })
 
-        newLocalStorage = await listFuncs_loadList_v2({
-            sublistkey,
+        await listFuncs_loadList_v2_vh({
+            sublistkey: null,
             model,
-            myprops,
-            mystate,
-            poliglot,
-            hideIDs: checkedIDs,
-            newLocalStorage
+            redux_localeuser,
+            dispatch,
+            isRawState,
+            thisview: isViewparams,
+            populate: isRawState.localStorage.qhelpers.populate,
+            hideIDs: null,
+            // inQuery
         })
     }
+
     return newLocalStorage
 
 }
@@ -171,7 +183,6 @@ export async function remove_fromOverMods_vh({ overmodel = null, submodel = null
                     _id: { "$eq": atremoved._id },
                 }
             
-  
             inOperator = {
                 "$set": { [attachtobinder]: newChecked }
             }

@@ -82,6 +82,9 @@ export async function partsFuncs_submitForm_Add_vh2({
         if (added && Object.values(added.payload).length > 0 && newLocalStorage.resetok) {
 
             newLocalStorage['form']['formdata'] = await populateFields_vh3({ formdata: newLocalStorage.form.formdata, fields: null, dispatch, redux_localeuser, poliglot, type, model });
+        
+            console.log(newLocalStorage['form']['formdata']);
+        
         }  
     } 
 
