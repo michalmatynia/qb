@@ -147,14 +147,55 @@ export default function ListPanel() {
     const [isActualMessage, setIsActualMessage] = React.useState();
 
 
+    const onRemoveItem = useCallback(async ({ event, removeall, value = null, state }) => {
+
+        console.log(state);
+
+        setIsActualMessage('Removing')
+        setShowMessage(true)
+
+        console.log(state);
+        await remove_fromOverMods_vh({
+            dispatch,
+            value,
+            removeall,
+            overmodel: Object.keys(state.localStorage.attachto)[0],
+            submodel: reactrouter.match.params.model,
+            isRawState: state
+        })
+
+        await remove_fromDatabase_vh({
+            dispatch,
+            value,
+            removeall,
+            event,
+            isRawState: state,
+            isViewparams,
+            redux_localeuser,
+            model: reactrouter.match.params.model,
+            poliglot: state.localStorage.poliglot
+        }).then(() => {
+            setShowMessage(false)
+            setIsActualMessage()
+        })
+
+    }, [dispatch,  isViewparams, reactrouter.match.params.model, redux_localeuser])
 
     /* SET RAWSTATE  */
 
     const establishStateParams = useCallback(async () => {
 
-        return grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model, kind: 'list' })
+        return grabFunctionState({
+            onRemoveItem,
 
-    }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
+            redux_current_mysite,
+            redux_localeuser,
+            dispatch,
+            model: reactrouter.match.params.model,
+            kind: 'list'
+        })
+
+    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
@@ -204,6 +245,7 @@ export default function ListPanel() {
 
     // }, [isLocalUser, isRawState, reactrouter_location, redux_current_mysite, redux_localeuser, unhingeRawState, reactrouter_history.location.pathname, reactrouter_history, isPrevLocation])
 
+    /* Thsi can be removed */
     /* Grab List */
 
     // React.useEffect(() => {
@@ -248,35 +290,7 @@ export default function ListPanel() {
 
     // }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
 
-    const onRemoveItem = useCallback(async ({ event, removeall, value = null }) => {
-        
-        // setIsActualMessage('Removing')
-        // setShowMessage(true)
-        
-        await remove_fromOverMods_vh({
-            value,
-            removeall,
-            overmodel: Object.keys(isRawState.localStorage.attachto)[0],
-            submodel: reactrouter.match.params.model,
-            isRawState,
-            dispatch
-        })
 
-        await remove_fromDatabase_vh({
-            value,
-            removeall,
-            event,
-            isRawState,
-            isViewparams,
-            redux_localeuser,
-            model: reactrouter.match.params.model,
-            poliglot: isRawState.localStorage.poliglot
-        }).then(() => {
-            // setShowMessage(false)
-            // setIsActualMessage()
-        })
-
-    },[dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
     React.useEffect(() => {
 
@@ -365,7 +379,7 @@ export default function ListPanel() {
                                 }
                             />
                         </CardHeader>
-                        {isRawState && redux_model_list ? <CardBody>{console.log('render')}
+                        {isRawState && redux_model_list ? <CardBody>
                             <ListTable
                                 model={reactrouter.match.params.model}
                                 tableparams={isRawState.localStorage.tableparams}

@@ -168,7 +168,7 @@ export async function plg_updateMany({ model = null, myprops = null, dispatch = 
 
 
 }
-export async function plg_removeOne({ model = null, myprops = null, inQuery = null, inParams = null, actionType = null, populate }) {
+export async function plg_removeOne({ dispatch, model = null, myprops = null, inQuery = null, inParams = null, actionType = null, populate }) {
 
     let reqBody = { reqhelper: {}, reqquery: inQuery, reqparams: inParams }
     Object.assign(reqBody, { model: model });
@@ -177,7 +177,16 @@ export async function plg_removeOne({ model = null, myprops = null, inQuery = nu
         Object.assign(reqBody.reqhelper, { populate: populate });
     }
 
-    return await myprops.dispatch(act_removeOne_queMod({ dataToSubmit: reqBody, actionType }))
+
+    if (dispatch) {
+        return await dispatch(act_removeOne_queMod({ actionType, dataToSubmit: reqBody }))
+
+    } else {
+
+        return await myprops.dispatch(act_removeOne_queMod({ actionType, dataToSubmit: reqBody }))
+
+    }
+
 
 }
 export async function plg_aggregate({ dispatch = null, model = null, myprops = null, actionType = null, inPipeline = null }) {

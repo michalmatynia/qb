@@ -9,9 +9,9 @@ import {
     plg_findMany
 } from '../../../utils/Plugs/cms_plugs';
 
-export async function listFuncs_RemoveItem_v2_vh({ item = null, removeall = null, model = null, poliglot = null, redux_localeuser, isRawState }) {
+export async function listFuncs_RemoveItem_v2_vh({dispatch, item = null, removeall = null, model = null, poliglot = null, redux_localeuser, isRawState }) {
 
-    await removeFuncs_delEntityFromDb_v3_vh({ item, removeall, model, poliglot, redux_localeuser, isRawState })
+    await removeFuncs_delEntityFromDb_v3_vh({dispatch, item, removeall, model, poliglot, redux_localeuser, isRawState,  })
 
 }
 // export async function listFuncs_adjustPosition_v2({ item = null, direction, model = null, viewparams = null, viewpath = null, mystate = null, myprops = null, inLimit = null, inSortOrder = null, inSortBy = null, poliglot = null, hideIDs = null }) {

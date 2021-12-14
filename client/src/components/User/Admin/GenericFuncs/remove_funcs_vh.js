@@ -16,11 +16,11 @@ import {
 } from './brick_funcs_vh'
 
 export async function removeFuncs_delEntityFromDb_v3_vh({
+    dispatch,
     item = null,
     removeall = null,
     model = null,
     poliglot = null,
-    dispatch,
     redux_localeuser,
     isRawState
 }) {

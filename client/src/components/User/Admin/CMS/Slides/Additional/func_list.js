@@ -10,7 +10,14 @@ import {
     Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Slide_List() {
+export default async function rawStateFunction_Slide_List({ 
+    // redux_current_mysite, 
+    // dispatch, 
+    // redux_localeuser, 
+    // model,
+
+    onRemoveItem
+}) {
 
 
     const state = {
@@ -109,13 +116,13 @@ export default async function rawStateFunction_Slide_List() {
                         },
                         icon: Close,
                         actions: {
-                            onClick: ({ event, value, cell, sublistkey, tiedtoformkey }) => this.onRemoveItem({
-                                removeall: false,
+                            onClick: ({ event, value }) => onRemoveItem({
                                 event,
                                 value,
-                                sublistkey,
-                                tiedtoformkey
+                                removeall: false,
+                                state,
                             }),
+
                         },
                         inputprops: {
                             id: 'generic',
@@ -134,13 +141,12 @@ export default async function rawStateFunction_Slide_List() {
                         },
                         icon: Remove,
                         actions: {
-                            onClick: ({ event, value, cell, sublistkey, tiedtoformkey }) => this.onRemoveItem({
+                            onClick: ({ event, value }) => onRemoveItem({
                                 event,
                                 value,
-                                cell,
-                                sublistkey,
-                                tiedtoformkey,
-                                removeall: true
+                                removeall: true,
+                                state,
+
                             }),
                         },
                         inputprops: {

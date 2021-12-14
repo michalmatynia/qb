@@ -10,12 +10,12 @@ import {
     plg_findOne_QueMod
 } from '../../../utils/Plugs/cms_plugs';
 
-export async function remove_fromDatabase_vh({ 
+export async function remove_fromDatabase_vh({
+    dispatch,
     event, 
     value, 
     removeall, 
     isViewparams,
-    dispatch,
     model,
     isRawState,
     redux_localeuser,
@@ -27,6 +27,7 @@ export async function remove_fromDatabase_vh({
     if (event) {
 
         await listFuncs_RemoveItem_v2_vh({
+            dispatch,
             item: value,
             removeall,
             model,
