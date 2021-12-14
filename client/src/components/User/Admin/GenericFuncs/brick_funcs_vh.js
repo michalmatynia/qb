@@ -231,7 +231,7 @@ export async function brickFuncs_populateMultimodel_preInput_vh1({
         return []
     }
 }
-export async function brickFuncs_removeBrickSubs({ myprops = null, removed = null, model = null }) {
+export async function brickFuncs_removeBrickSubs_vh1({ dispatch = null,  removed = null, model = null }) {
 
     let inQuery
     let inOperator
@@ -241,8 +241,7 @@ export async function brickFuncs_removeBrickSubs({ myprops = null, removed = nul
         checked: { "$elemMatch": { referenceID: { "$eq": removed._id } } }
 
     }
-    let brickstoupdate = await plg_findMany({ model: 'brick', myprops, actionType: 'samestate', inQuery })
-
+    let brickstoupdate = await plg_findMany({ model, dispatch, actionType: 'samestate', inQuery })
 
     for (let value of brickstoupdate.payload) {
 
@@ -252,7 +251,6 @@ export async function brickFuncs_removeBrickSubs({ myprops = null, removed = nul
             value.checked = value.checked.reduce((accum, currentvalue) => {
 
                 if (currentvalue.referenceID === removed._id) {
-
                     return accum
                 } else if (currentvalue.position > value.checked[indexToRemove].position) {
 
@@ -261,19 +259,16 @@ export async function brickFuncs_removeBrickSubs({ myprops = null, removed = nul
                     return [...accum, currentvalue]
                 }
 
-
                 else {
                     return [...accum, currentvalue]
                 }
 
-
             }, []);
-
 
             inQuery = { _id: { "$eq": value._id } }
             inOperator = { '$set': value }
 
-            await plg_updateOne_queMod_oprMod({ model: 'brick', myprops, actionType: 'samestate', inQuery, inOperator })
+            await plg_updateOne_queMod_oprMod({ model, dispatch, actionType: 'samestate', inQuery, inOperator })
         }
     }
 

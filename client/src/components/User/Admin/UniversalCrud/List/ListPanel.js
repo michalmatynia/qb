@@ -276,7 +276,7 @@ export default function ListPanel() {
             // setIsActualMessage()
         })
 
-    },[dispatch, isRawState, reactrouter.match.params.model])
+    },[dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
     React.useEffect(() => {
 

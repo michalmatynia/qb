@@ -29,10 +29,10 @@ export async function remove_fromDatabase_vh({
         await listFuncs_RemoveItem_v2_vh({
             item: value,
             removeall,
-            myprops,
-            mystate,
             model,
             poliglot,
+            redux_localeuser,
+            isRawState
         })
 
         await listFuncs_loadList_v2_vh({
