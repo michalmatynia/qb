@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
     useSelector,
     useDispatch
@@ -61,7 +61,7 @@ import {
 
 export default function ListPanel() {
 
-    let viewparams = {
+    const viewparams = {
         limit: 10,
         skip: 0,
         size: 0,
@@ -134,9 +134,7 @@ export default function ListPanel() {
 
     const [isRawState, setRawState] = React.useState();
 
-    // const [isViewparams, setIsViewparams] = React.useState();
     const [isViewparams, setIsViewparams] = React.useState(viewparams);
-
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
 
@@ -179,7 +177,7 @@ export default function ListPanel() {
 
     // ########################################
 
-    const onRemoveItem = useMemo(async () => {
+    const onRemoveItem = useCallback(async ({ event, removeall, value = null, state, cb_isViewparams }) => {
 
         console.log('Remove');
         console.log(isViewparams);
@@ -213,7 +211,7 @@ export default function ListPanel() {
         //     setIsActualMessage()
         // })
 
-    }, [isViewparams])
+    }, [dispatch, isViewparams, reactrouter.match.params.model, redux_localeuser])
     
     /* SET RAWSTATE  */
 
