@@ -133,53 +133,44 @@ export default function ListPanel() {
     let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
 
     const [isRawState, setRawState] = React.useState();
-    const [isLocalStorage, setLocalStorage] = React.useState();
-    const [isPrevLocalStorage, setPrevLocalStorage] = React.useState();
-    const [isPrevLocation, setPrevLocation] = React.useState();
 
-    const [isLocalUser, setLocalUser] = React.useState();
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [isComponentType, setComponentType] = React.useState();
-    const [isCurrentSearch, setIsCurrentSearch] = React.useState('');
-    const [isPrevSearch, setIsPrevSearch] = React.useState('');
     const [isViewparams, setIsViewparams] = React.useState(viewparams);
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
 
 
-    const onRemoveItem = useCallback(async ({ event, removeall, value = null, state }) => {
+    const onRemoveItem = useCallback(async ({ event, removeall, value = null, state, cb_isViewparams }) => {
+        console.log(isViewparams);
+        console.log(cb_isViewparams);
 
-        console.log(state);
+        // setIsActualMessage('Removing')
+        // setShowMessage(true)
 
-        setIsActualMessage('Removing')
-        setShowMessage(true)
+        // await remove_fromOverMods_vh({
+        //     dispatch,
+        //     value,
+        //     removeall,
+        //     overmodel: Object.keys(state.localStorage.attachto)[0],
+        //     submodel: reactrouter.match.params.model,
+        //     isRawState: state
+        // })
 
-        console.log(state);
-        await remove_fromOverMods_vh({
-            dispatch,
-            value,
-            removeall,
-            overmodel: Object.keys(state.localStorage.attachto)[0],
-            submodel: reactrouter.match.params.model,
-            isRawState: state
-        })
+        // await remove_fromDatabase_vh({
+        //     dispatch,
+        //     value,
+        //     removeall,
+        //     event,
+        //     isRawState: state,
+        //     isViewparams,
+        //     redux_localeuser,
+        //     model: reactrouter.match.params.model,
+        //     poliglot: state.localStorage.poliglot
+        // }).then(() => {
+        //     setShowMessage(false)
+        //     setIsActualMessage()
+        // })
 
-        await remove_fromDatabase_vh({
-            dispatch,
-            value,
-            removeall,
-            event,
-            isRawState: state,
-            isViewparams,
-            redux_localeuser,
-            model: reactrouter.match.params.model,
-            poliglot: state.localStorage.poliglot
-        }).then(() => {
-            setShowMessage(false)
-            setIsActualMessage()
-        })
-
-    }, [dispatch,  isViewparams, reactrouter.match.params.model, redux_localeuser])
+    }, [isViewparams])
 
     /* SET RAWSTATE  */
 
@@ -187,6 +178,7 @@ export default function ListPanel() {
 
         return grabFunctionState({
             onRemoveItem,
+
 
             redux_current_mysite,
             redux_localeuser,
@@ -198,7 +190,7 @@ export default function ListPanel() {
     }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
-        if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
+        if ( !isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
                 // console.log(rawstate);
@@ -207,7 +199,7 @@ export default function ListPanel() {
             })
         }
 
-    }, [establishStateParams, isLocalUser, isRawState, redux_current_mysite, redux_localeuser])
+    }, [establishStateParams,  isRawState, redux_current_mysite, redux_localeuser])
 
     // /* CLEANUP */
 
@@ -245,56 +237,11 @@ export default function ListPanel() {
 
     // }, [isLocalUser, isRawState, reactrouter_location, redux_current_mysite, redux_localeuser, unhingeRawState, reactrouter_history.location.pathname, reactrouter_history, isPrevLocation])
 
-    /* Thsi can be removed */
-    /* Grab List */
-
-    // React.useEffect(() => {
-
-    //     if (isRawState
-    //         && !redux_model_list
-    //         && isLoading
-    //         // || (isCurrentSearch && isCurrentSearch !== isPrevSearch)
-    //         // &&  ((isCurrentSearch !== '')             )
-    //     ) {
-
-    //         let inQuery = {}
-    //         let found = { payload: '' }
-    //         /* This is for later */
-    //         /*             if (this.props.user.userData.role === 2) {
-
-    //                         inQuery = await roleFuncs_listEvent({
-    //                             inQuery,
-    //                             event_lgbinder: '60fa0baa2956083e2c28e208',
-    //                             myprops: this.props,
-    //                         })
-    //                     } */
-
-
-    //         listFuncs_loadList_v2_vh({
-    //             sublistkey: null,
-    //             model: reactrouter.match.params.model,
-    //             redux_localeuser,
-    //             dispatch,
-    //             isRawState,
-    //             thisview: isViewparams,
-    //             populate: isRawState.localStorage.qhelpers.populate,
-    //             hideIDs: null,
-    //             inQuery
-    //         }).then(() => {
-    //             setIsLoading(false)
-
-    //         })
-
-
-    //     }
-
-    // }, [dispatch, isLoading, isRawState, reactrouter.match.params.model, redux_localeuser, redux_model_list, isViewparams])
-
-
-
     React.useEffect(() => {
 
         if (isRawState && isViewparams) {
+
+            console.log(isViewparams);
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
@@ -312,6 +259,7 @@ export default function ListPanel() {
     }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
 
     const onToggleSwitch = useCallback(async ({ event, value = null }) => {
+
 
         await toggle_boolSwitch_v1_vh({
             value,
@@ -395,7 +343,8 @@ export default function ListPanel() {
                                     return onRemoveItem({
                                         removeall,
                                         event,
-                                        value
+                                        value,
+                                        cb_isViewparams: isViewparams
                                     })
                                 }}
                                 changePosition={({ value, direction, event }) => {
