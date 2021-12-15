@@ -25,6 +25,7 @@ export async function removeFuncs_delEntityFromDb_v3_vh({
     isRawState
 }) {
 
+    console.log('ffffwe');
     let inQuery
     let response
     let removed

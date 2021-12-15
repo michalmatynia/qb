@@ -140,7 +140,7 @@ export default function ListPanel() {
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
 
-    console.log(isViewparams);
+    // console.log(isViewparams);
 
     // const onRemoveItem = useCallback(async ({ event, removeall, value = null, state, cb_isViewparams }) => {
     //     console.log(isViewparams);
@@ -179,42 +179,40 @@ export default function ListPanel() {
 
     // ########################################
 
-    const onRemoveItem = useMemo(async () => {
+    const onRemoveItem = useCallback(async ({removeall, value = null, state, viewparams}) => {
 
         console.log('Remove');
-        console.log(isViewparams);
-        // console.log(cb_isViewparams);
-        // console.log(redux_localeuser);
+        console.log(viewparams);
 
-        // setIsActualMessage('Removing')
-        // setShowMessage(true)
 
-        // await remove_fromOverMods_vh({
-        //     dispatch,
-        //     value,
-        //     removeall,
-        //     overmodel: Object.keys(state.localStorage.attachto)[0],
-        //     submodel: reactrouter.match.params.model,
-        //     isRawState: state
-        // })
+        setIsActualMessage('Removing')
+        setShowMessage(true)
 
-        // await remove_fromDatabase_vh({
-        //     dispatch,
-        //     value,
-        //     removeall,
-        //     event,
-        //     isRawState: state,
-        //     isViewparams,
-        //     redux_localeuser,
-        //     model: reactrouter.match.params.model,
-        //     poliglot: state.localStorage.poliglot
-        // }).then(() => {
-        //     setShowMessage(false)
-        //     setIsActualMessage()
-        // })
+        await remove_fromOverMods_vh({
+            dispatch,
+            value,
+            removeall,
+            overmodel: Object.keys(state.localStorage.attachto)[0],
+            submodel: reactrouter.match.params.model,
+            isRawState: state
+        })
 
-    }, [isViewparams])
-    
+        await remove_fromDatabase_vh({
+            dispatch,
+            value,
+            removeall,
+            isRawState: state,
+            thisview: viewparams,
+            redux_localeuser,
+            model: reactrouter.match.params.model,
+            poliglot: state.localStorage.poliglot
+        }).then(() => {
+            setShowMessage(false)
+            setIsActualMessage()
+        })
+
+    }, [dispatch, reactrouter.match.params.model, redux_localeuser])
+
     /* SET RAWSTATE  */
 
     const establishStateParams = useCallback(async () => {
@@ -223,7 +221,7 @@ export default function ListPanel() {
 
         return grabFunctionState({
             onRemoveItem,
-
+            tt: isViewparams,
 
             redux_current_mysite,
             redux_localeuser,
@@ -232,10 +230,10 @@ export default function ListPanel() {
             kind: 'list'
         })
 
-    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
+    }, [dispatch, isViewparams, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
-        if ( !isRawState && redux_current_mysite && redux_localeuser) {
+        if (!isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
                 // console.log(rawstate);
@@ -244,7 +242,7 @@ export default function ListPanel() {
             })
         }
 
-    }, [establishStateParams,  isRawState, redux_current_mysite, redux_localeuser])
+    }, [establishStateParams, isRawState, redux_current_mysite, redux_localeuser])
 
     // /* CLEANUP */
 
@@ -385,18 +383,7 @@ export default function ListPanel() {
                                         ...prevState,
                                         sortOrder: prevState.sortOrder === 1 ? -1 : 1
                                     }));
-                                }}
-                                // removeItem={({ value, removeall, event }) => {
-                                //     console.log('here');
-
-                                //     console.log(isViewparams);
-                                //     return onRemoveItem({
-                                //         removeall,
-                                //         event,
-                                //         value,
-                                //         cb_isViewparams: isViewparams
-                                //     })
-                                // }}
+                                }}              
                                 changePosition={({ value, direction, event }) => {
                                     return onChangePos({
                                         direction,

@@ -6,13 +6,13 @@ import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
 
-export async function grabFunctionState({ 
+export async function grabFunctionState({
     onRemoveItem,
-    
-    model, 
-    redux_current_mysite, 
-    dispatch, 
-    redux_localeuser, 
+
+    model,
+    redux_current_mysite,
+    dispatch,
+    redux_localeuser,
     kind = null,
 }) {
     let rawFunctionState = null;
@@ -20,8 +20,7 @@ export async function grabFunctionState({
     switch (true) {
         case (model === 'slide' && kind === 'list'):
 
-            rawFunctionState = await rawStateFunction_Slide_List({ 
-   
+            rawFunctionState = await rawStateFunction_Slide_List({
                 onRemoveItem
             })
             break;

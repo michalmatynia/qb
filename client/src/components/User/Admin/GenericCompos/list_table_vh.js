@@ -18,14 +18,12 @@ import Table from "../../../../templates/creativetim/material-dashboard-pro-reac
 
 import styles from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
 
-import { ColumnRow } from './func_table'
+import { ColumnRow } from './func_table_vh'
 
 // @material-ui/icons
 const useStyles = makeStyles(styles);
 
-export default function ListTable({ model = null, sublistkey = null, viewparams = null, tableparams = null, tiedtoformkey = null,  mystate = null, changePosition = null, changeSort = null, handleSwitch = null, removeItem = null, toggleItem = null }) {
-  const dispatch = useDispatch()
-  let reactrouter = useRouter()
+export default function ListTable({ model = null, sublistkey = null, viewparams = null, tableparams = null, tiedtoformkey = null,  changePosition = null, changeSort = null, handleSwitch = null, removeItem = null, toggleItem = null }) {
 
   let redux_model_list = useSelector(state => state[model].list)
 
@@ -46,6 +44,7 @@ export default function ListTable({ model = null, sublistkey = null, viewparams 
           removeItem={removeItem}
           toggleItem={toggleItem}
           model={model}
+          viewparams={viewparams}
           // formcellkey 
           // formcell
         />

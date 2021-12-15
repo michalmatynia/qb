@@ -15,16 +15,16 @@ export async function remove_fromDatabase_vh({
     event, 
     value, 
     removeall, 
-    isViewparams,
+    thisview,
     model,
     isRawState,
     redux_localeuser,
     poliglot = null 
 }) {
 
-    let newLocalStorage = { ...isRawState.localStorage }
 
-    if (event) {
+    let newLocalStorage = { ...isRawState.localStorage }
+    console.log('lll');
 
         await listFuncs_RemoveItem_v2_vh({
             dispatch,
@@ -42,12 +42,11 @@ export async function remove_fromDatabase_vh({
             redux_localeuser,
             dispatch,
             isRawState,
-            thisview: isViewparams,
+            thisview,
             populate: isRawState.localStorage.qhelpers.populate,
             hideIDs: null,
             // inQuery
         })
-    }
 
     return newLocalStorage
 

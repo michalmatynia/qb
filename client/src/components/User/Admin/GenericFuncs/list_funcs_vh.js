@@ -10,6 +10,7 @@ import {
 } from '../../../utils/Plugs/cms_plugs';
 
 export async function listFuncs_RemoveItem_v2_vh({dispatch, item = null, removeall = null, model = null, poliglot = null, redux_localeuser, isRawState }) {
+    console.log('gghhh');
 
     await removeFuncs_delEntityFromDb_v3_vh({dispatch, item, removeall, model, poliglot, redux_localeuser, isRawState,  })
 

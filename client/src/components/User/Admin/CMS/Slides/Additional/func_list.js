@@ -10,9 +10,7 @@ import {
     Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Slide_List({ 
-
-
+export default async function rawStateFunction_Slide_List({
     onRemoveItem
 }) {
 
@@ -113,11 +111,13 @@ export default async function rawStateFunction_Slide_List({
                         },
                         icon: Close,
                         actions: {
-                            onClick: ({ event, value }) => onRemoveItem({
+                            onClick: ({ event, value, viewparams }) => onRemoveItem({
                                 event,
                                 value,
+                                viewparams,
                                 removeall: false,
                                 state,
+
                             }),
 
                         },
