@@ -93,6 +93,7 @@ export async function listFuncs_loadList_v2_vh({
     }
 
     console.log(inQuery);
+    console.log(thisview);
 
     let response = await plg_findMany({ viewparams: thisview, model, dispatch, actionType: 'list', inQuery, inLimit, inSortOrder, populate })
 
@@ -111,5 +112,5 @@ export async function listFuncs_loadList_v2_vh({
         }
     }
 
-    return newLocalStorage
+    return {newLocalStorage, length: Object.keys(response.payload).length } 
 }

@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import {
     useSelector,
     useDispatch
 } from 'react-redux'
-import { useHistory, useLocation } from "react-router-dom";
 import GridContainer from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Card from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/Card.js";
@@ -11,17 +10,13 @@ import CardBody from "../../../../../themesrun/creativetim/material-dashboard-pr
 import CardHeader from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/CardHeader.js";
 // import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import Button from "../../../../../templates/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import { search_inDatabase } from '../../EventFuncs/search_funcs'
 import { changpos_classicAdjust_vh } from '../../EventFuncs/changepos_funcs_vh'
 import { remove_fromDatabase_vh, remove_fromOverMods_vh } from '../../EventFuncs/remove_funcs_vh'
 
 
-// import FormElement from '../../../../utils/Form/Funcs/formContainer'
-// import SearchFieldFC from '../../../../utils/Form/Funcs/FormSearchInput';
+
 import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
-import { roleFuncs_listEvent } from '../../RoleFuncs/cm_presets'
-import { imageFuncs_removeImagesHandler_vh2 } from '../../GenericFuncs/image_funcs_vh'
-import { submitFuncs_fullSubmit_vh2 } from '../../GenericFuncs/submit_funcs_vh'
+
 import { listFuncs_loadList_v2_vh } from '../../GenericFuncs/list_funcs_vh'
 import ListTable from '../../GenericCompos/list_table_vh'
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -31,31 +26,18 @@ import {
     useRouter,
 } from "../../../../../hoc/Funcs/hook_funcs";
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* STATE */
 import { grabFunctionState } from "../EditAdd Functions/grabFunctionState"
 
-import { updateFormValues } from '../../GenericFuncs/UpdateFormValues'
-import { saveForm } from '../../GenericFuncs/saveForm'
-import { submitForm } from '../../GenericFuncs/submitForm'
-import { grabFormdata_vh2 } from '../../../../utils/Form/FormActions/grabFormdata_vh';
-import { attachtoFuncs_populateEdit_vh2 } from '../../GenericFuncs/attachto_funcs_vh'
-import AutocompleteMenu from '../../GenericCompos/autocomplete_menu'
-
 // import { ShowMessages } from '../../GenericFuncs/errormsg_funcs'
 import { ShowMessages } from '../../../../Message/Generic/static_msg'
 
-import FormContainer from '../../../../utils/Form/Funcs/FormContainer_v2'
-
-import { compoFuncs_Refresh_vh3 } from '../../GenericFuncs/compo_funcs_vh'
 import {
     Search,
 } from '@material-ui/icons';
 import {
     plg_clearProps,
-    plg_findOne_QueMod,
-    plg_findMany
 } from '../../../../utils/Plugs/cms_plugs';
 
 
@@ -64,7 +46,7 @@ export default function ListPanel() {
     let viewparams = {
         limit: 10,
         skip: 0,
-        size: 0,
+        size: 10,
         sortBy: 'position',
         sortOrder: 1,
         search: {
@@ -134,52 +116,14 @@ export default function ListPanel() {
 
     const [isRawState, setRawState] = React.useState();
 
-    // const [isViewparams, setIsViewparams] = React.useState();
     const [isViewparams, setIsViewparams] = React.useState(viewparams);
 
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
 
-    // console.log(isViewparams);
-
-    // const onRemoveItem = useCallback(async ({ event, removeall, value = null, state, cb_isViewparams }) => {
-    //     console.log(isViewparams);
-    //     // console.log(cb_isViewparams);
-    //     // console.log(redux_localeuser);
-
-    //     setIsActualMessage('Removing')
-    //     setShowMessage(true)
-
-    //     await remove_fromOverMods_vh({
-    //         dispatch,
-    //         value,
-    //         removeall,
-    //         overmodel: Object.keys(state.localStorage.attachto)[0],
-    //         submodel: reactrouter.match.params.model,
-    //         isRawState: state
-    //     })
-
-    //     await remove_fromDatabase_vh({
-    //         dispatch,
-    //         value,
-    //         removeall,
-    //         event,
-    //         isRawState: state,
-    //         isViewparams,
-    //         redux_localeuser,
-    //         model: reactrouter.match.params.model,
-    //         poliglot: state.localStorage.poliglot
-    //     }).then(() => {
-    //         setShowMessage(false)
-    //         setIsActualMessage()
-    //     })
-
-    // }, [dispatch, isViewparams, reactrouter.match.params.model, redux_localeuser])
-
-
     // ########################################
 
-    const onRemoveItem = useCallback(async ({removeall, value = null, state, viewparams, model, redux_localeuser}) => {
+    const onRemoveItem = useCallback(async ({ removeall, value = null, state, viewparams, model, redux_localeuser }) => {
 
         setIsActualMessage('Removing')
         setShowMessage(true)
@@ -217,7 +161,6 @@ export default function ListPanel() {
 
         return grabFunctionState({
             onRemoveItem,
-            tt: isViewparams,
 
             redux_current_mysite,
             redux_localeuser,
@@ -226,13 +169,12 @@ export default function ListPanel() {
             kind: 'list'
         })
 
-    }, [dispatch, isViewparams, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
+    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
-                // console.log(rawstate);
                 setRawState(rawstate)
 
             })
@@ -256,31 +198,9 @@ export default function ListPanel() {
     }, [dispatch, reactrouter.match.params.model])
 
 
-    /* CLEAR RAWSTATE */
-
-    // const unhingeRawState = useCallback(async () => {
-
-    //     setRawState()
-    //     setLocalUser()
-    //     setPrevLocalStorage(isLocalStorage)
-    //     // setPrevLocation(reactrouter_location)
-    //     setLocalStorage()
-
-    // }, [isLocalStorage])
-
-    // React.useEffect(() => {
-    //     if (isLocalUser && isRawState && redux_current_mysite && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || isPrevLocation.pathname !== reactrouter_location.pathname)) {
-    //         setIsLoading(true)
-    //         unhingeRawState()
-    //     }
-
-    // }, [isLocalUser, isRawState, reactrouter_location, redux_current_mysite, redux_localeuser, unhingeRawState, reactrouter_history.location.pathname, reactrouter_history, isPrevLocation])
-
     React.useEffect(() => {
 
-        if (isRawState && isViewparams) {
-
-            console.log(isViewparams);
+        if (isRawState && isViewparams && redux_localeuser) {
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
@@ -292,6 +212,13 @@ export default function ListPanel() {
                 populate: isRawState.localStorage.qhelpers.populate,
                 hideIDs: null,
                 // inQuery
+            }).then((res) => {
+                if (isViewparams.size !== res.length) {
+                    setIsViewparams(prevState => ({
+                        ...prevState,
+                        size: res.length
+                    }));
+                }
             })
         }
 
@@ -380,7 +307,7 @@ export default function ListPanel() {
                                         ...prevState,
                                         sortOrder: prevState.sortOrder === 1 ? -1 : 1
                                     }));
-                                }}              
+                                }}
                                 changePosition={({ value, direction, event }) => {
                                     return onChangePos({
                                         direction,
@@ -395,17 +322,18 @@ export default function ListPanel() {
                                     })
                                 }}
                             />
-                            {/* {
-                                this.state.localStorage.viewparams.size > 0 && this.state.localStorage.viewparams.size >= this.state.localStorage.viewparams.limit ?
+                            {
+                                isViewparams.size > 0 && isViewparams.size >= isViewparams.limit ?
                                     <Button id='loadmore' style={{ width: '100%' }} onClick={(event) => {
-                                        return this.onLoadMore({
-                                            event,
-                                        })
+                                        setIsViewparams(prevState => ({
+                                            ...prevState,
+                                            limit: prevState.limit + 10
+                                        }));
                                     }}>
                                         Load More...
                                     </Button>
                                     : null
-                            } */}
+                            }
                         </CardBody> : null}
                     </Card>
                 </GridItem>
