@@ -8,6 +8,7 @@ import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
 export async function grabFunctionState({
     onRemoveItem,
+    onGotoLink,
 
     model,
     redux_current_mysite,
@@ -21,7 +22,8 @@ export async function grabFunctionState({
         case (model === 'slide' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_Slide_List({
-                onRemoveItem
+                onRemoveItem,
+                onGotoLink
             })
             break;
         case (model === 'slide' && !kind):

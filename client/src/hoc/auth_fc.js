@@ -91,7 +91,7 @@ export default function AuthFC(props) {
 
 
     return (
-        !isloading ? <div>{console.log('auth func render')} <Page  /> </div> : null
+        !isloading ? <div> <Page  /> </div> : null
     )
 
 

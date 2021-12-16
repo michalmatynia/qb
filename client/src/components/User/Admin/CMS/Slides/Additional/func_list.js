@@ -1,8 +1,3 @@
-import React, { Component } from 'react';
-
-
-// Material-UI
-import InputAdornment from "@material-ui/core/InputAdornment";
 import {
     Edit,
     Search,
@@ -11,7 +6,8 @@ import {
 } from '@material-ui/icons';
 
 export default async function rawStateFunction_Slide_List({
-    onRemoveItem
+    onRemoveItem,
+    onGotoLink
 }) {
 
 
@@ -87,11 +83,14 @@ export default async function rawStateFunction_Slide_List({
                         },
                         icon: Edit,
                         actions: {
-                            onClick: ({ event, value, cell, sublistkey }) => this.onGotoLink({
+                            onClick: ({ event, value, cell, sublistkey, reactrouter_history, redux_userdata, model }) => onGotoLink({
                                 event,
                                 value,
                                 cell,
-                                sublistkey
+                                sublistkey,
+                                reactrouter_history,
+                                redux_userdata, 
+                                model
                             }),
                         },
                         inputprops: {

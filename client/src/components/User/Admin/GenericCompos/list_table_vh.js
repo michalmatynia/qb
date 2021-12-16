@@ -23,7 +23,7 @@ import { ColumnRow } from './func_table_vh'
 // @material-ui/icons
 const useStyles = makeStyles(styles);
 
-export default function ListTable({ model = null, redux_localeuser = null, sublistkey = null, viewparams = null, tableparams = null, tiedtoformkey = null,  changePosition = null, changeSort = null, handleSwitch = null, removeItem = null, toggleItem = null }) {
+export default function ListTable({ model = null, redux_localeuser = null, redux_userdata = null, reactrouter_history = null, sublistkey = null, viewparams = null, tableparams = null, tiedtoformkey = null,  changePosition = null, changeSort = null, handleSwitch = null, removeItem = null, toggleItem = null }) {
 
   let redux_model_list = useSelector(state => state[model].list)
 
@@ -45,9 +45,9 @@ export default function ListTable({ model = null, redux_localeuser = null, subli
           toggleItem={toggleItem}
           model={model}
           redux_localeuser={redux_localeuser}
+          reactrouter_history={reactrouter_history}
+          redux_userdata={redux_userdata}
           viewparams={viewparams}
-          // formcellkey 
-          // formcell
         />
       } else {
         return null

@@ -24,7 +24,6 @@ export async function remove_fromDatabase_vh({
 
 
     let newLocalStorage = { ...isRawState.localStorage }
-    console.log('remf');
 
         await listFuncs_RemoveItem_v2_vh({
             dispatch,

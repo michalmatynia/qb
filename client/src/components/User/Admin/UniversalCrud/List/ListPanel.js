@@ -8,12 +8,11 @@ import GridItem from "../../../../../themesrun/creativetim/material-dashboard-pr
 import Card from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/Card.js";
 import CardBody from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/CardBody.js";
 import CardHeader from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/CardHeader.js";
-// import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
-import Button from "../../../../../templates/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
+import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import { changpos_classicAdjust_vh } from '../../EventFuncs/changepos_funcs_vh'
 import { remove_fromDatabase_vh, remove_fromOverMods_vh } from '../../EventFuncs/remove_funcs_vh'
-
-
+import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
+import { useHistory } from "react-router-dom";
 
 import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
 
@@ -105,11 +104,12 @@ export default function ListPanel() {
     }
 
     let reactrouter = useRouter()
-    // let reactrouter_history = useHistory()
-    // let reactrouter_location = useLocation()
 
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
+    let redux_userdata = useSelector(state => state.user.userData)
+
+    let reactrouter_history = useHistory()
 
     let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
     let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
@@ -120,8 +120,6 @@ export default function ListPanel() {
 
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
-
-    // ########################################
 
     const onRemoveItem = useCallback(async ({ removeall, value = null, state, viewparams, model, redux_localeuser }) => {
 
@@ -153,14 +151,26 @@ export default function ListPanel() {
 
     }, [dispatch])
 
+
+    const onGotoLink = useCallback(async ({ event, value = null, reactrouter_history, model, redux_userdata }) => {
+
+        routing_gotoEdit_vh3({ 
+            model,
+            event, 
+            value,
+            reactrouter_history,
+            redux_userdata
+            })
+    }, [])
+
+
     /* SET RAWSTATE  */
 
     const establishStateParams = useCallback(async () => {
 
-        console.log('run params');
-
         return grabFunctionState({
             onRemoveItem,
+            onGotoLink,
 
             redux_current_mysite,
             redux_localeuser,
@@ -169,7 +179,7 @@ export default function ListPanel() {
             kind: 'list'
         })
 
-    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
+    }, [dispatch, onGotoLink, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
@@ -226,7 +236,6 @@ export default function ListPanel() {
 
     const onToggleSwitch = useCallback(async ({ event, value = null }) => {
 
-
         await toggle_boolSwitch_v1_vh({
             value,
             event,
@@ -280,8 +289,6 @@ export default function ListPanel() {
                                 value={isViewparams.value}
                                 formcellkey='search'
                                 change={({ event, value, cell, isValid }) => {
-
-                                    console.log('change');
                                     const cellkey = Object.keys(cell)[0]
                                     setIsViewparams(prevState => ({
                                         ...prevState,
@@ -302,6 +309,8 @@ export default function ListPanel() {
                                 viewparams={isViewparams}
                                 mystate={isRawState}
                                 redux_localeuser={redux_localeuser}
+                                redux_userdata={redux_userdata}
+                                reactrouter_history={reactrouter_history}
                                 changeSort={({ event }) => {
                                     setIsViewparams(prevState => ({
                                         ...prevState,
@@ -341,4 +350,3 @@ export default function ListPanel() {
         </div>
     )
 }
-

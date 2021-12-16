@@ -24,7 +24,6 @@ import { loadmore_classicLoad } from '../../EventFuncs/loadmore_funcs'
 import { toggle_boolSwitch_v1 } from '../../EventFuncs/toggle_funcs'
 import { changpos_classicAdjust } from '../../EventFuncs/changepos_funcs'
 import { remove_fromDatabase, remove_fromOverMods } from '../../EventFuncs/remove_funcs'
-import { routing_gotoEdit_vh2 } from '../../EventFuncs/routing_funcs_vh2'
 
 import {
     plg_clearProps
