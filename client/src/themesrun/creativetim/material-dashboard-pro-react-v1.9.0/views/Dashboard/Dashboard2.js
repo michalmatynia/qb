@@ -162,7 +162,7 @@ export default function Dashboard() {
   const customClassesForCells = [0, 2]
 
   return (
-    !isLoading ? <div>{console.log('rendash')}
+    !isLoading ? <div>
       <GridContainer>
         <GridItem xs={12} sm={6} md={6} lg={3}>
           <Card>

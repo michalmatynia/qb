@@ -43,8 +43,9 @@ import Dashboard from "./themesrun/creativetim/material-dashboard-pro-react-v1.9
 
 import AddSlide from './components/User/Admin/UniversalCrud/EditAdd';
 import EditSlide from './components/User/Admin/UniversalCrud/EditAdd';
-import ListSlide from './components/User/Admin/UniversalCrud/List/ListPanel';
+// import ListSlide from './components/User/Admin/UniversalCrud/List/ListPanel';
 // import ListSlide from './components/User/Admin/CMS/Slides/list_slide';
+import ListPanel from './components/User/Admin/UniversalCrud/List/ListPanel';
 
 import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
 import EditBrick from './components/User/Admin/CMS/Brick/edit_brick';
@@ -91,7 +92,7 @@ import AddMystore from './components/User/Admin/system/Mystore/add_mystore';
 import EditMystore from './components/User/Admin/system/Mystore/edit_mystore';
 import ListMystore from './components/User/Admin/system/Mystore/list_mystore';
 
-import ListVisit from './components/User/Admin/system/Visit/list_visit';
+// import ListVisit from './components/User/Admin/system/Visit/list_visit';
 
 import AddCart from './components/User/Admin/system/Cart/add_cart';
 import EditCart from './components/User/Admin/system/Cart/edit_cart';
@@ -165,7 +166,7 @@ let dashRoutes = [
             path: "/unilist/:model",
             navlink: "/unilist/slide",
             name: "List Slide",
-            component: ListSlide,
+            component: ListPanel,
             layout: "/admin",
             reload: true
           },
@@ -593,7 +594,7 @@ let dashRoutes = [
 
 
 
- 
+
   {
     collapse: true,
     name: "Taxonomy",
@@ -629,7 +630,7 @@ let dashRoutes = [
       },
     ]
   },
-  
+
   {
     collapse: true,
     name: "Theme",
@@ -754,7 +755,7 @@ let dashRoutes = [
       },
     ]
   },
- 
+
   {
 
     collapse: true,
@@ -792,6 +793,9 @@ let dashRoutes = [
       },
     ]
   },
+
+
+
   {
 
     collapse: true,
@@ -802,13 +806,12 @@ let dashRoutes = [
     layout: "/admin",
     views: [
       {
-        path: "/list/visit",
-        // path: "/list/:model",
-        // navlink: "/list/blockstyle",
+        /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
+        path: "/unilist/:model",
+        navlink: "/unilist/visit",
         name: "List Visit",
-        component: ListVisit,
+        component: ListPanel,
         layout: "/admin",
-        // model: 'blockstyle',
         reload: true
       },
     ]
@@ -841,14 +844,14 @@ let dashRoutes = [
         reload: true,
         redirect: true // Jesli True, sciezka nie wyswietla sie
       },
-      {
-        path: "/list_event",
-        name: "List Events",
-        component: ListSlide,
-        layout: "/contentmanager",
-        model: 'slide',
-        reload: true
-      },
+      // {
+      //   path: "/list_event",
+      //   name: "List Events",
+      //   component: ListPanel,
+      //   layout: "/contentmanager",
+      //   model: 'slide',
+      //   reload: true
+      // },
     ]
   },
 

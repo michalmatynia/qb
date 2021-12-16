@@ -13,7 +13,7 @@ import AdminLayout from '../../hoc/layouts/Admin';
 export default function Panel() {
 
 
-        return <div>{console.log('Panel')}
+        return <div>
             <Switch>
                 <Route path='/client'><AuthFC Page={AdminLayout} reload={true} /></Route>
                 <Route path='/contentmanager'><AuthFC Page={AdminLayout} reload={true} /></Route>

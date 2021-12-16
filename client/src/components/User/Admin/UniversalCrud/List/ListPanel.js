@@ -184,7 +184,9 @@ export default function ListPanel() {
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
 
+
             establishStateParams().then((rawstate) => {
+
                 setRawState(rawstate)
 
             })

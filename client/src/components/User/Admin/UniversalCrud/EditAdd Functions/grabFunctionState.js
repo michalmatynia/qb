@@ -4,6 +4,7 @@ import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
 
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
+import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
 
 
 export async function grabFunctionState({
@@ -24,6 +25,12 @@ export async function grabFunctionState({
             rawFunctionState = await rawStateFunction_Slide_List({
                 onRemoveItem,
                 onGotoLink
+            })
+            break;
+        case (model === 'visit' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Visit_List({
+                onRemoveItem,
             })
             break;
         case (model === 'slide' && !kind):

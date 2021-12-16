@@ -155,7 +155,7 @@ export default function Dashboard(props) {
   };
 
   return (
-    <div className={classes.wrapper}>{console.log('auth')}
+    <div className={classes.wrapper}>
       {/* {filterRoutes(routes)} */}
       <Sidebar
         // reduxprops={reduxprops}

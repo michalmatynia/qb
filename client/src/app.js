@@ -101,7 +101,7 @@ export default function App() {
         ) && !isLoading
 
     ) {
-        return <div>{console.log('top')}
+        return <div>
             <Panel />
         </div>
     } else if (
