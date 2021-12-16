@@ -30,7 +30,7 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles(styles);
 
-export function ColumnRow({ viewparams, column, item, formcellkey, formcell, sublistkey, tiedtoformkey, handleSwitch, toggleItem, changePosition, changeQuantity, removeItem, model = null }) {
+export function ColumnRow({ viewparams, redux_localeuser, column, item, formcellkey, formcell, sublistkey, tiedtoformkey, handleSwitch, toggleItem, changePosition, changeQuantity, removeItem, model = null }) {
     // Do checked musi wejsc formcell options
     const [checked, setChecked] = React.useState([]);
     const handleToggle = ({ value, event, sublistkey, tiedtoformkey, cell }) => {
@@ -198,7 +198,7 @@ export function ColumnRow({ viewparams, column, item, formcellkey, formcell, sub
 
         return <IconButton
             {...column.inputprops}
-            onClick={(event) => column.actions.onClick({ viewparams, event, value: item })}
+            onClick={(event) => column.actions.onClick({ viewparams, redux_localeuser, model, event, value: item })}
             key={item._id}
         >
             <column.icon fontSize="small" />

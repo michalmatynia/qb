@@ -179,11 +179,7 @@ export default function ListPanel() {
 
     // ########################################
 
-    const onRemoveItem = useCallback(async ({removeall, value = null, state, viewparams}) => {
-
-        console.log('Remove');
-        console.log(viewparams);
-
+    const onRemoveItem = useCallback(async ({removeall, value = null, state, viewparams, model, redux_localeuser}) => {
 
         setIsActualMessage('Removing')
         setShowMessage(true)
@@ -193,7 +189,7 @@ export default function ListPanel() {
             value,
             removeall,
             overmodel: Object.keys(state.localStorage.attachto)[0],
-            submodel: reactrouter.match.params.model,
+            submodel: model,
             isRawState: state
         })
 
@@ -204,14 +200,14 @@ export default function ListPanel() {
             isRawState: state,
             thisview: viewparams,
             redux_localeuser,
-            model: reactrouter.match.params.model,
+            model,
             poliglot: state.localStorage.poliglot
         }).then(() => {
             setShowMessage(false)
             setIsActualMessage()
         })
 
-    }, [dispatch, reactrouter.match.params.model, redux_localeuser])
+    }, [dispatch])
 
     /* SET RAWSTATE  */
 
@@ -378,6 +374,7 @@ export default function ListPanel() {
                                 tableparams={isRawState.localStorage.tableparams}
                                 viewparams={isViewparams}
                                 mystate={isRawState}
+                                redux_localeuser={redux_localeuser}
                                 changeSort={({ event }) => {
                                     setIsViewparams(prevState => ({
                                         ...prevState,

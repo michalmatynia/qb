@@ -92,6 +92,8 @@ export async function listFuncs_loadList_v2_vh({
 
     }
 
+    console.log(inQuery);
+
     let response = await plg_findMany({ viewparams: thisview, model, dispatch, actionType: 'list', inQuery, inLimit, inSortOrder, populate })
 
     if (thisview.size !== Object.keys(response.payload).length) {

@@ -111,13 +111,14 @@ export default async function rawStateFunction_Slide_List({
                         },
                         icon: Close,
                         actions: {
-                            onClick: ({ event, value, viewparams }) => onRemoveItem({
+                            onClick: ({ event, value, viewparams, redux_localeuser, model }) => onRemoveItem({
                                 event,
                                 value,
                                 viewparams,
+                                redux_localeuser,
+                                model,
                                 removeall: false,
                                 state,
-
                             }),
 
                         },
@@ -138,9 +139,12 @@ export default async function rawStateFunction_Slide_List({
                         },
                         icon: Remove,
                         actions: {
-                            onClick: ({ event, value }) => onRemoveItem({
+                            onClick: ({ event, value, viewparams, redux_localeuser, model }) => onRemoveItem({
                                 event,
                                 value,
+                                viewparams,
+                                redux_localeuser,
+                                model,
                                 removeall: true,
                                 state,
 
