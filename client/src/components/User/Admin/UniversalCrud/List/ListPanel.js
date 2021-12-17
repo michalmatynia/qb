@@ -204,7 +204,7 @@ export default function ListPanel() {
 
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
-
+            setRawState()
         };
 
     }, [dispatch, reactrouter.match.params.model])
@@ -212,7 +212,7 @@ export default function ListPanel() {
 
     React.useEffect(() => {
 
-        if (isRawState && isViewparams && redux_localeuser) {
+        if (isRawState && isViewparams ) {
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
@@ -314,6 +314,7 @@ export default function ListPanel() {
                                 redux_userdata={redux_userdata}
                                 reactrouter_history={reactrouter_history}
                                 changeSort={({ event }) => {
+
                                     setIsViewparams(prevState => ({
                                         ...prevState,
                                         sortOrder: prevState.sortOrder === 1 ? -1 : 1

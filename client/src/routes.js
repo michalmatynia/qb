@@ -797,7 +797,6 @@ let dashRoutes = [
 
 
   {
-
     collapse: true,
     name: "Visit",
     // rtlName: "المكونات",
