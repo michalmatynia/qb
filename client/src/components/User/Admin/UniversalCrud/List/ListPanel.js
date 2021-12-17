@@ -3,6 +3,8 @@ import {
     useSelector,
     useDispatch
 } from 'react-redux'
+import { useHistory, useLocation } from "react-router-dom";
+
 import GridContainer from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridItem.js";
 import Card from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/Card.js";
@@ -12,7 +14,6 @@ import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-
 import { changpos_classicAdjust_vh } from '../../EventFuncs/changepos_funcs_vh'
 import { remove_fromDatabase_vh, remove_fromOverMods_vh } from '../../EventFuncs/remove_funcs_vh'
 import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
-import { useHistory } from "react-router-dom";
 
 import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
 
@@ -104,6 +105,7 @@ export default function ListPanel() {
     }
 
     let reactrouter = useRouter()
+    let reactrouter_location = useLocation()
 
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
@@ -115,6 +117,8 @@ export default function ListPanel() {
     let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
 
     const [isRawState, setRawState] = React.useState();
+    const [isLocalUser, setLocalUser] = React.useState();
+    const [isPrevLocation, setPrevLocation] = React.useState();
 
     const [isViewparams, setIsViewparams] = React.useState(viewparams);
 
@@ -194,6 +198,30 @@ export default function ListPanel() {
 
     }, [establishStateParams, isRawState, redux_current_mysite, redux_localeuser])
 
+
+      /* CLEAR RAWSTATE */
+
+    const unhingeRawState = useCallback(async () => {
+
+        setRawState()
+        setLocalUser()
+        setPrevLocation(reactrouter_location)
+
+
+    }, [reactrouter_location])
+
+    React.useEffect(() => {
+
+        if (isLocalUser && isRawState && redux_current_mysite && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || isPrevLocation.pathname !== reactrouter_location.pathname)) {
+           
+           console.log('ff');
+            unhingeRawState()
+        }
+
+    }, [isLocalUser, isPrevLocation, isRawState, reactrouter_history.location.pathname, reactrouter_location.pathname, redux_current_mysite, redux_localeuser, unhingeRawState])
+
+
+
     // /* CLEANUP */
 
     React.useEffect(() => {
@@ -204,7 +232,6 @@ export default function ListPanel() {
 
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
-            setRawState()
         };
 
     }, [dispatch, reactrouter.match.params.model])
@@ -226,6 +253,8 @@ export default function ListPanel() {
                 // inQuery
             }).then((res) => {
                 if (isViewparams.size !== res.length) {
+                    setLocalUser(redux_localeuser)
+
                     setIsViewparams(prevState => ({
                         ...prevState,
                         size: res.length
