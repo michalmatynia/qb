@@ -19,6 +19,7 @@ import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
 
 import { listFuncs_loadList_v2_vh } from '../../GenericFuncs/list_funcs_vh'
 import ListTable from '../../GenericCompos/list_table_vh'
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { toggle_boolSwitch_v1_vh } from '../../EventFuncs/toggle_funcs_vh'
 
 import {
@@ -28,12 +29,13 @@ import {
 
 /* STATE */
 import { grabFunctionState } from "../EditAdd Functions/grabFunctionState"
-import { processViewParams } from "./StateFunctions/processView"
 
 // import { ShowMessages } from '../../GenericFuncs/errormsg_funcs'
 import { ShowMessages } from '../../../../Message/Generic/static_msg'
 
-
+import {
+    Search,
+} from '@material-ui/icons';
 import {
     plg_clearProps,
 } from '../../../../utils/Plugs/cms_plugs';
@@ -41,9 +43,69 @@ import {
 
 export default function ListPanel() {
 
-    
+    let viewparams = {
+        limit: 10,
+        skip: 0,
+        size: 10,
+        sortBy: 'position',
+        sortOrder: 1,
+        search: {
+            element: 'input',
+            category: 'ct_custominput',
+            value: '',
+            wrapcompos: {
+                griditem: {
+                    xs: 12,
+                    xm: 4,
+                    md: 4,
+                },
+            },
+            formcontrolprops: {
+                fullWidth: true,
+            },
+            inputprops: {
+                id: 'search',
+                type: 'text',
+                name: 'search_input',
+                placeholder: 'Search...',
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <Search />
+                    </InputAdornment>
+                ),
+                /* When field Loses Focus */
+                // onBlur: ({ event, cell, value }) => onSearch({
+                //     event,
+                //     // cell: { search: this.isViewparams.search },
+                //     blur: true
+                // })
+
+            },
+            configparams: {
+                showlabel: false,
+                showhelpertext: false
+
+            },
+            config: {
+                label: 'Search',
+                valuetype: 'string',
+                helpertext: 'Enter text for Search',
+                autocomplete: 'Off',
+            },
+            validation: {
+                parse: false,
+                // type: ['required']
+            },
+            range: ['name', 'description'],
+            depth: [],
+            valid: false,
+            touched: false,
+
+        },
+    }
 
     let reactrouter = useRouter()
+    let reactrouter_location = useLocation()
     let reactrouter_history = useHistory()
 
     const dispatch = useDispatch()
@@ -58,12 +120,7 @@ export default function ListPanel() {
     const [isLocalUser, setLocalUser] = React.useState();
     const [isPrevLocation, setPrevLocation] = React.useState();
 
-    // const [isViewparams, setIsViewparams] = React.useState(  () => {
-    //     const initialState =  processViewParams({viewparams, reactrouter});
-    //     return initialState;
-    //   });
-
-    const [isViewparams, setIsViewparams] = React.useState();
+    const [isViewparams, setIsViewparams] = React.useState(viewparams);
 
     const [isShowMessage, setShowMessage] = React.useState(false);
     const [isActualMessage, setIsActualMessage] = React.useState();
@@ -131,6 +188,9 @@ export default function ListPanel() {
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
 
+            console.log('processRAW');
+
+
             establishStateParams().then((rawstate) => {
 
                 setRawState(rawstate)
@@ -178,28 +238,22 @@ export default function ListPanel() {
 
             console.log('cleanup');
 
+            console.log(reactrouter.match.params.model);
             setRawState()
-            setIsViewparams()
-            // setLocalUser()
+            setLocalUser()
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
         };
 
     }, [dispatch, reactrouter.match.params.model])
 
-    React.useEffect(() => {
-        if ( !isViewparams && reactrouter ) {
-            processViewParams({reactrouter}).then((result) => {
-                setIsViewparams(result)
 
-            })
-        }
-    },[isViewparams, reactrouter])
     React.useEffect(() => {
+
+        // console.log(isRawState);
+        // console.log(isViewparams);
 
         if (isRawState && isViewparams ) {
-
-
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
@@ -212,8 +266,8 @@ export default function ListPanel() {
                 hideIDs: null,
                 // inQuery
             }).then((res) => {
-                // setLocalUser(redux_localeuser)
-                // setPrevLocation(reactrouter_history.location)
+                setLocalUser(redux_localeuser)
+                setPrevLocation(reactrouter_history.location)
 
                 if (isViewparams.size !== res.length) {
 
@@ -222,8 +276,6 @@ export default function ListPanel() {
                         size: res.length
                     }));
                 }
-
- 
             })
         }
 
@@ -275,7 +327,7 @@ export default function ListPanel() {
                 color='success'
                 place='tr'
             /> : null}
-           {isViewparams ?  <GridContainer>
+            <GridContainer>
                 <GridItem xs={12}>
                     <Card>
                         <CardHeader color="rose" icon>
@@ -308,8 +360,6 @@ export default function ListPanel() {
                                 redux_userdata={redux_userdata}
                                 reactrouter_history={reactrouter_history}
                                 changeSort={({ event }) => {
-
-                                    console.log('changesort');
 
                                     setIsViewparams(prevState => ({
                                         ...prevState,
@@ -345,7 +395,7 @@ export default function ListPanel() {
                         </CardBody> : null}
                     </Card>
                 </GridItem>
-            </GridContainer> : null }
+            </GridContainer>
         </div>
     )
 }
