@@ -59,18 +59,22 @@ export default function ListPanel() {
     const [isActualMessage, setIsActualMessage] = React.useState();
 
     const onRemoveItem = useCallback(async ({ removeall, value = null, state, viewparams, model, redux_localeuser }) => {
-console.log(redux_localeuser);
         setIsActualMessage('Removing')
         setShowMessage(true)
 
-        await remove_fromOverMods_vh({
-            dispatch,
-            value,
-            removeall,
-            overmodel: Object.keys(state.localStorage.attachto)[0],
-            submodel: model,
-            isRawState: state
-        })
+        if(state.localStorage.attachto) {
+
+            console.log(state.localStorage);
+            await remove_fromOverMods_vh({
+                dispatch,
+                value,
+                removeall,
+                overmodel: Object.keys(state.localStorage.attachto)[0],
+                submodel: model,
+                isRawState: state
+            })
+        }
+
 
         await remove_fromDatabase_vh({
             dispatch,
@@ -92,8 +96,6 @@ console.log(redux_localeuser);
 
     const establishStateParams = useCallback(async () => {
 
-
-        console.log(redux_localeuser);
         return grabFunctionState({
             onRemoveItem,
 

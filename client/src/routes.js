@@ -43,8 +43,6 @@ import Dashboard from "./themesrun/creativetim/material-dashboard-pro-react-v1.9
 
 import AddSlide from './components/User/Admin/UniversalCrud/EditAdd';
 import EditSlide from './components/User/Admin/UniversalCrud/EditAdd';
-// import ListSlide from './components/User/Admin/UniversalCrud/List/ListPanel';
-// import ListSlide from './components/User/Admin/CMS/Slides/list_slide';
 import ListPanel from './components/User/Admin/UniversalCrud/List/ListPanel';
 
 import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
@@ -113,7 +111,7 @@ import ListNewsletter from './components/User/Admin/CMS/Newsletter/list_newslett
 
 import AddUser from './components/User/Admin/system/User/add_user';
 import EditUser from './components/User/Admin/system/User/edit_user';
-import ListUser from './components/User/Admin/system/User/list_user';
+// import ListUser from './components/User/Admin/system/User/list_user';
 
 import ListLanguage from './components/User/Admin/system/Languages/list_language.js';
 
@@ -727,12 +725,20 @@ let dashRoutes = [
         reload: true,
         redirect: true
       },
+      // {
+      //   path: "/list_user",
+      //   name: "List User",
+      //   component: ListUser,
+      //   layout: "/admin",
+      //   model: 'user',
+      //   reload: true
+      // },
       {
-        path: "/list_user",
+        path: "/unilist/:model",
+        navlink: "/unilist/user",
         name: "List User",
-        component: ListUser,
+        component: ListPanel,
         layout: "/admin",
-        model: 'user',
         reload: true
       },
     ]

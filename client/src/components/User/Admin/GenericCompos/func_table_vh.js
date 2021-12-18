@@ -198,7 +198,7 @@ export function ColumnRow({ viewparams, redux_localeuser, redux_userdata, reactr
 
         return <IconButton
             {...column.inputprops}
-            onClick={(event) => column.actions.onClick({ viewparams, reactrouter_history, redux_userdata, model, event, value: item })}
+            onClick={(event) => column.actions.onClick({ viewparams, redux_localeuser, reactrouter_history, redux_userdata, model, event, value: item })}
             key={item._id}
         >
             <column.icon fontSize="small" />

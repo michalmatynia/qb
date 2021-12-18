@@ -80,7 +80,7 @@ export async function removeFuncs_delEntityFromDb_v3_vh({
         } else if (model && !poliglot) {
 
             inQuery = { _id: { "$eq": item._id } }
-            removed = await plg_removeOne({ model, dispatch, actionType: 'samestate', inQuery, populate: redux_localeuser.qhelpers.populate })
+            removed = await plg_removeOne({ model, dispatch, actionType: 'samestate', inQuery, populate: isRawState.localStorage.qhelpers.populate ? isRawState.localStorage.qhelpers.populate : null })
 
             if (removed.payload !== '') {
 

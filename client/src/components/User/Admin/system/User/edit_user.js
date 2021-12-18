@@ -453,7 +453,10 @@ class EditUser extends Component {
         }
     }
     async componentDidMount() {
+        console.log(this.props);
+
         if ('localeUser' in this.props.user) {
+
             let didmount_result =  await compoFuncs_Refresh_v2({
                 model: this.state.localStorage.model,
                 myprops: this.props,

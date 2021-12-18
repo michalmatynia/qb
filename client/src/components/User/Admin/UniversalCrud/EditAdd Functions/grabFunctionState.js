@@ -3,6 +3,7 @@ import rawStateFunctionSlide from "../../CMS/Slides/Additional/func_state"
 import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
 
+import rawStateFunction_User_List from "../../system/User/Additional/func_list"
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
 
@@ -34,8 +35,14 @@ export async function grabFunctionState({
     let rawFunctionState = null;
 
     switch (true) {
+        case (model === 'user' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_User_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
         case (model === 'slide' && kind === 'list'):
-            console.log(redux_localeuser);
 
             rawFunctionState = await rawStateFunction_Slide_List({
                 onRemoveItem,

@@ -42,7 +42,7 @@ export async function remove_fromDatabase_vh({
             dispatch,
             isRawState,
             thisview,
-            populate: isRawState.localStorage.qhelpers.populate,
+            populate: isRawState.localStorage.qhelpers.populate ? isRawState.localStorage.qhelpers.populate : null,
             hideIDs: null,
             // inQuery
         })
