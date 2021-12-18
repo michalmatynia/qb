@@ -6,10 +6,11 @@ import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
 
+import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
+
 
 export async function grabFunctionState({
     onRemoveItem,
-    onGotoLink,
 
     model,
     redux_current_mysite,
@@ -17,10 +18,24 @@ export async function grabFunctionState({
     redux_localeuser,
     kind = null,
 }) {
+
+    const onGotoLink = async ({ event, value = null, reactrouter_history, model, redux_userdata }) => {
+
+        routing_gotoEdit_vh3({ 
+            model,
+            event, 
+            value,
+            reactrouter_history,
+            redux_userdata
+            })
+    }
+
+
     let rawFunctionState = null;
 
     switch (true) {
         case (model === 'slide' && kind === 'list'):
+            console.log(redux_localeuser);
 
             rawFunctionState = await rawStateFunction_Slide_List({
                 onRemoveItem,

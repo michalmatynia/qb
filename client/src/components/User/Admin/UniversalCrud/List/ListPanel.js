@@ -3,7 +3,7 @@ import {
     useSelector,
     useDispatch
 } from 'react-redux'
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import GridContainer from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridContainer.js";
 import GridItem from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridItem.js";
@@ -13,7 +13,6 @@ import CardHeader from "../../../../../themesrun/creativetim/material-dashboard-
 import Button from "../../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 import { changpos_classicAdjust_vh } from '../../EventFuncs/changepos_funcs_vh'
 import { remove_fromDatabase_vh, remove_fromOverMods_vh } from '../../EventFuncs/remove_funcs_vh'
-import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
 
 import FormCustomInput from '../../../../utils/Form/Funcs/FormCustomInput_v2';
 
@@ -41,8 +40,6 @@ import {
 
 export default function ListPanel() {
 
-    
-
     let reactrouter = useRouter()
     let reactrouter_history = useHistory()
 
@@ -55,13 +52,6 @@ export default function ListPanel() {
     let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
 
     const [isRawState, setRawState] = React.useState();
-    const [isLocalUser, setLocalUser] = React.useState();
-    const [isPrevLocation, setPrevLocation] = React.useState();
-
-    // const [isViewparams, setIsViewparams] = React.useState(  () => {
-    //     const initialState =  processViewParams({viewparams, reactrouter});
-    //     return initialState;
-    //   });
 
     const [isViewparams, setIsViewparams] = React.useState();
 
@@ -69,7 +59,7 @@ export default function ListPanel() {
     const [isActualMessage, setIsActualMessage] = React.useState();
 
     const onRemoveItem = useCallback(async ({ removeall, value = null, state, viewparams, model, redux_localeuser }) => {
-
+console.log(redux_localeuser);
         setIsActualMessage('Removing')
         setShowMessage(true)
 
@@ -98,26 +88,14 @@ export default function ListPanel() {
 
     }, [dispatch])
 
-
-    const onGotoLink = useCallback(async ({ event, value = null, reactrouter_history, model, redux_userdata }) => {
-
-        routing_gotoEdit_vh3({ 
-            model,
-            event, 
-            value,
-            reactrouter_history,
-            redux_userdata
-            })
-    }, [])
-
-// #######################
     /* SET RAWSTATE  */
 
     const establishStateParams = useCallback(async () => {
 
+
+        console.log(redux_localeuser);
         return grabFunctionState({
             onRemoveItem,
-            onGotoLink,
 
             redux_current_mysite,
             redux_localeuser,
@@ -126,7 +104,7 @@ export default function ListPanel() {
             kind: 'list'
         })
 
-    }, [dispatch, onGotoLink, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
+    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
@@ -143,33 +121,6 @@ export default function ListPanel() {
 
       /* CLEAR RAWSTATE */
 
-//   const unhingeRawState = useCallback(async () => {
-
-//         setRawState()
-//         setLocalUser()
-//         setPrevLocation(reactrouter_location)
-
-
-//     }, [reactrouter_location])
-
-//     React.useEffect(() => {
-
-//         // if (isLocalUser && isRawState && redux_current_mysite && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || isPrevLocation.pathname !== reactrouter_location.pathname)) {
-            
-//         // console.log(reactrouter_history.location.pathname);
-//         // console.log(reactrouter_location.pathname);
-//         console.log(isPrevLocation);
-//         console.log(isRawState);
-
-//         if (isLocalUser && isRawState && redux_current_mysite  && (redux_localeuser !== isLocalUser || reactrouter_history.location.pathname !== reactrouter_location.pathname || (isPrevLocation && isPrevLocation.pathname !== reactrouter_location.pathname))) {
-
-//            console.log('dcsssssssssss');
-//             unhingeRawState()
-//         }
-
-//     }, [isLocalUser, isPrevLocation, isRawState, reactrouter_history.location.pathname, reactrouter_location.pathname, redux_current_mysite, redux_localeuser, unhingeRawState])
-
-
     // /* CLEANUP */
 
     React.useEffect(() => {
@@ -177,10 +128,9 @@ export default function ListPanel() {
         return function cleanup() {
 
             console.log('cleanup');
+            setIsViewparams()
 
             setRawState()
-            setIsViewparams()
-            // setLocalUser()
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
             plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
         };
@@ -199,8 +149,6 @@ export default function ListPanel() {
 
         if (isRawState && isViewparams ) {
 
-
-
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
                 model: reactrouter.match.params.model,
@@ -210,11 +158,7 @@ export default function ListPanel() {
                 thisview: isViewparams,
                 populate: isRawState.localStorage.qhelpers.populate,
                 hideIDs: null,
-                // inQuery
             }).then((res) => {
-                // setLocalUser(redux_localeuser)
-                // setPrevLocation(reactrouter_history.location)
-
                 if (isViewparams.size !== res.length) {
 
                     setIsViewparams(prevState => ({
@@ -297,8 +241,7 @@ export default function ListPanel() {
                                 }
                             />
                         </CardHeader>
-                        {isRawState && redux_model_list ? <CardBody>
-                            {/* {console.log(isRawState), console.log(redux_model_list)} */}
+                        {isRawState && redux_model_list && redux_localeuser ? <CardBody>
                             <ListTable
                                 model={reactrouter.match.params.model}
                                 tableparams={isRawState.localStorage.tableparams}
@@ -308,8 +251,6 @@ export default function ListPanel() {
                                 redux_userdata={redux_userdata}
                                 reactrouter_history={reactrouter_history}
                                 changeSort={({ event }) => {
-
-                                    console.log('changesort');
 
                                     setIsViewparams(prevState => ({
                                         ...prevState,

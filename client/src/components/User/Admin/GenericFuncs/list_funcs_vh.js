@@ -51,6 +51,7 @@ export async function listFuncs_loadList_v2_vh({
     thisview,
     inQuery  = {}
 }) {
+    console.log(redux_localeuser);
 
     if (!newLocalStorage) {
         newLocalStorage = { ...isRawState.localStorage }

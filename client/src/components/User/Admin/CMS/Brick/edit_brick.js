@@ -1340,7 +1340,6 @@ class EditBrick extends Component {
     async componentDidMount() {
         if ('localeUser' in this.props.user) {
 
-
             let sublistkey = 'sublist'
             let tiedtoformkey = 'checked'
 

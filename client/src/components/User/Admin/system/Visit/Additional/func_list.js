@@ -1,8 +1,5 @@
 import {
-    Edit,
-    Search,
     Close,
-    Remove
 } from '@material-ui/icons';
 
 export default async function rawStateFunction_Visit_List({
@@ -11,7 +8,6 @@ export default async function rawStateFunction_Visit_List({
 
     const state = {
         localStorage: {
-            // model: 'visit',
             poliglot: false,
             tableparams: {
                 renderHeader: true,
@@ -89,8 +85,6 @@ export default async function rawStateFunction_Visit_List({
             },
         }
     }
-
-    console.log(state);
 
     return state
 }
