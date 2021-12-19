@@ -48,6 +48,8 @@ if(myprops.user.userData.role === 1) {
     redirectpath = 'contentmanager'
 
 }
+
+console.log(myprops);
         myprops.history.push(`/${redirectpath}/edit_${model}/${showthis}`)
     }
 

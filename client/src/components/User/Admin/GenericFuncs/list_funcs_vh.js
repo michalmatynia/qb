@@ -13,27 +13,6 @@ export async function listFuncs_RemoveItem_v2_vh({dispatch, item = null, removea
     await removeFuncs_delEntityFromDb_v3_vh({dispatch, item, removeall, model, poliglot, redux_localeuser, isRawState,  })
 
 }
-// export async function listFuncs_adjustPosition_v2({ item = null, direction, model = null, viewparams = null, viewpath = null, mystate = null, myprops = null, inLimit = null, inSortOrder = null, inSortBy = null, poliglot = null, hideIDs = null }) {
-//     await messageLoading({ myprops })
-
-//     await reposFuncs_ChangePosition({ item, direction, model, myprops, mystate, poliglot })
-
-//     await messageCompleted({ myprops })
-
-//     await listFuncs_loadList_v2({
-//         viewpath,
-//         model,
-//         myprops,
-//         mystate,
-//         poliglot,
-//         viewparams,
-//         inLimit,
-//         inSortOrder,
-//         inSortBy,
-//         hideIDs
-//     })
-// }
-
 
 export async function listFuncs_loadList_v2_vh({ 
     dispatch,

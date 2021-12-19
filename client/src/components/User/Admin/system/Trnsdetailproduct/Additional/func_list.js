@@ -5,21 +5,17 @@ import {
     Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Slide_List({
+export default async function rawStateFunction_Transdetailproduct_List({
     onRemoveItem,
     onGotoLink
 }) {
 
-
-    const state = {
+   const state = {
         localStorage: {
-            // model: 'slide',
-            attachto: {
-                brick: [],
-                // page:[]
-            },
+            model: 'trnsdetailproduct',
             poliglot: true,
             attachtobinder: 'checked',
+
             tableparams: {
                 renderHeader: true,
                 columns: [
@@ -46,24 +42,24 @@ export default async function rawStateFunction_Slide_List({
                         }
                     },
                     {
-                        keyname: 'name',
+                        keyname: 'description_one_nametag',
                         columntype: 'text',
                         config: {
                             valuetype: 'string',
-                            indicator: 'name',
-                            label: 'Name',
+                            indicator: 'description_one_nametag',
+                            label: 'Description One',
                         }
                     },
                     {
-                        keyname: 'visible',
+                        keyname: 'isdefault',
                         columntype: 'switch',
                         configparams: {},
                         inputprops: {
-                            id: 'visible'
+                            id: 'isdefault'
                         },
                         config: {
-                            label: 'Visible',
-                            indicator: 'visible',
+                            label: 'IsDefault',
+                            indicator: 'isdefault',
                             valuetype: 'boolean',
                         },
                     },
@@ -167,6 +163,9 @@ export default async function rawStateFunction_Slide_List({
             },
         }
     }
+
+
+   
 
     return state
 }

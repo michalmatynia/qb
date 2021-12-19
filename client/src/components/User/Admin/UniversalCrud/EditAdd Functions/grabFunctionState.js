@@ -3,9 +3,12 @@ import rawStateFunctionSlide from "../../CMS/Slides/Additional/func_state"
 import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
 
+import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
-import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
+
+import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
+
 
 import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
 
@@ -35,6 +38,14 @@ export async function grabFunctionState({
     let rawFunctionState = null;
 
     switch (true) {
+
+        case (model === 'trnsdetailproduct' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Transdetailproduct_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
         case (model === 'user' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_User_List({

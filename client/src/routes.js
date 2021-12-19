@@ -523,6 +523,14 @@ let dashRoutes = [
             reload: true,
             redirect: true
           },
+          // {
+          //   path: "/unilist/:model",
+          //   navlink: "/unilist/trnsdetailproduct",
+          //   name: "List Product Detail",
+          //   component: ListPanel,
+          //   layout: "/admin",
+          //   reload: true
+          // },
           {
             path: "/list_trnsdetailproduct",
             name: "List Product Detail",
