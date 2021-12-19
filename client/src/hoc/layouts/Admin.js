@@ -121,7 +121,7 @@ export default function Dashboard(props) {
 
         return (
           // Side options for additional authentication per subpage
-          <Route exact path={reactrouter.match.path + prop.path} key={key}><SolidFC Page={prop.component} reload={prop.reload} /></Route>
+          <Route exact path={reactrouter.match.path + prop.path} key={key}><SolidFC  Page={prop.component} reload={prop.reload} /></Route>
 
         );
       } else {

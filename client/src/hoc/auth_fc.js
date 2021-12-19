@@ -37,8 +37,6 @@ export default function AuthFC(props) {
 
         authorizeUser().then(response => {
 
-            console.log(response);
-
             if (response.payload.isAuth === false) {
 
 
@@ -86,13 +84,7 @@ export default function AuthFC(props) {
 
     }, [authorizeUser, history, reactrouter.match.path, reload])
 
-    // const classes = useStyles();
-
-
-
     return (
         !isloading ? <div> <Page  /> </div> : null
     )
-
-
 }
