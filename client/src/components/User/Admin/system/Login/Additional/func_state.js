@@ -1,30 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { actionFuncs_isDefaultHandle_vh1 } from '../../../ActionFunctions/isdefaultHandle_vh'
+import { contact_html_type } from '../../../../../utils/Form/Fixed_categories/contact_html_template'
 
-// Generic Functions 
-import { partsFuncs_saveForm_v1 } from '../../GenericFuncs/parts_funcs'
-import { compoFuncs_Refresh_v2, compoFuncs_DidUpdate_Edit } from '../../GenericFuncs/compo_funcs'
-
-import { ShowMessages } from '../../GenericFuncs/errormsg_funcs'
-import { imageFuncs_removeImagesHandler_v2 } from '../../GenericFuncs/image_funcs'
-
-import { actionFuncs_isDefaultHandle } from '../../ActionFunctions/isdefaultHandle'
-import { messageCompleted, errorClosure, messageLoading } from '../../GenericFuncs/errormsg_funcs'
-
-
-import FormElement from '../../../../utils/Form/Funcs/formContainer'
-import { login_html_type } from '../../../../utils/Form/Fixed_categories/login_html_template'
-
-
-import {
-    plg_clearProps,
-} from '../../../../utils/Plugs/cms_plugs';
-
-class EditLogin extends Component {
-
-    state = {
+export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
+    
+    const state = {
         localStorage: {
-            model: 'login',
+            model: 'contact',
             resetok: true,
             poliglot: true,
             qhelpers: {
@@ -32,12 +13,17 @@ class EditLogin extends Component {
             linguistic: {
                 translate: [
                     'name',
+                    'title',
                     'description',
+                    'form_fname',
+                    'form_lname',
                     'form_email',
-                    'form_password',
-                    'btn_login',
-                    'btn_register',
-                    'btn_forgotpassword'
+                    'form_yourmessage',
+                    'form_notrobot',
+                    'btn_execute',
+                    'tag_findus',
+                    'tag_callus',
+                    'messagesent_msg'
                 ]
             },
             form: {
@@ -63,10 +49,18 @@ class EditLogin extends Component {
                                     resetvalue: [],
                                 },
                             },
+
                         },
                         config: {
-                            label: 'Images',
-                            folder: this.props.mysite.CurrentMysite._id + '/Login/File',
+                            label: 'Video',
+                            uploadparams: {
+                                public_id: `${Date.now()}`,
+                                resource_type: 'auto',
+                                folder: redux_current_mysite._id  + '/' + model + '/File',
+                                width: 1500,
+                                height: 1000,
+                                crop: "fill"
+                            }
 
                         },
                         inputprops: {
@@ -125,6 +119,51 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
+                    title: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'name_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Title',
+                            helpertext: 'Enter text for Title',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: false,
+                        touched: false,
+                    },
                     description: {
                         element: 'input',
                         category: 'ct_custominput',
@@ -163,6 +202,96 @@ class EditLogin extends Component {
                         config: {
                             label: 'Description',
                             helpertext: 'Enter text for Description',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: false,
+                        touched: false,
+                    },
+                    form_fname: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'form_fname_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Form First Name',
+                            helpertext: 'Enter text for Form First Name',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: false,
+                        touched: false,
+                    },
+                    form_lname: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'form_lname_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Form Last Name',
+                            helpertext: 'Enter text for Form Last Name',
                         },
                         validation: {
                             parse: false,
@@ -215,7 +344,7 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
-                    form_password: {
+                    form_yourmessage: {
                         element: 'input',
                         category: 'ct_custominput',
                         value: '',
@@ -231,7 +360,7 @@ class EditLogin extends Component {
                         },
                         inputprops: {
                             type: 'text',
-                            name: 'form_password_input',
+                            name: 'form_yourmessage_input',
                             autoComplete: 'On'
                         },
                         configparams: {
@@ -251,8 +380,8 @@ class EditLogin extends Component {
 
                         },
                         config: {
-                            label: 'Form Password',
-                            helpertext: 'Enter text for Form Password',
+                            label: 'Form Your Message',
+                            helpertext: 'Enter text for Form Your Message',
                         },
                         validation: {
                             parse: false,
@@ -260,7 +389,7 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
-                    btn_login: {
+                    form_notrobot: {
                         element: 'input',
                         category: 'ct_custominput',
                         value: '',
@@ -276,7 +405,7 @@ class EditLogin extends Component {
                         },
                         inputprops: {
                             type: 'text',
-                            name: 'form_button_login_input',
+                            name: 'form_notrobot_input',
                             autoComplete: 'On'
                         },
                         configparams: {
@@ -296,8 +425,8 @@ class EditLogin extends Component {
 
                         },
                         config: {
-                            label: 'Form Button Login',
-                            helpertext: 'Enter text for Form Button Login',
+                            label: 'Form Not Robot',
+                            helpertext: 'Enter text for Form Not Robot',
                         },
                         validation: {
                             parse: false,
@@ -305,7 +434,7 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
-                    btn_register: {
+                    btn_execute: {
                         element: 'input',
                         category: 'ct_custominput',
                         value: '',
@@ -321,7 +450,7 @@ class EditLogin extends Component {
                         },
                         inputprops: {
                             type: 'text',
-                            name: 'form_button_register_input',
+                            name: 'form_button_execute_input',
                             autoComplete: 'On'
                         },
                         configparams: {
@@ -341,8 +470,8 @@ class EditLogin extends Component {
 
                         },
                         config: {
-                            label: 'Form Button Register',
-                            helpertext: 'Enter text for Form Button Register',
+                            label: 'Form Button Execute',
+                            helpertext: 'Enter text for Form Button Execute',
                         },
                         validation: {
                             parse: false,
@@ -350,7 +479,7 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
-                    btn_forgotpassword: {
+                    tag_findus: {
                         element: 'input',
                         category: 'ct_custominput',
                         value: '',
@@ -366,7 +495,7 @@ class EditLogin extends Component {
                         },
                         inputprops: {
                             type: 'text',
-                            name: 'form_button_forgotpassword_input',
+                            name: 'form_tag_findus_input',
                             autoComplete: 'On'
                         },
                         configparams: {
@@ -386,8 +515,8 @@ class EditLogin extends Component {
 
                         },
                         config: {
-                            label: 'Form Button Forgot Password',
-                            helpertext: 'Enter text for Form Button Forgot Password',
+                            label: 'Form Tag Findus',
+                            helpertext: 'Enter text for Form Tag Findus',
                         },
                         validation: {
                             parse: false,
@@ -395,7 +524,52 @@ class EditLogin extends Component {
                         valid: false,
                         touched: false,
                     },
-                    message_loginfailed: {
+                    tag_callus: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'form_tag_callus_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Form Tag Callus',
+                            helpertext: 'Enter text for Form Tag Callus',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: false,
+                        touched: false,
+                    },
+                    messagesent_msg: {
                         element: 'input',
                         category: 'ct_custominput',
                         value: '',
@@ -431,8 +605,8 @@ class EditLogin extends Component {
 
                         },
                         config: {
-                            label: 'Message Failed Login',
-                            helpertext: 'Enter text for Message Failed Login',
+                            label: 'Message Sent Message',
+                            helpertext: 'Enter text for Message Sent',
                         },
                         validation: {
                             parse: true,
@@ -452,7 +626,7 @@ class EditLogin extends Component {
                                         preFind: {
                                             affectValue: {
                                                 actionA: async ({ cell, getlist, fields }) => {
-                                                    return login_html_type
+                                                    return contact_html_type
                                                 },
                                             },
                                         }
@@ -467,7 +641,7 @@ class EditLogin extends Component {
                                 toconfig: {
                                     setpath: 'value',
                                     valuetype: 'string',
-                                    resetvalue: login_html_type[0],
+                                    resetvalue: contact_html_type[0],
 
                                 },
                             },
@@ -526,7 +700,7 @@ class EditLogin extends Component {
                                         postCreate: {
                                             justRun: {
                                                 actionA: async ({ cell, added, current }) => {
-                                                    await actionFuncs_isDefaultHandle({ cell, myprops: this.props, mystate: this.state, model: this.state.localStorage.model, added, current })
+                                                    await actionFuncs_isDefaultHandle_vh1({ cell, dispatch, model, added, current })
                                                 },
                                             }
                                         }
@@ -732,131 +906,9 @@ class EditLogin extends Component {
             },
         }
     }
-
-    async componentDidUpdate(prevProps, prevState) {
-
-        if ('localeUser' in this.props.user) {
-            let newLocalStorage
-
-            if (
-                prevProps.user.localeUser !== this.props.user.localeUser
-            ) {
-                let didmount_result = await compoFuncs_DidUpdate_Edit({
-                    model: this.state.localStorage.model,
-                    myprops: this.props,
-                    prevmyprops: prevProps,
-                    mystate: this.state,
-                    poliglot: this.state.localStorage.poliglot,
-                    type: 'edit'
-                })
-                if (didmount_result) { newLocalStorage = { ...didmount_result.newLocalStorage } }
-                else { newLocalStorage = { ...this.state.localStorage } }
-
-                if (newLocalStorage) {
-                    await this.updateLocalStorage(newLocalStorage)
-                }
-            }
-        }
-    }
-    async componentDidMount() {
-        if ('localeUser' in this.props.user) {
-
-            let didmount_result = await compoFuncs_Refresh_v2({
-                model: this.state.localStorage.model,
-                myprops: this.props,
-                mystate: this.state,
-                rootid: this.props.match.params.id,
-                poliglot: this.state.localStorage.poliglot,
-                type: 'edit'
-            })
-            let newLocalStorage = { ...didmount_result.newLocalStorage }
-
-            if (newLocalStorage) {
-                await this.updateLocalStorage(newLocalStorage)
-            }
-        }
-    }
-    async componentWillUnmount() {
-        await plg_clearProps({ myprops: this.props, model: this.state.localStorage.model, actionType: 'list' })
-        await plg_clearProps({ myprops: this.props, model: this.state.localStorage.model, actionType: 'detail' })
-    }
-    updateLocalStorage = (localStorage) => {
-        this.setState({
-            localStorage
-        })
-    }
-    updateFormValues = async ({ cell }) => {
-
-        let newLocalStorage = { ...this.state.localStorage }
-
-        const cellkey = Object.keys(cell)[0]
-        const cellvalue = Object.values(cell)[0]
-
-        newLocalStorage['form']['formdata'][cellkey] = cellvalue
-        this.updateLocalStorage(newLocalStorage)
-    }
-    saveForm = async ({ translate = null, event = null }) => {
-        await messageLoading({ myprops: this.props })
-
-        let save_result = await partsFuncs_saveForm_v1({
-            event,
-            translate,
-            poliglot: this.state.localStorage.poliglot,
-            mystate: this.state,
-            myprops: this.props,
-            model: this.state.localStorage.model,
-        })
-
-        if (save_result.updated) {
-
-            let newLocalStorage = { ...this.state.localStorage }
-
-            if (newLocalStorage) {
-                this.updateLocalStorage(newLocalStorage)
-
-                if (save_result.formIsValid) {
-                    await messageCompleted({ myprops: this.props })
-                } else {
-                    await errorClosure({ myprops: this.props })
-                }
-            }
-        }
-    }
-    render() {
-        return (
-            <div>
-                <div>{<ShowMessages />}</div>
-                {this.props ? <FormElement
-                    formdata={this.state.localStorage.form.formdata}
-                    model={this.state.localStorage.model}
-                    mystate={this.state}
-                    removefile={({ cell, fileid }) => imageFuncs_removeImagesHandler_v2({
-                        cell,
-                        fileid,
-                        model: this.state.localStorage.model,
-                        myprops: this.props,
-                        mystate: this.state,
-                        poliglot: this.state.localStorage.poliglot
-                    })}
-                    change={({ cell }) => this.updateFormValues({ cell })}
-                    save={({ event, translate }) => this.saveForm({
-                        event,
-                        translate,
-                    })}
-                /> : null}
-            </div>
-        );
-    }
-}
-
-const mapStateToProps = (state) => {
-
-    return {
-        login: state.login,
-        mysite: state.mysite,
-        user: state.user,
-        messages: state.messages
-    }
-}
-
-export default connect(mapStateToProps)(EditLogin);
+ 
+     return state
+ }
+ 
+ 
+ 

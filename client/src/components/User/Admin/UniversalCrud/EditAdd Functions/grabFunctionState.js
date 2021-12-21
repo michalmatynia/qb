@@ -5,8 +5,7 @@ import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_
 import rawStateFunctionMystore from "../../system/Mystore/Additional/func_state"
 import rawStateFunctionCart from "../../system/Cart/Additional/func_state"
 import rawStateFunctionContact from "../../system/Contact/Additional/func_state"
-
-
+import rawStateFunctionLogin from "../../system/Login/Additional/func_state"
 
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
@@ -16,6 +15,8 @@ import rawStateFunction_Theme_List from "../../system/Theme/Additional/func_list
 import rawStateFunction_Mystore_List from "../../system/Mystore/Additional/func_list"
 import rawStateFunction_Cart_List from "../../system/Cart/Additional/func_list"
 import rawStateFunction_Contact_List from "../../system/Contact/Additional/func_list"
+import rawStateFunction_Login_List from "../../system/Login/Additional/func_list"
+
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
 
@@ -76,6 +77,13 @@ export async function grabFunctionState({
                 onGotoLink
             })
             break;
+        case (model === 'login' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Login_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
         case (model === 'contact' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_Contact_List({
@@ -119,6 +127,9 @@ export async function grabFunctionState({
             break;
         case (model === 'contact' && !kind):
             rawFunctionState = await rawStateFunctionContact({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'login' && !kind):
+            rawFunctionState = await rawStateFunctionLogin({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         case (model === 'mystore' && !kind):
             rawFunctionState = await rawStateFunctionMystore({ redux_current_mysite, dispatch, redux_localeuser, model })

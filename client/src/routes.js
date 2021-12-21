@@ -72,11 +72,6 @@ import AddMysite from './components/User/Admin/system/Mysite/add_mysite';
 import EditMysite from './components/User/Admin/system/Mysite/edit_mysite';
 import ListMysite from './components/User/Admin/system/Mysite/list_mysite';
 
-
-import AddLogin from './components/User/Admin/system/Login/add_login';
-import EditLogin from './components/User/Admin/system/Login/edit_login';
-import ListLogin from './components/User/Admin/system/Login/list_login';
-
 import AddNewsletter from './components/User/Admin/CMS/Newsletter/add_newsletter';
 import EditNewsletter from './components/User/Admin/CMS/Newsletter/edit_newsletter';
 import ListNewsletter from './components/User/Admin/CMS/Newsletter/list_newsletter';
@@ -440,28 +435,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_login",
+            path: "/add/:model",
+            navlink: "/add/login",
             name: "Add Login",
-            component: AddLogin,
+            component: EditAdd,
             layout: "/admin",
-            model: 'login',
             reload: true
           },
           {
-            path: "/edit_login/:id",
+            path: "/edit/:model/:id",
             name: "Edit Login",
-            component: EditLogin,
+            component: EditAdd,
             layout: "/admin",
-            model: 'login',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_login",
+            path: "/unilist/:model",
+            navlink: "/unilist/contact",
             name: "List Login",
-            component: ListLogin,
+            component: ListPanel,
             layout: "/admin",
-            model: 'login',
             reload: true
           },
         ]
