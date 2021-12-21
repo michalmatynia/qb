@@ -60,7 +60,6 @@ import ListTheme from './components/User/Admin/system/Theme/list_theme';
 
 import AddBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
 import EditBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
-import ListBlockstyle from './components/User/Admin/system/Blockstyle/list_blockstyle';
 
 import AddProduct from './components/User/Admin/CMS/Products/add_product';
 import EditProduct from './components/User/Admin/CMS/Products/edit_product';
@@ -523,6 +522,7 @@ let dashRoutes = [
             reload: true,
             redirect: true
           },
+          /* Nie moge tego zastosowac dopki nie zrobie Edit/Add dla tego*/
           // {
           //   path: "/unilist/:model",
           //   navlink: "/unilist/trnsdetailproduct",
@@ -796,13 +796,11 @@ let dashRoutes = [
         redirect: true
       },
       {
-        path: "/list/blockstyle",
-        // path: "/list/:model",
-        // navlink: "/list/blockstyle",
+        path: "/unilist/:model",
+        navlink: "/unilist/blockstyle",
         name: "List Blockstyle",
-        component: ListBlockstyle,
+        component: ListPanel,
         layout: "/admin",
-        // model: 'blockstyle',
         reload: true
       },
     ]

@@ -6,6 +6,7 @@ import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
+import rawStateFunction_Blockstyle_List from "../../system/Blockstyle/Additional/func_list"
 
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
@@ -25,13 +26,13 @@ export async function grabFunctionState({
 
     const onGotoLink = async ({ event, value = null, reactrouter_history, model, redux_userdata }) => {
 
-        routing_gotoEdit_vh3({ 
+        routing_gotoEdit_vh3({
             model,
-            event, 
+            event,
             value,
             reactrouter_history,
             redux_userdata
-            })
+        })
     }
 
 
@@ -42,6 +43,14 @@ export async function grabFunctionState({
         case (model === 'trnsdetailproduct' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_Transdetailproduct_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
+
+        case (model === 'blockstyle' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Blockstyle_List({
                 onRemoveItem,
                 onGotoLink
             })

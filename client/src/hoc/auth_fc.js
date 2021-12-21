@@ -1,14 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { authasync } from '../redux/actions/user_actions';
 // import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch } from 'react-redux'
+import {  useDispatch } from 'react-redux'
 import {
     useHistory,
 } from "react-router-dom";
 import {
     useRouter,
 } from "./Funcs/hook_funcs";
-import CircularProgress from '@material-ui/core/CircularProgress';
 // import sectionsPageStyle from "../templates/creativetim/material-kit-pro-react-v1.9.0/assets/jss/material-kit-pro-react/views/sectionsPageStyle.js";
 
 // const useStyles = makeStyles(sectionsPageStyle);
