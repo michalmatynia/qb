@@ -6,6 +6,7 @@ import rawStateFunctionMystore from "../../system/Mystore/Additional/func_state"
 import rawStateFunctionCart from "../../system/Cart/Additional/func_state"
 import rawStateFunctionContact from "../../system/Contact/Additional/func_state"
 import rawStateFunctionLogin from "../../system/Login/Additional/func_state"
+import rawStateFunctionTaxonomy from "../../system/Taxonomy/Additional/func_state"
 
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
@@ -16,6 +17,8 @@ import rawStateFunction_Mystore_List from "../../system/Mystore/Additional/func_
 import rawStateFunction_Cart_List from "../../system/Cart/Additional/func_list"
 import rawStateFunction_Contact_List from "../../system/Contact/Additional/func_list"
 import rawStateFunction_Login_List from "../../system/Login/Additional/func_list"
+import rawStateFunction_Taxonomy_List from "../../system/Taxonomy/Additional/func_list"
+
 
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
@@ -118,7 +121,12 @@ export async function grabFunctionState({
                 onRemoveItem,
             })
             break;
+        case (model === 'taxonomy' && kind === 'list'):
 
+            rawFunctionState = await rawStateFunction_Taxonomy_List({
+                onRemoveItem,
+            })
+            break;
         case (model === 'slide' && !kind):
             rawFunctionState = await rawStateFunctionSlide({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
@@ -139,6 +147,9 @@ export async function grabFunctionState({
             break;
         case (model === 'blockstyle' && !kind):
             rawFunctionState = await rawStateFunctionBlockstyle({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'taxonomy' && !kind):
+            rawFunctionState = await rawStateFunctionTaxonomy({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         default:
             rawFunctionState = null;

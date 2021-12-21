@@ -573,30 +573,54 @@ let dashRoutes = [
     layout: "/admin",
     views: [
       {
-        path: "/add_taxonomy",
+        path: "/add/:model",
+        navlink: "/add/taxonomy",
         name: "Add Taxonomy",
-        component: AddTaxonomy,
+        component: EditAdd,
         layout: "/admin",
-        model: 'taxonomy',
         reload: true
       },
       {
-        path: "/edit_taxonomy/:id",
+        path: "/edit/:model/:id",
         name: "Edit Taxonomy",
-        component: EditTaxonomy,
+        component: EditAdd,
         layout: "/admin",
-        model: 'taxonomy',
         reload: true,
         redirect: true
       },
       {
-        path: "/list_taxonomy",
-        name: "List Taxonomy",
-        component: ListTaxonomy,
+        path: "/unilist/:model",
+        navlink: "/unilist/taxonomy",
+        name: "List Slide",
+        component: ListPanel,
         layout: "/admin",
-        model: 'taxonomy',
         reload: true
       },
+      // {
+      //   path: "/add_taxonomy",
+      //   name: "Add Taxonomy",
+      //   component: AddTaxonomy,
+      //   layout: "/admin",
+      //   model: 'taxonomy',
+      //   reload: true
+      // },
+      // {
+      //   path: "/edit_taxonomy/:id",
+      //   name: "Edit Taxonomy",
+      //   component: EditTaxonomy,
+      //   layout: "/admin",
+      //   model: 'taxonomy',
+      //   reload: true,
+      //   redirect: true
+      // },
+      // {
+      //   path: "/list_taxonomy",
+      //   name: "List Taxonomy",
+      //   component: ListTaxonomy,
+      //   layout: "/admin",
+      //   model: 'taxonomy',
+      //   reload: true
+      // },
     ]
   },
 
