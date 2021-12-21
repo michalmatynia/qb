@@ -2,11 +2,18 @@
 import rawStateFunctionSlide from "../../CMS/Slides/Additional/func_state"
 import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
+import rawStateFunctionMystore from "../../system/Mystore/Additional/func_state"
+import rawStateFunctionCart from "../../system/Cart/Additional/func_state"
+
+
 
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
 import rawStateFunction_Blockstyle_List from "../../system/Blockstyle/Additional/func_list"
+import rawStateFunction_Theme_List from "../../system/Theme/Additional/func_list"
+import rawStateFunction_Mystore_List from "../../system/Mystore/Additional/func_list"
+import rawStateFunction_Cart_List from "../../system/Cart/Additional/func_list"
 
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
@@ -47,7 +54,27 @@ export async function grabFunctionState({
                 onGotoLink
             })
             break;
+        case (model === 'theme' && kind === 'list'):
 
+            rawFunctionState = await rawStateFunction_Theme_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
+        case (model === 'mystore' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Mystore_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
+        case (model === 'cart' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Cart_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
         case (model === 'blockstyle' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_Blockstyle_List({
@@ -75,8 +102,15 @@ export async function grabFunctionState({
                 onRemoveItem,
             })
             break;
+
         case (model === 'slide' && !kind):
             rawFunctionState = await rawStateFunctionSlide({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'cart' && !kind):
+            rawFunctionState = await rawStateFunctionCart({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'mystore' && !kind):
+            rawFunctionState = await rawStateFunctionMystore({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         case (model === 'theme' && !kind):
             rawFunctionState = await rawStateFunctionTheme({ redux_current_mysite, dispatch, redux_localeuser, model })

@@ -162,14 +162,11 @@ export default function ListPanel() {
                 hideIDs: null,
             }).then((res) => {
                 if (isViewparams.size !== res.length) {
-
                     setIsViewparams(prevState => ({
                         ...prevState,
                         size: res.length
                     }));
                 }
-
- 
             })
         }
 

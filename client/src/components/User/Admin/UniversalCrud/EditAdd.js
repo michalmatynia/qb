@@ -68,6 +68,7 @@ export default function EditAdd() {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
+
                 setRawState(rawstate)
 
             })

@@ -4,7 +4,7 @@ import {
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 export async function processViewParams({
-     reactrouter,
+    reactrouter,
 }) {
 
     let viewparams = {
@@ -69,8 +69,14 @@ export async function processViewParams({
     }
 
     if (reactrouter.match.params.model === 'visit') {
-
         viewparams.sortBy = 'createdAt'
+    }
+
+    if (
+        reactrouter.match.params.model === 'mystore'
+        || reactrouter.match.params.model === 'cart'
+    ) {
+        viewparams.search.range = ['name']
     }
 
     return viewparams

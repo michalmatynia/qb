@@ -2,22 +2,15 @@ import {
     Edit,
     Search,
     Close,
-    Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Blockstyle_List({
+export default async function rawStateFunction_Theme_List({
     onRemoveItem,
     onGotoLink
 }) {
-
     const state = {
         localStorage: {
-            attachto: {
-                brick: [],
-                // page:[]
-            },
             poliglot: false,
-            attachtobinder: 'blockstyle',
             tableparams: {
                 renderHeader: true,
                 columns: [
@@ -74,7 +67,7 @@ export default async function rawStateFunction_Blockstyle_List({
                                 cell,
                                 sublistkey,
                                 reactrouter_history,
-                                redux_userdata,
+                                redux_userdata, 
                                 model
                             }),
                         },
@@ -123,8 +116,9 @@ export default async function rawStateFunction_Blockstyle_List({
                 translate: ['name', 'description']
             },
         }
-
     }
 
     return state
 }
+
+

@@ -56,7 +56,6 @@ import ListPage from './components/User/Admin/CMS/Page/list_page';
 
 import AddTheme from './components/User/Admin/UniversalCrud/EditAdd';
 import EditTheme from './components/User/Admin/UniversalCrud/EditAdd';
-import ListTheme from './components/User/Admin/system/Theme/list_theme';
 
 import AddBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
 import EditBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
@@ -85,15 +84,14 @@ import AddMysite from './components/User/Admin/system/Mysite/add_mysite';
 import EditMysite from './components/User/Admin/system/Mysite/edit_mysite';
 import ListMysite from './components/User/Admin/system/Mysite/list_mysite';
 
-import AddMystore from './components/User/Admin/system/Mystore/add_mystore';
-import EditMystore from './components/User/Admin/system/Mystore/edit_mystore';
-import ListMystore from './components/User/Admin/system/Mystore/list_mystore';
+import AddMystore from './components/User/Admin/UniversalCrud/EditAdd';
+import EditMystore from './components/User/Admin/UniversalCrud/EditAdd';
+// import ListMystore from './components/User/Admin/system/Mystore/list_mystore';
 
 // import ListVisit from './components/User/Admin/system/Visit/list_visit';
 
-import AddCart from './components/User/Admin/system/Cart/add_cart';
-import EditCart from './components/User/Admin/system/Cart/edit_cart';
-import ListCart from './components/User/Admin/system/Cart/list_cart';
+import AddCart from './components/User/Admin/UniversalCrud/EditAdd';
+import EditCart from './components/User/Admin/UniversalCrud/EditAdd';
 
 import AddContact from './components/User/Admin/system/Contact/add_contact';
 import EditContact from './components/User/Admin/system/Contact/edit_contact';
@@ -159,7 +157,6 @@ let dashRoutes = [
             redirect: true
           },
           {
-            /* Te powinny sie docelowo znalezc, ale musi byc Universal Crud List */
             path: "/unilist/:model",
             navlink: "/unilist/slide",
             name: "List Slide",
@@ -366,28 +363,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_mystore",
+            path: "/add/:model",
+            navlink: "/add/mystore",
             name: "Add Mystore",
             component: AddMystore,
             layout: "/admin",
-            model: 'mystore',
             reload: true
           },
           {
-            path: "/edit_mystore/:id",
+            path: "/edit/:model/:id",
             name: "Edit Mystore",
             component: EditMystore,
             layout: "/admin",
-            model: 'mystore',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_mystore",
+            path: "/unilist/:model",
+            navlink: "/unilist/mystore",
             name: "List Mystore",
-            component: ListMystore,
+            component: ListPanel,
             layout: "/admin",
-            model: 'mystore',
             reload: true
           },
         ]
@@ -401,28 +397,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_cart",
+            path: "/add/:model",
+            navlink: "/add/cart",
             name: "Add Cart",
             component: AddCart,
             layout: "/admin",
-            model: 'cart',
             reload: true
           },
           {
-            path: "/edit_cart/:id",
+            path: "/edit/:model/:id",
             name: "Edit Cart",
             component: EditCart,
             layout: "/admin",
-            model: 'cart',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_cart",
+            path: "/unilist/:model",
+            navlink: "/unilist/cart",
             name: "List Cart",
-            component: ListCart,
+            component: ListPanel,
             layout: "/admin",
-            model: 'cart',
             reload: true
           },
         ]
@@ -662,15 +657,14 @@ let dashRoutes = [
         redirect: true
       },
       {
-        path: "/list/theme",
-
-        // path: "/list/:model",
-        // navlink: "/list/theme",
+        path: "/unilist/:model",
+        navlink: "/unilist/theme",
         name: "List Theme",
-        component: ListTheme,
-        layout: ["/contentmanager", "/admin"],
+        component: ListPanel,
+        layout: "/admin",
         reload: true
       },
+
     ]
   },
   {

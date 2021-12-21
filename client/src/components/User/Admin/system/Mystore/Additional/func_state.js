@@ -1,25 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { actionFuncs_isDefaultHandle_vh1 } from '../../../ActionFunctions/isdefaultHandle_vh'
+import { tim_colors } from '../../../../../utils/Form/Fixed_categories/tim_colors'
 
-// Generic Functions 
-import { partsFuncs_submitForm_Add_v2 } from '../../../../User/Admin/GenericFuncs/parts_funcs'
-import { compoFuncs_Refresh_v2 } from '../../../../User/Admin/GenericFuncs/compo_funcs'
-import { ShowMessages } from '../../../../User/Admin/GenericFuncs/errormsg_funcs'
 
-import { actionFuncs_isDefaultHandle } from '../../ActionFunctions/isdefaultHandle'
-import { tim_colors } from '../../../../utils/Form/Fixed_categories/tim_colors'
 
-import FormElement from '../../../../utils/Form/Funcs/formContainer'
-import { messageCompleted, errorClosure, messageLoading } from '../../GenericFuncs/errormsg_funcs'
-// Material-UI Icons
-
-import {
-    plg_clearProps,
-} from '../../../../utils/Plugs/cms_plugs';
-
-class AddMystore extends Component {
-
-    state = {
+export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
+    
+    const state = {
         localStorage: {
             model: 'mystore',
             resetok: true,
@@ -45,8 +31,8 @@ class AddMystore extends Component {
                 formSuccess: false,
                 formdata: {
                     images: {
-                        element: 'upload',
-                        category: 'ct_regularimage',
+                        element: 'multiupload',
+                        category: 'ct_regularmultiupload',
                         value: [],
                         configparams: {
                             showlabel: true,
@@ -66,8 +52,16 @@ class AddMystore extends Component {
 
                         },
                         config: {
-                            label: 'Images',
-                            folder: this.props.mysite.CurrentMysite._id + '/Mystore/File',
+                            label: 'Video',
+                            uploadparams: {
+                                public_id: `${Date.now()}`,
+                                resource_type: 'auto',
+                                folder: redux_current_mysite._id  + '/' + model + '/File',
+                                width: 1500,
+                                height: 1000,
+                                crop: "fill"
+                            }
+
                         },
                         inputprops: {
                             type: 'file',
@@ -359,8 +353,8 @@ class AddMystore extends Component {
 
                         },
                         config: {
-                            label: 'View Button',
-                            helpertext: 'Enter text for View Button',
+                            label: 'Buy Button',
+                            helpertext: 'Enter text for Buy Button',
                         },
                         validation: {
                             parse: true,
@@ -624,7 +618,7 @@ class AddMystore extends Component {
                                         postCreate: {
                                             justRun: {
                                                 actionA: async ({ cell, added, current }) => {
-                                                    await actionFuncs_isDefaultHandle({ cell, myprops: this.props, mystate: this.state, model: this.state.localStorage.model, added, current })
+                                                    await actionFuncs_isDefaultHandle_vh1({ cell, dispatch, model, added, current })
                                                 },
                                             }
                                         }
@@ -830,114 +824,9 @@ class AddMystore extends Component {
             },
         }
     }
-
-    async componentDidUpdate(prevProps, prevState) {
-        if ('localeUser' in this.props.user) {
-            let newLocalStorage
-            if (
-                prevProps.user.localeUser !== this.props.user.localeUser
-            ) {
-                let didmount_result = await compoFuncs_Refresh_v2({
-                    model: this.state.localStorage.model,
-                    myprops: this.props,
-                    mystate: this.state,
-                    poliglot: this.state.localStorage.poliglot,
-                    type: 'add'
-                })
-
-                if (didmount_result) { newLocalStorage = { ...didmount_result.newLocalStorage } }
-                else { newLocalStorage = { ...this.state.localStorage } }
-
-                if (newLocalStorage) {
-                    this.updateLocalStorage(newLocalStorage)
-                }
-            }
-        }
-    }
-    async componentDidMount() {
-        if ('localeUser' in this.props.user) {
-            let didmount_result = await compoFuncs_Refresh_v2({
-                model: this.state.localStorage.model,
-                myprops: this.props,
-                mystate: this.state,
-                poliglot: this.state.localStorage.poliglot,
-                type: 'add'
-            })
-            let newLocalStorage = { ...didmount_result.newLocalStorage }
-
-            if (newLocalStorage) {
-                this.updateLocalStorage(newLocalStorage)
-            }
-        }
-    }
-    async componentWillUnmount() {
-        await plg_clearProps({ myprops: this.props, model: this.state.localStorage.model, actionType: 'list' })
-        await plg_clearProps({ myprops: this.props, model: this.state.localStorage.model, actionType: 'detail' })
-    }
-    updateLocalStorage = (localStorage) => {
-
-        this.setState({
-            localStorage
-        })
-    }
-    updateFormValues = async ({ cell }) => {
-
-        let newLocalStorage = { ...this.state.localStorage }
-
-        const cellkey = Object.keys(cell)[0]
-        const cellvalue = Object.values(cell)[0]
-
-        newLocalStorage['form']['formdata'][cellkey] = cellvalue
-        this.updateLocalStorage(newLocalStorage)
-    }
-
-    submitForm = async ({ translate = null }) => {
-        await messageLoading({ myprops: this.props })
-
-        let submit_result = await partsFuncs_submitForm_Add_v2({
-            translate,
-            model: this.state.localStorage.model,
-            myprops: this.props,
-            mystate: this.state,
-            poliglot: this.state.localStorage.poliglot,
-            type: 'add'
-        })
-        let newLocalStorage = { ...submit_result.newLocalStorage }
-
-        if (newLocalStorage) {
-            this.updateLocalStorage(newLocalStorage)
-            if (submit_result.formIsValid) {
-                await messageCompleted({ myprops: this.props })
-            } else {
-                await errorClosure({ myprops: this.props })
-            }
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <div>{<ShowMessages />}</div>
-                {this.props ? <FormElement
-                    formdata={this.state.localStorage.form.formdata}
-                    model={this.state.localStorage.model}
-                    mystate={this.state}
-                    change={({ cell }) => this.updateFormValues({ cell })}
-                    submit={({ event, translate }) => this.submitForm({ event, translate })}
-                /> : null}
-            </div>
-        );
-    }
-}
-
-const mapStateToProps = (state) => {
-
-    return {
-        mystore: state.mystore,
-        mysite: state.mysite,
-        user: state.user,
-        messages: state.messages
-    }
-}
-
-export default connect(mapStateToProps)(AddMystore);
+ 
+     return state
+ }
+ 
+ 
+ 

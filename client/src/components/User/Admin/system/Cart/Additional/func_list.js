@@ -5,19 +5,15 @@ import {
     Remove
 } from '@material-ui/icons';
 
-export default async function rawStateFunction_Blockstyle_List({
+export default async function rawStateFunction_Cart_List({
     onRemoveItem,
     onGotoLink
 }) {
 
     const state = {
         localStorage: {
-            attachto: {
-                brick: [],
-                // page:[]
-            },
-            poliglot: false,
-            attachtobinder: 'blockstyle',
+            model: 'cart',
+            poliglot: true,
             tableparams: {
                 renderHeader: true,
                 columns: [
@@ -51,6 +47,19 @@ export default async function rawStateFunction_Blockstyle_List({
                             indicator: 'name',
                             label: 'Name',
                         }
+                    },
+                    {
+                        keyname: 'isdefault',
+                        columntype: 'switch',
+                        configparams: {},
+                        inputprops: {
+                            id: 'isdefault' // id konieczne zeby dzialalo
+                        },
+                        config: {
+                            label: 'Default',
+                            indicator: 'isdefault',
+                            valuetype: 'boolean',
+                        },
                     },
                     {
                         keyname: '',
@@ -115,15 +124,39 @@ export default async function rawStateFunction_Blockstyle_List({
                             label: 'Remove',
                         },
                     },
+                    {
+                        keyname: '',
+                        columntype: 'iconbutton',
+                        configparams: {
+                        },
+                        icon: Remove,
+                        actions: {
+                            onClick: ({ event, value, viewparams, redux_localeuser, model }) => onRemoveItem({
+                                event,
+                                value,
+                                viewparams,
+                                redux_localeuser,
+                                model,
+                                removeall: true,
+                                state,
+                            }),
+                        },
+                        inputprops: {
+                            id: 'generic',
+                            type: 'text',
+                            name: 'generic_button',
+                            color: 'secondary'
+                        },
+                        config: {
+                            label: 'Remove All',
+                        },
+                    },
                 ]
             },
-            qhelpers: {
-            },
-            linguistic: {
-                translate: ['name', 'description']
-            },
-        }
 
+            qhelpers: {},
+            linguistic: {},
+        }
     }
 
     return state
