@@ -37,7 +37,127 @@ export default function App() {
     const useDynoStyles = makeStyles(isBodyTheme ? isBodyTheme : null);
     const parentclasses = useDynoStyles();
 
+    React.useEffect(() => {
+    
+    
+    },[])
     // /* Find Mysite */
+    // React.useEffect(() => {
+
+
+    //     let symbols = {
+    //         "I": 1,
+    //         "V": 5,
+    //         "X": 10,
+    //         "L": 50,
+    //         "C": 100,
+    //         "D": 500,
+    //         "M": 1000
+    //     };
+
+    //     var romanToInt = function (s) {
+    //         let value = 0;
+    //         for (let i = 0; i < s.length; i += 1) {
+    //             console.log(i);
+
+    //             console.log(s[i + 1]);
+    //             symbols[s[i]] < symbols[s[i + 1]] ? value -= symbols[s[i]] : value += symbols[s[i]]
+
+    //             console.log(value);
+    //         }
+    //         return value
+    //     };
+
+    //     console.log(romanToInt('IV')); 
+
+    // }, [])
+
+    // React.useEffect(()=>{ 
+    //     let s = '()[]{}'
+    //     let result
+
+
+    //     if(s.includes('()') || s.includes('[]') || s.includes('{}')) {
+    //          result = true
+
+    //     } else {
+    //         result = false
+    //     }
+
+    //     console.log(result);
+
+    // })
+
+    // React.useEffect(() => {
+
+    //     /* TEST Code */
+    //     // Use reducer
+    //     console.log('test');
+    //     // let inargs = ['5', '2', 'C', 'D', '+']
+    //     let inargs = ['5', '-2', '4', 'C', 'D', '9', '+', '+']
+    //     // let inargs = ['1']
+
+    //     // ######### Moje testy
+    //     // let inargs = ['5', '2', '7', '14', 'C', 'D', '+']
+
+    //     // let inargs = ['C', '13', 'D', '+', '1']
+    //     // let inargs = ['C', '-3131313', 'D', '+', '1']
+
+    //     var calPoints = function (ops) {
+
+    //         var result = null
+    //         let v_calc
+
+    //         if (ops.length >= 1 && ops.length <= 1000) {
+
+    //             v_calc = ops.reduce((accum, currentVal, index, array) => {
+
+    //             if (!isNaN(parseInt(currentVal))) {
+    //                 let range_array = [-3 * 104, 3 * 104]
+
+    //                 if (range_array[0] <= parseInt(currentVal) && parseInt(currentVal) <= range_array[1]) {
+
+    //                     // console.log(parseInt(currentValue));
+    //                     return [...accum, parseInt(currentVal)]
+
+    //                 } else {
+    //                     return accum
+    //                 }
+
+    //             } else if (currentVal === 'C' && accum.length >= 1) {
+    //                 accum.splice([accum.length - 1], 1);
+    //                 return accum
+
+    //             } else if (currentVal === 'D' && accum.length >= 1) {
+    //                 return [...accum, accum[accum.length - 1] * 2]
+
+    //             } else if (currentVal === '+' && accum.length >= 2) {
+    //                 return [...accum, accum[accum.length - 1] + accum[accum.length - 2]]
+
+    //             } else {
+    //                 return accum
+    //             }
+
+
+    //         }, []);
+
+    //         console.log(v_calc);
+    //     }
+
+
+    //         result = v_calc.reduce((accum, currentValue) => {
+    //             return accum + currentValue
+    //         }, 0)
+    //         console.log(result);
+
+    //         return result
+
+    //     }
+
+
+    //     calPoints(inargs)
+    // }
+    // )
     React.useEffect(() => {
 
         async function findMysite() {
@@ -113,7 +233,7 @@ export default function App() {
                 <Frontside />
             </MemoizedWrapper>
         </div>
-    } 
+    }
     else {
         return (
             <div
