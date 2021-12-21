@@ -41,8 +41,7 @@ import WidgetsIcon from "@material-ui/icons/Widgets";
 // =========
 import Dashboard from "./themesrun/creativetim/material-dashboard-pro-react-v1.9.0/views/Dashboard/Dashboard2.js";
 
-import AddSlide from './components/User/Admin/UniversalCrud/EditAdd';
-import EditSlide from './components/User/Admin/UniversalCrud/EditAdd';
+import EditAdd from './components/User/Admin/UniversalCrud/EditAdd';
 import ListPanel from './components/User/Admin/UniversalCrud/List/ListPanel';
 
 import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
@@ -52,13 +51,6 @@ import ListBrick from './components/User/Admin/CMS/Brick/list_brick';
 import AddPage from './components/User/Admin/CMS/Page/add_page';
 import EditPage from './components/User/Admin/CMS/Page/edit_page';
 import ListPage from './components/User/Admin/CMS/Page/list_page';
-
-
-import AddTheme from './components/User/Admin/UniversalCrud/EditAdd';
-import EditTheme from './components/User/Admin/UniversalCrud/EditAdd';
-
-import AddBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
-import EditBlockstyle from './components/User/Admin/UniversalCrud/EditAdd';
 
 import AddProduct from './components/User/Admin/CMS/Products/add_product';
 import EditProduct from './components/User/Admin/CMS/Products/edit_product';
@@ -76,26 +68,9 @@ import AddTaxonomy from './components/User/Admin/system/Taxonomy/add_taxonomy';
 import EditTaxonomy from './components/User/Admin/system/Taxonomy/edit_taxonomy';
 import ListTaxonomy from './components/User/Admin/system/Taxonomy/list_taxonomy';
 
-// import AddView from './components/User/Admin/system/View/add_view';
-// import EditView  from './components/User/Admin/system/View/edit_view';
-// import ListView  from './components/User/Admin/system/View/list_view';
-
 import AddMysite from './components/User/Admin/system/Mysite/add_mysite';
 import EditMysite from './components/User/Admin/system/Mysite/edit_mysite';
 import ListMysite from './components/User/Admin/system/Mysite/list_mysite';
-
-import AddMystore from './components/User/Admin/UniversalCrud/EditAdd';
-import EditMystore from './components/User/Admin/UniversalCrud/EditAdd';
-// import ListMystore from './components/User/Admin/system/Mystore/list_mystore';
-
-// import ListVisit from './components/User/Admin/system/Visit/list_visit';
-
-import AddCart from './components/User/Admin/UniversalCrud/EditAdd';
-import EditCart from './components/User/Admin/UniversalCrud/EditAdd';
-
-import AddContact from './components/User/Admin/system/Contact/add_contact';
-import EditContact from './components/User/Admin/system/Contact/edit_contact';
-import ListContact from './components/User/Admin/system/Contact/list_contact';
 
 
 import AddLogin from './components/User/Admin/system/Login/add_login';
@@ -144,14 +119,14 @@ let dashRoutes = [
             path: "/add/:model",
             navlink: "/add/slide",
             name: "Add Slide",
-            component: AddSlide,
+            component: EditAdd,
             layout: "/admin",
             reload: true
           },
           {
             path: "/edit/:model/:id",
             name: "Edit Slide",
-            component: EditSlide,
+            component: EditAdd,
             layout: "/admin",
             reload: true,
             redirect: true
@@ -366,14 +341,14 @@ let dashRoutes = [
             path: "/add/:model",
             navlink: "/add/mystore",
             name: "Add Mystore",
-            component: AddMystore,
+            component: EditAdd,
             layout: "/admin",
             reload: true
           },
           {
             path: "/edit/:model/:id",
             name: "Edit Mystore",
-            component: EditMystore,
+            component: EditAdd,
             layout: "/admin",
             reload: true,
             redirect: true
@@ -400,14 +375,14 @@ let dashRoutes = [
             path: "/add/:model",
             navlink: "/add/cart",
             name: "Add Cart",
-            component: AddCart,
+            component: EditAdd,
             layout: "/admin",
             reload: true
           },
           {
             path: "/edit/:model/:id",
             name: "Edit Cart",
-            component: EditCart,
+            component: EditAdd,
             layout: "/admin",
             reload: true,
             redirect: true
@@ -431,28 +406,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_contact",
+            path: "/add/:model",
+            navlink: "/add/contact",
             name: "Add Contact",
-            component: AddContact,
+            component: EditAdd,
             layout: "/admin",
-            model: 'contact',
             reload: true
           },
           {
-            path: "/edit_contact/:id",
+            path: "/edit/:model/:id",
             name: "Edit Contact",
-            component: EditContact,
+            component: EditAdd,
             layout: "/admin",
-            model: 'contact',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_contact",
+            path: "/unilist/:model",
+            navlink: "/unilist/contact",
             name: "List Contact",
-            component: ListContact,
+            component: ListPanel,
             layout: "/admin",
-            model: 'contact',
             reload: true
           },
         ]
@@ -644,14 +618,14 @@ let dashRoutes = [
         path: "/add/:model",
         navlink: "/add/theme",
         name: "Add Theme",
-        component: AddTheme,
+        component: EditAdd,
         layout: "/admin",
         reload: true
       },
       {
         path: "/edit/:model/:id",
         name: "Edit Theme",
-        component: EditTheme,
+        component: EditAdd,
         layout: "/admin",
         reload: true,
         redirect: true
@@ -777,14 +751,14 @@ let dashRoutes = [
         path: "/add/:model",
         navlink: "/add/blockstyle",
         name: "Add Blockstyle",
-        component: AddBlockstyle,
+        component: EditAdd,
         layout: "/admin",
         reload: true
       },
       {
         path: "/edit/:model/:id/:attachto",
         name: "Edit Blockstyle",
-        component: EditBlockstyle,
+        component: EditAdd,
         layout: "/admin",
         reload: true,
         redirect: true
@@ -831,24 +805,24 @@ let dashRoutes = [
     state: "eventCollapse",
     layout: "/contentmanager",
     views: [
-      {
-        path: "/add_event",
-        name: "Add Event",
-        component: AddSlide,
-        layout: "/contentmanager",
-        model: 'slide',
-        reload: true,
-        attachto: ['60fa0bac2956083e2c28e217']
-      },
-      {
-        path: "/edit_event/:id",
-        name: "Edit Event",
-        component: EditSlide,
-        layout: "/contentmanager",
-        model: 'slide',
-        reload: true,
-        redirect: true // Jesli True, sciezka nie wyswietla sie
-      },
+      // {
+      //   path: "/add_event",
+      //   name: "Add Event",
+      //   component: EditSlide,
+      //   layout: "/contentmanager",
+      //   model: 'slide',
+      //   reload: true,
+      //   attachto: ['60fa0bac2956083e2c28e217']
+      // },
+      // {
+      //   path: "/edit_event/:id",
+      //   name: "Edit Event",
+      //   component: EditSlide,
+      //   layout: "/contentmanager",
+      //   model: 'slide',
+      //   reload: true,
+      //   redirect: true // Jesli True, sciezka nie wyswietla sie
+      // },
       // {
       //   path: "/list_event",
       //   name: "List Events",

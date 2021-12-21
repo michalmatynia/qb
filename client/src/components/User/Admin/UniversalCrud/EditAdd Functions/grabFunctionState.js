@@ -4,6 +4,7 @@ import rawStateFunctionTheme from "../../system/Theme/Additional/func_state"
 import rawStateFunctionBlockstyle from "../../system/Blockstyle/Additional/func_state"
 import rawStateFunctionMystore from "../../system/Mystore/Additional/func_state"
 import rawStateFunctionCart from "../../system/Cart/Additional/func_state"
+import rawStateFunctionContact from "../../system/Contact/Additional/func_state"
 
 
 
@@ -14,7 +15,7 @@ import rawStateFunction_Blockstyle_List from "../../system/Blockstyle/Additional
 import rawStateFunction_Theme_List from "../../system/Theme/Additional/func_list"
 import rawStateFunction_Mystore_List from "../../system/Mystore/Additional/func_list"
 import rawStateFunction_Cart_List from "../../system/Cart/Additional/func_list"
-
+import rawStateFunction_Contact_List from "../../system/Contact/Additional/func_list"
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
 
 
@@ -75,6 +76,13 @@ export async function grabFunctionState({
                 onGotoLink
             })
             break;
+        case (model === 'contact' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Contact_List({
+                onRemoveItem,
+                onGotoLink
+            })
+            break;
         case (model === 'blockstyle' && kind === 'list'):
 
             rawFunctionState = await rawStateFunction_Blockstyle_List({
@@ -108,6 +116,9 @@ export async function grabFunctionState({
             break;
         case (model === 'cart' && !kind):
             rawFunctionState = await rawStateFunctionCart({ redux_current_mysite, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'contact' && !kind):
+            rawFunctionState = await rawStateFunctionContact({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         case (model === 'mystore' && !kind):
             rawFunctionState = await rawStateFunctionMystore({ redux_current_mysite, dispatch, redux_localeuser, model })

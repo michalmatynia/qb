@@ -75,6 +75,7 @@ export async function processViewParams({
     if (
         reactrouter.match.params.model === 'mystore'
         || reactrouter.match.params.model === 'cart'
+        || reactrouter.match.params.model === 'contact'
     ) {
         viewparams.search.range = ['name']
     }
