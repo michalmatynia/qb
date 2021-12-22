@@ -45,11 +45,7 @@ export async function actionFuncs_composeFilterfield_vh1({ cell }) {
     return cellvalue.filterfield.value
 
 }
-export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, model, redux_localeuser, reactrouter_match, dispatch, mystate, populate = null, poliglot = null, fields = null }) {
-   
-   if(!poliglot) {
-       poliglot = mystate.localStorage.poliglot
-   }
+export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, model, redux_localeuser, reactrouter_match, dispatch, populate = null, poliglot = null, fields = null }) {
    
     // const cellkey = Object.keys(cell)[0]
     const cellvalue = Object.values(cell)[0]

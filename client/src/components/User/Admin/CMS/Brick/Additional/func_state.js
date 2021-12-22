@@ -1,20 +1,26 @@
-import { taxonomy_type } from '../../../../../utils/Form/Fixed_categories/taxonomy_type'
-import { actionFuncs_composeFilterfield_vh1, actionFuncs_composeFilterfieldOptions_vh1 } from '../../../ActionFunctions/filterfieldHandle_vh'
-import { actionFuncs_handleArrayOfIds_vh1} from '../../../ActionFunctions/handleArrayOfIds_vh'
-import { actionFuncs_mirrorAdded_vh1 } from '../../../ActionFunctions/handleTaxonomy_vh'
+import { actionFuncs_baseFindMany_vh2 } from '../../../ActionFunctions/baseFindMany_vh'
+import { actionFuncs_handleArrayOfIds_vh1, actionFuncs_transformIdsToArray_vh1 } from '../../../ActionFunctions/handleArrayOfIds_vh'
 
-export default async function rawStateFunction({ redux_current_mysite, reactrouter_match, dispatch, redux_localeuser, model }) {
-    const state = {
+
+
+export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
+    
+    const ccc = {
         localStorage: {
-            model: 'taxonomy',
+            model: 'slide',
             resetok: true,
             poliglot: true,
             qhelpers: {
-                populate: [{ path: 'tagparent' }, { path: 'tagchild' }]
+                populate: [{ path: 'category' }]
             },
             linguistic: {
-                translate: ['name', 'description']
+                translate: ['name', 'description', 'btn_execute', 'title']
             },
+            attachto: {
+                brick: [],
+                // page:[]
+            },
+            attachtobinder: 'checked',
             form: {
                 formError: false,
                 formSuccess: false,
@@ -108,6 +114,51 @@ export default async function rawStateFunction({ redux_current_mysite, reactrout
                         valid: false,
                         touched: false,
                     },
+                    title: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'title_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Title',
+                            helpertext: 'Enter text for Title',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: false,
+                        touched: false,
+                    },
                     description: {
                         element: 'input',
                         category: 'ct_custominput',
@@ -143,17 +194,177 @@ export default async function rawStateFunction({ redux_current_mysite, reactrout
                                     resetvalue: '',
                                 },
                             },
-
                         },
                         config: {
                             label: 'Description',
                             helpertext: 'Enter text for Description',
                         },
                         validation: {
-                            parse: true,
-                            type: ['required']
+                            parse: false
                         },
-                        valid: false,
+                        valid: true,
+                        touched: false,
+                    },
+                    btn_execute: {
+                        element: 'input',
+                        category: 'ct_custominput',
+                        value: '',
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {
+                            fullWidth: true,
+                        },
+                        inputprops: {
+                            type: 'text',
+                            name: 'btn_execute_input',
+                            autoComplete: 'On'
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'string',
+                                    resetvalue: '',
+                                },
+                            },
+
+                        },
+                        config: {
+                            label: 'Button Execute',
+                            helpertext: 'Enter text for Button Execute',
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    },
+                    category: {
+                        element: 'autocomplete',
+                        category: 'uim_autocompletetaxo',
+                        value: [],
+                        fillfields: {
+                            value: {
+                                fromconfig: {
+                                    model: 'taxonomy',
+                                    onPopulateAction: {
+                                        preFind: {
+                                            affectValue: {
+                                                actionA: async ({ cell, getlist, fields }) => {
+                                                    if (fields) {
+                                                        return await actionFuncs_transformIdsToArray_vh1({ cell, getlist, fields, dispatch, populate: [{ path: 'tagparent' }, { path: 'tagchild' }]  })
+                                                    } else {
+
+                                                        // const cellkey = Object.keys(cell)[0]
+                                                        const cellvalue = Object.values(cell)[0]
+
+                                                        return cellvalue.fillfields.value.toconfig.resetvalue
+
+                                                    }
+                                                },
+                                            },
+                                            // justRun :{ }
+                                        }
+                                    }
+                                },
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'array',
+                                    resetvalue: [],
+                                },
+                                submitconfig: {
+                                    // model: 'language',
+                                    onSubmitAction: {
+                                        // preCreate: {
+
+                                        // },
+                                        preCreate: {
+                                            affectValue: {
+                                                actionA: async ({ cell, fields }) => {
+                                                    return await actionFuncs_handleArrayOfIds_vh1({ cell, fields })
+                                                },
+                                            }
+
+                                        }
+                                    }
+                                }
+                            },
+                            options: {
+                                fromconfig: {
+                                    onPopulateAction: {
+                                        preFind: {
+                                            affectValue: {
+                                                actionA: async ({ cell, getlist, fields }) => {
+                                                    return await actionFuncs_baseFindMany_vh2({
+                                                        cell, 
+                                                        getlist, 
+                                                        model: 'taxonomy', 
+                                                        fields,
+                                                        poliglot: state.localStorage.poliglot,
+                                                        isLocalStorage: state.localStorage,
+                                                        redux_localeuser,
+                                                        dispatch,
+                                                        inQuery: { typetagmain: { "$in": { name: 'slide.tag.1' } } }, populate: [{ path: 'tagparent' }, { path: 'tagchild' }]
+                                                    })
+                                                },
+
+                              
+                                            },
+                                        }
+                                    },
+                                },
+                                toconfig: {
+                                    setpath: 'config.options',
+                                    valuetype: 'array',
+                                    resetvalue: [],
+                                },
+                            }
+                        },
+                        wrapcompos: {
+                            griditem: {},
+                        },
+                        formcontrolprops: {
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        inputprops: {
+                            name: 'category_autocomplete',
+                            type: 'text',
+                            id: 'category',
+                            autoComplete: true,
+                            getOptionSelected: (option, value) => {
+
+                                if (option._id === value._id) {
+                                    return true
+                                }
+                            }
+                        },
+
+                        config: {
+                            label: 'Category',
+                            options: [],
+                            resetvalue: [],
+                            valuetype: 'array',
+                            autoComplete: true,
+                        },
+                        validation: {
+                            required: false
+                        },
+                        valid: true,
                         touched: false,
                     },
                     position: {
@@ -194,384 +405,6 @@ export default async function rawStateFunction({ redux_current_mysite, reactrout
                         },
                         validation: {
                             parse: false,
-                        },
-                        valid: true,
-                        touched: false,
-                    },
-                    visible: {
-                        element: 'switch',
-                        category: 'ct_customswitch',
-                        value: true,
-                        wrapcompos: {
-                            griditem: {},
-                        },
-                        formcontrolprops: {},
-                        inputprops: {
-                            name: 'visible_switch',
-                        },
-                        fillfields: {
-                            value: {
-                                toconfig: {
-                                    setpath: 'value',
-                                    valuetype: 'boolean',
-                                    resetvalue: true,
-                                },
-                            },
-
-                        },
-                        configparams: {
-                            showlabel: true,
-                            showhelpertext: false,
-                            showfield: true,
-                        },
-                        config: {
-                            label: 'Visible',
-                            options: [
-                                { key: true, value: 'yes' },
-                                { key: false, value: 'no' },
-                            ]
-                        },
-                        validation: {
-                            parse: false,
-                        },
-                        valid: true,
-                        touched: false,
-                    },
-                    typetagmain: {
-                        element: 'autocomplete',
-                        category: 'uim_autocompletetaxo',
-                        value: [],
-                        fillfields: {
-                            value: {
-                                toconfig: {
-                                    setpath: 'value',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                            },
-                            options: {
-                                toconfig: {
-                                    setpath: 'config.options',
-                                    valuetype: 'array',
-                                    resetvalue: taxonomy_type,
-                                },
-                            }
-                        },
-                        wrapcompos: {
-                            griditem: {},
-                        },
-                        formcontrolprops: {
-                        },
-                        configparams: {
-                            showlabel: true,
-                            showhelpertext: false,
-                            showfield: true,
-                        },
-                        inputprops: {
-                            name: 'typetagmain_autocomplete',
-                            type: 'text',
-                            id: 'typetagmain',
-                            autoComplete: true,
-                            getOptionSelected: (option, value) => {
-                                if (option.name === value.name) {
-                                    return true
-                                }
-                            }
-                        },
-
-                        config: {
-                            label: 'Main Tag',
-                            options: taxonomy_type,
-                            autoComplete: true,
-                        },
-                        validation: {
-                            required: false
-                        },
-                        valid: true,
-                        touched: false,
-                    },
-                    tagparent: {
-                        element: 'autocomplete',
-                        category: 'uim_autocompleteandfilter',
-                        value: [],
-                        fillfields: {
-                            options: {
-                                fromconfig: {
-                                    model: 'taxonomy',
-                                    onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, fields, dispatch, redux_localeuser, reactrouter_match, model, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            },
-                                        }
-                                    }
-                                },
-                                toconfig: {
-                                    setpath: 'config.options',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                            },
-                            filterfield_options: {
-                                toconfig: {
-                                    setpath: 'filterfield.config.options',
-                                    valuetype: 'array',
-                                    resetvalue: taxonomy_type,
-                                },
-                            },
-                            value: {
-                                toconfig: {
-                                    setpath: 'value',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                                submitconfig: {
-                                    // model: 'language',
-                                    onSubmitAction: {
-                                        preCreate: {
-                                            affectValue: {
-                                                actionA: async ({ cell, fields }) => {
-                                                    return await actionFuncs_handleArrayOfIds_vh1({ cell, fields })
-                                                },
-                                            }
-                                        },
-                                        postCreate: {
-                                            justRun: {
-                                                actionA: async ({ cell, added, fields }) => {
-                                                    await actionFuncs_mirrorAdded_vh1({ cell, added, fields, redux_current_mysite, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            filterfield_value: {
-                                toconfig: {
-                                    setpath: 'filterfield.value',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                                fromconfig: {
-                                    // model: 'taxonomy',
-                                    onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfield_vh1({ cell })
-                                                },
-                                            },
-                                        }
-                                    }
-                                },
-                            },
-                        },
-                        config: {
-                            label: 'Tag Parent',
-                            options: [],
-                            autoComplete: true,
-                        },
-                        filterfield: {
-                            value: [],
-                            wrapcompos: {
-                                griditem: {},
-                            },
-                            formcontrolprops: {
-                            },
-                            configparams: {
-                                showlabel: true,
-                                showhelpertext: false,
-                                showfield: true,
-                            },
-                            inputprops: {
-                                name: 'filterparent_input',
-                                id: 'filterparent',
-                                type: 'text',
-                                autoComplete: true,
-                                getOptionSelected: (option, value) => {
-                                    if (option.name === value.name) {
-                                        return true
-                                    }
-                                }
-                            },
-                            config: {
-                                label: 'Filter Parent',
-                                options: taxonomy_type,
-                                indicator: 'typetagmain'
-                            },
-                            validation: {
-                                required: false
-                            },
-                            valid: true,
-                            touched: false,
-                        },
-                        wrapcompos: {
-                            griditem: {},
-                        },
-                        formcontrolprops: {
-                        },
-                        configparams: {
-                            showlabel: true,
-                            showhelpertext: false,
-                            showfield: true,
-                        },
-                        inputprops: {
-                            name: 'tagparent_input',
-                            type: 'text',
-                            id: 'tagparent',
-                            autoComplete: true,
-                            getOptionSelected: (option, value) => {
-                                if (option._id === value._id) {
-                                    return true
-                                }
-                            }
-                        },
-                        validation: {
-                            required: false
-                        },
-                        valid: true,
-                        touched: false,
-                    },
-                    tagchild: {
-                        element: 'autocomplete',
-                        category: 'uim_autocompleteandfilter',
-                        value: [],
-                        fillfields: {
-                            options: {
-                                fromconfig: {
-                                    model: 'taxonomy',
-                                    onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, fields, dispatch, redux_localeuser, reactrouter_match, model, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            },
-                                        }
-                                    }
-                                },
-                                toconfig: {
-                                    setpath: 'config.options',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                            },
-                            filterfield_options: {
-                                toconfig: {
-                                    setpath: 'filterfield.config.options',
-                                    valuetype: 'array',
-                                    resetvalue: taxonomy_type,
-                                },
-                            },
-                            value: {
-                                toconfig: {
-                                    setpath: 'value',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                                submitconfig: {
-                                    // model: 'language',
-                                    onSubmitAction: {
-                                        preCreate: {
-                                            affectValue: {
-                                                actionA: async ({ cell, fields }) => {
-                                                    return await actionFuncs_handleArrayOfIds_vh1({ cell, fields })
-                                                },
-                                            }
-                                        },
-                                        postCreate: {
-                                            justRun: {
-                                                actionA: async ({ cell, added, fields }) => {
-                                                    await actionFuncs_mirrorAdded_vh1({ cell, added, fields, redux_current_mysite, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            filterfield_value: {
-                                toconfig: {
-                                    setpath: 'filterfield.value',
-                                    valuetype: 'array',
-                                    resetvalue: [],
-                                },
-                                fromconfig: {
-                                    // model: 'taxonomy',
-                                    onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfield_vh1({ cell })
-                                                },
-                                            },
-                                        }
-                                    }
-                                },
-                            },
-                        },
-                        config: {
-                            label: 'Tag Child',
-                            options: [],
-                            autoComplete: true,
-                        },
-                        filterfield: {
-                            value: [],
-                            wrapcompos: {
-                                griditem: {},
-                            },
-                            formcontrolprops: {
-                            },
-                            configparams: {
-                                showlabel: true,
-                                showhelpertext: false,
-                                showfield: true,
-                            },
-                            inputprops: {
-                                name: 'filterchild_input',
-                                id: 'filterchild',
-                                type: 'text',
-                                autoComplete: true,
-                                getOptionSelected: (option, value) => {
-                                    if (option.name === value.name) {
-                                        return true
-                                    }
-                                }
-                            },
-                            config: {
-                                label: 'Filter Child',
-                                options: taxonomy_type,
-                                indicator: 'typetagmain'
-                            },
-                            validation: {
-                                required: false
-                            },
-                            valid: true,
-                            touched: false,
-                        },
-                        wrapcompos: {
-                            griditem: {},
-                        },
-                        formcontrolprops: {
-                        },
-                        configparams: {
-                            showlabel: true,
-                            showhelpertext: false,
-                            showfield: true,
-                        },
-                        inputprops: {
-                            name: 'tagchild_input',
-                            type: 'text',
-                            id: 'tagchild',
-                            autoComplete: true,
-                            getOptionSelected: (option, value) => {
-                                if (option._id === value._id) {
-                                    return true
-                                }
-                            }
-                        },
-                        validation: {
-                            required: false
                         },
                         valid: true,
                         touched: false,
@@ -697,6 +530,7 @@ export default async function rawStateFunction({ redux_current_mysite, reactrout
                                     resetvalue: '',
                                 },
                             },
+
                         },
                         config: {
                             label: 'Lgbinder',
@@ -709,14 +543,50 @@ export default async function rawStateFunction({ redux_current_mysite, reactrout
                         valid: false,
                         touched: false,
                     },
+                    visible: {
+                        element: 'switch',
+                        category: 'ct_customswitch',
+                        value: true,
+                        wrapcompos: {
+                            griditem: {},
+                        },
+                        formcontrolprops: {},
+                        inputprops: {
+                            name: 'visible_switch',
+                        },
+                        fillfields: {
+                            value: {
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'boolean',
+                                    resetvalue: true,
+                                },
+                            },
 
+                        },
+                        configparams: {
+                            showlabel: true,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        config: {
+                            label: 'Visible',
+                            options: [
+                                { key: true, value: 'yes' },
+                                { key: false, value: 'no' },
+                            ]
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        valid: true,
+                        touched: false,
+                    }
                 }
             }
-
         }
-
     }
-
+ 
      return state
  }
  

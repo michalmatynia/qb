@@ -44,37 +44,34 @@ import Dashboard from "./themesrun/creativetim/material-dashboard-pro-react-v1.9
 import EditAdd from './components/User/Admin/UniversalCrud/EditAdd';
 import ListPanel from './components/User/Admin/UniversalCrud/List/ListPanel';
 
-import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
-import EditBrick from './components/User/Admin/CMS/Brick/edit_brick';
-import ListBrick from './components/User/Admin/CMS/Brick/list_brick';
+// import AddBrick from './components/User/Admin/CMS/Brick/add_brick';
+// import EditBrick from './components/User/Admin/CMS/Brick/edit_brick';
+// import ListBrick from './components/User/Admin/CMS/Brick/list_brick';
 
 import AddPage from './components/User/Admin/CMS/Page/add_page';
 import EditPage from './components/User/Admin/CMS/Page/edit_page';
 import ListPage from './components/User/Admin/CMS/Page/list_page';
 
-import AddProduct from './components/User/Admin/CMS/Products/add_product';
-import EditProduct from './components/User/Admin/CMS/Products/edit_product';
-import ListProduct from './components/User/Admin/CMS/Products/list_product';
+// import AddProduct from './components/User/Admin/CMS/Products/add_product';
+// import EditProduct from './components/User/Admin/CMS/Products/edit_product';
+// import ListProduct from './components/User/Admin/CMS/Products/list_product';
 
 import AddTrnsDetailProduct from './components/User/Admin/system/Trnsdetailproduct/add_trnsdetailproduct';
 import EditTrnsDetailProduct from './components/User/Admin/system/Trnsdetailproduct/edit_trnsdetailproduct';
 import ListTrnsDetailProduct from './components/User/Admin/system/Trnsdetailproduct/list_trnsdetailproduct';
 
-import AddProductgroup from './components/User/Admin/CMS/Productgroup/add_productgroup';
-import EditProductgroup from './components/User/Admin/CMS/Productgroup/edit_productgroup';
-import ListProductgroup from './components/User/Admin/CMS/Productgroup/list_productgroup';
+// import AddProductgroup from './components/User/Admin/CMS/Productgroup/add_productgroup';
+// import EditProductgroup from './components/User/Admin/CMS/Productgroup/edit_productgroup';
+// import ListProductgroup from './components/User/Admin/CMS/Productgroup/list_productgroup';
 
-import AddTaxonomy from './components/User/Admin/system/Taxonomy/add_taxonomy';
-import EditTaxonomy from './components/User/Admin/system/Taxonomy/edit_taxonomy';
-import ListTaxonomy from './components/User/Admin/system/Taxonomy/list_taxonomy';
+// import AddTaxonomy from './components/User/Admin/system/Taxonomy/add_taxonomy';
+// import EditTaxonomy from './components/User/Admin/system/Taxonomy/edit_taxonomy';
+// import ListTaxonomy from './components/User/Admin/system/Taxonomy/list_taxonomy';
 
-import AddMysite from './components/User/Admin/system/Mysite/add_mysite';
-import EditMysite from './components/User/Admin/system/Mysite/edit_mysite';
-import ListMysite from './components/User/Admin/system/Mysite/list_mysite';
+// import AddMysite from './components/User/Admin/system/Mysite/add_mysite';
+// import EditMysite from './components/User/Admin/system/Mysite/edit_mysite';
+// import ListMysite from './components/User/Admin/system/Mysite/list_mysite';
 
-import AddNewsletter from './components/User/Admin/CMS/Newsletter/add_newsletter';
-import EditNewsletter from './components/User/Admin/CMS/Newsletter/edit_newsletter';
-import ListNewsletter from './components/User/Admin/CMS/Newsletter/list_newsletter';
 
 import AddUser from './components/User/Admin/system/User/add_user';
 import EditUser from './components/User/Admin/system/User/edit_user';
@@ -145,28 +142,26 @@ let dashRoutes = [
         layout: ["/contentmanager", "/admin"],
         views: [
           {
-            path: "/add_product",
+            path: "/add/:model",
+            navlink: "/add/product",
             name: "Add Product",
-            component: AddProduct,
+            component: EditAdd,
             layout: ["/contentmanager", "/admin"],
-            model: 'product',
             reload: true
           },
           {
-            path: "/edit_product/:id",
+            path: "/edit/:model/:id",
             name: "Edit Product",
-            component: EditProduct,
+            component: EditAdd,
             layout: ["/contentmanager", "/admin"],
-            model: 'product',
             reload: true,
             redirect: true
           },
           {
-            path: "/list/product",
-            // path: "/list/:model",
-            // navlink: "/list/product",
+            path: "/unilist/:model",
+            navlink: "/unilist/product",
             name: "List Product",
-            component: ListProduct,
+            component: ListPanel,
             layout: ["/contentmanager", "/admin"],
             reload: true
           },
@@ -181,28 +176,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_productgroup",
+            path: "/add/:model",
+            navlink: "/add/productgroup",
             name: "Add Product Group",
-            component: AddProductgroup,
+            component: EditAdd,
             layout: "/admin",
-            model: 'productgroup',
             reload: true
           },
           {
-            path: "/edit_productgroup/:id",
+            path: "/edit/:model/:id",
             name: "Edit Product Group",
-            component: EditProductgroup,
+            component: EditAdd,
             layout: "/admin",
-            model: 'productgroup',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_productgroup",
+            path: "/unilist/:model",
+            navlink: "/unilist/productgroup",
             name: "List Product Group",
-            component: ListProductgroup,
+            component: ListPanel,
             layout: "/admin",
-            model: 'productgroup',
             reload: true
           },
         ]
@@ -216,28 +210,27 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_brick",
+            path: "/add/:model",
+            navlink: "/add/brick",
             name: "Add Brick",
-            component: AddBrick,
+            component: EditAdd,
             layout: "/admin",
-            model: 'brick',
             reload: true
           },
           {
-            path: "/edit_brick/:id",
+            path: "/edit/:model/:id",
             name: "Edit Brick",
-            component: EditBrick,
+            component: EditAdd,
             layout: "/admin",
-            model: 'brick',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_brick",
+            path: "/unilist/:model",
+            navlink: "/unilist/brick",
             name: "List Brick",
-            component: ListBrick,
+            component: ListPanel,
             layout: "/admin",
-            model: 'brick',
             reload: true
           },
         ]
@@ -286,30 +279,54 @@ let dashRoutes = [
         layout: "/admin",
         views: [
           {
-            path: "/add_page",
+            path: "/add/:model",
+            navlink: "/add/page",
             name: "Add Page",
-            component: AddPage,
+            component: EditAdd,
             layout: "/admin",
-            model: 'page',
             reload: true
           },
           {
-            path: "/edit_page/:id",
+            path: "/edit/:model/:id",
             name: "Edit Page",
-            component: EditPage,
+            component: EditAdd,
             layout: "/admin",
-            model: 'page',
             reload: true,
             redirect: true
           },
           {
-            path: "/list_page",
+            path: "/unilist/:model",
+            navlink: "/unilist/page",
             name: "List Page",
-            component: ListPage,
+            component: ListPanel,
             layout: "/admin",
-            model: 'page',
             reload: true
           },
+          // {
+          //   path: "/add_page",
+          //   name: "Add Page",
+          //   component: AddPage,
+          //   layout: "/admin",
+          //   model: 'page',
+          //   reload: true
+          // },
+          // {
+          //   path: "/edit_page/:id",
+          //   name: "Edit Page",
+          //   component: EditPage,
+          //   layout: "/admin",
+          //   model: 'page',
+          //   reload: true,
+          //   redirect: true
+          // },
+          // {
+          //   path: "/list_page",
+          //   name: "List Page",
+          //   component: ListPage,
+          //   layout: "/admin",
+          //   model: 'page',
+          //   reload: true
+          // },
         ]
       },
     ]
@@ -452,7 +469,7 @@ let dashRoutes = [
           },
           {
             path: "/unilist/:model",
-            navlink: "/unilist/contact",
+            navlink: "/unilist/login",
             name: "List Login",
             component: ListPanel,
             layout: "/admin",
@@ -486,59 +503,25 @@ let dashRoutes = [
             redirect: true
           },
           /* Nie moge tego zastosowac dopki nie zrobie Edit/Add dla tego*/
+          {
+            path: "/unilist/:model",
+            navlink: "/unilist/trnsdetailproduct",
+            name: "List Product Detail",
+            component: ListPanel,
+            layout: "/admin",
+            reload: true
+          },
           // {
-          //   path: "/unilist/:model",
-          //   navlink: "/unilist/trnsdetailproduct",
+          //   path: "/list_trnsdetailproduct",
           //   name: "List Product Detail",
-          //   component: ListPanel,
+          //   component: ListTrnsDetailProduct,
           //   layout: "/admin",
+          //   model: 'trnsdetailproduct',
           //   reload: true
           // },
-          {
-            path: "/list_trnsdetailproduct",
-            name: "List Product Detail",
-            component: ListTrnsDetailProduct,
-            layout: "/admin",
-            model: 'trnsdetailproduct',
-            reload: true
-          },
         ]
       },
-      {
-        collapse: true,
-        name: "Newsletter",
-        // rtlName: "المكونات",
-        icon: Place,
-        state: "newsletterCollapse",
-        layout: "/admin",
-        views: [
-          {
-            path: "/add_newsletter",
-            name: "Add Newsletter",
-            component: AddNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true
-          },
-          {
-            path: "/edit_newsletter/:id",
-            name: "Edit Newsletter",
-            component: EditNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true,
-            redirect: true
-          },
-          {
-            path: "/list_newsletter",
-            name: "List Newsletter",
-            component: ListNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true
-          },
-        ]
-      },
+
     ]
   },
 
@@ -591,7 +574,7 @@ let dashRoutes = [
       {
         path: "/unilist/:model",
         navlink: "/unilist/taxonomy",
-        name: "List Slide",
+        name: "List Taxonomy",
         component: ListPanel,
         layout: "/admin",
         reload: true
@@ -668,30 +651,54 @@ let dashRoutes = [
     layout: "/admin",
     views: [
       {
-        path: "/add_mysite",
+        path: "/add/:model",
+        navlink: "/add/mysite",
         name: "Add Mysite",
-        component: AddMysite,
+        component: EditAdd,
         layout: "/admin",
-        model: 'mysite',
         reload: true
       },
       {
-        path: "/edit_mysite/:id",
+        path: "/edit/:model/:id",
         name: "Edit Mysite",
-        component: EditMysite,
+        component: EditAdd,
         layout: "/admin",
-        model: 'mysite',
         reload: true,
         redirect: true
       },
       {
-        path: "/list_mysite",
+        path: "/unilist/:model",
+        navlink: "/unilist/mysite",
         name: "List Mysite",
-        component: ListMysite,
+        component: ListPanel,
         layout: "/admin",
-        model: 'mysite',
         reload: true
       },
+      // {
+      //   path: "/add_mysite",
+      //   name: "Add Mysite",
+      //   component: AddMysite,
+      //   layout: "/admin",
+      //   model: 'mysite',
+      //   reload: true
+      // },
+      // {
+      //   path: "/edit_mysite/:id",
+      //   name: "Edit Mysite",
+      //   component: EditMysite,
+      //   layout: "/admin",
+      //   model: 'mysite',
+      //   reload: true,
+      //   redirect: true
+      // },
+      // {
+      //   path: "/list_mysite",
+      //   name: "List Mysite",
+      //   component: ListMysite,
+      //   layout: "/admin",
+      //   model: 'mysite',
+      //   reload: true
+      // },
     ]
   },
   {

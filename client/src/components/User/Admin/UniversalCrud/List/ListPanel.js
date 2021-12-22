@@ -46,6 +46,7 @@ export default function ListPanel() {
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
     let redux_userdata = useSelector(state => state.user.userData)
+    let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
 
     let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
@@ -64,7 +65,6 @@ export default function ListPanel() {
 
         if(state.localStorage.attachto) {
 
-            console.log(state.localStorage);
             await remove_fromOverMods_vh({
                 dispatch,
                 value,
@@ -100,13 +100,14 @@ export default function ListPanel() {
             onRemoveItem,
 
             redux_current_mysite,
+            redux_currencyuser,
             redux_localeuser,
             dispatch,
             model: reactrouter.match.params.model,
             kind: 'list'
         })
 
-    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_current_mysite, redux_localeuser])
+    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_currencyuser, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {

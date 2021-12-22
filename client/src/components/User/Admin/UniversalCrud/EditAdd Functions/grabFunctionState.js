@@ -8,6 +8,7 @@ import rawStateFunctionContact from "../../system/Contact/Additional/func_state"
 import rawStateFunctionLogin from "../../system/Login/Additional/func_state"
 import rawStateFunctionTaxonomy from "../../system/Taxonomy/Additional/func_state"
 
+/* List State */
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
 import rawStateFunction_User_List from "../../system/User/Additional/func_list"
 import rawStateFunction_Visit_List from "../../system/Visit/Additional/func_list"
@@ -18,10 +19,13 @@ import rawStateFunction_Cart_List from "../../system/Cart/Additional/func_list"
 import rawStateFunction_Contact_List from "../../system/Contact/Additional/func_list"
 import rawStateFunction_Login_List from "../../system/Login/Additional/func_list"
 import rawStateFunction_Taxonomy_List from "../../system/Taxonomy/Additional/func_list"
+import rawStateFunction_Mysite_List from "../../system/Mysite/Additional/func_list"
 
-
+import rawStateFunction_Product_List from "../../CMS/Products/Additional/func_list"
+import rawStateFunction_Productgroup_List from "../../CMS/Productgroup/Additional/func_list"
 import rawStateFunction_Slide_List from "../../CMS/Slides/Additional/func_list"
-
+import rawStateFunction_Brick_List from "../../CMS/Brick/Additional/func_list"
+import rawStateFunction_Page_List from "../../CMS/Page/Additional/func_list"
 
 import { routing_gotoEdit_vh3 } from '../../EventFuncs/routing_funcs_vh2'
 
@@ -30,9 +34,10 @@ export async function grabFunctionState({
     onRemoveItem,
 
     model,
-    redux_current_mysite,
     dispatch,
+    redux_current_mysite,
     redux_localeuser,
+    redux_currencyuser,
     reactrouter_match,
     kind = null,
 }) {
@@ -126,6 +131,46 @@ export async function grabFunctionState({
 
             rawFunctionState = await rawStateFunction_Taxonomy_List({
                 onRemoveItem,
+                onGotoLink
+            })
+            break;
+        case (model === 'product' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Product_List({
+                redux_currencyuser,
+                onRemoveItem,
+                onGotoLink,
+
+            })
+            break;
+        case (model === 'productgroup' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Productgroup_List({
+                redux_currencyuser,
+                onRemoveItem,
+                onGotoLink,
+
+            })
+            break;
+        case (model === 'mysite' && kind === 'list'):
+
+            rawFunctionState = await rawStateFunction_Mysite_List({
+                redux_currencyuser,
+                onRemoveItem,
+                onGotoLink,
+
+            })
+            break;
+        case (model === 'brick' && kind === 'list'):
+            rawFunctionState = await rawStateFunction_Brick_List({
+                onRemoveItem,
+                onGotoLink,
+            })
+            break;
+        case (model === 'page' && kind === 'list'):
+            rawFunctionState = await rawStateFunction_Page_List({
+                onRemoveItem,
+                onGotoLink,
             })
             break;
         case (model === 'slide' && !kind):

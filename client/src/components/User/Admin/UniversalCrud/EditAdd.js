@@ -40,12 +40,10 @@ export default function EditAdd() {
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
     let reactrouter_match = useRouteMatch();
-    // console.log(reactrouter_history);
-    // console.log(reactrouter_location);
-    // console.log(reactrouter_match);
 
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
+    let redux_currencyuser = useSelector(state => state.user.currencyUser)
 
     let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
     const [isRawState, setRawState] = React.useState();
@@ -63,10 +61,10 @@ export default function EditAdd() {
 
     const establishStateParams = useCallback(async () => {
 
-        return await grabFunctionState({ redux_current_mysite, reactrouter_match, redux_localeuser, dispatch, model: reactrouter.match.params.model })
+        return await grabFunctionState({ redux_current_mysite, redux_currencyuser, reactrouter_match, redux_localeuser, dispatch, model: reactrouter.match.params.model })
 
 
-    }, [dispatch, reactrouter.match.params.model, reactrouter_match, redux_current_mysite, redux_localeuser])
+    }, [dispatch, reactrouter.match.params.model, reactrouter_match, redux_currencyuser, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {

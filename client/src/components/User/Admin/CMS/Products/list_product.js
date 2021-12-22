@@ -46,7 +46,7 @@ class ListProduct extends Component {
 
     state = {
         localStorage: {
-            model: 'product',
+            // model: 'product',
             poliglot: true,
             attachtobinder: 'checked',
             tableparams: {
