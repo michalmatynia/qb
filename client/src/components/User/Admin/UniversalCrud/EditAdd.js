@@ -3,7 +3,7 @@ import {
     useSelector,
     useDispatch
 } from 'react-redux'
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
 
 import { imageFuncs_removeImagesHandler_vh2 } from '../../../User/Admin/GenericFuncs/image_funcs_vh'
 import { submitFuncs_fullSubmit_vh2 } from '../../../User/Admin/GenericFuncs/submit_funcs_vh'
@@ -39,6 +39,10 @@ export default function EditAdd() {
     let reactrouter = useRouter()
     let reactrouter_history = useHistory()
     let reactrouter_location = useLocation()
+    let reactrouter_match = useRouteMatch();
+    // console.log(reactrouter_history);
+    // console.log(reactrouter_location);
+    // console.log(reactrouter_match);
 
     const dispatch = useDispatch()
     let redux_localeuser = useSelector(state => state.user.localeUser)
@@ -59,10 +63,10 @@ export default function EditAdd() {
 
     const establishStateParams = useCallback(async () => {
 
-        return await grabFunctionState({ redux_current_mysite, redux_localeuser, dispatch, model: reactrouter.match.params.model })
+        return await grabFunctionState({ redux_current_mysite, reactrouter_match, redux_localeuser, dispatch, model: reactrouter.match.params.model })
 
 
-    }, [dispatch, reactrouter, redux_current_mysite, redux_localeuser])
+    }, [dispatch, reactrouter.match.params.model, reactrouter_match, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isLocalUser && !isRawState && redux_current_mysite && redux_localeuser) {

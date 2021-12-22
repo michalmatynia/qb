@@ -45,7 +45,7 @@ export async function actionFuncs_composeFilterfield_vh1({ cell }) {
     return cellvalue.filterfield.value
 
 }
-export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, model, redux_localeuser, dispatch, mystate, populate = null, poliglot = null, fields = null }) {
+export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, model, redux_localeuser, reactrouter_match, dispatch, mystate, populate = null, poliglot = null, fields = null }) {
    
    if(!poliglot) {
        poliglot = mystate.localStorage.poliglot
@@ -57,9 +57,9 @@ export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist,
     if ('filterfield' in cellvalue) {
 
         let inQuery = {}
-        if (myprops.match.params.id !== undefined) {
+        if (reactrouter_match.params.id !== undefined) {
             inQuery = Object.assign(inQuery, {
-                _id: { "$ne": myprops.match.params.id ? myprops.match.params.id : null },
+                _id: { "$ne": reactrouter_match.params.id ? reactrouter_match.params.id : null },
             });
         }
 
@@ -80,7 +80,7 @@ export async function actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist,
             model = cellvalue.fillfields.options.fromconfig.model
         }
 
-        let responseoptions = await plg_findMany({ model: cellvalue.fillfields.options.fromconfig.model, myprops, actionType: 'samestate', inQuery, populate })
+        let responseoptions = await plg_findMany({ model: cellvalue.fillfields.options.fromconfig.model, dispatch, actionType: 'samestate', inQuery, populate })
         cellvalue.config.options = [...responseoptions.payload]
 
         return cellvalue.config.options

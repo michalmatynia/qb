@@ -33,6 +33,7 @@ export async function grabFunctionState({
     redux_current_mysite,
     dispatch,
     redux_localeuser,
+    reactrouter_match,
     kind = null,
 }) {
 
@@ -149,7 +150,7 @@ export async function grabFunctionState({
             rawFunctionState = await rawStateFunctionBlockstyle({ redux_current_mysite, dispatch, redux_localeuser, model })
             break;
         case (model === 'taxonomy' && !kind):
-            rawFunctionState = await rawStateFunctionTaxonomy({ redux_current_mysite, dispatch, redux_localeuser, model })
+            rawFunctionState = await rawStateFunctionTaxonomy({ redux_current_mysite, reactrouter_match, dispatch, redux_localeuser, model })
             break;
         default:
             rawFunctionState = null;

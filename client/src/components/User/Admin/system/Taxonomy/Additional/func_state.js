@@ -1,9 +1,9 @@
 import { actionFuncs_isDefaultHandle_vh1 } from '../../../ActionFunctions/isdefaultHandle_vh'
 import { contact_html_type } from '../../../../../utils/Form/Fixed_categories/contact_html_template'
 import { taxonomy_type } from '../../../../../utils/Form/Fixed_categories/taxonomy_type'
-import { actionFuncs_composeFilterfield_vh1, actionFuncs_composeFilterfieldOptions_vh1 } from '../../../ActionFunctions/filterfieldHandle'
+import { actionFuncs_composeFilterfield_vh1, actionFuncs_composeFilterfieldOptions_vh1 } from '../../../ActionFunctions/filterfieldHandle_vh'
 
-export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
+export default async function rawStateFunction({ redux_current_mysite, reactrouter_match, dispatch, redux_localeuser, model }) {
     const state = {
         localStorage: {
             model: 'taxonomy',
@@ -294,7 +294,7 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                         preFind: {
                                             affectValue: {
                                                 actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, fields, dispatch, redux_localeuser, model, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                                    return await actionFuncs_composeFilterfieldOptions_vh1({ cell, getlist, fields, dispatch, redux_localeuser, reactrouter_match, model, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
                                                 },
                                             },
                                         }
@@ -322,20 +322,20 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                 submitconfig: {
                                     // model: 'language',
                                     onSubmitAction: {
-                                        preCreate: {
-                                            affectValue: {
-                                                actionA: async ({ cell, fields }) => {
-                                                    return await actionFuncs_handleArrayOfIds({ cell, fields })
-                                                },
-                                            }
-                                        },
-                                        postCreate: {
-                                            justRun: {
-                                                actionA: async ({ cell, added, fields }) => {
-                                                    await actionFuncs_mirrorAdded({ cell, added, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            }
-                                        }
+                                        // preCreate: {
+                                        //     affectValue: {
+                                        //         actionA: async ({ cell, fields }) => {
+                                        //             return await actionFuncs_handleArrayOfIds({ cell, fields })
+                                        //         },
+                                        //     }
+                                        // },
+                                        // postCreate: {
+                                        //     justRun: {
+                                        //         actionA: async ({ cell, added, fields }) => {
+                                        //             await actionFuncs_mirrorAdded({ cell, added, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                        //         },
+                                        //     }
+                                        // }
                                     }
                                 }
                             },
@@ -348,13 +348,13 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                 fromconfig: {
                                     // model: 'taxonomy',
                                     onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfield({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            },
-                                        }
+                                        // preFind: {
+                                        //     affectValue: {
+                                        //         actionA: async ({ cell, getlist, fields }) => {
+                                        //             return await actionFuncs_composeFilterfield({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                        //         },
+                                        //     },
+                                        // }
                                     }
                                 },
                             },
@@ -434,13 +434,13 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                 fromconfig: {
                                     model: 'taxonomy',
                                     onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfieldOptions({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            },
-                                        }
+                                        // preFind: {
+                                        //     affectValue: {
+                                        //         actionA: async ({ cell, getlist, fields }) => {
+                                        //             return await actionFuncs_composeFilterfieldOptions({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                        //         },
+                                        //     },
+                                        // }
                                     }
                                 },
                                 toconfig: {
@@ -465,20 +465,20 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                 submitconfig: {
                                     // model: 'language',
                                     onSubmitAction: {
-                                        preCreate: {
-                                            affectValue: {
-                                                actionA: async ({ cell, fields }) => {
-                                                    return await actionFuncs_handleArrayOfIds({ cell, fields })
-                                                },
-                                            }
-                                        },
-                                        postCreate: {
-                                            justRun: {
-                                                actionA: async ({ cell, added, fields }) => {
-                                                    await actionFuncs_mirrorAdded({ cell, added, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            }
-                                        }
+                                        // preCreate: {
+                                        //     affectValue: {
+                                        //         actionA: async ({ cell, fields }) => {
+                                        //             return await actionFuncs_handleArrayOfIds({ cell, fields })
+                                        //         },
+                                        //     }
+                                        // },
+                                        // postCreate: {
+                                        //     justRun: {
+                                        //         actionA: async ({ cell, added, fields }) => {
+                                        //             await actionFuncs_mirrorAdded({ cell, added, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                        //         },
+                                        //     }
+                                        // }
                                     }
                                 }
                             },
@@ -491,13 +491,13 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                 fromconfig: {
                                     // model: 'taxonomy',
                                     onPopulateAction: {
-                                        preFind: {
-                                            affectValue: {
-                                                actionA: async ({ cell, getlist, fields }) => {
-                                                    return await actionFuncs_composeFilterfield({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
-                                                },
-                                            },
-                                        }
+                                        // preFind: {
+                                        //     affectValue: {
+                                        //         actionA: async ({ cell, getlist, fields }) => {
+                                        //             return await actionFuncs_composeFilterfield({ cell, getlist, fields, myprops: this.props, mystate: this.state, populate: [{ path: 'tagparent' }, { path: 'tagchild' }] })
+                                        //         },
+                                        //     },
+                                        // }
                                     }
                                 },
                             },
