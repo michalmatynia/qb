@@ -14,6 +14,13 @@ import {
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import ListPanel from './List/ListPanel'
+import GridContainer from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridContainer.js";
+import GridItem from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Grid/GridItem.js";
+import Card from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/Card.js";
+import CardBody from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/CardBody.js";
+import CardHeader from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/Card/CardHeader.js";
+import Button from "../../../../themesrun/creativetim/material-dashboard-pro-react-v1.9.0/components/CustomButtons/Button.js";
 /* STATE */
 import { grabFunctionState } from "./EditAdd Functions/grabFunctionState"
 
@@ -346,7 +353,7 @@ export default function EditAdd() {
             }
 
         /> : null}
-        {!isloading && isLocalStorage ? <FormContainer
+        {!isloading && isLocalStorage ? <div><FormContainer
             formdata={isLocalStorage.form.formdata}
             model={reactrouter.match.params.model}
             localstorage={isLocalStorage}
@@ -392,18 +399,23 @@ export default function EditAdd() {
             }
             }
 
-        /> : <div
-            style={{
-                paddingTop: '30%',
-                position: 'relative',
-                left: '0px',
-                top: '0px',
-                width: '100%',
-                height: '100%',
-                textAlign: 'center',
-            }}
-        >
-            <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
-        </div>}
+        /><ListPanel
+        model='slide'
+        type='sublist'
+        />
+        </div>
+            : <div
+                style={{
+                    paddingTop: '30%',
+                    position: 'relative',
+                    left: '0px',
+                    top: '0px',
+                    width: '100%',
+                    height: '100%',
+                    textAlign: 'center',
+                }}
+            >
+                <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
+            </div>}
     </div>)
 }

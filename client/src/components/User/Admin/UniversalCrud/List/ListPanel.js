@@ -38,7 +38,7 @@ import {
 } from '../../../../utils/Plugs/cms_plugs';
 
 
-export default function ListPanel() {
+export default function ListPanel(props) {
 
     let reactrouter = useRouter()
     let reactrouter_history = useHistory()
