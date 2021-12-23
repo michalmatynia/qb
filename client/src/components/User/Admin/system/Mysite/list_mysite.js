@@ -46,7 +46,7 @@ class ListMysite extends Component {
 
     state = {
         localStorage: {
-            model: 'mysite',
+            // model: 'mysite',
             poliglot: false,
             tableparams: {
                 renderHeader: true,

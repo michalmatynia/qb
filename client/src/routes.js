@@ -485,20 +485,36 @@ let dashRoutes = [
         state: "productdetailCollapse",
         layout: "/admin",
         views: [
+          // {
+          //   path: "/add_trnsdetailproduct",
+          //   name: "Add Product Detail",
+          //   component: AddTrnsDetailProduct,
+          //   layout: "/admin",
+          //   model: 'trnsdetailproduct',
+          //   reload: true
+          // },
+          // {
+          //   path: "/edit_trnsdetailproduct/:id",
+          //   name: "Edit Product Detail",
+          //   component: EditTrnsDetailProduct,
+          //   layout: "/admin",
+          //   model: 'trnsdetailproduct',
+          //   reload: true,
+          //   redirect: true
+          // },
           {
-            path: "/add_trnsdetailproduct",
+            path: "/add/:model",
+            navlink: "/add/trnsdetailproduct",
             name: "Add Product Detail",
-            component: AddTrnsDetailProduct,
+            component: EditAdd,
             layout: "/admin",
-            model: 'trnsdetailproduct',
             reload: true
           },
           {
-            path: "/edit_trnsdetailproduct/:id",
+            path: "/edit/:model/:id",
             name: "Edit Product Detail",
-            component: EditTrnsDetailProduct,
+            component: EditAdd,
             layout: "/admin",
-            model: 'trnsdetailproduct',
             reload: true,
             redirect: true
           },

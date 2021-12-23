@@ -50,7 +50,7 @@ export default function ListPanel(props) {
 
 
     let redux_current_mysite = useSelector(state => state.mysite.CurrentMysite)
-    let redux_model_list = useSelector(state => state[reactrouter.match.params.model].list)
+    let redux_model_list = useSelector(state => state[props.type ? props.model : reactrouter.match.params.model].list)
 
     const [isRawState, setRawState] = React.useState();
 
@@ -103,19 +103,17 @@ export default function ListPanel(props) {
             redux_currencyuser,
             redux_localeuser,
             dispatch,
-            model: reactrouter.match.params.model,
+            model: props.type ? props.model : reactrouter.match.params.model,
             kind: 'list'
         })
 
-    }, [dispatch, onRemoveItem, reactrouter.match.params.model, redux_currencyuser, redux_current_mysite, redux_localeuser])
+    }, [dispatch, onRemoveItem, props.model, props.type, reactrouter.match.params.model, redux_currencyuser, redux_current_mysite, redux_localeuser])
 
     React.useEffect(() => {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
-
                 setRawState(rawstate)
-
             })
         }
 
@@ -134,11 +132,11 @@ export default function ListPanel(props) {
             setIsViewparams()
 
             setRawState()
-            plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'list' })
-            plg_clearProps({ dispatch, model: reactrouter.match.params.model, actionType: 'detail' })
+            plg_clearProps({ dispatch, model: props.type ? props.model : reactrouter.match.params.model, actionType: 'list' })
+            plg_clearProps({ dispatch, model: props.type ? props.model : reactrouter.match.params.model, actionType: 'detail' })
         };
 
-    }, [dispatch, reactrouter.match.params.model])
+    }, [dispatch, props.model, props.type, reactrouter.match.params.model])
 
     React.useEffect(() => {
         if ( !isViewparams && reactrouter ) {
@@ -154,7 +152,7 @@ export default function ListPanel(props) {
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
-                model: reactrouter.match.params.model,
+                model: props.type ? props.model : reactrouter.match.params.model,
                 redux_localeuser,
                 dispatch,
                 isRawState,
@@ -171,14 +169,14 @@ export default function ListPanel(props) {
             })
         }
 
-    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, reactrouter_history.location, redux_localeuser])
+    }, [dispatch, isRawState, isViewparams, props.model, props.type, reactrouter.match.params.model, reactrouter_history.location, redux_localeuser])
 
     const onToggleSwitch = useCallback(async ({ event, value = null }) => {
 
         await toggle_boolSwitch_v1_vh({
             value,
             event,
-            model: reactrouter.match.params.model,
+            model: props.type ? props.model : reactrouter.match.params.model,
             dispatch,
             poliglot: isRawState.localStorage.poliglot,
             isViewparams,
@@ -186,7 +184,7 @@ export default function ListPanel(props) {
             redux_localeuser
         })
 
-    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+    }, [dispatch, isRawState, isViewparams, props.model, props.type, reactrouter.match.params.model, redux_localeuser])
 
     const onChangePos = useCallback(async ({ event, direction, value = null }) => {
 
@@ -199,7 +197,7 @@ export default function ListPanel(props) {
             event,
             dispatch,
             poliglot: isRawState.localStorage.poliglot,
-            model: reactrouter.match.params.model,
+            model: props.type ? props.model : reactrouter.match.params.model,
             isViewparams,
             isRawState,
             redux_localeuser
@@ -208,7 +206,7 @@ export default function ListPanel(props) {
             setIsActualMessage()
         })
 
-    }, [dispatch, isRawState, isViewparams, reactrouter.match.params.model, redux_localeuser])
+    }, [dispatch, isRawState, isViewparams, props.model, props.type, reactrouter.match.params.model, redux_localeuser])
 
 
     return (
@@ -243,7 +241,7 @@ export default function ListPanel(props) {
                         </CardHeader>
                         {isRawState && redux_model_list && redux_localeuser ? <CardBody>
                             <ListTable
-                                model={reactrouter.match.params.model}
+                                model={props.type ? props.model : reactrouter.match.params.model}
                                 tableparams={isRawState.localStorage.tableparams}
                                 viewparams={isViewparams}
                                 mystate={isRawState}

@@ -78,6 +78,8 @@ export default function EditAdd() {
 
             establishStateParams().then((rawstate) => {
 
+                console.log(rawstate);
+
                 setRawState(rawstate)
 
             })
@@ -399,7 +401,8 @@ export default function EditAdd() {
             }
             }
 
-        /><ListPanel
+        />
+        <ListPanel
         model='slide'
         type='sublist'
         />

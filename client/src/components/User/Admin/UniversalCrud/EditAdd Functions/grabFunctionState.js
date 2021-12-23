@@ -7,6 +7,9 @@ import rawStateFunctionCart from "../../system/Cart/Additional/func_state"
 import rawStateFunctionContact from "../../system/Contact/Additional/func_state"
 import rawStateFunctionLogin from "../../system/Login/Additional/func_state"
 import rawStateFunctionTaxonomy from "../../system/Taxonomy/Additional/func_state"
+import rawStateFunctionTrnsdetailproduct from "../../system/Trnsdetailproduct/Additional/func_state"
+
+
 
 /* List State */
 import rawStateFunction_Transdetailproduct_List from "../../system/Trnsdetailproduct/Additional/func_list"
@@ -196,6 +199,9 @@ export async function grabFunctionState({
             break;
         case (model === 'taxonomy' && !kind):
             rawFunctionState = await rawStateFunctionTaxonomy({ redux_current_mysite, reactrouter_match, dispatch, redux_localeuser, model })
+            break;
+        case (model === 'trnsdetailproduct' && !kind):
+            rawFunctionState = await rawStateFunctionTrnsdetailproduct({ redux_current_mysite, reactrouter_match, dispatch, redux_localeuser, model })
             break;
         default:
             rawFunctionState = null;

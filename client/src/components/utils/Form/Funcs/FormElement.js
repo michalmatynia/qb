@@ -78,6 +78,8 @@ export default function SetElement({ formcell, formcellkey, sublistkey, tiedtofo
         />
     } else if (formcell.element === 'table') {
 
+        console.log('hherere');
+
         return <FormUITable
             myprops={myprops}
             mystate={mystate}
