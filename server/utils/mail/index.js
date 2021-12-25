@@ -8,9 +8,9 @@ async function sendEmail({ req }) {
     let smtpTransport = nodemailer.createTransport({
         secure: true, // use TLS
         port: 465,
-        host: 'milkbardesigners.com', // mail.tryzna.pl // milkbardesigners.com //qubrick.io // de3.fcomet.com // mail.surtarang.space
+        host: 'qubrick.io', // mail.tryzna.pl // milkbardesigners.com //qubrick.io // de3.fcomet.com // mail.surtarang.space
         auth: {
-            user: 'info@milkbardesigners.com', // info@surtarang.space // info@milkbardesigners.com // info@qubrick.io
+            user: 'info@qubrick.io', // info@surtarang.space // info@milkbardesigners.com // info@qubrick.io
             pass: process.env.EMAIL_PASS // add as Server ENV
 
         },
