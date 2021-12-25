@@ -4,7 +4,7 @@ import {
 
 import { modelPopulate } from '../../User/Admin/ActionFunctions/modelPopulate'
 
-async function processBricks({ bricks, dispatch, currencyuser, current_mysite, localeuser }) {
+async function processBricks({ bricks, dispatch, currencyuser, current_mysite, redux_localeuser }) {
     let submodel_collection = ['slide', 'product', 'view']
     let inQuery
     let brickNewChecked = []
@@ -25,7 +25,7 @@ async function processBricks({ bricks, dispatch, currencyuser, current_mysite, l
 
                 translatedSub = await plg_findMany({ model: submodel, dispatch, actionType: 'samestate', inQuery, populate })
 
-                if (submodel === 'product' && current_mysite.default_language.referenceID._id !== localeuser.referenceID._id) {
+                if (submodel === 'product' && current_mysite.default_language.referenceID._id !== redux_localeuser.referenceID._id) {
                     let extract_lgbinder = translatedSub.payload.map(item => item.lgbinder)
 
                     inQuery = {}
@@ -92,7 +92,7 @@ async function processBricks({ bricks, dispatch, currencyuser, current_mysite, l
 
     return sectionNew
 }
-export async function loadList_v3({ mydetailpage = null, dispatch, localeuser = null, current_mysite = null, currencyuser = null }) {
+export async function loadList_v3({ mydetailpage = null, dispatch, redux_localeuser = null, current_mysite = null, currencyuser = null }) {
 
     if (mydetailpage.checked.length > 0) {
 
@@ -131,7 +131,7 @@ export async function loadList_v3({ mydetailpage = null, dispatch, localeuser = 
             if (each_subpage_model === 'brick') {
 
                 // Here all the standard bricks should be populated
-                let populatedBricks = await processBricks({ bricks: found_sections.payload, brickNewChecked, dispatch, currencyuser, current_mysite, localeuser })
+                let populatedBricks = await processBricks({ bricks: found_sections.payload, brickNewChecked, dispatch, currencyuser, current_mysite, redux_localeuser })
 
                 populatedSections.push(populatedBricks)
 

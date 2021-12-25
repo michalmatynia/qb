@@ -541,41 +541,41 @@ let dashRoutes = [
           },
         ]
       },
-      {
-        collapse: true,
-        name: "Newsletter",
-        // rtlName: "المكونات",
-        icon: Place,
-        state: "newsletterCollapse",
-        layout: "/admin",
-        views: [
-          {
-            path: "/add_newsletter",
-            name: "Add Newsletter",
-            component: AddNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true
-          },
-          {
-            path: "/edit_newsletter/:id",
-            name: "Edit Newsletter",
-            component: EditNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true,
-            redirect: true
-          },
-          {
-            path: "/list_newsletter",
-            name: "List Newsletter",
-            component: ListNewsletter,
-            layout: "/admin",
-            model: 'newsletter',
-            reload: true
-          },
-        ]
-      },
+      // {
+      //   collapse: true,
+      //   name: "Newsletter",
+      //   // rtlName: "المكونات",
+      //   icon: Place,
+      //   state: "newsletterCollapse",
+      //   layout: "/admin",
+      //   views: [
+      //     {
+      //       path: "/add_newsletter",
+      //       name: "Add Newsletter",
+      //       component: AddNewsletter,
+      //       layout: "/admin",
+      //       model: 'newsletter',
+      //       reload: true
+      //     },
+      //     {
+      //       path: "/edit_newsletter/:id",
+      //       name: "Edit Newsletter",
+      //       component: EditNewsletter,
+      //       layout: "/admin",
+      //       model: 'newsletter',
+      //       reload: true,
+      //       redirect: true
+      //     },
+      //     {
+      //       path: "/list_newsletter",
+      //       name: "List Newsletter",
+      //       component: ListNewsletter,
+      //       layout: "/admin",
+      //       model: 'newsletter',
+      //       reload: true
+      //     },
+      //   ]
+      // },
     ]
   },
 
