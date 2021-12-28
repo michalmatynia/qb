@@ -848,7 +848,9 @@ const mapStateToProps = (state) => {
         mysite: state.mysite,
         language: state.language,
         nation: state.nation,
-        messages: state.messages
+        messages: state.messages,
+        user: state.user
+
     }
 }
 
