@@ -16,7 +16,7 @@ import FormUITable from "./FormUITable";
 import FormColorPicker from "./FormColorPicker";
 
 // uim_autocompletetaxo
-export default function SetElement({ formcell, formcellkey, sublistkey, tiedtoformkey, change, remove, myprops = null, mystate = null, removefile, changePosition, removeItem, changeSort, changeQuantity }) {
+export default function SetElement({ formcell, formcellkey, localStorage, change, remove, removefile, changePosition, removeItem, changeSort, changeQuantity }) {
 
     if (formcell.element === 'input') {
         return <FormCustomInput
@@ -78,19 +78,22 @@ export default function SetElement({ formcell, formcellkey, sublistkey, tiedtofo
         />
     } else if (formcell.element === 'table') {
 
-        console.log('hherere');
+    //  console.log(formcell);
+    //  console.log(formcellkey);
+    //  console.log(localStorage);
+
+    //  return null
 
         return <FormUITable
-            myprops={myprops}
-            mystate={mystate}
+            localStorage={localStorage}
             formcell={formcell}
             formcellkey={formcellkey}
-            change={change}
-            remove={remove}
-            changePosition={changePosition}
-            removeItem={removeItem}
-            changeSort={changeSort}
-            changeQuantity={changeQuantity}
+            // change={change}
+            // remove={remove}
+            // changePosition={changePosition}
+            // removeItem={removeItem}
+            // changeSort={changeSort}
+            // changeQuantity={changeQuantity}
 
         />
     }

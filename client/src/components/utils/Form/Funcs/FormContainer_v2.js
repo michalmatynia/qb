@@ -21,8 +21,6 @@ import styles from "../../../../themesrun/creativetim/material-dashboard-pro-rea
 
 const useStyles = makeStyles(styles);
 export default function FormContainer({
-  myprops = null,
-  mystate = null,
   formdata = null,
   model = null,
   change = null,
@@ -34,13 +32,13 @@ export default function FormContainer({
   removeItem = null,
   changeSort = null,
   changeQuantity = null,
-  localstorage = null,
+  localStorage = null,
   isComponentType = null
 }) {
 
   const [isFormColor, setFormColor] = React.useState();
 
-  let poliglot = localstorage.poliglot
+  let poliglot = localStorage.poliglot
 
   let gatherElements = useCallback((props) => {
     let ShowComponents = []
@@ -48,8 +46,7 @@ export default function FormContainer({
     for (let [key, value] of Object.entries(formdata)) {
       if (value.configparams.showfield) {
         ShowComponents.push(<SetElement
-          myprops={myprops}
-          mystate={mystate}
+          localStorage={localStorage}
           key={key}
           formcellkey={key}
           formcell={value}
@@ -64,7 +61,7 @@ export default function FormContainer({
       }
     }
     return ShowComponents
-  },[changePosition, changeQuantity, changeSort, formdata, myprops, mystate, remove, removeItem, removefile])
+  },[changePosition, changeQuantity, changeSort, formdata, localStorage, remove, removeItem, removefile])
 
 
   React.useEffect(() => {

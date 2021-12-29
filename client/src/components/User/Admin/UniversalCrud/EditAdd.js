@@ -78,8 +78,6 @@ export default function EditAdd() {
 
             establishStateParams().then((rawstate) => {
 
-                console.log(rawstate);
-
                 setRawState(rawstate)
 
             })
@@ -275,6 +273,62 @@ export default function EditAdd() {
 
     }, [dispatch, isLocalStorage, isLocalUser, isRawState, reactrouter.match.params.model, reactrouter_location, redux_localeuser])
 
+    const onToggleCheck = useCallback(async ({ value, cellkey }) => {
+
+
+        // const cellkey = Object.keys(cell)[0]
+        // const cellvalue = Object.values(cell)[0].value
+
+        // console.log(value)
+        // console.log(isLocalStorage.form.formdata[cellkey].value)
+
+        let newChecked = [...isLocalStorage.form.formdata[cellkey].value, value]
+        // console.log(newChecked)
+
+        let newLocalStorage = {
+            ...isLocalStorage,
+            form: {
+                ...isLocalStorage.form,
+                formdata: {
+                    ...isLocalStorage.form.formdata,
+                    [cellkey]: {
+                        ...isLocalStorage.form.formdata[cellkey],
+                        value: newChecked
+                    }
+                }
+            }
+        }
+
+        setLocalStorage(newLocalStorage)
+        // console.log(newLocalStorage);
+        //     console.log(cell);
+
+        //    let test = updateFormValues({ cell,  isLocalStorage })
+
+        //    console.log(test)
+
+    }, [isLocalStorage])
+    // onToggleCheck = async ({ event, value = null, cell = null, sublistkey = null, tiedtoformkey = null }) => {
+
+    //     let populate  = await modelPopulate({model: this.state.localStorage[sublistkey].viewmodel})
+
+    //     let newLocalStorage = await toggle_addToReferer({
+    //         value,
+    //         event,
+    //         cell,
+    //         sublistkey,
+    //         tiedtoformkey,
+    //         mystate: this.state,
+    //         myprops: this.props,
+    //         poliglot: this.state.localStorage.poliglot,
+    //         populate
+
+    //     })
+
+    //     this.updateLocalStorage(newLocalStorage)
+
+    // }
+
     React.useEffect(() => {
 
         // console.log(isloading);
@@ -358,7 +412,7 @@ export default function EditAdd() {
         {!isloading && isLocalStorage ? <div><FormContainer
             formdata={isLocalStorage.form.formdata}
             model={reactrouter.match.params.model}
-            localstorage={isLocalStorage}
+            localStorage={isLocalStorage}
             isComponentType={isComponentType}
             removefile={({ cell, fileid }) => imageFuncs_removeImagesHandler_vh2({
                 cell,
@@ -380,8 +434,7 @@ export default function EditAdd() {
                     redux_localeuser,
                     redux_current_mysite
                 }))
-                // setIsLoading(true)
-                // unhingeRawState()  
+
             }
 
             }
@@ -402,10 +455,11 @@ export default function EditAdd() {
             }
 
         />
-        <ListPanel
-        model='slide'
-        type='sublist'
-        />
+            <ListPanel
+                model='slide'
+                type='sublist'
+                onToggleCheck={({ value }) => onToggleCheck({ value, cellkey: 'checked' })}
+            />
         </div>
             : <div
                 style={{

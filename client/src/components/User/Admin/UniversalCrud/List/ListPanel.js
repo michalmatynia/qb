@@ -63,7 +63,7 @@ export default function ListPanel(props) {
         setIsActualMessage('Removing')
         setShowMessage(true)
 
-        if(state.localStorage.attachto) {
+        if (state.localStorage.attachto) {
 
             await remove_fromOverMods_vh({
                 dispatch,
@@ -113,14 +113,30 @@ export default function ListPanel(props) {
         if (!isRawState && redux_current_mysite && redux_localeuser) {
 
             establishStateParams().then((rawstate) => {
+
+                if (props.type === 'sublist') {
+                    let table_checkbox = {
+                        keyname: '',
+                        columntype: 'toggle',
+                        inputprops: {
+                            id: 'checkbox'
+                        },
+                        config: {
+                            label: 'Add',
+                        },
+                    }
+
+                    rawstate.localStorage.tableparams.columns.unshift(table_checkbox)
+
+                }
                 setRawState(rawstate)
             })
         }
 
-    }, [establishStateParams, isRawState, redux_current_mysite, redux_localeuser])
+    }, [establishStateParams, isRawState,  props.type, redux_current_mysite, redux_localeuser])
 
 
-      /* CLEAR RAWSTATE */
+    /* CLEAR RAWSTATE */
 
     // /* CLEANUP */
 
@@ -139,16 +155,16 @@ export default function ListPanel(props) {
     }, [dispatch, props.model, props.type, reactrouter.match.params.model])
 
     React.useEffect(() => {
-        if ( !isViewparams && reactrouter ) {
-            processViewParams({reactrouter}).then((result) => {
+        if (!isViewparams && reactrouter) {
+            processViewParams({ reactrouter }).then((result) => {
                 setIsViewparams(result)
 
             })
         }
-    },[isViewparams, reactrouter])
+    }, [isViewparams, reactrouter])
     React.useEffect(() => {
 
-        if (isRawState && isViewparams ) {
+        if (isRawState && isViewparams) {
 
             listFuncs_loadList_v2_vh({
                 sublistkey: null,
@@ -217,7 +233,7 @@ export default function ListPanel(props) {
                 color='success'
                 place='tr'
             /> : null}
-           {isViewparams ?  <GridContainer>
+            {isViewparams ? <GridContainer>
                 <GridItem xs={12}>
                     <Card>
                         <CardHeader color="rose" icon>
@@ -268,6 +284,12 @@ export default function ListPanel(props) {
                                         value,
                                     })
                                 }}
+                                toggleItem={({ value, event}) => {
+                                    return props.onToggleCheck({
+                                        event,
+                                        value,
+                                    })
+                                }}
                             />
                             {
                                 isViewparams.size > 0 && isViewparams.size >= isViewparams.limit ?
@@ -284,7 +306,7 @@ export default function ListPanel(props) {
                         </CardBody> : null}
                     </Card>
                 </GridItem>
-            </GridContainer> : null }
+            </GridContainer> : null}
         </div>
     )
 }

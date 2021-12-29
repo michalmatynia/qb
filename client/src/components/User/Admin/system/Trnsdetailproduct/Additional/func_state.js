@@ -1,6 +1,10 @@
 import { actionFuncs_isDefaultHandle_vh1 } from '../../../ActionFunctions/isdefaultHandle_vh'
 import { tim_colors } from '../../../../../utils/Form/Fixed_categories/tim_colors'
 import { actionFuncs_populateArrayOfRefsForDb_vh2, actionFuncs_convertArrayOfRefs_vh1 } from '../../../ActionFunctions/handleArrayOfRefs_vh'
+import DeleteIcon from '@material-ui/icons/Delete';
+import SearchIcon from '@material-ui/icons/Search';
+import Edit from '@material-ui/icons/Edit';
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 export default async function rawStateFunction({ redux_current_mysite, dispatch, redux_localeuser, model }) {
     
@@ -632,6 +636,247 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                         },
                         valid: false,
                         touched: false,
+                    },
+                    checked: {
+                        element: 'table',
+                        category: 'uim_table',
+                        value: [],
+                        fillfields: {
+                            value: {
+                                fromconfig: {
+                                    onPopulateAction: {
+                                        preFind: {
+                                            affectValue: {
+                                                actionA: async ({ cell, getlist, fields }) => {
+
+                                                    if (!fields && !getlist) {
+                                                        return []
+                                                    } else {
+                                                        return await actionFuncs_populateArrayOfRefsForDb_vh2({ cell, getlist, fields, dispatch, populate: [{ path: 'referenceID' }] })
+
+                                                    }
+
+                                                },
+                                            },
+                                            // justRun :{ }
+                                        }
+                                    }
+                                },
+                                toconfig: {
+                                    setpath: 'value',
+                                    valuetype: 'arrayofrefs',
+                                    leftpath: 'referenceID',
+                                    resetvalue: [],
+
+                                },
+                                submitconfig: {
+                                    onSubmitAction: {
+                                        preCreate: {
+                                            affectValue: {
+                                                actionA: async ({ cell }) => {
+                                                    return await actionFuncs_convertArrayOfRefs_vh1({ cell })
+                                                },
+                                            },
+                                            // justRun :{ }
+                                        },
+                                        // postCreate: { }
+                                    }
+                                }
+                            },
+                        },
+                        config: {
+                            label: 'Checked',
+                            options: [],
+                        },
+                        validation: {
+                            parse: false,
+                        },
+                        wrapcompos: {
+                            griditem: {
+                                xs: 12,
+                                xm: 12,
+                                md: 12,
+                            },
+                        },
+                        formcontrolprops: {},
+                        inputprops: {
+                            name: 'checked_list',
+                            type: 'text',
+                        },
+                        configparams: {
+                            showlabel: false,
+                            showhelpertext: false,
+                            showfield: true,
+                        },
+                        valid: true,
+                        touched: false,
+                        sublist: {
+
+                            // Don't change the name of this sublist
+                            header: 'Add Components',
+                            tiedtoelementkey: 'sublist',
+                            tableparams: {
+                                // renderHeader: true,
+                                columns: [
+                                    {
+                                        keyname: '',
+                                        columntype: 'iconbutton',
+                                        configparams: {
+                                        },
+                                        icon: DeleteIcon,
+                                        // actions: {
+                                        //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
+                                        //         event,
+                                        //         value,
+                                        //         cell
+                                        //     })
+                                        // },
+                                        inputprops: {
+                                            id: 'generic',
+                                            type: 'text',
+                                            name: 'generic_button',
+                                        },
+                                        config: {
+                                            label: 'Remove',
+                                        },
+                                    },
+                                    {
+                                        keyname: 'images',
+                                        columntype: 'image',
+                                        configparams: {
+                                        },
+                                        config: {
+                                            label: 'Image',
+                                            valuetype: 'string',
+                                            leftpath: 'referenceID.images',
+                                            indicator: '0',
+                                            rightpath: 'url'
+                                        },
+                                    },
+                                    {
+                                        keyname: 'name',
+                                        columntype: 'text',
+                                        config: {
+                                            valuetype: 'string',
+                                            label: 'Name',
+                                            leftpath: 'referenceID',
+                                            indicator: 'name'
+                                        }
+                                    },
+                                    {
+                                        keyname: 'position',
+                                        columntype: 'text',
+                                        config: {
+                                            valuetype: 'integer',
+                                            label: 'Position',
+                                            indicator: 'position'
+                                        }
+                                    },
+                                    {
+                                        keyname: 'model',
+                                        columntype: 'text',
+                                        config: {
+                                            valuetype: 'string',
+                                            label: 'Model',
+                                            indicator: 'model'
+                                        }
+                                    },
+                                    {
+                                        keyname: '',
+                                        columntype: 'adjust',
+                                        inputprops: {
+                                        },
+                                        config: {
+                                            label: '',
+                                        },
+                                    },
+                                    {
+                                        keyname: '',
+                                        columntype: 'iconbutton',
+                                        configparams: {
+                                        },
+                                        icon: Edit,
+                                        // actions: {
+                                        //     onClick: ({ event, value, cell }) => this.onGotoLink({
+                                        //         event,
+                                        //         value,
+                                        //         cell
+                                        //     }),
+                                        // },
+                                        inputprops: {
+                                            id: 'generic',
+                                            type: 'text',
+                                            name: 'generic_button',
+                                            color: 'primary'
+                                        },
+                                        config: {
+                                            label: '',
+                                        },
+                                    }
+
+                                ]
+                            },
+                            viewparams: {
+                                limit: 5,
+                                skip: 0,
+                                size: 0,
+                                sortBy: 'position',
+                                sortOrder: 1,
+                                search: {
+                                    element: 'input',
+                                    category: 'ct_custominput',
+                                    value: '',
+                                    wrapcompos: {
+                                        griditem: {
+                                            xs: 12,
+                                            xm: 4,
+                                            md: 4,
+                                        },
+                                    },
+                                    formcontrolprops: {
+                                        fullWidth: true,
+                                    },
+                                    inputprops: {
+                                        id: 'search',
+                                        type: 'text',
+                                        name: 'search_input',
+                                        placeholder: 'Search...',
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <SearchIcon />
+                                            </InputAdornment>
+                                        ),
+                                        // onBlur: (event) => this.onSearch({
+                                        //     event,
+                                        //     cell: { search: this.state.localStorage.form.formdata.checked.sublist.viewparams.search },
+                                        //     blur: true
+                                        // })
+                                    },
+                                    configparams: {
+                                        showlabel: false,
+                                        showhelpertext: false
+
+                                    },
+                                    config: {
+                                        label: 'Search',
+                                        valuetype: 'string',
+                                        helpertext: 'Enter text for Search',
+                                        autocomplete: 'Off',
+                                    },
+                                    validation: {
+                                        parse: false,
+                                        // type: ['required']
+                                    },
+                                    range: ['name', 'description'],
+                                    depth: [],
+                                    valid: false,
+                                    touched: false,
+
+                                },
+                            },
+                            models: ['slide', 'product', 'view'],
+                            // checked: []
+                        },
                     },
                     // checked: {
                     //     element: 'table',
