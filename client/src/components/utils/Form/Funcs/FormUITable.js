@@ -3,7 +3,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 // @material-ui/core components
-import { ColumnRow } from '../../../User/Admin/GenericCompos/func_table'
+import { ColumnRow } from '../../../User/Admin/GenericCompos/func_table_vh'
 
 
 // import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 // const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
-export function ListTable({ formcell, change, remove, formcellkey, localStorage, changePosition = null, removeItem = null, changeSort = null, handleVisible = null, toggleItem = null, changeQuantity = null }) {
+export function ListTable({ inform, formcell, change, remove, formcellkey, localStorage, changePosition = null, removeItem = null, changeSort = null, handleVisible = null, toggleItem = null, changeQuantity = null }) {
 
     let list = formcellkey ? localStorage['form']['formdata'][formcellkey].value : null
         // let model = formcellkey ? mystate.localStorage['form']['formdata'][formcellkey].viewmodel : mystate.localStorage.model
@@ -38,29 +38,46 @@ export function ListTable({ formcell, change, remove, formcellkey, localStorage,
     let viewparams = formcellkey ? localStorage['form']['formdata'][formcellkey].sublist.viewparams : null
     let tableparams = formcellkey ? localStorage['form']['formdata'][formcellkey].sublist.tableparams : null
 
- 
-
     const classes = useStyles();
 
     const makeTable = ({ item, tableparams}) => {
-        console.log(tableparams );
-        console.log(item );
+
+        if(inform) {
+            console.log(tableparams );
+            console.log(item );
+        }
+
         return tableparams.columns.map((column, i) => {
 
             if (column.columntype) {
-                return <ColumnRow
-                    column={column}
-                    item={item}
-                    formcellkey={formcellkey}
-                    formcell={formcell}
-                    // handleVisible={handleVisible}
-                    // changePosition={changePosition}
-                    // removeItem={removeItem}
-                    // toggleItem={toggleItem}
-                    // changeQuantity={changeQuantity}
-                    // model={model}
-                />
+                // return <ColumnRow
+                //     column={column}
+                //     item={item}
+                //     formcellkey={formcellkey}
+                //     formcell={formcell}
+                //     // handleVisible={handleVisible}
+                //     // changePosition={changePosition}
+                //     // removeItem={removeItem}
+                //     // toggleItem={toggleItem}
+                //     // changeQuantity={changeQuantity}
+                //     // model={model}
+                // />
 
+                return <ColumnRow
+                column={column}
+                item={item}
+                // sublistkey={sublistkey}
+                // tiedtoformkey={tiedtoformkey}
+                // handleSwitch={handleSwitch}
+                changePosition={changePosition}
+                removeItem={removeItem}
+                toggleItem={toggleItem}
+                // model={model}
+                // redux_localeuser={redux_localeuser}
+                // reactrouter_history={reactrouter_history}
+                // redux_userdata={redux_userdata}
+                viewparams={viewparams}
+              />
             } else {
                 return null
             }
@@ -88,11 +105,7 @@ export function ListTable({ formcell, change, remove, formcellkey, localStorage,
             ].flat()
         })
 
-        console.log(dataContainer);
-
         return dataContainer
-        // return []
-
     }
 
     const createHeaderData = () => {
@@ -142,8 +155,13 @@ export function ListTable({ formcell, change, remove, formcellkey, localStorage,
 
 
 }
-export default function FormUITable({ formcell = null, formcellkey = null, localStorage, change = null, remove = null, myprops = null, mystate = null, changePosition = null, removeItem = null, changeSort = null, changeQuantity = null }) {
-
+export default function FormUITable({ inform, formcell = null, formcellkey = null, localStorage, change = null, remove = null, myprops = null, mystate = null, changePosition = null, removeItem = null, changeSort = null, changeQuantity = null }) {
+if (inform) {
+    
+     console.log(formcell);
+     console.log(formcellkey);
+     console.log(localStorage);
+}
     const renderTemplate = () => {
 
         let formTemplate = null;
@@ -152,7 +170,7 @@ export default function FormUITable({ formcell = null, formcellkey = null, local
                 formTemplate = (
                     <GridContainer>
                         <GridItem xs={formcell.wrapcompos.griditem.xs ? formcell.wrapcompos.griditem.xs : undefined} sm={formcell.wrapcompos.griditem.sm ? formcell.wrapcompos.griditem.sm : undefined} md={formcell.wrapcompos.griditem.md ? formcell.wrapcompos.griditem.md : undefined}>
-                            {ListTable({ formcell, localStorage, change, remove, formcellkey, myprops, mystate, changePosition, removeItem, changeSort, changeQuantity })}
+                            {ListTable({ inform, formcell, localStorage, change, remove, formcellkey, myprops, mystate, changePosition, removeItem, changeSort, changeQuantity })}
                         </GridItem>
                     </GridContainer>
                 )

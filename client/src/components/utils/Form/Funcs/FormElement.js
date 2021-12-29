@@ -78,9 +78,6 @@ export default function SetElement({ formcell, formcellkey, localStorage, change
         />
     } else if (formcell.element === 'table') {
 
-    //  console.log(formcell);
-    //  console.log(formcellkey);
-    //  console.log(localStorage);
 
     //  return null
 
@@ -88,6 +85,7 @@ export default function SetElement({ formcell, formcellkey, localStorage, change
             localStorage={localStorage}
             formcell={formcell}
             formcellkey={formcellkey}
+            inform={true}
             // change={change}
             // remove={remove}
             // changePosition={changePosition}

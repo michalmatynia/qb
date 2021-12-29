@@ -281,7 +281,7 @@ export default function EditAdd() {
 
         // console.log(value)
         // console.log(isLocalStorage.form.formdata[cellkey].value)
-
+        setIsLoading(true)
         let newChecked = [...isLocalStorage.form.formdata[cellkey].value, value]
         // console.log(newChecked)
 
@@ -300,6 +300,8 @@ export default function EditAdd() {
         }
 
         setLocalStorage(newLocalStorage)
+        setIsLoading(false)
+
         // console.log(newLocalStorage);
         //     console.log(cell);
 

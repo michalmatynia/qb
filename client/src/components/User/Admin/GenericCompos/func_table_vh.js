@@ -55,6 +55,7 @@ export function ColumnRow({ viewparams, redux_localeuser, redux_userdata, reactr
 
     showthis = runPattern({ item, column: column.config, indicator: column.config.indicator })
 
+
     // Cell
     let cell = formcellkey ? { [formcellkey]: formcell } : null
     // IMAGE

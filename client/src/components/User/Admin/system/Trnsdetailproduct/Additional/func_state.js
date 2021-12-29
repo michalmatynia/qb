@@ -718,41 +718,41 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                             tableparams: {
                                 // renderHeader: true,
                                 columns: [
-                                    {
-                                        keyname: '',
-                                        columntype: 'iconbutton',
-                                        configparams: {
-                                        },
-                                        icon: DeleteIcon,
-                                        // actions: {
-                                        //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
-                                        //         event,
-                                        //         value,
-                                        //         cell
-                                        //     })
-                                        // },
-                                        inputprops: {
-                                            id: 'generic',
-                                            type: 'text',
-                                            name: 'generic_button',
-                                        },
-                                        config: {
-                                            label: 'Remove',
-                                        },
-                                    },
-                                    {
-                                        keyname: 'images',
-                                        columntype: 'image',
-                                        configparams: {
-                                        },
-                                        config: {
-                                            label: 'Image',
-                                            valuetype: 'string',
-                                            leftpath: 'referenceID.images',
-                                            indicator: '0',
-                                            rightpath: 'url'
-                                        },
-                                    },
+                                    // {
+                                    //     keyname: '',
+                                    //     columntype: 'iconbutton',
+                                    //     configparams: {
+                                    //     },
+                                    //     icon: DeleteIcon,
+                                    //     // actions: {
+                                    //     //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
+                                    //     //         event,
+                                    //     //         value,
+                                    //     //         cell
+                                    //     //     })
+                                    //     // },
+                                    //     inputprops: {
+                                    //         id: 'generic',
+                                    //         type: 'text',
+                                    //         name: 'generic_button',
+                                    //     },
+                                    //     config: {
+                                    //         label: 'Remove',
+                                    //     },
+                                    // },
+                                    // {
+                                    //     keyname: 'images',
+                                    //     columntype: 'image',
+                                    //     configparams: {
+                                    //     },
+                                    //     config: {
+                                    //         label: 'Image',
+                                    //         valuetype: 'string',
+                                    //         leftpath: 'referenceID.images',
+                                    //         indicator: '0',
+                                    //         rightpath: 'url'
+                                    //     },
+                                    // },
                                     {
                                         keyname: 'name',
                                         columntype: 'text',
@@ -763,56 +763,56 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                             indicator: 'name'
                                         }
                                     },
-                                    {
-                                        keyname: 'position',
-                                        columntype: 'text',
-                                        config: {
-                                            valuetype: 'integer',
-                                            label: 'Position',
-                                            indicator: 'position'
-                                        }
-                                    },
-                                    {
-                                        keyname: 'model',
-                                        columntype: 'text',
-                                        config: {
-                                            valuetype: 'string',
-                                            label: 'Model',
-                                            indicator: 'model'
-                                        }
-                                    },
-                                    {
-                                        keyname: '',
-                                        columntype: 'adjust',
-                                        inputprops: {
-                                        },
-                                        config: {
-                                            label: '',
-                                        },
-                                    },
-                                    {
-                                        keyname: '',
-                                        columntype: 'iconbutton',
-                                        configparams: {
-                                        },
-                                        icon: Edit,
-                                        // actions: {
-                                        //     onClick: ({ event, value, cell }) => this.onGotoLink({
-                                        //         event,
-                                        //         value,
-                                        //         cell
-                                        //     }),
-                                        // },
-                                        inputprops: {
-                                            id: 'generic',
-                                            type: 'text',
-                                            name: 'generic_button',
-                                            color: 'primary'
-                                        },
-                                        config: {
-                                            label: '',
-                                        },
-                                    }
+                                    // {
+                                    //     keyname: 'position',
+                                    //     columntype: 'text',
+                                    //     config: {
+                                    //         valuetype: 'integer',
+                                    //         label: 'Position',
+                                    //         indicator: 'position'
+                                    //     }
+                                    // },
+                                    // {
+                                    //     keyname: 'model',
+                                    //     columntype: 'text',
+                                    //     config: {
+                                    //         valuetype: 'string',
+                                    //         label: 'Model',
+                                    //         indicator: 'model'
+                                    //     }
+                                    // },
+                                    // {
+                                    //     keyname: '',
+                                    //     columntype: 'adjust',
+                                    //     inputprops: {
+                                    //     },
+                                    //     config: {
+                                    //         label: '',
+                                    //     },
+                                    // },
+                                    // {
+                                    //     keyname: '',
+                                    //     columntype: 'iconbutton',
+                                    //     configparams: {
+                                    //     },
+                                    //     icon: Edit,
+                                    //     // actions: {
+                                    //     //     onClick: ({ event, value, cell }) => this.onGotoLink({
+                                    //     //         event,
+                                    //     //         value,
+                                    //     //         cell
+                                    //     //     }),
+                                    //     // },
+                                    //     inputprops: {
+                                    //         id: 'generic',
+                                    //         type: 'text',
+                                    //         name: 'generic_button',
+                                    //         color: 'primary'
+                                    //     },
+                                    //     config: {
+                                    //         label: '',
+                                    //     },
+                                    // }
 
                                 ]
                             },
