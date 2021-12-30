@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import leftBtn from '../../../../../../Resources/assets/png/arrow-left3.png';
+import rightBtn from '../../../../../../Resources/assets/png/arrow-right3.png';
+
 // import leftBtn from '../icons/left.svg'; // Svg Icon
-import leftBtn from '../../../../../../Resources/assets/svg/arrow-left.svg';  // Svg Icon
-import rightBtn from '../../../../../../Resources/assets/svg/arrow-right.svg';  // Svg Icon
+// import leftBtn from '../../../../../../Resources/assets/svg/arrow-left.svg';  // Svg Icon
+// import rightBtn from '../../../../../../Resources/assets/svg/arrow-right.svg';  // Svg Icon
 
 // import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 // import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
