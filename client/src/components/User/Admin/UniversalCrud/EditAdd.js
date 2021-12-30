@@ -58,6 +58,11 @@ export default function EditAdd() {
     const [isLocalStorage, setLocalStorage] = React.useState();
     const [isPrevLocalStorage, setPrevLocalStorage] = React.useState();
     const [isPrevLocation, setPrevLocation] = React.useState();
+    const [isSublistModel, setSublistModel] = React.useState('slide');
+    const [isLoadingSublist, setIsLoadingSublist] = React.useState(false);
+    const [isHideIDs, setIsHideIDs] = React.useState(null);
+
+    
 
     const [isLocalUser, setLocalUser] = React.useState();
     const [isloading, setIsLoading] = React.useState(true);
@@ -276,23 +281,17 @@ export default function EditAdd() {
 
     const onToggleCheck = useCallback(async ({ value, cellkey }) => {
 
-
-        await toggle_addToReferer({
+        let newChecked = await toggle_addToReferer({
             value,
-            event,
-            cell,
-            sublistkey,
-            tiedtoformkey,
-            mystate: this.state,
-            myprops: this.props,
-            poliglot: this.state.localStorage.poliglot,
-            populate
-
+            cellkey,
+            isLocalStorage,
+            isSublistModel
         })
-        
-        setIsLoading(true)
-        let newChecked = [...isLocalStorage.form.formdata[cellkey].value, value]
-        // console.log(newChecked)
+
+       let checkedIDs = isLocalStorage.form.formdata[cellkey].value.map(a => {
+           return a.referenceID._id
+       })
+
 
         let newLocalStorage = {
             ...isLocalStorage,
@@ -308,37 +307,11 @@ export default function EditAdd() {
             }
         }
 
+        setIsHideIDs(checkedIDs)
         setLocalStorage(newLocalStorage)
-        setIsLoading(false)
 
-        // console.log(newLocalStorage);
-        //     console.log(cell);
+    }, [isLocalStorage, isSublistModel])
 
-        //    let test = updateFormValues({ cell,  isLocalStorage })
-
-        //    console.log(test)
-
-    }, [isLocalStorage])
-    // onToggleCheck = async ({ event, value = null, cell = null, sublistkey = null, tiedtoformkey = null }) => {
-
-    //     let populate  = await modelPopulate({model: this.state.localStorage[sublistkey].viewmodel})
-
-    //     let newLocalStorage = await toggle_addToReferer({
-    //         value,
-    //         event,
-    //         cell,
-    //         sublistkey,
-    //         tiedtoformkey,
-    //         mystate: this.state,
-    //         myprops: this.props,
-    //         poliglot: this.state.localStorage.poliglot,
-    //         populate
-
-    //     })
-
-    //     this.updateLocalStorage(newLocalStorage)
-
-    // }
 
     React.useEffect(() => {
 
@@ -466,11 +439,6 @@ export default function EditAdd() {
             }
 
         />
-            <ListPanel
-                model='slide'
-                type='sublist'
-                onToggleCheck={({ value }) => onToggleCheck({ value, cellkey: 'checked' })}
-            />
         </div>
             : <div
                 style={{
@@ -485,5 +453,12 @@ export default function EditAdd() {
             >
                 <CircularProgress style={{ color: '#cccccc' }} thickness={7} />
             </div>}
+            {!isLoadingSublist ?
+            <ListPanel
+                model={isSublistModel}
+                type='sublist'
+                hideIDs={isHideIDs}
+                onToggleCheck={({ value }) => onToggleCheck({ value, cellkey: 'checked' })}
+            /> : null}
     </div>)
 }

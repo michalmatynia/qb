@@ -174,7 +174,7 @@ export default function ListPanel(props) {
                 isRawState,
                 thisview: isViewparams,
                 populate: isRawState.localStorage.qhelpers.populate,
-                hideIDs: null,
+                hideIDs: props.hideIDs ? props.hideIDs :null,
             }).then((res) => {
                 if (isViewparams.size !== res.length) {
                     setIsViewparams(prevState => ({
@@ -185,7 +185,7 @@ export default function ListPanel(props) {
             })
         }
 
-    }, [dispatch, isRawState, isViewparams, props.model, props.type, reactrouter.match.params.model, reactrouter_history.location, redux_localeuser])
+    }, [dispatch, isRawState, isViewparams, props.hideIDs, props.model, props.type, reactrouter.match.params.model, reactrouter_history.location, redux_localeuser])
 
     const onToggleSwitch = useCallback(async ({ event, value = null }) => {
 

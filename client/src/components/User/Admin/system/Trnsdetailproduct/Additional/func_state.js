@@ -714,7 +714,7 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
 
                             // Don't change the name of this sublist
                             header: 'Add Components',
-                            tiedtoelementkey: 'sublist',
+                            // tiedtoelementkey: 'sublist',
                             tableparams: {
                                 // renderHeader: true,
                                 columns: [
@@ -724,13 +724,13 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                         configparams: {
                                         },
                                         icon: DeleteIcon,
-                                        // actions: {
-                                        //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
-                                        //         event,
-                                        //         value,
-                                        //         cell
-                                        //     })
-                                        // },
+                                        actions: {
+                                            onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
+                                                event,
+                                                value,
+                                                cell
+                                            })
+                                        },
                                         inputprops: {
                                             id: 'generic',
                                             type: 'text',
@@ -747,10 +747,10 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                         },
                                         config: {
                                             label: 'Image',
-                                            leftpath: 'images',
-                                            indicator: '0',
-                                            rightpath: 'url',
                                             valuetype: 'string',
+                                            leftpath: 'referenceID.images',
+                                            indicator: '0',
+                                            rightpath: 'url'
                                         },
                                     },
                                     {
@@ -759,59 +759,60 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                                         config: {
                                             valuetype: 'string',
                                             label: 'Name',
+                                            leftpath: 'referenceID',
                                             indicator: 'name'
                                         }
                                     },
-                                    // {
-                                    //     keyname: 'position',
-                                    //     columntype: 'text',
-                                    //     config: {
-                                    //         valuetype: 'integer',
-                                    //         label: 'Position',
-                                    //         indicator: 'position'
-                                    //     }
-                                    // },
-                                    // {
-                                    //     keyname: 'model',
-                                    //     columntype: 'text',
-                                    //     config: {
-                                    //         valuetype: 'string',
-                                    //         label: 'Model',
-                                    //         indicator: 'model'
-                                    //     }
-                                    // },
-                                    // {
-                                    //     keyname: '',
-                                    //     columntype: 'adjust',
-                                    //     inputprops: {
-                                    //     },
-                                    //     config: {
-                                    //         label: '',
-                                    //     },
-                                    // },
-                                    // {
-                                    //     keyname: '',
-                                    //     columntype: 'iconbutton',
-                                    //     configparams: {
-                                    //     },
-                                    //     icon: Edit,
-                                    //     // actions: {
-                                    //     //     onClick: ({ event, value, cell }) => this.onGotoLink({
-                                    //     //         event,
-                                    //     //         value,
-                                    //     //         cell
-                                    //     //     }),
-                                    //     // },
-                                    //     inputprops: {
-                                    //         id: 'generic',
-                                    //         type: 'text',
-                                    //         name: 'generic_button',
-                                    //         color: 'primary'
-                                    //     },
-                                    //     config: {
-                                    //         label: '',
-                                    //     },
-                                    // }
+                                    {
+                                        keyname: 'position',
+                                        columntype: 'text',
+                                        config: {
+                                            valuetype: 'integer',
+                                            label: 'Position',
+                                            indicator: 'position'
+                                        }
+                                    },
+                                    {
+                                        keyname: 'model',
+                                        columntype: 'text',
+                                        config: {
+                                            valuetype: 'string',
+                                            label: 'Model',
+                                            indicator: 'model'
+                                        }
+                                    },
+                                    {
+                                        keyname: '',
+                                        columntype: 'adjust',
+                                        inputprops: {
+                                        },
+                                        config: {
+                                            label: '',
+                                        },
+                                    },
+                                    {
+                                        keyname: '',
+                                        columntype: 'iconbutton',
+                                        configparams: {
+                                        },
+                                        icon: Edit,
+                                        // actions: {
+                                        //     onClick: ({ event, value, cell }) => this.onGotoLink({
+                                        //         event,
+                                        //         value,
+                                        //         cell
+                                        //     }),
+                                        // },
+                                        inputprops: {
+                                            id: 'generic',
+                                            type: 'text',
+                                            name: 'generic_button',
+                                            color: 'primary'
+                                        },
+                                        config: {
+                                            label: '',
+                                        },
+                                    }
 
                                 ]
                             },

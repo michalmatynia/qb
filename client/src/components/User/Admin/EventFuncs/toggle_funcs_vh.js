@@ -5,44 +5,22 @@ import {
     plg_updateOne_queMod_oprMod,
 } from '../../../utils/Plugs/cms_plugs';
 import { listFuncs_loadList_v2_vh } from '../GenericFuncs/list_funcs_vh'
-export async function toggle_addToReferer({ event, value = null, cell = null, sublistkey = null, tiedtoformkey = null, populate = null, poliglot = null }) {
-    let newLocalStorage = { ...mystate.localStorage }
+export async function toggle_addToReferer({ value = null, isLocalStorage, cellkey, isSublistModel }) {
 
-    if (event) {
+        let newChecked = isLocalStorage.form.formdata[cellkey].value;
+   
 
-        let model = sublistkey ? mystate.localStorage[sublistkey].viewmodel : mystate.localStorage.model
+        let newPosition = newChecked.length + 1
 
-        let checked = mystate.localStorage.form.formdata[tiedtoformkey].value
-
-        const newChecked = [...checked];
-
-        let newPosition = checked.length + 1
-
-        let insertAr = { referenceID: value, position: newPosition, model, visible: true, quantity: 1 }
-        if (newLocalStorage['form']['formdata'][tiedtoformkey].sublist.viewparams.sortOrder === 1) {
+        let insertAr = { referenceID: value, position: newPosition, model: isSublistModel, visible: true, quantity: 1 }
+        if (isLocalStorage['form']['formdata'][cellkey].sublist.viewparams.sortOrder === 1) {
             newChecked.push(insertAr)
 
         } else {
             newChecked.unshift(insertAr)
         }
 
-        newLocalStorage['form']['formdata'][tiedtoformkey].value = [...newChecked]
-
-        let newCheckedIDs = await pre_processCheckedIDs({ tiedtoformkey, newLocalStorage, cell })
-
-        // newLocalStorage = await listFuncs_loadList_v2({
-        //     sublistkey,
-        //     model,
-        //     myprops,
-        //     mystate,
-        //     poliglot,
-        //     hideIDs: newCheckedIDs,
-        //     newLocalStorage,
-        //     populate
-
-        // })
-    }
-    return newLocalStorage
+    return newChecked
 
 }
 export async function toggle_boolSwitch_v1_vh({

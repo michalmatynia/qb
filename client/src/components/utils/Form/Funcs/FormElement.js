@@ -85,7 +85,6 @@ export default function SetElement({ formcell, formcellkey, localStorage, change
             localStorage={localStorage}
             formcell={formcell}
             formcellkey={formcellkey}
-            inform={true}
             // change={change}
             // remove={remove}
             // changePosition={changePosition}

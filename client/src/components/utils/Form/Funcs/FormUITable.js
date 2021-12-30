@@ -30,7 +30,7 @@ const useStyles = makeStyles(styles);
 // const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
-export function ListTable({ inform, formcell, change, remove, formcellkey, localStorage, changePosition = null, removeItem = null, changeSort = null, handleVisible = null, toggleItem = null, changeQuantity = null }) {
+export function ListTable({ formcell, change, remove, formcellkey, localStorage, changePosition = null, removeItem = null, changeSort = null, handleVisible = null, toggleItem = null, changeQuantity = null }) {
 
     let list = formcellkey ? localStorage['form']['formdata'][formcellkey].value : null
     // let model = formcellkey ? mystate.localStorage['form']['formdata'][formcellkey].viewmodel : mystate.localStorage.model
@@ -42,30 +42,13 @@ export function ListTable({ inform, formcell, change, remove, formcellkey, local
 
     const makeTable = ({ item, tableparams }) => {
 
-        if (inform) {
-            console.log(tableparams);
-            console.log(item);
-        }
 
         return tableparams.columns.map((column, i) => {
 
             if (column.columntype) {
-                // return <ColumnRow
-                //     column={column}
-                //     item={item}
-                //     formcellkey={formcellkey}
-                //     formcell={formcell}
-                //     // handleVisible={handleVisible}
-                //     // changePosition={changePosition}
-                //     // removeItem={removeItem}
-                //     // toggleItem={toggleItem}
-                //     // changeQuantity={changeQuantity}
-                //     // model={model}
-                // />
-
+          
                 // VERSION 2
                     return <ColumnRow
-                    inform={inform}
                     column={column}
                     item={item}
                     // sublistkey={sublistkey}
