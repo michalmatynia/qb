@@ -30,6 +30,7 @@ import { submitForm } from '../GenericFuncs/submitForm'
 import { grabFormdata_vh2 } from '../../../utils/Form/FormActions/grabFormdata_vh';
 import { attachtoFuncs_populateEdit_vh2 } from '../../../User/Admin/GenericFuncs/attachto_funcs_vh'
 import AutocompleteMenu from '../GenericCompos/autocomplete_menu'
+import { toggle_addToReferer, toggle_boolSwitch_v1 } from '../../../User/Admin/EventFuncs/toggle_funcs_vh'
 
 import { ShowMessages } from '../GenericFuncs/errormsg_funcs'
 
@@ -276,11 +277,19 @@ export default function EditAdd() {
     const onToggleCheck = useCallback(async ({ value, cellkey }) => {
 
 
-        // const cellkey = Object.keys(cell)[0]
-        // const cellvalue = Object.values(cell)[0].value
+        await toggle_addToReferer({
+            value,
+            event,
+            cell,
+            sublistkey,
+            tiedtoformkey,
+            mystate: this.state,
+            myprops: this.props,
+            poliglot: this.state.localStorage.poliglot,
+            populate
 
-        // console.log(value)
-        // console.log(isLocalStorage.form.formdata[cellkey].value)
+        })
+        
         setIsLoading(true)
         let newChecked = [...isLocalStorage.form.formdata[cellkey].value, value]
         // console.log(newChecked)

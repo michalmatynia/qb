@@ -30,7 +30,7 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles(styles);
 
-export function ColumnRow({ viewparams, redux_localeuser, redux_userdata, reactrouter_history, column, item, formcellkey, formcell, sublistkey, tiedtoformkey, handleSwitch, toggleItem, changePosition, changeQuantity, removeItem, model = null }) {
+export function ColumnRow({ inform, viewparams, redux_localeuser, redux_userdata, reactrouter_history, column, item, formcellkey, formcell, sublistkey, tiedtoformkey, handleSwitch, toggleItem, changePosition, changeQuantity, removeItem, model = null }) {
     // Do checked musi wejsc formcell options
     const [checked, setChecked] = React.useState([]);
     const handleToggle = ({ value, event, sublistkey, tiedtoformkey, cell }) => {
@@ -53,7 +53,11 @@ export function ColumnRow({ viewparams, redux_localeuser, redux_userdata, reactr
     // SHOWTHIS
     let showthis
 
+    if (inform) console.log(column);
+
     showthis = runPattern({ item, column: column.config, indicator: column.config.indicator })
+    if (inform)  console.log(showthis);
+
 
 
     // Cell

@@ -33,18 +33,18 @@ const useStyles = makeStyles(styles);
 export function ListTable({ inform, formcell, change, remove, formcellkey, localStorage, changePosition = null, removeItem = null, changeSort = null, handleVisible = null, toggleItem = null, changeQuantity = null }) {
 
     let list = formcellkey ? localStorage['form']['formdata'][formcellkey].value : null
-        // let model = formcellkey ? mystate.localStorage['form']['formdata'][formcellkey].viewmodel : mystate.localStorage.model
+    // let model = formcellkey ? mystate.localStorage['form']['formdata'][formcellkey].viewmodel : mystate.localStorage.model
 
     let viewparams = formcellkey ? localStorage['form']['formdata'][formcellkey].sublist.viewparams : null
     let tableparams = formcellkey ? localStorage['form']['formdata'][formcellkey].sublist.tableparams : null
 
     const classes = useStyles();
 
-    const makeTable = ({ item, tableparams}) => {
+    const makeTable = ({ item, tableparams }) => {
 
-        if(inform) {
-            console.log(tableparams );
-            console.log(item );
+        if (inform) {
+            console.log(tableparams);
+            console.log(item);
         }
 
         return tableparams.columns.map((column, i) => {
@@ -63,21 +63,24 @@ export function ListTable({ inform, formcell, change, remove, formcellkey, local
                 //     // model={model}
                 // />
 
-                return <ColumnRow
-                column={column}
-                item={item}
-                // sublistkey={sublistkey}
-                // tiedtoformkey={tiedtoformkey}
-                // handleSwitch={handleSwitch}
-                changePosition={changePosition}
-                removeItem={removeItem}
-                toggleItem={toggleItem}
-                // model={model}
-                // redux_localeuser={redux_localeuser}
-                // reactrouter_history={reactrouter_history}
-                // redux_userdata={redux_userdata}
-                viewparams={viewparams}
-              />
+                // VERSION 2
+                    return <ColumnRow
+                    inform={inform}
+                    column={column}
+                    item={item}
+                    // sublistkey={sublistkey}
+                    // tiedtoformkey={tiedtoformkey}
+                    // handleSwitch={handleSwitch}
+                    changePosition={changePosition}
+                    removeItem={removeItem}
+                    toggleItem={toggleItem}
+                    // model={model}
+                    // redux_localeuser={redux_localeuser}
+                    // reactrouter_history={reactrouter_history}
+                    // redux_userdata={redux_userdata}
+                    viewparams={viewparams}
+                  />
+
             } else {
                 return null
             }
@@ -156,12 +159,12 @@ export function ListTable({ inform, formcell, change, remove, formcellkey, local
 
 }
 export default function FormUITable({ inform, formcell = null, formcellkey = null, localStorage, change = null, remove = null, myprops = null, mystate = null, changePosition = null, removeItem = null, changeSort = null, changeQuantity = null }) {
-if (inform) {
-    
-     console.log(formcell);
-     console.log(formcellkey);
-     console.log(localStorage);
-}
+    if (inform) {
+
+        //  console.log(formcell);
+        //  console.log(formcellkey);
+        //  console.log(localStorage);
+    }
     const renderTemplate = () => {
 
         let formTemplate = null;

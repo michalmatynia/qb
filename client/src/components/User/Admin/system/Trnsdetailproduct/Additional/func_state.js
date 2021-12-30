@@ -718,48 +718,47 @@ export default async function rawStateFunction({ redux_current_mysite, dispatch,
                             tableparams: {
                                 // renderHeader: true,
                                 columns: [
-                                    // {
-                                    //     keyname: '',
-                                    //     columntype: 'iconbutton',
-                                    //     configparams: {
-                                    //     },
-                                    //     icon: DeleteIcon,
-                                    //     // actions: {
-                                    //     //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
-                                    //     //         event,
-                                    //     //         value,
-                                    //     //         cell
-                                    //     //     })
-                                    //     // },
-                                    //     inputprops: {
-                                    //         id: 'generic',
-                                    //         type: 'text',
-                                    //         name: 'generic_button',
-                                    //     },
-                                    //     config: {
-                                    //         label: 'Remove',
-                                    //     },
-                                    // },
-                                    // {
-                                    //     keyname: 'images',
-                                    //     columntype: 'image',
-                                    //     configparams: {
-                                    //     },
-                                    //     config: {
-                                    //         label: 'Image',
-                                    //         valuetype: 'string',
-                                    //         leftpath: 'referenceID.images',
-                                    //         indicator: '0',
-                                    //         rightpath: 'url'
-                                    //     },
-                                    // },
+                                    {
+                                        keyname: '',
+                                        columntype: 'iconbutton',
+                                        configparams: {
+                                        },
+                                        icon: DeleteIcon,
+                                        // actions: {
+                                        //     onClick: ({ event, value, cell }) => this.onRemoveItemInForm({
+                                        //         event,
+                                        //         value,
+                                        //         cell
+                                        //     })
+                                        // },
+                                        inputprops: {
+                                            id: 'generic',
+                                            type: 'text',
+                                            name: 'generic_button',
+                                        },
+                                        config: {
+                                            label: 'Remove',
+                                        },
+                                    },
+                                    {
+                                        keyname: 'images',
+                                        columntype: 'image',
+                                        configparams: {
+                                        },
+                                        config: {
+                                            label: 'Image',
+                                            leftpath: 'images',
+                                            indicator: '0',
+                                            rightpath: 'url',
+                                            valuetype: 'string',
+                                        },
+                                    },
                                     {
                                         keyname: 'name',
                                         columntype: 'text',
                                         config: {
                                             valuetype: 'string',
                                             label: 'Name',
-                                            leftpath: 'referenceID',
                                             indicator: 'name'
                                         }
                                     },
